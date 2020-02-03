@@ -1,16 +1,20 @@
 #pragma once
 #include "gameNode.h"
-
-enum PLATERSTATE
-{
-
-};
+#include "animation.h"
 
 class player : public gameNode
 {
 private:
 
-	int _direction;     // 플레이어의 방향
+	struct tagPlayer
+	{
+		animation* ani;
+		image* image;
+		float x, y;
+		int idx, idy;
+	};
+
+	tagPlayer _player;
 
 public:
 	player();
@@ -21,4 +25,5 @@ public:
 	void update();
 	void render();
 };
+
 

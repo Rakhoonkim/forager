@@ -1,10 +1,12 @@
 #pragma once
 #include "gameNode.h"
-
+#include "playerManager.h"
 
 class playGround : public gameNode
 {
 private:
+	playerManager* _playerManager;
+	
 
 public:
 	virtual HRESULT init();
