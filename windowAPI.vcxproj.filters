@@ -138,15 +138,6 @@
     <ClInclude Include="keyAniManager.h">
       <Filter>2DGameFramework\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="tile.h">
-      <Filter>playGround\A%2aScene</Filter>
-    </ClInclude>
-    <ClInclude Include="aStarTest.h">
-      <Filter>playGround\A%2aScene</Filter>
-    </ClInclude>
-    <ClInclude Include="aStarScene.h">
-      <Filter>playGround\A%2aScene</Filter>
-    </ClInclude>
     <ClInclude Include="iniDataManager.h">
       <Filter>2DGameFramework\Manager</Filter>
     </ClInclude>
@@ -167,6 +158,9 @@
     </ClInclude>
     <ClInclude Include="playerManager.h">
       <Filter>playGround\player</Filter>
+    </ClInclude>
+    <ClInclude Include="tileNode.h">
+      <Filter>playGround\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -229,15 +223,6 @@
     </ClCompile>
     <ClCompile Include="keyAniManager.cpp">
       <Filter>2DGameFramework\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="tile.cpp">
-      <Filter>playGround\A%2aScene</Filter>
-    </ClCompile>
-    <ClCompile Include="aStarTest.cpp">
-      <Filter>playGround\A%2aScene</Filter>
-    </ClCompile>
-    <ClCompile Include="aStarScene.cpp">
-      <Filter>playGround\A%2aScene</Filter>
     </ClCompile>
     <ClCompile Include="iniDataManager.cpp">
       <Filter>2DGameFramework\Manager</Filter>

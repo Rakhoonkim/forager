@@ -28,6 +28,11 @@ public:
 	float  getCameraSizeX() { return _cameraSizeX; }
 	float  getCameraSizeY() { return _cameraSizeY; }
 
+	void setCameraSizeXY(float x, float y);
+	void setCameraXY(int x, int y);
+	void setCameraXY(float x, float y);
+
+	void setCameraMapToolXY(int x, int y);
 
 };
 

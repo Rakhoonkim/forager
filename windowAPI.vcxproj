@@ -23,7 +23,7 @@
     <ProjectGuid>{28B4DAE8-5578-4957-B006-3CD8EAE245FC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>windowAPI</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -149,8 +149,6 @@
   <ItemGroup>
     <ClInclude Include="action.h" />
     <ClInclude Include="animation.h" />
-    <ClInclude Include="aStarScene.h" />
-    <ClInclude Include="aStarTest.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="cameraManager.h" />
     <ClInclude Include="commonMacroFunction.h" />
@@ -176,7 +174,7 @@
     <ClInclude Include="stageScene.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="tile.h" />
+    <ClInclude Include="tileNode.h" />
     <ClInclude Include="timeManager.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="txtData.h" />
@@ -186,8 +184,6 @@
   <ItemGroup>
     <ClCompile Include="action.cpp" />
     <ClCompile Include="animation.cpp" />
-    <ClCompile Include="aStarScene.cpp" />
-    <ClCompile Include="aStarTest.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="cameraManager.cpp" />
     <ClCompile Include="effect.cpp" />
@@ -213,7 +209,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="tile.cpp" />
     <ClCompile Include="timeManager.cpp" />
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="txtData.cpp" />
