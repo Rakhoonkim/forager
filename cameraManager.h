@@ -2,16 +2,20 @@
 #include "singletonBase.h"
 
 // 200116 카메라 매니저 작성중 
-
+struct tagCamera
+{
+	HDC hdc;
+	image* image;
+	float cameraX, cameraY;
+	float cameraSizeX, cameraSizeY;
+	float cameraWorldSizeX, cameraWorldSizeY;
+};
 class cameraManager : public singletonBase<cameraManager>
 {
 
 private:
-	float _cameraSizeX, _cameraSizeY;
-	float _cameraX, _cameraY;
-
-	HDC			_worldDC;
-	image*	 _worldImage;
+	tagCamera _worldCamera;
+	tagCamera _mapToolCamera;
 
 
 public:
@@ -23,16 +27,24 @@ public:
 	void update();
 	void render();
 
-	// 월드 사이즈 
-	void setWorldSize(string strKey);
-	float  getCameraSizeX() { return _cameraSizeX; }
-	float  getCameraSizeY() { return _cameraSizeY; }
+	// 카메라 접근자 
+	tagCamera getWorldCamera()		{ return _worldCamera; }
+	tagCamera getMapToolCamera()	{ return _mapToolCamera; }
 
+	//월드 카메라 
 	void setCameraSizeXY(float x, float y);
 	void setCameraXY(int x, int y);
 	void setCameraXY(float x, float y);
 
 	void setCameraMapToolXY(int x, int y);
+	
 
+	// 맵툴 카메라 
+	void setMapToolCameraXY(float x, float y);
+
+	HDC getWorldDC()	 { return _worldCamera.hdc; }
+	HDC getMapToolDC()	 { return _mapToolCamera.hdc; }
+
+	image* getMapToolImage() { return _mapToolCamera.image; }
 };
 

@@ -22,6 +22,7 @@ class mapToolScene : public gameNode
 	int		 _saveSlotSizeWidth;			// 가로 
 	int		_saveSlotSizeHeight;			// 세로 
 
+	tagButton _style[3];	// 0,1,2	
 	tagButton _type[7];     // 0,1,2,3,4
 	tagButton _saveButton;	// SAVE 
 	tagButton _loadButton;	// LOAD  

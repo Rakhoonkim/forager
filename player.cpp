@@ -15,8 +15,6 @@ HRESULT player::init()
 
 	KEYANIMANAGER->addDefaultFrameAnimation("playerIdle", "playerIdle", 10, false, true);
 
-
-
 	_player.image = IMAGEMANAGER->findImage("playerIdle");
 	_player.ani = KEYANIMANAGER->findAnimation("playerIdle");
 	_player.ani->start();
@@ -33,7 +31,6 @@ void player::release()
 
 void player::update()
 {
-	
 }
 
 void player::render()

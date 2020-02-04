@@ -3,13 +3,32 @@
 
 cameraManager::cameraManager()
 {
-	_worldImage = new image;
-	_worldImage->init(3600, 2160);		// 사이즈 아직 미정 
+	//인게임 카메라 
+	_worldCamera.cameraWorldSizeX = 3600;
+	_worldCamera.cameraWorldSizeY = 2160;
 
-	_worldDC = _worldImage->getMemDC();
-	
-	_cameraSizeX = 3600;
-	_cameraSizeY = 2160;
+	_worldCamera.cameraSizeX = WINSIZEX;
+	_worldCamera.cameraSizeY = WINSIZEY;
+
+	_worldCamera.image = new image;
+	_worldCamera.image = IMAGEMANAGER->addImage("WorldDC", _worldCamera.cameraWorldSizeX, _worldCamera.cameraWorldSizeY);		// 사이즈 아직 미정 
+
+	_worldCamera.hdc = _worldCamera.image->getMemDC();
+
+	// 맵툴 카메라 
+	_mapToolCamera.cameraWorldSizeX = 2700;
+	_mapToolCamera.cameraWorldSizeY = 2160;
+
+	_mapToolCamera.cameraSizeX = 900;
+	_mapToolCamera.cameraSizeY = 720;
+
+	_mapToolCamera.cameraX = 0;
+	_mapToolCamera.cameraY = 0;
+
+	_mapToolCamera.image = new image;
+	_mapToolCamera.image = IMAGEMANAGER->addImage("mapToolDC", _mapToolCamera.cameraWorldSizeX, _mapToolCamera.cameraWorldSizeY);
+
+	_mapToolCamera.hdc = _mapToolCamera.image->getMemDC();
 }
 
 cameraManager::~cameraManager()
@@ -38,33 +57,31 @@ void cameraManager::render()
 
 }
 
-void cameraManager::setWorldSize(string strKey)
-{
-	_cameraSizeX = IMAGEMANAGER->findImage(strKey)->getFrameWidth();
-	_cameraSizeY = IMAGEMANAGER->findImage(strKey)->getFrameHeight();
-}
-
 void cameraManager::setCameraSizeXY(float x, float y)
 {
-	_cameraSizeX = x;
-	_cameraSizeY = y;
+
 }
 
 void cameraManager::setCameraXY(int x, int y)
 {
-	_cameraX = x - _cameraSizeX / 2;
-	_cameraY = y - _cameraSizeY / 2;
+
 }
 
 void cameraManager::setCameraXY(float x, float y)
 {
-	_cameraX = x - _cameraSizeX / 2;
-	_cameraY = y - _cameraSizeY / 2;
+
 }
 
 void cameraManager::setCameraMapToolXY(int x, int y)
 {
-	_cameraX = x;
-	_cameraY = y;
+
+}
+
+
+// 3x3 으로 지정할 예정 
+void cameraManager::setMapToolCameraXY(float x, float y)
+{
+	_mapToolCamera.cameraX = x;
+	_mapToolCamera.cameraY = y;
 }
 

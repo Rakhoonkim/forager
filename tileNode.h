@@ -22,7 +22,6 @@
 #define PALETTETILESIZEX  PALETTEX * PALETTESIZE
 #define PALETTETILESIZEY  PALETTEY * PALETTESIZE
 
-
 // OBJECT
 #define OBJECTX 5
 #define OBJECTY 5
@@ -31,8 +30,9 @@
 enum class TERRAIN
 {
 	GRASS,		// 잔디형식 
-	WATER, 
-	NONE
+	DESERT,
+	SNOW,
+	NONE,
 };
 
 enum class LAND
@@ -69,7 +69,7 @@ struct tagTile
 {
 	TYPE type;
 	TERRAIN terrain;		//지형
-	LAND land;
+	LAND land;				//땅 
 	OBJECT object;			//배경 
 	CHARACTER character;	//PLAYER
 	RECT rc;				//렉트
@@ -81,12 +81,14 @@ struct tagTile
 	int objectFrameY;		//바닥 데코 
 	int characterFrameX;	//케릭터 번호 
 	int characterFrameY;	//케릭터 번호 
+	bool isClick;
 };
 
 // 오른쪽 팔레트 타일셋 
 struct tagPalette
 {
 	TYPE type;
+	TERRAIN  terrain;
 	RECT rc;
 	int frameX;
 	int frameY;
