@@ -41,6 +41,10 @@ public:
 	void release();
 	void update();
 	void render();
+	
+	void save();
+	void load();
+	void SaveAndLoad();
 
 	void MapToolImage();		// 맵툴이미지
 	void MapToolSetup();		// 맵툴초기화
