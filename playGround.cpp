@@ -47,6 +47,7 @@ void playGround::render()
 	//===========================================================
 
 	_mapToolScene->render();
+
 	TIMEMANAGER->render(getMemDC());
 	//===========================================================
 	_backBuffer->render(getHDC(), 0, 0);
