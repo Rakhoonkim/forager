@@ -137,3 +137,13 @@ struct tagButton
 	RECT rc;
 	bool isClick;
 };
+
+
+struct tagPlayer
+{
+	animation* ani;
+	image* image;
+	float x, y;
+	int idx, idy;
+	int direction;
+};

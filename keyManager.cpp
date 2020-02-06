@@ -72,3 +72,26 @@ bool keyManager::isToggleKey(int key)
 
 	return false;
 }
+
+bool keyManager::isOnceTwoDown(int key1, int key2)
+{
+	if ((GetAsyncKeyState(key1) & 0x8000)&& (GetAsyncKeyState(key2) & 0x8000))
+	{
+		//만약에 그 키가 눌려져있지 않다면
+		if ((!this->getKeyDown()[key1]) && (!this->getKeyDown()[key2]))
+		{
+			//눌러졌다고 신호를 보내라
+			this->setKeyDown(key1,key2,true);
+
+			return true;
+		}
+	}
+	return false;
+}
+
+bool keyManager::isStayTwoDown(int key1, int key2)
+{
+	if ((GetAsyncKeyState(key1) & 0x8000) && (GetAsyncKeyState(key2) & 0x8000)) return true;
+
+	return false;
+}

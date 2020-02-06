@@ -22,6 +22,8 @@ class mapToolScene : public gameNode
 	float	_miniMapSizeHeight;				// 세로
 
 	tagButton	   _saveSlot[5];			// SLOT
+	const char* _saveName;
+
 	int		 _saveSlotSizeWidth;			// 가로 
 	int		_saveSlotSizeHeight;			// 세로 
 
@@ -54,8 +56,6 @@ public:
 	void MapToolEraser();
 
 	void MapToolRender();
-	void MapPalette();
-
 
 	TERRAIN MapToolTerrainSelect(int frameX, int frameY);
 	LAND MapToolLandSelect(int frameX, int frameY);

@@ -23,7 +23,8 @@ void mapToolScene::release()
 void mapToolScene::update()
 {
 	//cout << "x:" << _ptMouse.x << "y:" << _ptMouse.y << endl;
-
+	SaveAndLoad();          // 세이브 
+	
 	MapToolCollision();		// 클릭 
 	MapToolEraser();
 }
@@ -39,7 +40,7 @@ void mapToolScene::save()
 	HANDLE file;
 	DWORD write;
 
-	file = CreateFile("Loby_SaveFile.map", GENERIC_WRITE, 0, NULL,
+	file = CreateFile(_saveName, GENERIC_WRITE, 0, NULL,
 		CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	WriteFile(file, _tiles, sizeof(tagTile) * TILEX * TILEY, &write, NULL);
@@ -52,7 +53,7 @@ void mapToolScene::load()
 	HANDLE file;
 	DWORD read;
 
-	file = CreateFile("Loby_SaveFile.map", GENERIC_READ, 0, NULL,
+	file = CreateFile(_saveName, GENERIC_READ, 0, NULL,
 		OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	//맵을 불로온 직후 타일의 속성을 매겨준다
 	ReadFile(file, _tiles, sizeof(tagTile) * TILEX * TILEY, &read, NULL);
@@ -61,17 +62,51 @@ void mapToolScene::load()
 }
 
 void mapToolScene::SaveAndLoad()
-{
-	if (_saveButton.isClick)
+{	
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
-		this->save();
-		_saveButton.isClick = false;
+		for (int i = 0; i < 5; i++)
+		{
+			_saveSlot[i].isClick = false;
+			if (PtInRect(&_saveSlot[i].rc, _ptMouse))
+			{
+				switch (i)
+				{
+					case 0:
+					_saveName = "inGameNumber1.map";
+					_saveSlot[i].isClick = true;
+					break;
+					case 1:
+					_saveName = "inGameNumber2.map";
+					_saveSlot[i].isClick = true;
+					break;
+					case 2:
+					_saveName = "inGameNumber3.map";
+					_saveSlot[i].isClick = true;
+					break;
+					case 3:
+					_saveName = "inGameNumber4.map";
+					_saveSlot[i].isClick = true;
+					break;
+					case 4:
+					_saveName = "inGameNumber5.map";
+					_saveSlot[i].isClick = true;
+					break;
+				}
+			}
+		}
+
+		if (PtInRect(&_saveButton.rc, _ptMouse))
+		{
+			this->save();
+		}
+		if (PtInRect(&_loadButton.rc, _ptMouse))
+		{
+			this->load();
+		}
 	}
-	if (_loadButton.isClick)
-	{
-		this->load();
-		_loadButton.isClick = false;
-	}
+
+
 }
 
 void mapToolScene::MapToolImage()
@@ -124,6 +159,9 @@ void mapToolScene::MapToolSetup()
 
 	_saveSlotSizeWidth = 280;	// SAVE 가로 
 	_saveSlotSizeHeight = 30;	// SAVE 세로 
+
+	// 이미지이름
+	_saveName = "inGameNumber1.map";
 
 	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■본 MAP ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 	for (int i = 0; i < TILEY; i++)
@@ -396,8 +434,6 @@ void mapToolScene::MapToolUpdate()
 		}
 	}
 
-	cout << "X :" << _currentTile.frameX << "Y : " << _currentTile.frameY << endl;
-	
 	//왼쪽 클릭할 때 
 	for (int i = 0;i < TILEY;i++)
 	{
@@ -477,6 +513,13 @@ void mapToolScene::MapToolEraser()
 					_tiles[i * TILEX + j].landObjectFrameY = 0;
 					_tiles[i * TILEX + j].treeFrameX = 0;
 					_tiles[i * TILEX + j].treeFrameY = 0;
+					_tiles[i * TILEX + j].landFrameX = 0;
+					_tiles[i * TILEX + j].landFrameY = 0;
+
+					cout << "타입:"	<< (int)_tiles[i * TILEX + j].type << endl;
+					cout << "지형:" << (int)_tiles[i * TILEX + j].terrain << endl;
+	
+
 					break;
 				}
 			}
@@ -515,6 +558,7 @@ void mapToolScene::MapToolRender()
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		if (_tiles[i].type == TYPE::NONE) continue;
+		if (_tiles[i].land == LAND::NONE) continue;
 		//Rectangle(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc);
 		IMAGEMANAGER->findImage("grassTileLand")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landFrameX, _tiles[i].landFrameY);
 	}

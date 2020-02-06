@@ -7,6 +7,7 @@ class playerManager: public gameNode
 {
 private:
 	player* _player;
+
 public:
 	playerManager() {}
 	~playerManager() {}
@@ -15,6 +16,8 @@ public:
 	void release();
 	void update();
 	void render();
+
+	void imageSetting();
 
 };
 
