@@ -46,6 +46,9 @@ void player::update()
 void player::render()
 {
 	_player.image->aniRender(getMemDC(), _player.x, _player.y, _player.ani);
+	char str[100];
+	sprintf_s(str, "%f", _state->getAngle());
+	TextOut(getMemDC(), WINSIZEX / 2, WINSIZEY / 2, str, strlen(str));
 }
 
 void player::KeyControl()
@@ -121,10 +124,6 @@ void player::KeyControl()
 		_state->changeImage(true);
 		_stateChange = false;
 	}
-
-
-
-
 }
 
 

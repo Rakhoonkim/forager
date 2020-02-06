@@ -1,12 +1,19 @@
 #pragma once
-
-class player;
 //플레이어의 상태 
 // MOVE
 // ATTACK
 // JUMP
 // DEAD
 // FISHING
+
+// 대각선 각도 값
+#define UP_LEFTANGLE 2.355f
+#define UP_RIGHTANGLE 0.785f
+#define DOWN_LEFTANGLE  3.925
+#define DOWN_RIGHTANGLE 5.46f
+#define ANGLESPEED 4*PI / 180
+
+class player;
 
 class playerState
 {
@@ -24,6 +31,9 @@ public:
 	virtual void changeImage(int right);
 	virtual void setAngle(float angle) { _angle = angle; }
 	virtual void setSpeed(float speed) { _speed = speed; }
+	virtual void setAngleKeyCollision();
+
+	virtual float getAngle() { return _angle; }
 };
 
 
@@ -33,6 +43,7 @@ public:
 	playerMove(tagPlayer* player);
 	virtual void update();
 	virtual void changeImage(int right);
+	virtual void setAngleKeyCollision();
 };
 
 

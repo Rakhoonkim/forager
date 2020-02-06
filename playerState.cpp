@@ -28,6 +28,10 @@ void playerState::changeImage(int right)
 {
 }
 
+void playerState::setAngleKeyCollision()
+{
+}
+
 playerIdle::playerIdle(tagPlayer* player)
 {
 	playerState::init(player);
@@ -64,31 +68,7 @@ void playerMove::update()
 	cout << "나 이동상태야 " << endl;
 	_player->x += cosf(_angle) * _speed;
 	_player->y += -sinf(_angle) * _speed;
-
-	//if (KEYMANAGER->isStayKeyDown('W'))
-	//{
-	//	cout << "나 위로이동상태야 " << endl;
-	//	if (_direction) // 오른쪽 
-	//	{
-	//		if(_angle < 0.785f)	_angle += 2 * PI / 90;
-	//	}
-	//	else // 왼쪽 
-	//	{
-	//		if (_angle > 2.355f)	_angle -= 2 * PI / 90;
-	//	}
-	//}
-	//if (KEYMANAGER->isStayKeyDown('S'))
-	//{
-	//	cout << "나 아래로이동상태야 " << endl;
-	//	if (_direction) // 오른쪽 
-	//	{
-	//		if (_angle > -0.785f) _angle -= 2 * PI / 90;
-	//	}
-	//	else // 왼쪽 
-	//	{
-	//		if (_angle < 3.925f) _angle += 2 * PI / 90;
-	//	}
-	//}
+	setAngleKeyCollision();
 }
 
 void playerMove::changeImage(int right)
@@ -112,4 +92,68 @@ void playerMove::changeImage(int right)
 		_direction = 0;
 	}
 	
+}
+
+void playerMove::setAngleKeyCollision()
+{
+	// 대각 좌 2.355      우  0.785 
+	// 아래 좌 3.925		 우  5.46  -0.785 
+
+	// << 3.14    0 >> 
+	// 위 1.57     1/2 = 0.785 
+	// 아래 4.71
+
+	// 3개 눌리는거 예외처리??
+	if (KEYMANAGER->isStayTwoDown('W', 'A'))
+	{
+		if (_angle < UP_LEFTANGLE)
+		{
+			_angle += ANGLESPEED;
+		}
+		else if (_angle > UP_LEFTANGLE)
+		{
+			_angle -= ANGLESPEED;
+		}
+		else _angle = UP_LEFTANGLE;
+		
+	}
+	else if (KEYMANAGER->isStayTwoDown('W', 'D'))
+	{
+		if (_angle < UP_RIGHTANGLE)
+		{
+			_angle += ANGLESPEED;
+		}
+		else if (_angle > UP_RIGHTANGLE)
+		{
+			_angle -= ANGLESPEED;
+		}
+		else _angle = UP_RIGHTANGLE;
+		
+	}
+	else if (KEYMANAGER->isStayTwoDown('S', 'A'))
+	{
+		if (_angle < DOWN_LEFTANGLE)
+		{
+			_angle += ANGLESPEED;
+		}
+		else if (_angle > DOWN_LEFTANGLE)
+		{
+			_angle -= ANGLESPEED;
+		}
+		else _angle = DOWN_LEFTANGLE;
+		
+	}
+	else if (KEYMANAGER->isStayTwoDown('S', 'D'))
+	{
+		if (_angle == 0) _angle = 2 * PI;
+		if (_angle < DOWN_RIGHTANGLE)
+		{
+			_angle += ANGLESPEED;
+		}
+		else if (_angle > DOWN_RIGHTANGLE)
+		{
+			_angle -= ANGLESPEED;
+		}
+		else _angle = DOWN_RIGHTANGLE;
+	}
 }
