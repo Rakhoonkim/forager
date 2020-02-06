@@ -3,12 +3,12 @@
 //백버퍼는 어차피 한개만 있으면 되니 전역으로 빼봅시당
 static image* _backBuffer = IMAGEMANAGER->addImage("backBuffer", WINSIZEX, WINSIZEY);
 
-
 class gameNode
 {
 private:
 	HDC _hdc;
 	bool _managerInit;
+
 
 public:
 	gameNode();
@@ -26,6 +26,9 @@ public:
 	HDC getHDC() { return _hdc; }
 
 	LRESULT MainProc(HWND, UINT, WPARAM, LPARAM);
+
+	//D2D
+	void initalizeD2D();
 
 };
 

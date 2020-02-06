@@ -29,8 +29,20 @@ using namespace std;
 #include "iniDataManager.h"
 #include "cameraManager.h"
 #include "tileNode.h"				//TILE
+
 using namespace SEVENTEEN_UTIL;
 
+//========================================
+// ## D2D관련
+#include <math.h>
+#include <wchar.h>
+#include <d2d1.h>
+#include <d2d1_1helper.h>
+#include <dwrite.h>
+#include <wincodec.h>
+#include <cassert>
+#pragma comment(lib,"d2d1.lib")
+using namespace D2D1;
 //=========================================
 // ## 19.10.30 ## - 디파인문 -
 //=========================================
@@ -66,9 +78,13 @@ extern HINSTANCE	_hInstance;
 extern HWND			_hWnd;
 extern POINT		_ptMouse;
 extern BOOL			_leftButtonDown;
+extern ID2D1Factory* _gp_D2DFactory;
+extern ID2D1HwndRenderTarget* _gp_RenderTarget;
 
 #ifdef UNICODE
 #pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
 #else
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 #endif
+
+

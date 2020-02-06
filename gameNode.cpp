@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "gameNode.h"
 
-
 gameNode::gameNode()
 {
 }
@@ -13,10 +12,8 @@ gameNode::~gameNode()
 
 HRESULT gameNode::init()
 {
-
 	_hdc = GetDC(_hWnd);
 	_managerInit = false;
-
 	
 	return S_OK;
 }
@@ -128,3 +125,5 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 
 	return (DefWindowProc(hWnd, iMessage, wParam, lParam));
 }
+
+
