@@ -141,9 +141,12 @@ struct tagButton
 
 struct tagPlayer
 {
-	animation* ani;
-	image* image;
+	animation* playerAni;
+	animation* weaponAni;
+	image* playerImage;
+	image* weaponImage;
 	float x, y;
+	float weaponX, weaponY;
 	int idx, idy;
 	int direction;
 };

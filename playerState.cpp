@@ -32,6 +32,10 @@ void playerState::setAngleKeyCollision()
 {
 }
 
+void playerState::setWeaponXY()
+{
+}
+
 playerIdle::playerIdle(tagPlayer* player)
 {
 	playerState::init(player);
@@ -46,16 +50,24 @@ void playerIdle::changeImage(int right)
 {
 	if (right == 1)
 	{
-		_player->image = IMAGEMANAGER->findImage("playerIdle");
-		_player->ani = KEYANIMANAGER->findAnimation("playerIdle_R");
-		_player->ani->start();
+		_player->playerImage = IMAGEMANAGER->findImage("playerIdle");
+		_player->playerAni = KEYANIMANAGER->findAnimation("playerIdle_R");
+		_player->weaponImage = IMAGEMANAGER->findImage("playerPick");
+		_player->weaponAni = KEYANIMANAGER->findAnimation("playerPick_R");
+		_player->playerAni->start();
 	}
 	else
 	{
-		_player->image = IMAGEMANAGER->findImage("playerIdle");
-		_player->ani = KEYANIMANAGER->findAnimation("playerIdle_L");
-		_player->ani->start();
+		_player->playerImage = IMAGEMANAGER->findImage("playerIdle");
+		_player->playerAni = KEYANIMANAGER->findAnimation("playerIdle_L");
+		_player->weaponImage = IMAGEMANAGER->findImage("playerPick");
+		_player->weaponAni = KEYANIMANAGER->findAnimation("playerPick_L");
+		_player->playerAni->start();
 	}
+}
+
+void playerIdle::setWeaponXY()
+{
 }
 
 playerMove::playerMove(tagPlayer* player)
@@ -68,6 +80,9 @@ void playerMove::update()
 	cout << "나 이동상태야 " << endl;
 	_player->x += cosf(_angle) * _speed;
 	_player->y += -sinf(_angle) * _speed;
+
+
+	setWeaponXY();
 	setAngleKeyCollision();
 }
 
@@ -75,18 +90,22 @@ void playerMove::changeImage(int right)
 {
 	if (right == 1)
 	{
-		_player->image = IMAGEMANAGER->findImage("playerWalk");
-		_player->ani = KEYANIMANAGER->findAnimation("playerWalk_R");
-		_player->ani->start();
+		_player->playerImage = IMAGEMANAGER->findImage("playerWalk");
+		_player->playerAni = KEYANIMANAGER->findAnimation("playerWalk_R");
+		_player->weaponImage = IMAGEMANAGER->findImage("playerPick");
+		_player->weaponAni = KEYANIMANAGER->findAnimation("playerPick_R");
+		_player->playerAni->start();
 		_speed = 5;
 		_angle = 0;
 		_direction = 1;
 	}
 	else
 	{
-		_player->image = IMAGEMANAGER->findImage("playerWalk");
-		_player->ani = KEYANIMANAGER->findAnimation("playerWalk_L");
-		_player->ani->start();
+		_player->playerImage = IMAGEMANAGER->findImage("playerWalk");
+		_player->playerAni = KEYANIMANAGER->findAnimation("playerWalk_L");
+		_player->weaponImage = IMAGEMANAGER->findImage("playerPick");
+		_player->weaponAni = KEYANIMANAGER->findAnimation("playerPick_L");
+		_player->playerAni->start();
 		_speed = 5;
 		_angle = 3.14;
 		_direction = 0;
@@ -157,3 +176,18 @@ void playerMove::setAngleKeyCollision()
 		else _angle = DOWN_RIGHTANGLE;
 	}
 }
+
+void playerMove::setWeaponXY()
+{
+	if (_player->direction == 1) // 오른쪽
+	{
+		_player->weaponX = _player->x - 20;
+		_player->weaponY = _player->y - 5;
+	}
+	else
+	{
+		_player->weaponX = _player->x - 25;
+		_player->weaponY = _player->y - 5;
+	}
+}
+

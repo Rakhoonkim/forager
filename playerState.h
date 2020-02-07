@@ -32,7 +32,7 @@ public:
 	virtual void setAngle(float angle) { _angle = angle; }
 	virtual void setSpeed(float speed) { _speed = speed; }
 	virtual void setAngleKeyCollision();
-
+	virtual void setWeaponXY();
 	virtual float getAngle() { return _angle; }
 };
 
@@ -44,6 +44,7 @@ public:
 	virtual void update();
 	virtual void changeImage(int right);
 	virtual void setAngleKeyCollision();
+	virtual void setWeaponXY();
 };
 
 
@@ -53,6 +54,7 @@ public:
 	playerIdle(tagPlayer* player);
 	virtual void update();
 	virtual void changeImage(int right);
+	virtual void setWeaponXY();
 };
 
 

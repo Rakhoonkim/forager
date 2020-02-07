@@ -35,6 +35,7 @@ HRESULT gameNode::init(bool managerInit)
 		SCENEMANAGER->init();
 		KEYANIMANAGER->init();
 		INIDATAMANAGER->init();
+		MAPMANAGER->init();
 	}
 
 	return S_OK;

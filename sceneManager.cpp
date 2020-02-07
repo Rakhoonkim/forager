@@ -48,6 +48,11 @@ void sceneManager::render()
 	if (_currentScene) _currentScene->render();
 }
 
+void sceneManager::D2Drender()
+{
+	if (_currentScene) _currentScene->render();
+}
+
 gameNode * sceneManager::addScene(string sceneName, gameNode * scene)
 {
 	if(!scene) return nullptr;

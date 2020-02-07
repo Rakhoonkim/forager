@@ -22,7 +22,7 @@ public:
 	void release();
 	void update();
 	void render();
-
+	void D2Drender();
 	gameNode* addScene(string sceneName, gameNode* scene);
 
 	HRESULT changeScene(string sceneName);

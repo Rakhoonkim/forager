@@ -13,6 +13,9 @@ playGround _pg;
 //D2D관련
 ID2D1Factory* _gp_D2DFactory = nullptr;
 ID2D1HwndRenderTarget* _gp_RenderTarget = nullptr;
+IWICImagingFactory* _gp_WICFactory;
+IWICFormatConverter* _gp_ipConvertedSrcBmp;
+ID2D1Bitmap* _gp_D2DBitMap;
 
 //함수의 프로토타입 선언
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -23,10 +26,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 {
 	MSG			message;
 	WNDCLASS	wndClass;
-
+	HRESULT hr = E_FAIL;
 	//D2D 컴포넌트 추가 
-	CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
-	D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &_gp_D2DFactory);
+	/*CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+	hr = ::D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &_gp_D2DFactory);
+	assert(hr == S_OK);
+	hr = ::CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&_gp_WICFactory));
+	assert(hr == S_OK);*/
+
 	_hInstance = hInstance;
 
 	wndClass.cbClsExtra = 0;
@@ -100,36 +107,36 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 	UnregisterClass(WINNAME, hInstance);
 
 	//D2D 관련 
-	_gp_D2DFactory->Release();
-	CoUninitialize();
+	//_gp_D2DFactory->Release();
+	//CoUninitialize();
 
 	return message.wParam;
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
-	//return _pg.MainProc(hWnd, iMessage, wParam, lParam);
+	return _pg.MainProc(hWnd, iMessage, wParam, lParam);
+	//D2D관련
+	//if (iMessage == WM_CREATE)
+	//{
+	//	RECT r;
+	//	GetClientRect(hWnd, &r);
 
-	if (iMessage == WM_CREATE)
-	{
-		RECT r;
-		GetClientRect(hWnd, &r);
-
-		_gp_D2DFactory->CreateHwndRenderTarget(RenderTargetProperties(),
-			HwndRenderTargetProperties(hWnd,SizeU(r.right,r.bottom)),
-			&_gp_RenderTarget);
-		return 0;
-	}
-	else if (iMessage == WM_DESTROY)
-	{
-		if (_gp_RenderTarget != NULL)
-		{
-			_gp_RenderTarget->Release();
-			_gp_RenderTarget = NULL;	
-		}
-		PostQuitMessage(0);
-	}
-	return DefWindowProc(hWnd, iMessage, wParam, lParam);
+	//	_gp_D2DFactory->CreateHwndRenderTarget(RenderTargetProperties(),
+	//		HwndRenderTargetProperties(hWnd,SizeU(r.right,r.bottom)),
+	//		&_gp_RenderTarget);
+	//	return 0;
+	//}
+	//else if (iMessage == WM_DESTROY)
+	//{
+	//	if (_gp_RenderTarget != NULL)
+	//	{
+	//		_gp_RenderTarget->Release();
+	//		_gp_RenderTarget = NULL;	
+	//	}
+	//	PostQuitMessage(0);
+	//}
+	//return DefWindowProc(hWnd, iMessage, wParam, lParam);
 }
 
 //클라이언트 영역 재조정

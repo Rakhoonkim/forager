@@ -11,7 +11,7 @@ mapToolScene::~mapToolScene()
 
 HRESULT mapToolScene::init()
 {
-	MapToolImage();
+	MapToolImage(); // MAPMANAGER로 이동 
 	MapToolSetup();
 	return S_OK;
 }
@@ -136,8 +136,6 @@ void mapToolScene::MapToolImage()
 	//나무타일 
 	IMAGEMANAGER->addFrameImage("treeTile", "./image/mapTool/treeTile.bmp", 420, 240, 7, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("treeTilePalette", "./image/mapTool/treeTilePalette.bmp", 280, 160, 7, 2, true, RGB(255, 0, 255));
-
-
 
 	//Button 
 	IMAGEMANAGER->addImage("redButton", "./image/mapTool/redButton.bmp", 45, 45, false, RGB(255, 0, 255));

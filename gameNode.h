@@ -28,7 +28,5 @@ public:
 	LRESULT MainProc(HWND, UINT, WPARAM, LPARAM);
 
 	//D2D
-	void initalizeD2D();
-
 };
 

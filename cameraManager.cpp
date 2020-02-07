@@ -10,6 +10,9 @@ cameraManager::cameraManager()
 	_worldCamera.cameraSizeX = WINSIZEX;
 	_worldCamera.cameraSizeY = WINSIZEY;
 
+	_worldCamera.cameraX = 0;
+	_worldCamera.cameraY = 0;
+
 	_worldCamera.image = new image;
 	_worldCamera.image = IMAGEMANAGER->addImage("WorldDC", _worldCamera.cameraWorldSizeX, _worldCamera.cameraWorldSizeY);		// 사이즈 아직 미정 
 
@@ -62,14 +65,19 @@ void cameraManager::setCameraSizeXY(float x, float y)
 
 }
 
+
 void cameraManager::setCameraXY(int x, int y)
 {
 
 }
-
+//카메라 고정 
 void cameraManager::setCameraXY(float x, float y)
 {
+	_worldCamera.cameraX = x - _worldCamera.cameraSizeX / 2;
+	_worldCamera.cameraY = y - _worldCamera.cameraSizeY / 2;
 
+	//예외처리 추가 예정 
+	//
 }
 
 void cameraManager::setCameraMapToolXY(int x, int y)

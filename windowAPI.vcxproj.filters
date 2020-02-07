@@ -162,6 +162,9 @@
     <ClInclude Include="tileNode.h">
       <Filter>playGround\scene</Filter>
     </ClInclude>
+    <ClInclude Include="mapManager.h">
+      <Filter>playGround\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -244,6 +247,9 @@
     </ClCompile>
     <ClCompile Include="playerManager.cpp">
       <Filter>playGround\player</Filter>
+    </ClCompile>
+    <ClCompile Include="mapManager.cpp">
+      <Filter>playGround\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

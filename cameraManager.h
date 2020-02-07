@@ -46,5 +46,7 @@ public:
 	HDC getMapToolDC()	 { return _mapToolCamera.hdc; }
 
 	image* getMapToolImage() { return _mapToolCamera.image; }
+	image* getWorldImage() { return _worldCamera.image; }
+
 };
 

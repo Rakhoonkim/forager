@@ -65,6 +65,10 @@ private:
 
 	BLENDFUNCTION _blendFunc;	//알파블렌드 관련 함수들
 	LPIMAGE_INFO  _blendImage;	//알파블렌드 처리할 이미지
+
+
+	//D2D 관련 함수 
+
 public:
 	image();
 	~image();
@@ -79,6 +83,9 @@ public:
 		int frameX, int frameY, BOOL trans = FALSE, COLORREF transColor = FALSE, BOOL blend = FALSE);
 	HRESULT init(const char* fileName, int width, int height, int frameX, int frameY,
 		BOOL trans = FALSE, COLORREF transColor = FALSE, BOOL blend = FALSE);
+
+	HRESULT init(const char* fileName);
+
 
 	void release();
 

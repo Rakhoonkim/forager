@@ -29,11 +29,13 @@ using namespace std;
 #include "iniDataManager.h"
 #include "cameraManager.h"
 #include "tileNode.h"				//TILE
+#include "mapManager.h"
 
 using namespace SEVENTEEN_UTIL;
 
 //========================================
 // ## D2D관련
+#include <wincodec.h>
 #include <math.h>
 #include <wchar.h>
 #include <d2d1.h>
@@ -42,6 +44,7 @@ using namespace SEVENTEEN_UTIL;
 #include <wincodec.h>
 #include <cassert>
 #pragma comment(lib,"d2d1.lib")
+#pragma comment(lib,"WindowsCodecs.lib")
 using namespace D2D1;
 //=========================================
 // ## 19.10.30 ## - 디파인문 -
@@ -65,7 +68,7 @@ using namespace D2D1;
 #define KEYANIMANAGER keyAniManager::getSingleton()
 #define INIDATAMANAGER iniDataManager::getSingleton()
 #define CAMERAMANAGER cameraManager::getSingleton()
-
+#define MAPMANAGER mapManager::getSingleton()
 
 #define SAFE_DELETE(p) {if(p) {delete(p); (p)=NULL;}}
 #define SAFE_RELEASE(p) {if(p) {(p)->release(); (p) = NULL;}}
@@ -80,6 +83,9 @@ extern POINT		_ptMouse;
 extern BOOL			_leftButtonDown;
 extern ID2D1Factory* _gp_D2DFactory;
 extern ID2D1HwndRenderTarget* _gp_RenderTarget;
+extern IWICImagingFactory* _gp_WICFactory;
+extern IWICFormatConverter* _gp_ipConvertedSrcBmp;
+extern ID2D1Bitmap* _gp_D2DBitMap;
 
 #ifdef UNICODE
 #pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
@@ -87,4 +93,12 @@ extern ID2D1HwndRenderTarget* _gp_RenderTarget;
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 #endif
 
-
+template <typename T>
+inline void SafeRelease(T *&p)
+{
+	if (NULL != p)
+	{
+		p->Release();
+		p = NULL;
+	}
+}

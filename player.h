@@ -19,6 +19,7 @@ private:
 
 	tagPlayer _player;
 
+	int _keyCount;
 	bool _stateChange;
 public:
 
