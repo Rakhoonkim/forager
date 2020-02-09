@@ -32,8 +32,9 @@ public:
 	void LadnObjectRender();
 	void ObejectRender();
 
+	void setPlayerAddress(tagPlayer* player);
+	void setPlayerTileColision(int idx, int idy);
 
-	void setPlayerAddress();
-	
+	POINT randomObjectTile();
 };
 

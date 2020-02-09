@@ -23,6 +23,13 @@ HRESULT player::init()
 	_player.weaponX = _player.x -15;
 	_player.weaponY = _player.y -5;
 	_player.direction = 0;     // 0 왼쪽 1 오른쪽 
+	
+	
+	_player.hp = 3;
+	_player.maxHp = 3;
+	_player.health = 100;
+	_player.damage = 1;
+
 	_state = new playerState();
 	_state->init(&_player);
 
@@ -32,6 +39,7 @@ HRESULT player::init()
 	_state = _playerIdle;
 	_stateChange = false;
 	_keyCount = 0;
+
 	return S_OK;
 }
 
@@ -43,17 +51,34 @@ void player::update()
 {
 	_state->update();
 	KeyControl();
-	CAMERAMANAGER->setCameraXY(_player.x, _player.y);
-	// 무기 위치 고정 
+	IndexUpdate();
+	MAPMANAGER->setPlayerAddress(&_player);
+	MAPMANAGER->setPlayerTileColision(_player.idx, _player.idy);  // 충돌처리 
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+		_player.weaponAni->start();
+		KEYMANAGER->setKeyDown(VK_LBUTTON, false);
+	}
+
 }
 
 void player::render()
 {
 	_player.playerImage->aniRender(CAMERAMANAGER->getWorldDC(), _player.x, _player.y, _player.playerAni);
 	_player.weaponImage->aniRender(CAMERAMANAGER->getWorldDC(), _player.weaponX, _player.weaponY, _player.weaponAni);
+
+	
 	char str[100];
 	sprintf_s(str, "%f", _state->getAngle());
-	TextOut(getMemDC(), WINSIZEX / 2, WINSIZEY / 2, str, strlen(str));
+	TextOut(CAMERAMANAGER->getWorldDC(), _player.x, _player.y+50, str, strlen(str));
+	char strIdx[100];
+	sprintf_s(strIdx, "idx : %d", _player.idx);
+	TextOut(CAMERAMANAGER->getWorldDC(), _player.x, _player.y, strIdx, strlen(strIdx));
+	char strIdy[100];
+	sprintf_s(strIdy, "idy : %d", _player.idy);
+	TextOut(CAMERAMANAGER->getWorldDC(), _player.x+ 100, _player.y, strIdy, strlen(strIdy));
+
+
 }
 
 void player::KeyControl()
@@ -138,11 +163,13 @@ void player::KeyControl()
 		_state->changeImage(true);
 		_stateChange = false;
 	}
-	
-	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-	{
-		_player.weaponAni->start();
-	}
+}
+
+void player::IndexUpdate()
+{
+	CAMERAMANAGER->setCameraXY(_player.x, _player.y);
+	_player.idx = (int)(_player.x + 30) / 60;
+	_player.idy = (int)(_player.y + 30) / 60;
 }
 
 

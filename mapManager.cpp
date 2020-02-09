@@ -21,6 +21,7 @@ void mapManager::release()
 
 void mapManager::update()
 {
+
 }
 
 void mapManager::render()
@@ -29,6 +30,7 @@ void mapManager::render()
 	{
 		// 예외처리 
 		if((*_viTiles)->type == TYPE::NONE) continue;
+
 		//LAND
 		if ((*_viTiles)->land != LAND::NONE)
 		{
@@ -44,6 +46,16 @@ void mapManager::render()
 		{
 			LadnObjectRender();
 		}
+
+		if ((*_viTiles)->isObject)
+		{
+			char strObj[100];
+			sprintf_s(strObj, "오브젝트앙 기모띠", (*_viTiles)->idx, (*_viTiles)->idy);
+			TextOut(CAMERAMANAGER->getWorldDC(), (*_viTiles)->rc.left, (*_viTiles)->rc.top + 10, strObj, strlen(strObj));
+		}
+		char str[100];
+		sprintf_s(str, "%d:%d", (*_viTiles)->idx, (*_viTiles)->idy);
+		TextOut(CAMERAMANAGER->getWorldDC(), (*_viTiles)->rc.left, (*_viTiles)->rc.top, str, strlen(str));
 	}
 }
 
@@ -97,6 +109,7 @@ void mapManager::MapLoad(const char* fileName)
 	{
 		if (_tiles[i].type != TYPE::NONE)
 		{
+			_tiles[i].isObject = false;
 			_vTiles.push_back(&_tiles[i]);
 		}
 	}
@@ -145,6 +158,69 @@ void mapManager::ObejectRender()
 {
 }
 
-void mapManager::setPlayerAddress()
+void mapManager::setPlayerAddress(tagPlayer* player)
 {
+	_player = player;
+}
+
+void mapManager::setPlayerTileColision(int idx, int idy)
+{
+	//위 
+	//멈춤상태로 하고 싶음 
+	if (_tiles[(idy - 1) * TILEX + idx].land == LAND::WATER && _tiles[(idy - 1) * TILEX + idx].type == TYPE::LAND
+		|| _tiles[(idy - 1) * TILEX + idx].type == TYPE::LAND && _tiles[(idy - 1) * TILEX + idx].land == LAND::GRASS)
+	{
+		cout << "Water다 이말이다" << endl;
+		if (_player->y < _tiles[(idy - 1) * TILEX + idx].rc.bottom)
+		{
+			_player->y = _tiles[(idy - 1) * TILEX + idx].rc.bottom;
+		}
+	}//아래
+	if (_tiles[(idy + 1) * TILEX + idx].land == LAND::WATER && _tiles[(idy + 1) * TILEX + idx].type == TYPE::LAND
+		|| _tiles[(idy + 1) * TILEX + idx].type == TYPE::LAND && _tiles[(idy + 1) * TILEX + idx].land == LAND::GRASS)
+	{
+		cout << "Water다 이말이다" << endl;
+		if (_player->y + 60> _tiles[(idy + 1) * TILEX + idx].rc.top)
+		{
+			_player->y = _tiles[(idy + 1) * TILEX + idx].rc.top - 60;
+
+		}
+	}//좌
+	if (_tiles[idy * TILEX + (idx - 1)].land == LAND::WATER && _tiles[idy * TILEX + (idx - 1)].type == TYPE::LAND
+		|| _tiles[idy  * TILEX + (idx-1)].type == TYPE::LAND && _tiles[idy * TILEX + (idx - 1)].land == LAND::GRASS)
+	{
+		cout << "Water다 이말이다" << endl;
+		if (_player->x  < _tiles[idy * TILEX + (idx - 1)].rc.right)
+		{
+			_player->x = _tiles[idy * TILEX + (idx - 1)].rc.right;
+
+		}
+	}// 우 
+	if (_tiles[idy * TILEX + (idx + 1)].land == LAND::WATER && _tiles[idy * TILEX + (idx + 1)].type == TYPE::LAND
+		|| _tiles[idy * TILEX + (idx + 1)].type == TYPE::LAND && _tiles[idy * TILEX + (idx + 1)].land == LAND::GRASS)
+	{
+		cout << "Water다 이말이다" << endl;
+		if (_player->x +40 > _tiles[idy * TILEX + (idx + 1)].rc.left)
+		{
+			_player->x = _tiles[idy * TILEX + (idx + 1)].rc.left - 40;
+		}
+	}
+}
+
+POINT mapManager::randomObjectTile()
+{
+	int rnd = RND->getFromIntTo(0, _vTiles.size());
+
+	// 예외처리 범위 나갈수 있음 
+	if (rnd > _vTiles.size() || rnd < 0) return PointMake(0,0);  // 0,0은 실패값 
+	if (_vTiles[rnd]->type == TYPE::NONE || _vTiles[rnd]->type == TYPE::LAND || _vTiles[rnd]->type == TYPE::LANDOBJECT)  return PointMake(0, 0);
+
+
+	if (!_vTiles[rnd]->isObject)
+	{
+		_vTiles[rnd]->isObject = true;
+		return PointMake(_vTiles[rnd]->idx, _vTiles[rnd]->idy);
+	}
+	else randomObjectTile();
+
 }

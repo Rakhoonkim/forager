@@ -188,6 +188,7 @@ void mapToolScene::MapToolSetup()
 			_tiles[i * TILEX + j].idx = j;
 			_tiles[i * TILEX + j].idy = i;
 			_tiles[i * TILEX + j].isClick = false;
+			_tiles[i * TILEX + j].isObject = false;
 		}
 	}
 
@@ -786,7 +787,7 @@ TERRAIN mapToolScene::MapToolTerrainSelect(int frameX, int frameY)
 
 LAND mapToolScene::MapToolLandSelect(int frameX, int frameY)
 {
-
+	if (frameY == 6) return LAND::WATER;
 	if (_style[0].isClick)
 	{
 		if(frameY == 0 || frameY ==1) return LAND::GRASS;

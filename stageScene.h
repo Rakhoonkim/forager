@@ -1,11 +1,13 @@
 #pragma once
 #include "playerManager.h"
+#include "objectManager.h"
 #include "gameNode.h"
 
 class stageScene : public gameNode
 {
 private:
 	playerManager* _playerManager;
+	objectManager* _objectManager;
 public:
 	stageScene() {}
 	~stageScene() {}

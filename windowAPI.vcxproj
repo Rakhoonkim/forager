@@ -149,11 +149,18 @@
   <ItemGroup>
     <ClInclude Include="action.h" />
     <ClInclude Include="animation.h" />
+    <ClInclude Include="buildManager.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="cameraManager.h" />
+    <ClInclude Include="collisionManager.h" />
     <ClInclude Include="commonMacroFunction.h" />
+    <ClInclude Include="crops.h" />
+    <ClInclude Include="cropsManager.h" />
+    <ClInclude Include="cursor.h" />
+    <ClInclude Include="cursorManager.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="effectManager.h" />
+    <ClInclude Include="enemyManager.h" />
     <ClInclude Include="gameNode.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="imageManager.h" />
@@ -162,6 +169,8 @@
     <ClInclude Include="keyManager.h" />
     <ClInclude Include="mapManager.h" />
     <ClInclude Include="mapToolScene.h" />
+    <ClInclude Include="objectManager.h" />
+    <ClInclude Include="objectNode.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="playerManager.h" />
     <ClInclude Include="playerState.h" />
@@ -185,10 +194,17 @@
   <ItemGroup>
     <ClCompile Include="action.cpp" />
     <ClCompile Include="animation.cpp" />
+    <ClCompile Include="buildManager.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="cameraManager.cpp" />
+    <ClCompile Include="collisionManager.cpp" />
+    <ClCompile Include="crops.cpp" />
+    <ClCompile Include="cropsManager.cpp" />
+    <ClCompile Include="cursor.cpp" />
+    <ClCompile Include="cursorManager.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effectManager.cpp" />
+    <ClCompile Include="enemyManager.cpp" />
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="imageManager.cpp" />
@@ -197,6 +213,7 @@
     <ClCompile Include="keyManager.cpp" />
     <ClCompile Include="mapManager.cpp" />
     <ClCompile Include="mapToolScene.cpp" />
+    <ClCompile Include="objectManager.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playerManager.cpp" />
     <ClCompile Include="playerState.cpp" />

@@ -32,6 +32,7 @@ public:
 	void render();
 
 	void KeyControl();
+	void IndexUpdate();
 	tagPlayer* get_PlayerAddress() { return &_player; }
 };
 

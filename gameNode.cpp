@@ -36,6 +36,7 @@ HRESULT gameNode::init(bool managerInit)
 		KEYANIMANAGER->init();
 		INIDATAMANAGER->init();
 		MAPMANAGER->init();
+		CURSORMANAGER->init();
 	}
 
 	return S_OK;
@@ -74,6 +75,7 @@ void gameNode::update()
 {
 	SOUNDMANAGER->update();
 	KEYANIMANAGER->update();
+	CURSORMANAGER->update();
 }
 
 void gameNode::render()
@@ -122,6 +124,7 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		case WM_DESTROY:
 			PostQuitMessage(0);
 		break;
+
 	}
 
 	return (DefWindowProc(hWnd, iMessage, wParam, lParam));

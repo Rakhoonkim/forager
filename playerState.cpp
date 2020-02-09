@@ -21,7 +21,7 @@ HRESULT playerState::init(tagPlayer* player)
 
 void playerState::update()
 {
-	cout << "나 상태야 " << endl;
+	//cout << "나 상태야 " << endl;
 }
 
 void playerState::changeImage(int right)
@@ -43,7 +43,7 @@ playerIdle::playerIdle(tagPlayer* player)
 
 void playerIdle::update()
 {
-	cout << "나 기본 상태야 " << endl;
+	//cout << "나 기본 상태야 " << endl;
 }
 
 void playerIdle::changeImage(int right)

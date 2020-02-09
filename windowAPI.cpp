@@ -33,13 +33,18 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 	assert(hr == S_OK);
 	hr = ::CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&_gp_WICFactory));
 	assert(hr == S_OK);*/
-
+	
 	_hInstance = hInstance;
 
 	wndClass.cbClsExtra = 0;
 	wndClass.cbWndExtra = 0;
 	wndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	
 	wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
+
+	ShowCursor(false);  // 커서를 감추기 위한 
+//	wndClass.hCursor = LoadCursorFromFile("mouseCursor.cur");
+	
 	wndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	wndClass.hInstance = hInstance;
 	wndClass.lpfnWndProc = (WNDPROC)WndProc;
@@ -69,7 +74,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 	//메시지 루프 돌기이전에
 	if (FAILED(_pg.init()))
 	{
-
 		return 0;
 	}
 	/*
@@ -115,6 +119,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
+
+	//HCURSOR g_hNumCursor = NULL;
+	//g_hNumCursor = LoadCursorFromFile("mouseCursor.cur");
+	//::SetCursor(g_hNumCursor);
+
+
 	return _pg.MainProc(hWnd, iMessage, wParam, lParam);
 	//D2D관련
 	//if (iMessage == WM_CREATE)

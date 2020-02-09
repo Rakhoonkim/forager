@@ -1,0 +1,80 @@
+#include "stdafx.h"
+#include "crops.h"
+
+crops::crops()
+{
+}
+
+crops::~crops()
+{
+}
+
+//enum class OBJECT
+//{
+//	ROCK, COAL, IRON, GOLD, VOLCANIC_COAL, VOLCANIC_IRON, VOLCANIC_GOLD,  		// ÀÜµðÇü½Ä 
+//	COTTON, BEET, WHEAT, BUSH, FLOWER_1, FLOWER_2, FLOWER_3,
+//	HOT_PEPPER, PUMPKIN, LAVENDER, CINDERBLOOM, NIGHTSHADE,
+//	NONE,
+//};
+HRESULT crops::init(OBJECT object, const char* imageName, int idx, int idy)
+{
+	_crops.object = object;
+	_crops.imageName = imageName;
+	_crops.idx = idx;
+	_crops.idy = idy;
+	_crops.x = idx * 60 + 30 - IMAGEMANAGER->findImage(_crops.imageName)->getWidth() / 2;
+	_crops.y = idy * 60 + 30 - IMAGEMANAGER->findImage(_crops.imageName)->getHeight() / 2;
+	_crops.centerX = idx * 60 + 30;
+	_crops.centerY = idy * 60 + 30;
+	_crops.hp = 0;
+	_crops.maxHp = 0;
+
+	_crops.frameX = _crops.frameY = 0;
+
+	_crops.rc = RectMake(_crops.x, _crops.y, IMAGEMANAGER->findImage(_crops.imageName)->getWidth(), IMAGEMANAGER->findImage(_crops.imageName)->getHeight());
+	return S_OK;
+}
+
+void crops::release()
+{
+}
+
+void crops::update()
+{
+}
+
+void crops::render()
+{
+}
+
+void crops::setHp(int maxHp, int hp)
+{
+	_crops.hp = hp;
+	_crops.maxHp = maxHp;
+}
+
+//¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á imageCrops ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á
+
+void imageCrops::update()
+{
+	_crops.rc = RectMake(_crops.x, _crops.y, IMAGEMANAGER->findImage(_crops.imageName)->getWidth(), IMAGEMANAGER->findImage(_crops.imageName)->getHeight());
+}
+
+void imageCrops::render()
+{
+	IMAGEMANAGER->findImage(_crops.imageName)->render(CAMERAMANAGER->getWorldDC(), _crops.x, _crops.y);
+	//Rectangle(CAMERAMANAGER->getWorldDC(), _crops.rc);
+}
+
+//¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á frameCrops ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á
+
+void frameCrops::update()
+{
+	_crops.rc = RectMake(_crops.x, _crops.y, IMAGEMANAGER->findImage(_crops.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_crops.imageName)->getFrameHeight());
+
+}
+
+void frameCrops::render()
+{
+	IMAGEMANAGER->findImage(_crops.imageName)->frameRender(CAMERAMANAGER->getWorldDC(), _crops.x, _crops.y, _crops.frameX, _crops.frameY);
+}

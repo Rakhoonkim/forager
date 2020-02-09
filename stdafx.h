@@ -29,8 +29,9 @@ using namespace std;
 #include "iniDataManager.h"
 #include "cameraManager.h"
 #include "tileNode.h"				//TILE
-#include "mapManager.h"
-
+#include "objectNode.h"				//OBJECT
+#include "mapManager.h"				//MAP
+#include "cursorManager.h"			//CURSOR
 using namespace SEVENTEEN_UTIL;
 
 //========================================
@@ -69,6 +70,7 @@ using namespace D2D1;
 #define INIDATAMANAGER iniDataManager::getSingleton()
 #define CAMERAMANAGER cameraManager::getSingleton()
 #define MAPMANAGER mapManager::getSingleton()
+#define CURSORMANAGER cursorManager::getSingleton()
 
 #define SAFE_DELETE(p) {if(p) {delete(p); (p)=NULL;}}
 #define SAFE_RELEASE(p) {if(p) {(p)->release(); (p) = NULL;}}

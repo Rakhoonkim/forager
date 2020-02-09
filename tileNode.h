@@ -49,6 +49,7 @@ enum class LAND
 	GRASS,		// 잔디형식 
 	DESERT,
 	SNOW,
+	WATER,		// 바다타입 
 	NONE,
 };
 
@@ -120,6 +121,7 @@ struct tagTile
 	int characterFrameY;	//케릭터 번호 
 	int idx, idy;
 	bool isClick;
+	bool isObject;			// 식물이 있는지 없는지 
 };
 
 // 오른쪽 팔레트 타일셋 
@@ -139,14 +141,3 @@ struct tagButton
 };
 
 
-struct tagPlayer
-{
-	animation* playerAni;
-	animation* weaponAni;
-	image* playerImage;
-	image* weaponImage;
-	float x, y;
-	float weaponX, weaponY;
-	int idx, idy;
-	int direction;
-};
