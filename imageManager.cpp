@@ -105,6 +105,27 @@ image * imageManager::addFrameImage(string strKey, const char * fileName, int wi
 	return img;
 }
 
+image* imageManager::addFrameImage(string strKey, const char* fileName, int width, int height, int frameX, int frameY, bool trans, COLORREF transColor, bool alpha)
+{
+	image* img = findImage(strKey);
+
+	//만약에 내가 찾으려던 이미지가 이미 등록되어있으면 걔를 반환
+	if (img) return img;
+
+	img = new image;
+
+	if (FAILED(img->init(fileName, width, height, frameX, frameY, trans, transColor,alpha)))
+	{
+		SAFE_DELETE(img);
+
+		return nullptr;
+	}
+
+	_mImageList.insert(make_pair(strKey, img));
+
+	return img;
+}
+
 image* imageManager::findImage(string strKey)
 {
 

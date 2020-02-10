@@ -1,11 +1,14 @@
 #pragma once
-
+#include "itemState.h"
 
 class item 
 {
 private:
 	tagItem _item;
 
+	itemState* _itemState;
+	itemDrop* _itemDrop;
+	itemGain* _itemGain;
 public:
 	item();
 	~item();
@@ -15,12 +18,11 @@ public:
 	void update();
 	void render();
 
-	void move();
-	void dropMove();
-	void setDrop(float x, float y);
+	void setObject(OBJECT object)	{ _item.object = object; }
+	void setTree(TREE tree)			{ _item.tree = tree; }
+
+	void setGain(float x, float y);
 
 	tagItem* getItem() { return &_item; }
-
-
 };
 

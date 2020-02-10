@@ -213,6 +213,9 @@
     <ClInclude Include="item.h">
       <Filter>playGround\itemManager</Filter>
     </ClInclude>
+    <ClInclude Include="itemState.h">
+      <Filter>playGround\itemManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -327,6 +330,9 @@
       <Filter>playGround\itemManager</Filter>
     </ClCompile>
     <ClCompile Include="item.cpp">
+      <Filter>playGround\itemManager</Filter>
+    </ClCompile>
+    <ClCompile Include="itemState.cpp">
       <Filter>playGround\itemManager</Filter>
     </ClCompile>
   </ItemGroup>

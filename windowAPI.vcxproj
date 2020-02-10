@@ -167,6 +167,7 @@
     <ClInclude Include="iniDataManager.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="itemManager.h" />
+    <ClInclude Include="itemState.h" />
     <ClInclude Include="keyAniManager.h" />
     <ClInclude Include="keyManager.h" />
     <ClInclude Include="mapManager.h" />
@@ -213,6 +214,7 @@
     <ClCompile Include="iniDataManager.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="itemManager.cpp" />
+    <ClCompile Include="itemState.cpp" />
     <ClCompile Include="keyAniManager.cpp" />
     <ClCompile Include="keyManager.cpp" />
     <ClCompile Include="mapManager.cpp" />

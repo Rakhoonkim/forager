@@ -20,6 +20,8 @@ public:
 
 	void imageSetting();
 	void Dropitem(const char* imageName, float x, float y);
+	void Dropitem(OBJECT object, float x, float y);
+	void Dropitem(TREE tree, float x, float y);
 
 	void removeItem();
 

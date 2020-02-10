@@ -51,11 +51,12 @@ void playerManager::imageSetting()
 
 void playerManager::itemCollisionMouse()
 {
+	// 아이템 충돌 
 	for (int i = 0; i < ITEMMANAGER->getVItem().size(); i++)
 	{
-		if (PtInRect(&ITEMMANAGER->getVItem()[i]->getItem()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
+		if (ITEMMANAGER->getVItem()[i]->getItem()->drop && PtInRect(&ITEMMANAGER->getVItem()[i]->getItem()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
 		{
-			ITEMMANAGER->getVItem()[i]->setDrop(_player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y);
+			ITEMMANAGER->getVItem()[i]->setGain(_player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y);
 			break;
 		}
 	}
@@ -74,8 +75,6 @@ void playerManager::objectCollisionMouse()
 			cout << "충돌 x: " << _ptMouse.x << " y :" << _ptMouse.y << endl;
 
 			objectAttack(i);
-			// 1 . 케릭터 거리만큼 
-			// 2 . 오브젝트 데미지 입히기 
 			break;
 		}
 		else

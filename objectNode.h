@@ -46,10 +46,13 @@ struct tagItem
 	const char* imageName;
 	animation* ani;
 	RECT rc;
+	OBJECT object;
+	TREE tree;
 	float x, y;
 	float angle;
 	float time;
 	int speed;
+	int alpha;
 	bool isClick;
 	bool move;
 	bool drop;

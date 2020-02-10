@@ -304,6 +304,15 @@ void cropsManager::removeCrops()
 		//리무브 
 		if ((*_viCrops)->getCrops()->hp <= 0)
 		{
+			//아이템 생성
+			if ((*_viCrops)->getCrops()->object != OBJECT::NONE)
+			{
+				ITEMMANAGER->Dropitem((*_viCrops)->getCrops()->object, (*_viCrops)->getCrops()->centerX, (*_viCrops)->getCrops()->centerY);
+			}
+			else
+			{
+				ITEMMANAGER->Dropitem((*_viCrops)->getCrops()->tree,  (*_viCrops)->getCrops()->centerX, (*_viCrops)->getCrops()->centerY);
+			}
 			_vCrops.erase(_viCrops);
 			//커서 초기화 
 			CURSORMANAGER->setCursor();

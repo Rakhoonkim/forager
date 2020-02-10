@@ -21,6 +21,7 @@ crops::~crops()
 HRESULT crops::init(OBJECT object, const char* imageName, int idx, int idy)
 {
 	_crops.object = object;
+	_crops.tree = TREE::NONE;
 	_crops.imageName = imageName;
 	_crops.idx = idx;
 	_crops.idy = idy;
@@ -40,6 +41,7 @@ HRESULT crops::init(OBJECT object, const char* imageName, int idx, int idy)
 HRESULT crops::init(TREE tree, const char* imageName, int idx, int idy)
 {
 	_crops.tree = tree;
+	_crops.object = OBJECT::NONE;
 	_crops.imageName = imageName;
 	_crops.idx = idx;
 	_crops.idy = idy;
