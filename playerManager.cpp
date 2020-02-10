@@ -22,6 +22,7 @@ void playerManager::update()
 {
 	_player->update();
 	objectCollisionMouse();   // 마우스 포인터를 보여주기 위한 
+	itemCollisionMouse();	  // 아이템을 먹기 위한 
 }
 
 void playerManager::render()
@@ -46,6 +47,18 @@ void playerManager::imageSetting()
 	KEYANIMANAGER->addCoordinateFrameAnimation("playerPick_R", "playerPick", 0, 7, 20, false, false);
 	KEYANIMANAGER->addCoordinateFrameAnimation("playerPick_L", "playerPick", 7, 14, 20, false, false);
 
+}
+
+void playerManager::itemCollisionMouse()
+{
+	for (int i = 0; i < ITEMMANAGER->getVItem().size(); i++)
+	{
+		if (PtInRect(&ITEMMANAGER->getVItem()[i]->getItem()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
+		{
+			ITEMMANAGER->getVItem()[i]->setDrop(_player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y);
+			break;
+		}
+	}
 }
 
 void playerManager::objectCollisionMouse()

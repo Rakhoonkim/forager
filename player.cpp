@@ -56,6 +56,7 @@ void player::update()
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
 		_player.weaponAni->start();
+		ITEMMANAGER->Dropitem("woodDrop", _player.x, _player.y);
 		KEYMANAGER->setKeyDown(VK_LBUTTON, false);
 	}
 

@@ -34,6 +34,7 @@ void stageScene::render()
 	MAPMANAGER->render();      //MAP
 	if (CURSORMANAGER->getCursor()->getObjectPoint()) CURSORMANAGER->render(); // CURSOR
 	_objectManager->render();  //OBJECT
+	ITEMMANAGER->render();
 	_playerManager->render();  //PLAYER 
 	CAMERAMANAGER->getWorldImage()->render(getMemDC(), 0, 0, CAMERAMANAGER->getWorldCamera().cameraX, CAMERAMANAGER->getWorldCamera().cameraY, WINSIZEX, WINSIZEY);
 }

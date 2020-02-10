@@ -32,6 +32,7 @@ using namespace std;
 #include "objectNode.h"				//OBJECT
 #include "mapManager.h"				//MAP
 #include "cursorManager.h"			//CURSOR
+#include "itemManager.h"			//ITEM
 using namespace SEVENTEEN_UTIL;
 
 //========================================
@@ -71,6 +72,7 @@ using namespace D2D1;
 #define CAMERAMANAGER cameraManager::getSingleton()
 #define MAPMANAGER mapManager::getSingleton()
 #define CURSORMANAGER cursorManager::getSingleton()
+#define ITEMMANAGER itemManager::getSingleton()
 
 #define SAFE_DELETE(p) {if(p) {delete(p); (p)=NULL;}}
 #define SAFE_RELEASE(p) {if(p) {(p)->release(); (p) = NULL;}}

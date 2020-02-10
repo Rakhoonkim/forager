@@ -37,3 +37,20 @@ struct tagObject
 	int damage;
 	bool isClick;
 };
+
+
+// item
+
+struct tagItem
+{
+	const char* imageName;
+	animation* ani;
+	RECT rc;
+	float x, y;
+	float angle;
+	float time;
+	int speed;
+	bool isClick;
+	bool move;
+	bool drop;
+};

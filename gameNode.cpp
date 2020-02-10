@@ -37,6 +37,7 @@ HRESULT gameNode::init(bool managerInit)
 		INIDATAMANAGER->init();
 		MAPMANAGER->init();
 		CURSORMANAGER->init();
+		ITEMMANAGER->init();
 	}
 
 	return S_OK;
@@ -76,6 +77,7 @@ void gameNode::update()
 	SOUNDMANAGER->update();
 	KEYANIMANAGER->update();
 	CURSORMANAGER->update();
+	ITEMMANAGER->update();
 }
 
 void gameNode::render()

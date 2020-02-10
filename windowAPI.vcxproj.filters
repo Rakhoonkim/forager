@@ -73,6 +73,9 @@
     <Filter Include="playGround\cursor">
       <UniqueIdentifier>{83c79799-6ab8-4ea2-a5bd-e35358bb1dfc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="playGround\itemManager">
+      <UniqueIdentifier>{76e82056-8fa8-4863-847a-147ed44ee803}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -204,6 +207,12 @@
     <ClInclude Include="cropsManager.h">
       <Filter>playGround\object\crops</Filter>
     </ClInclude>
+    <ClInclude Include="itemManager.h">
+      <Filter>playGround\itemManager</Filter>
+    </ClInclude>
+    <ClInclude Include="item.h">
+      <Filter>playGround\itemManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -313,6 +322,12 @@
     </ClCompile>
     <ClCompile Include="cropsManager.cpp">
       <Filter>playGround\object\crops</Filter>
+    </ClCompile>
+    <ClCompile Include="itemManager.cpp">
+      <Filter>playGround\itemManager</Filter>
+    </ClCompile>
+    <ClCompile Include="item.cpp">
+      <Filter>playGround\itemManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
