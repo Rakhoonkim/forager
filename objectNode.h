@@ -23,7 +23,9 @@ struct tagPlayer
 struct tagObject
 {
 	OBJECT object;
+	TREE tree;
 	RECT rc;
+	animation* ani;
 	const char* imageName;
 	float centerX, centerY;
 	float x, y;
@@ -33,4 +35,5 @@ struct tagObject
 	int speed;
 	int hp, maxHp;
 	int damage;
+	bool isClick;
 };

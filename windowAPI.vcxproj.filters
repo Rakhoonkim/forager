@@ -180,9 +180,6 @@
     <ClInclude Include="objectManager.h">
       <Filter>playGround\objectManager</Filter>
     </ClInclude>
-    <ClInclude Include="cropsManager.h">
-      <Filter>playGround\objectManager</Filter>
-    </ClInclude>
     <ClInclude Include="enemyManager.h">
       <Filter>playGround\objectManager</Filter>
     </ClInclude>
@@ -203,6 +200,9 @@
     </ClInclude>
     <ClInclude Include="cursor.h">
       <Filter>playGround\cursor</Filter>
+    </ClInclude>
+    <ClInclude Include="cropsManager.h">
+      <Filter>playGround\object\crops</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -293,9 +293,6 @@
     <ClCompile Include="objectManager.cpp">
       <Filter>playGround\objectManager</Filter>
     </ClCompile>
-    <ClCompile Include="cropsManager.cpp">
-      <Filter>playGround\objectManager</Filter>
-    </ClCompile>
     <ClCompile Include="enemyManager.cpp">
       <Filter>playGround\objectManager</Filter>
     </ClCompile>
@@ -313,6 +310,9 @@
     </ClCompile>
     <ClCompile Include="cursor.cpp">
       <Filter>playGround\cursor</Filter>
+    </ClCompile>
+    <ClCompile Include="cropsManager.cpp">
+      <Filter>playGround\object\crops</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

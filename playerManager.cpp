@@ -53,7 +53,7 @@ void playerManager::objectCollisionMouse()
 	//■■■■■■■■■■■■■■■■■■■■■■ CropsCollision ■■■■■■■■■■■■■■■■■■■■■■
 	for (int i = 0; i < _cropsManager->getVCrops().size(); ++i)
 	{
-		if (PtInRect(&_cropsManager->getVCrops()[i]->getCrops()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
+		if (_cropsManager->getVCrops()[i]->getCrops()->isClick && PtInRect(&_cropsManager->getVCrops()[i]->getCrops()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
 		{
 			//커서 매니져 
 			CURSORMANAGER->setPoint();
@@ -63,6 +63,7 @@ void playerManager::objectCollisionMouse()
 			objectAttack(i);
 			// 1 . 케릭터 거리만큼 
 			// 2 . 오브젝트 데미지 입히기 
+			break;
 		}
 		else
 		{
@@ -78,11 +79,11 @@ void playerManager::objectAttack(int num)
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
 		//거리가 좁혀지면 데미지를 입힌다.
-		if (getDistance(_player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y, _cropsManager->getVCrops()[num]->getCrops()->x, _cropsManager->getVCrops()[num]->getCrops()->y) <= 120)
+		if (getDistance(_player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y, _cropsManager->getVCrops()[num]->getCrops()->centerX, _cropsManager->getVCrops()[num]->getCrops()->centerY) <= 120)
 		{
 			_cropsManager->getVCrops()[num]->cropsHit(_player->get_PlayerAddress()->damage);
 		}
-		KEYMANAGER->setKeyDown(VK_LBUTTON, false);
+		//KEYMANAGER->setKeyDown(VK_LBUTTON, false);
 	}
 }
 

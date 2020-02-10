@@ -10,10 +10,6 @@ class cropsManager:public gameNode
 private:
 	vector<crops*>			 _vCrops;
 	vector<crops*>::iterator _viCrops;
-
-
-	crops* _crops;			// 삭제예정 
-
 public:
 	cropsManager();
 	~cropsManager();
@@ -26,6 +22,8 @@ public:
 	void imageSetting();
 	void createImageCrops(OBJECT object,int idx,int idy);
 	void createFrameCrops(OBJECT object,int idx, int idy);
+	void createimageFrameCrops(OBJECT object, int idx, int idy);
+	void craateTreeCrops(TREE tree, int idx, int idy);
 
 	vector<crops*>				getVCrops()	 { return _vCrops; }
 	vector<crops*>::iterator	getViCrops() { return _viCrops; }

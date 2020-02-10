@@ -22,7 +22,7 @@ HRESULT gameNode::init(bool managerInit)
 {
 	_hdc = GetDC(_hWnd);
 	_managerInit = managerInit;
-
+	srand(time(NULL));
 	if (_managerInit)
 	{
 		CAMERAMANAGER->init();

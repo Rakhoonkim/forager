@@ -24,7 +24,6 @@ HRESULT player::init()
 	_player.weaponY = _player.y -5;
 	_player.direction = 0;     // 0 왼쪽 1 오른쪽 
 	
-	
 	_player.hp = 3;
 	_player.maxHp = 3;
 	_player.health = 100;

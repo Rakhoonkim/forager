@@ -15,11 +15,11 @@ playGround::~playGround()
 HRESULT playGround::init()
 {
 	gameNode::init(true);
+
 	SCENEMANAGER->addScene("STAGE", new stageScene);
 	SCENEMANAGER->addScene("MAPTOOL", new mapToolScene);
 
 	SCENEMANAGER->changeScene("STAGE");
-
 
 	return S_OK;
 }
