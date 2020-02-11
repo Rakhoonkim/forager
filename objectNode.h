@@ -54,7 +54,19 @@ struct tagItem
 	float time;
 	int speed;
 	int alpha;
+	int frameX, framey;		// 인벤토리 사진출력 
 	bool isClick;
 	bool move;
 	bool drop;
+};
+
+// Inven
+
+struct tagInven
+{
+	RECT rc;
+	int count;			// 인벤토리 개수 
+	int frameX, frameY; // 인벤토리 사진 
+	int idx, idy;		// 인벤토리 위치
+	int num;			// 번호
 };

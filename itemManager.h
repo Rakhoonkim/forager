@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "singletonBase.h"
 #include "item.h"
+#include "inventory.h"
 
 class itemManager : public singletonBase<itemManager> 
 {
@@ -9,7 +10,7 @@ private:
 	vector<item*>			_vItem;
 	vector<item*>::iterator _viItem;
 
-
+	inventory* _inven;
 public:
 	itemManager();
 	~itemManager();

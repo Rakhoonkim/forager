@@ -346,7 +346,7 @@ void mapToolScene::MapToolCollision()
 					_currentTile.type = TYPE::LANDOBJECT;       // 땅 데코 
 					break;
 				case 3:
-					_currentTile.type = TYPE::OBJECT;			// 
+					_currentTile.type = TYPE::OBJECT;			// 오브젝트 
 					break;
 				case 4:
 					_currentTile.type = TYPE::TREE;				// 나무 

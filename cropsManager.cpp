@@ -201,7 +201,7 @@ void cropsManager::createimageFrameCrops(OBJECT object, int idx, int idy)
 		crops->init(object, "rock", idx, idy);
 		crops->setHp(4, 4);
 		crops->setIsClick();
-		crops->setFrameX(RND->getFromIntTo(2,4));
+		crops->setFrameX(RND->getFromIntTo(6, 8));
 		_vCrops.push_back(crops);
 	}
 	else if (object == OBJECT::GOLD)
@@ -221,7 +221,7 @@ void cropsManager::createimageFrameCrops(OBJECT object, int idx, int idy)
 		crops->init(object, "rock", idx, idy);
 		crops->setHp(4, 4);
 		crops->setIsClick();
-		crops->setFrameX(RND->getFromIntTo(6, 8));
+		crops->setFrameX(RND->getFromIntTo(2, 4));
 		_vCrops.push_back(crops);
 	}
 	else if(object == OBJECT::VOLCANIC_IRON)

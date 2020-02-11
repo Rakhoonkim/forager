@@ -12,6 +12,7 @@ itemManager::~itemManager()
 HRESULT itemManager::init()
 {
 	imageSetting();
+
 	return S_OK;
 }
 
@@ -38,18 +39,20 @@ void itemManager::render()
 
 void itemManager::imageSetting()
 {
+	IMAGEMANAGER->addFrameImage("ironOreDrop", "./image/item/ironOreDrop.bmp", 600, 24, 20, 1, true, RGB(255, 0, 255), true);
+	IMAGEMANAGER->addFrameImage("coalDrop", "./image/item/coalDrop.bmp", 520, 24, 20, 1, true, RGB(255, 0, 255), true);
+	
+	
 	IMAGEMANAGER->addFrameImage("woodDrop", "./image/item/woodDrop.bmp", 720, 36, 20, 1, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("beetDrop", "./image/item/beetDrop.bmp", 600, 30, 20, 1, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("berryDrop", "./image/item/berryDrop.bmp", 720, 32, 20, 1, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("cactusDrop", "./image/item/cactusDrop.bmp", 720, 36, 20, 1, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("cinderbloomDrop", "./image/item/cinderbloomDrop.bmp", 480, 30, 20, 1, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("citrusDrop", "./image/item/citrusDrop.bmp", 680, 36, 20, 1, true, RGB(255, 0, 255), true);
-	IMAGEMANAGER->addFrameImage("coalDrop", "./image/item/coalDrop.bmp", 600, 24, 20, 1, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("fiberDrop", "./image/item/fiberDrop.bmp", 640, 30, 20, 1, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("flowerDrop", "./image/item/flowerDrop.bmp", 440, 30, 20, 1, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("goldOreDrop", "./image/item/goldOreDrop.bmp", 600, 24, 20, 1, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("hotPepperDrop", "./image/item/hotPepperDrop.bmp", 640, 28, 20, 1, true, RGB(255, 0, 255), true);
-	IMAGEMANAGER->addFrameImage("ironOreDrop", "./image/item/ironOreDrop.bmp", 520, 24, 20, 1, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("lavenderDrop", "./image/item/lavenderDrop.bmp", 480, 28, 20, 1, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("nightshadeDrop", "./image/item/nightshadeDrop.bmp", 600, 26, 20, 1, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("pumpkinDrop", "./image/item/pumpkinDrop.bmp", 680, 34, 20, 1, true, RGB(255, 0, 255), true);
@@ -309,6 +312,7 @@ void itemManager::removeItem()
 		if ((*_viItem)->getItem()->isClick)
 		{
 			//인벤토리 증가 예정 
+			//아이템의 프레임 x y 만들 예정 
 			_vItem.erase(_viItem);
 			break;
 		}

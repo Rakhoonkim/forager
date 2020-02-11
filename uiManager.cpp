@@ -27,6 +27,8 @@ HRESULT uiManager::init()
 	_optionList[_currentOption].isClick = true;
 
 
+	_inven = new inventory;  // _currentOption = 1  일때
+	_inven->init();
 	return S_OK;
 }
 
@@ -38,7 +40,7 @@ void uiManager::update()
 {
 	if (_isOption)
 	{
-		setButtonAlpha();
+		setButtonAlpha();	//모든 옵션에 있어야 함 
 	}
 }
 
@@ -48,13 +50,16 @@ void uiManager::render()
 	{
 		IMAGEMANAGER->findImage("startBackground")->alphaRender(_backBuffer->getMemDC(), 0, 0, 100);
 		IMAGEMANAGER->findImage("optionList")->render(_backBuffer->getMemDC(), (WINSIZEX / 2) - (IMAGEMANAGER->findImage("optionList")->getWidth() / 2), 0);
-		
-
+	
 		for (int i = 0; i < MAXOPTION; i++)
 		{
 			IMAGEMANAGER->findImage("optionListIcon")->alphaFrameRender(_backBuffer->getMemDC(), _optionList[i].rc.left, _optionList[i].rc.top, _optionList[i].frameX, 0,_optionList[i].alpha);
 			//Rectangle(_backBuffer->getMemDC(), _optionList[i].rc);
 		}
+
+		// 1일때 인벤토리
+		_inven->render(_backBuffer->getMemDC());  
+
 	}
 }
 
@@ -64,6 +69,14 @@ void uiManager::imageSetting()
 	IMAGEMANAGER->addImage("optionList", "./image/ui/optionList.bmp", 480, 120, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addFrameImage("optionListIcon", "./image/ui/optionListIcon.bmp", 340, 68,5,1, true, RGB(255, 0, 255), true);
+
+
+	//인벤토리 
+	IMAGEMANAGER->addImage("invenSlot", "./image/ui/inven/invenSlot.bmp", 72, 72, true, RGB(255, 0, 255));
+}
+
+void uiManager::optionsSetting()
+{
 
 }
 
