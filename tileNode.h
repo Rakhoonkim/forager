@@ -136,8 +136,13 @@ struct tagPalette
 
 struct tagButton
 {
+	const char* imageName;
 	RECT rc;
+	float x, y;
+	int frameX; 
+	int alpha;
 	bool isClick;
+	bool isEffect;
 };
 
 

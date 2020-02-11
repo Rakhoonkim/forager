@@ -10,6 +10,9 @@ HRESULT playerManager::init()
 
 	_cropsManager = new cropsManager;
 	_cropsManager->init();
+
+	//옵션
+	_isOption = false;
 	return S_OK;
 }
 
@@ -22,7 +25,8 @@ void playerManager::update()
 {
 	_player->update();
 	objectCollisionMouse();   // 마우스 포인터를 보여주기 위한 
-	itemCollisionMouse();	  // 아이템을 먹기 위한 
+	itemCollisionMouse();	  // 아이템을 먹기 위한.
+	optionControl();		  //옵션창 컨트롤 
 }
 
 void playerManager::render()
@@ -46,18 +50,26 @@ void playerManager::imageSetting()
 
 	KEYANIMANAGER->addCoordinateFrameAnimation("playerPick_R", "playerPick", 0, 7, 20, false, false);
 	KEYANIMANAGER->addCoordinateFrameAnimation("playerPick_L", "playerPick", 7, 14, 20, false, false);
-
 }
 
 void playerManager::itemCollisionMouse()
 {
+	RECT temp;
 	// 아이템 충돌 
 	for (int i = 0; i < ITEMMANAGER->getVItem().size(); i++)
 	{
-		if (ITEMMANAGER->getVItem()[i]->getItem()->drop && PtInRect(&ITEMMANAGER->getVItem()[i]->getItem()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
+		// 마우스와 아이템 충돌 
+		if ((ITEMMANAGER->getVItem()[i]->getItem()->drop && PtInRect(&ITEMMANAGER->getVItem()[i]->getItem()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y))))
 		{
 			ITEMMANAGER->getVItem()[i]->setGain(_player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y);
 			break;
+		}
+
+		//플레이어 몸과 아이템 충돌 
+		if ((ITEMMANAGER->getVItem()[i]->getItem()->drop && IntersectRect(&temp, &ITEMMANAGER->getVItem()[i]->getItem()->rc, &_player->get_PlayerAddress()->rc)))
+		{
+			ITEMMANAGER->getVItem()[i]->setGain(_player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y);
+			continue;
 		}
 	}
 }
@@ -82,6 +94,14 @@ void playerManager::objectCollisionMouse()
 			CURSORMANAGER->setCursor();
 			CURSORMANAGER->getCursor()->setCursorChange();
 		}
+	}
+}
+
+void playerManager::optionControl()
+{
+	if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE))
+	{
+		UIMANAGER->setOption();
 	}
 }
 

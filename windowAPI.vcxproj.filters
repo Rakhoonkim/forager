@@ -76,6 +76,12 @@
     <Filter Include="playGround\itemManager">
       <UniqueIdentifier>{76e82056-8fa8-4863-847a-147ed44ee803}</UniqueIdentifier>
     </Filter>
+    <Filter Include="playGround\player\ability">
+      <UniqueIdentifier>{c13ead08-38a5-4e2a-b687-f1c43937ea66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="playGround\ui">
+      <UniqueIdentifier>{eaf15f7c-55df-4b9a-98c6-2b420dfbe2f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -195,9 +201,6 @@
     <ClInclude Include="crops.h">
       <Filter>playGround\object\crops</Filter>
     </ClInclude>
-    <ClInclude Include="collisionManager.h">
-      <Filter>playGround\objectManager</Filter>
-    </ClInclude>
     <ClInclude Include="cursorManager.h">
       <Filter>playGround\cursor</Filter>
     </ClInclude>
@@ -215,6 +218,21 @@
     </ClInclude>
     <ClInclude Include="itemState.h">
       <Filter>playGround\itemManager</Filter>
+    </ClInclude>
+    <ClInclude Include="mainMenuScene.h">
+      <Filter>playGround\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="inventory.h">
+      <Filter>playGround\player\ability</Filter>
+    </ClInclude>
+    <ClInclude Include="skill.h">
+      <Filter>playGround\player\ability</Filter>
+    </ClInclude>
+    <ClInclude Include="equipment.h">
+      <Filter>playGround\player\ability</Filter>
+    </ClInclude>
+    <ClInclude Include="uiManager.h">
+      <Filter>playGround\ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -314,9 +332,6 @@
     <ClCompile Include="crops.cpp">
       <Filter>playGround\object\crops</Filter>
     </ClCompile>
-    <ClCompile Include="collisionManager.cpp">
-      <Filter>playGround\objectManager</Filter>
-    </ClCompile>
     <ClCompile Include="cursorManager.cpp">
       <Filter>playGround\cursor</Filter>
     </ClCompile>
@@ -334,6 +349,21 @@
     </ClCompile>
     <ClCompile Include="itemState.cpp">
       <Filter>playGround\itemManager</Filter>
+    </ClCompile>
+    <ClCompile Include="mainMenuScene.cpp">
+      <Filter>playGround\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="skill.cpp">
+      <Filter>playGround\player\ability</Filter>
+    </ClCompile>
+    <ClCompile Include="inventory.cpp">
+      <Filter>playGround\player\ability</Filter>
+    </ClCompile>
+    <ClCompile Include="equipment.cpp">
+      <Filter>playGround\player\ability</Filter>
+    </ClCompile>
+    <ClCompile Include="uiManager.cpp">
+      <Filter>playGround\ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

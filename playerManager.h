@@ -13,6 +13,7 @@ private:
 	player* _player;
 	cropsManager* _cropsManager;
 
+	bool _isOption;
 public:
 	playerManager() {}
 	~playerManager() {}
@@ -26,6 +27,9 @@ public:
 
 	void itemCollisionMouse();
 	void objectCollisionMouse();	  // 마우스 커서 보이기 
+	
+	void optionControl();
+
 	void objectAttack(int num);		  // 공격하기 
 	void set_CropsManager(cropsManager* cropsManager) { _cropsManager = cropsManager; }
 };

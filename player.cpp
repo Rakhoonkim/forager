@@ -39,6 +39,8 @@ HRESULT player::init()
 	_stateChange = false;
 	_keyCount = 0;
 
+	_player.rc = RectMake(_player.x, _player.y, _player.playerImage->getFrameWidth(), _player.playerImage->getFrameHeight());
+
 	return S_OK;
 }
 
@@ -59,6 +61,7 @@ void player::update()
 		//ITEMMANAGER->Dropitem("woodDrop", _player.x, _player.y);
 		KEYMANAGER->setKeyDown(VK_LBUTTON, false);
 	}
+	_player.rc = RectMake(_player.x, _player.y, _player.playerImage->getFrameWidth(), _player.playerImage->getFrameHeight());
 
 }
 
@@ -67,7 +70,7 @@ void player::render()
 	_player.playerImage->aniRender(CAMERAMANAGER->getWorldDC(), _player.x, _player.y, _player.playerAni);
 	_player.weaponImage->aniRender(CAMERAMANAGER->getWorldDC(), _player.weaponX, _player.weaponY, _player.weaponAni);
 
-	
+	Rectangle(CAMERAMANAGER->getWorldDC(), _player.rc);
 	char str[100];
 	sprintf_s(str, "%f", _state->getAngle());
 	TextOut(CAMERAMANAGER->getWorldDC(), _player.x, _player.y+50, str, strlen(str));

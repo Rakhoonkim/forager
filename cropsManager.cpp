@@ -24,6 +24,10 @@ HRESULT cropsManager::init()
 	createimageFrameCrops(OBJECT::COAL, 25, 16);
 	createimageFrameCrops(OBJECT::GOLD, 26, 16);
 	createimageFrameCrops(OBJECT::IRON, 27, 16);
+	createimageFrameCrops(OBJECT::VOLCANIC_COAL, 17, 17);
+	createimageFrameCrops(OBJECT::VOLCANIC_GOLD, 18, 17);
+	createimageFrameCrops(OBJECT::VOLCANIC_IRON, 19, 17);
+
 	craateTreeCrops(TREE::BASIC, 17, 20);
 	craateTreeCrops(TREE::RED, 18, 20);
 	craateTreeCrops(TREE::CACTUS, 19, 20);

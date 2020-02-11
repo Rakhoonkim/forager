@@ -8,6 +8,7 @@ struct tagPlayer
 	animation* weaponAni;
 	image* playerImage;
 	image* weaponImage;
+	RECT rc;
 	float x, y;
 	float weaponX, weaponY;
 	int idx, idy;

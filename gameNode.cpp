@@ -38,6 +38,7 @@ HRESULT gameNode::init(bool managerInit)
 		MAPMANAGER->init();
 		CURSORMANAGER->init();
 		ITEMMANAGER->init();
+		UIMANAGER->init();
 	}
 
 	return S_OK;
@@ -67,8 +68,11 @@ void gameNode::release()
 		KEYANIMANAGER->releaseSingleton();
 		INIDATAMANAGER->release();
 		INIDATAMANAGER->releaseSingleton();
+		CURSORMANAGER->release();
+		CURSORMANAGER->releaseSingleton();
+		ITEMMANAGER->release();
+		ITEMMANAGER->releaseSingleton();
 	}
-
 	ReleaseDC(_hWnd, _hdc);
 }
 
@@ -78,6 +82,7 @@ void gameNode::update()
 	KEYANIMANAGER->update();
 	CURSORMANAGER->update();
 	ITEMMANAGER->update();
+	UIMANAGER->update();     // UI MANAGER
 }
 
 void gameNode::render()
@@ -114,9 +119,9 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		{
 			switch (wParam)
 			{
-				case VK_ESCAPE:
+				/*case VK_ESCAPE:
 					PostQuitMessage(0);
-				break;
+				break;*/
 
 			}
 		}

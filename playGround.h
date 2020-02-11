@@ -2,12 +2,13 @@
 #include "gameNode.h"
 #include "mapToolScene.h"
 #include "stageScene.h"
-
+#include "mainMenuScene.h"
 class playGround : public gameNode
 {
 private:
 	stageScene*		_stageScene;		// STAGE
 	mapToolScene* _mapToolScene;		// MAP
+	mainMenuScene* _mainMenuScene;		// MAINMENU
 public:
 	playGround();
 	~playGround();

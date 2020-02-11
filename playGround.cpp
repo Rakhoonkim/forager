@@ -15,7 +15,7 @@ playGround::~playGround()
 HRESULT playGround::init()
 {
 	gameNode::init(true);
-
+	SCENEMANAGER->addScene("MAINMENU", new mainMenuScene);
 	SCENEMANAGER->addScene("STAGE", new stageScene);
 	SCENEMANAGER->addScene("MAPTOOL", new mapToolScene);
 
@@ -38,7 +38,6 @@ void playGround::update()
 	gameNode::update();
 
 	SCENEMANAGER->update();
-
 }
 
 
@@ -50,8 +49,8 @@ void playGround::render()
 	SetTextColor(getMemDC(), RGB(255, 0,0));
 	SCENEMANAGER->render();
 
+	UIMANAGER->render();
 	if (!CURSORMANAGER->getCursor()->getObjectPoint()) CURSORMANAGER->render();   //CURSOR
-
 	TIMEMANAGER->render(getMemDC());
 	//===========================================================
 	_backBuffer->render(getHDC(), 0, 0);
