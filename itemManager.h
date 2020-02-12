@@ -11,6 +11,7 @@ private:
 	vector<item*>::iterator _viItem;
 
 	inventory* _inven;
+
 public:
 	itemManager();
 	~itemManager();
@@ -24,6 +25,7 @@ public:
 	void Dropitem(OBJECT object, float x, float y);
 	void Dropitem(TREE tree, float x, float y);
 
+	void findItem();
 	void removeItem();
 
 	vector<item*> getVItem()			{ return _vItem; }

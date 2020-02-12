@@ -234,6 +234,9 @@
     <ClInclude Include="uiManager.h">
       <Filter>playGround\ui</Filter>
     </ClInclude>
+    <ClInclude Include="build.h">
+      <Filter>playGround\ui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -363,6 +366,9 @@
       <Filter>playGround\player\ability</Filter>
     </ClCompile>
     <ClCompile Include="uiManager.cpp">
+      <Filter>playGround\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="build.cpp">
       <Filter>playGround\ui</Filter>
     </ClCompile>
   </ItemGroup>

@@ -22,7 +22,10 @@ public:
 	void setTree(TREE tree)			{ _item.tree = tree; }
 
 	void setGain(float x, float y);
-
+	void setGain() { _item.isClick = true; }
+	void setIvenFrame(int x,int y);
+	itemState* getItemState() { return _itemState; }
+	itemGain* getItemGain() {return _itemGain;}
 	tagItem* getItem() { return &_item; }
 };
 

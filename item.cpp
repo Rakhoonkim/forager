@@ -23,6 +23,9 @@ HRESULT item::init(const char* imageName, float x, float y)
 	_item.time = TIMEMANAGER->getWorldTime();
 
 	_item.alpha = 0;
+	_item.frameX = 0;
+	_item.frameY = 0;
+
 	_item.move = true;
 	_item.isClick = false;
 	_item.drop = false;
@@ -62,8 +65,15 @@ void item::render()
 
 void item::setGain(float x, float y)
 {
+	if (_itemState == _itemGain) return;
 	_itemState = _itemGain;
 	_item.angle = getAngle(_item.x, _item.y, x, y);
 	_item.time = TIMEMANAGER->getWorldTime();
 	_item.move = true;
+}
+
+void item::setIvenFrame(int x, int y)
+{
+	_item.frameX = x;
+	_item.frameY = y;
 }

@@ -25,6 +25,7 @@ public:
 
 	void imageSetting();
 
+	void itemCollisionPlayer();
 	void itemCollisionMouse();
 	void objectCollisionMouse();	  // 마우스 커서 보이기 
 	

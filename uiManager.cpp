@@ -29,6 +29,10 @@ HRESULT uiManager::init()
 
 	_inven = new inventory;  // _currentOption = 1  일때
 	_inven->init();
+
+	_build = new build;
+	_build->init();
+
 	return S_OK;
 }
 
@@ -41,6 +45,15 @@ void uiManager::update()
 	if (_isOption)
 	{
 		setButtonAlpha();	//모든 옵션에 있어야 함 
+		
+		if (_currentOption == 1)
+		{	
+			_inven->update();
+		}
+		else if (_currentOption == 2)
+		{
+			_build->update();
+		}
 	}
 }
 
@@ -56,10 +69,15 @@ void uiManager::render()
 			IMAGEMANAGER->findImage("optionListIcon")->alphaFrameRender(_backBuffer->getMemDC(), _optionList[i].rc.left, _optionList[i].rc.top, _optionList[i].frameX, 0,_optionList[i].alpha);
 			//Rectangle(_backBuffer->getMemDC(), _optionList[i].rc);
 		}
-
 		// 1일때 인벤토리
-		_inven->render(_backBuffer->getMemDC());  
-
+		if (_currentOption == 1)
+		{
+			_inven->render(_backBuffer->getMemDC());
+		}
+		else if (_currentOption == 2)
+		{
+			_build->render(_backBuffer->getMemDC());
+		}
 	}
 }
 
@@ -69,10 +87,22 @@ void uiManager::imageSetting()
 	IMAGEMANAGER->addImage("optionList", "./image/ui/optionList.bmp", 480, 120, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addFrameImage("optionListIcon", "./image/ui/optionListIcon.bmp", 340, 68,5,1, true, RGB(255, 0, 255), true);
-
+	//숫자
+	IMAGEMANAGER->addFrameImage("invenNumber", "./image/ui/inven/invenNumber.bmp", 140, 16, 10, 1, true, RGB(255, 0, 255));
 
 	//인벤토리 
 	IMAGEMANAGER->addImage("invenSlot", "./image/ui/inven/invenSlot.bmp", 72, 72, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("invenItem", "./image/ui/inven/invenItem.bmp", 540, 108, 10, 2, true, RGB(255, 0, 255));
+
+	//장비
+	IMAGEMANAGER->addFrameImage("bigBox", "./image/ui/equipment/bigBox.bmp", 96, 192, 1, 4, true, RGB(255, 0, 255));
+	
+	//건물 건설 
+	IMAGEMANAGER->addFrameImage("bigLongBox", "./image/ui/build/bigLongBox.bmp", 226, 290, 1, 4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("longBox", "./image/ui/build/longBox.bmp", 156, 180, 1, 4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("industry", "./image/ui/build/industry.bmp", 156, 180, 1, 4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("farming", "./image/ui/build/farming.bmp", 156, 180, 1, 4, true, RGB(255, 0, 255));
+
 }
 
 void uiManager::optionsSetting()

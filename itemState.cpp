@@ -73,7 +73,6 @@ void itemGain::render()
 void itemGain::move()
 {
 	if (!_item->move)return;
-
 	_item->alpha += 15;
 	_item->x += cosf(_item->angle) * _item->speed;
 	_item->y += -sinf(_item->angle) * _item->speed;

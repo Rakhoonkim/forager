@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "inventory.h"
+#include "build.h"
 
 class gameNode;
 
@@ -11,8 +12,8 @@ class uiManager : public singletonBase<uiManager>
 private:
 	tagButton _optionList[MAXOPTION];
 
-
 	inventory* _inven;
+	build* _build;
 
 	int _currentOption;
 	bool _isOption;
@@ -39,5 +40,6 @@ public:
 
 
 	void setInven(inventory* inven) { _inven = inven; }
+	inventory* getInven() { return _inven; }
 };
 

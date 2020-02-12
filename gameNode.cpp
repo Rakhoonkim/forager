@@ -37,8 +37,8 @@ HRESULT gameNode::init(bool managerInit)
 		INIDATAMANAGER->init();
 		MAPMANAGER->init();
 		CURSORMANAGER->init();
-		ITEMMANAGER->init();
 		UIMANAGER->init();
+		ITEMMANAGER->init();
 	}
 
 	return S_OK;

@@ -16,7 +16,6 @@ private:
 	playerIdle* _playerIdle;
 	playerMove* _playerMove;
 
-
 	tagPlayer _player;
 
 	int _keyCount;
@@ -33,7 +32,9 @@ public:
 
 	void KeyControl();
 	void IndexUpdate();
+
 	tagPlayer* get_PlayerAddress() { return &_player; }
+	RECT get_playerRect() { return _player.rc; }
 };
 
 

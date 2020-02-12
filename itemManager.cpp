@@ -13,6 +13,10 @@ HRESULT itemManager::init()
 {
 	imageSetting();
 
+	/*_inven = new inventory;
+	_inven->init();
+	UIMANAGER->setInven(_inven);*/
+	
 	return S_OK;
 }
 
@@ -99,6 +103,7 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("beetDrop", x, y);
+			tempItem->setIvenFrame(2, 1);
 			tempItem->setObject(object);
 			_vItem.push_back(tempItem);
 		}
@@ -111,6 +116,7 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("fiberDrop", x, y);
+			tempItem->setIvenFrame(5, 1);
 			tempItem->setObject(object);
 			_vItem.push_back(tempItem);
 		}
@@ -123,6 +129,7 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("wheatDrop", x, y);
+			tempItem->setIvenFrame(4, 1);
 			tempItem->setObject(object);
 			_vItem.push_back(tempItem);
 		}
@@ -135,6 +142,7 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("berryDrop", x, y);
+			tempItem->setIvenFrame(3, 1);
 			tempItem->setObject(object);
 			_vItem.push_back(tempItem);
 		}
@@ -149,6 +157,7 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("flowerDrop", x, y);
+			tempItem->setIvenFrame(6, 1);
 			tempItem->setObject(object);
 			_vItem.push_back(tempItem);
 		}
@@ -161,6 +170,7 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("hotPepperDrop", x, y);
+			tempItem->setIvenFrame(9, 0);
 			tempItem->setObject(object);
 			_vItem.push_back(tempItem);
 		}
@@ -173,6 +183,7 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("pumpkinDrop", x, y);
+			tempItem->setIvenFrame(0, 1);
 			tempItem->setObject(object);
 			_vItem.push_back(tempItem);
 		}
@@ -185,6 +196,7 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("lavenderDrop", x, y);
+			tempItem->setIvenFrame(1, 1);
 			tempItem->setObject(object);
 			_vItem.push_back(tempItem);
 		}
@@ -197,6 +209,7 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("cinderbloomDrop", x, y);
+			tempItem->setIvenFrame(4, 0);
 			tempItem->setObject(object);
 			_vItem.push_back(tempItem);
 		}
@@ -209,6 +222,7 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("nightshadeDrop", x, y);
+			tempItem->setIvenFrame(5, 0);
 			tempItem->setObject(object);
 			_vItem.push_back(tempItem);
 		}
@@ -223,6 +237,7 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("stoneDrop", x, y);
+			tempItem->setIvenFrame(0, 0);
 			tempItem->setObject(object);
 			_vItem.push_back(tempItem);
 		}
@@ -236,6 +251,7 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("coalDrop", x, y);
+			tempItem->setIvenFrame(1, 0);
 			tempItem->setObject(object);
 			_vItem.push_back(tempItem);
 		}
@@ -249,6 +265,7 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("goldOreDrop", x, y);
+			tempItem->setIvenFrame(2, 0);
 			tempItem->setObject(object);
 			_vItem.push_back(tempItem);
 		}
@@ -261,6 +278,7 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("ironOreDrop", x, y);
+			tempItem->setIvenFrame(3, 0);
 			tempItem->setObject(object);
 			_vItem.push_back(tempItem);
 		}
@@ -279,6 +297,7 @@ void itemManager::Dropitem(TREE tree, float x, float y)
 				item* tempItem;
 				tempItem = new item;
 				tempItem->init("citrusDrop", x, y);
+				tempItem->setIvenFrame(6, 0);
 				tempItem->setTree(tree);
 				_vItem.push_back(tempItem);
 			}
@@ -287,6 +306,7 @@ void itemManager::Dropitem(TREE tree, float x, float y)
 				item* tempItem;
 				tempItem = new item;
 				tempItem->init("woodDrop", x, y);
+				tempItem->setIvenFrame(8, 0);
 				tempItem->setTree(tree);
 				_vItem.push_back(tempItem);
 			}
@@ -299,10 +319,15 @@ void itemManager::Dropitem(TREE tree, float x, float y)
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("cactusDrop", x, y);
+			tempItem->setIvenFrame(7, 0);
 			tempItem->setTree(tree);
 			_vItem.push_back(tempItem);
 		}
 	}
+}
+
+void itemManager::findItem()
+{
 }
 
 void itemManager::removeItem()
@@ -313,6 +338,8 @@ void itemManager::removeItem()
 		{
 			//인벤토리 증가 예정 
 			//아이템의 프레임 x y 만들 예정 
+			//_inven->addInven((*_viItem)->getItem()->imageName, (*_viItem)->getItem()->frameX, (*_viItem)->getItem()->frameY);
+			UIMANAGER->getInven()->addInven((*_viItem)->getItem()->imageName, (*_viItem)->getItem()->frameX, (*_viItem)->getItem()->frameY);
 			_vItem.erase(_viItem);
 			break;
 		}

@@ -6,8 +6,8 @@
 class inventory 
 {
 private:
-	map<string, tagInven>			 _mInven;
-	map<string, tagInven>::iterator  _miInven;
+	map<const char*, tagInven>			 _mInven;
+	map<const char*, tagInven>::iterator  _miInven;
 
 	tagInven _inven[INVENX * INVENY];
 	int _invenSize;
@@ -22,8 +22,10 @@ public:
 	void render();
 	void render(HDC hdc);
 
-	void addInven(string imageName,int frameX, int frameY);
+	void addInven(const char* imageName,int frameX, int frameY);
 
 	void invenSetting();
+	void invenItemCountRecder(HDC hdc);
+	map<const char*, tagInven> getInven() { return _mInven; }
 };
 

@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="action.h" />
     <ClInclude Include="animation.h" />
+    <ClInclude Include="build.h" />
     <ClInclude Include="buildManager.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="cameraManager.h" />
@@ -201,6 +202,7 @@
   <ItemGroup>
     <ClCompile Include="action.cpp" />
     <ClCompile Include="animation.cpp" />
+    <ClCompile Include="build.cpp" />
     <ClCompile Include="buildManager.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="cameraManager.cpp" />
