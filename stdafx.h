@@ -34,6 +34,7 @@ using namespace std;
 #include "cursorManager.h"			//CURSOR
 #include "itemManager.h"			//ITEM
 #include "uiManager.h"              //UI
+
 using namespace SEVENTEEN_UTIL;
 
 //========================================

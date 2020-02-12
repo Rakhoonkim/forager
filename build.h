@@ -30,5 +30,7 @@ public:
 
 	void buttonClick();
 	void listOpen();
+
+	void setDirection() { _direction = 5; }//임의의 NULL값 
 };
 

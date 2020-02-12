@@ -52,7 +52,7 @@ void mainMenuScene::render()
 			IMAGEMANAGER->findImage(_button[i].imageName)->alphaRender(getMemDC(), _button[i].rc.left, _button[i].rc.top,_button[i].alpha);
 		}
 	}
-
+	IMAGEMANAGER->findImage("foragerLogo")->render(getMemDC(), WINSIZEX / 2 - (IMAGEMANAGER->findImage("foragerLogo")->getWidth() / 2), 30);
 
 	//세이브 
 	//추후 예정 
@@ -74,6 +74,9 @@ void mainMenuScene::imageSetting()
 	IMAGEMANAGER->addImage("creditsButton", "./image/ui/mainMenu/credits.bmp", 332, 88, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addImage("optionsButton", "./image/ui/mainMenu/options.bmp", 288, 100, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addImage("exitButton", "./image/ui/mainMenu/exit.bmp", 208, 100, true, RGB(255, 0, 255), true);
+
+	IMAGEMANAGER->addImage("foragerLogo", "./image/ui/mainMenu/foragerLogo.bmp", 250, 133, true, RGB(255, 0, 255), true);
+	
 
 	//SAVE DATA 읽어 들어오기
 	//추후 예정
@@ -114,7 +117,7 @@ void mainMenuScene::buttonClick()
 	{
 		for (int i = 0; i < 7; i++)
 		{
-			_button[i].isClick = true;
+			if(PtInRect(&_button[i].rc,_ptMouse)) _button[i].isClick = true;
 			break;
 		}
 	}

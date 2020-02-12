@@ -29,6 +29,7 @@ public:
 	void imageSetting();
 	void optionsSetting();
 	void setButtonAlpha();
+	bool getOption() { return _isOption; }
 	void setOption() 
 	{
 		if (!_isOption)

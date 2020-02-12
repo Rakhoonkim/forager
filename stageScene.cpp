@@ -11,6 +11,10 @@ HRESULT stageScene::init()
 	_objectManager->init();
 	// ¸Ê 
 	_playerManager->set_CropsManager(_objectManager->get_CropsManager());
+
+	_buildManager = new buildManager;
+	_buildManager->init();
+
 	MAPMANAGER->MapLoad("inGameNumber1.map");
 	return S_OK;
 }
@@ -36,5 +40,6 @@ void stageScene::render()
 	_objectManager->render();  //OBJECT
 	ITEMMANAGER->render();
 	_playerManager->render();  //PLAYER 
+	_buildManager->render();   //BUILD
 	CAMERAMANAGER->getWorldImage()->render(getMemDC(), 0, 0, CAMERAMANAGER->getWorldCamera().cameraX, CAMERAMANAGER->getWorldCamera().cameraY, WINSIZEX, WINSIZEY);
 }

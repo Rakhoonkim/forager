@@ -55,7 +55,7 @@ void player::update()
 	IndexUpdate();
 	MAPMANAGER->setPlayerAddress(&_player);
 	MAPMANAGER->setPlayerTileColision(_player.idx, _player.idy);  // 충돌처리 
-	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON) && !UIMANAGER->getOption())
 	{
 		_player.weaponAni->start();
 		//ITEMMANAGER->Dropitem("woodDrop", _player.x, _player.y);

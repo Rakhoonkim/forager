@@ -121,6 +121,7 @@ void uiManager::setButtonAlpha()
 				_currentOption = i;
 			}
 		}
+		KEYMANAGER->setKeyDown(VK_LBUTTON, false);
 	}
 
 	// ¿Á¡§¿«
@@ -137,4 +138,6 @@ void uiManager::setButtonAlpha()
 			_optionList[i].alpha = 100;
 		}
 	}
+
+
 }
