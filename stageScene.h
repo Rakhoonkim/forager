@@ -10,7 +10,7 @@ class stageScene : public gameNode
 private:
 	playerManager* _playerManager;
 	objectManager* _objectManager;
-	buildManager* _buildManager;
+
 public:
 	stageScene() {}
 	~stageScene() {}

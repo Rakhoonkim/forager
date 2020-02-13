@@ -8,6 +8,7 @@ struct tagCursor
 	animation* ani;
 	image* image;
 	float x, y;
+	int idx, idy;
 };
 
 class cursor
@@ -29,6 +30,8 @@ public:
 	virtual void setCursorXY(float x, float y);
 	virtual void setCursorChange();
 	virtual bool getObjectPoint() { return _ObjectPoint; }
+	virtual POINT getCursorIdXY() { return PointMake(_cursor.idx, _cursor.idy);}
+	virtual tagCursor getCursor() { return _cursor;}
 };
 
 //기본 커서 

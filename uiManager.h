@@ -42,5 +42,7 @@ public:
 
 	void setInven(inventory* inven) { _inven = inven; }
 	inventory* getInven() { return _inven; }
+	build* getBuild() { return _build; }
+	void buildAdressLink(buildManager* buildManager) { _build->setBuildManager(buildManager);}
 };
 

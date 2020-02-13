@@ -35,6 +35,14 @@ public:
 	void setPlayerAddress(tagPlayer* player);
 	void setPlayerTileColision(int idx, int idy);
 
+	vector<tagTile*> getVTiles()			{ return _vTiles; }
+	vector<tagTile*>::iterator getViTiles() { return _viTiles; }
+	
+	tagTile* getTiles(int idx, int idy) { return &_tiles[idy * TILEX + idx]; }
+	//건물 지을때 땅에 지정하기 위한 값
+	bool getBuildTiles(int idx, int idy);
+	void setBuildTiles(int idx, int idy);
+	
 	POINT randomObjectTile();
 };
 

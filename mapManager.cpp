@@ -29,8 +29,8 @@ void mapManager::render()
 	for (_viTiles = _vTiles.begin(); _viTiles != _vTiles.end(); ++_viTiles)
 	{
 		// 예외처리 
-		if((*_viTiles)->type == TYPE::NONE) continue;
-
+		if ((*_viTiles)->type == TYPE::NONE) continue;
+	
 		//LAND
 		if ((*_viTiles)->land != LAND::NONE)
 		{
@@ -205,6 +205,35 @@ void mapManager::setPlayerTileColision(int idx, int idy)
 			_player->x = _tiles[idy * TILEX + (idx + 1)].rc.left - 40;
 		}
 	}
+}
+
+bool mapManager::getBuildTiles(int idx, int idy)
+{
+	if (idx < 0) idx = 0;
+	if (idy < 0) idy = 0;
+	if (idx > TILEX || idx + 1 > TILEX) idx = TILEX;
+	if (idy > TILEY || idy + 1 > TILEY) idy = TILEY;
+
+	if (_tiles[idy * TILEX + idx].type == TYPE::NONE) return false;
+	if (_tiles[(idy + 1) * TILEX + idx].type == TYPE::LAND) return false;
+	if (_tiles[idy * TILEX + (idx + 1)].type == TYPE::LAND) return false;
+	if (_tiles[(idy + 1) * TILEX + (idx + 1)].type == TYPE::LAND) return false;
+
+	if (_tiles[idy * TILEX + idx].type == TYPE::LAND) return false;
+	if (_tiles[idy * TILEX + idx].isObject) return false;
+	if (_tiles[(idy + 1) * TILEX + idx].isObject) return false;
+	if (_tiles[idy * TILEX + (idx + 1)].isObject) return false;
+	if (_tiles[(idy + 1) * TILEX + (idx + 1)].isObject) return false;
+
+	return true;
+}
+
+void mapManager::setBuildTiles(int idx, int idy)
+{
+	_tiles[idy * TILEX + idx].isObject = true;
+	_tiles[(idy + 1) * TILEX + idx].isObject = true;
+	_tiles[idy * TILEX + (idx + 1)].isObject = true;
+	_tiles[(idy + 1) * TILEX + (idx + 1)].isObject = true;
 }
 
 POINT mapManager::randomObjectTile()

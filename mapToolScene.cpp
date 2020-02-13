@@ -13,6 +13,7 @@ HRESULT mapToolScene::init()
 {
 	MapToolImage(); // MAPMANAGER로 이동 
 	MapToolSetup();
+	CURSORMANAGER->setCursor();
 	return S_OK;
 }
 
@@ -175,6 +176,7 @@ void mapToolScene::MapToolSetup()
 			_tiles[i * TILEX + j].object = OBJECT::NONE;
 			_tiles[i * TILEX + j].tree = TREE::NONE;
 			_tiles[i * TILEX + j].character = CHARACTER::NONE;
+			_tiles[i * TILEX + j].building = BUILDING::NONE;
 			_tiles[i * TILEX + j].terrainFrameX = 0;
 			_tiles[i * TILEX + j].terrainFrameY = 0;
 			_tiles[i * TILEX + j].objectFrameX = 0;
@@ -352,7 +354,7 @@ void mapToolScene::MapToolCollision()
 					_currentTile.type = TYPE::TREE;				// 나무 
 					break;
 				case 5:
-
+					// 빌딩 
 					break;
 				case 6:
 
@@ -502,6 +504,7 @@ void mapToolScene::MapToolEraser()
 					_tiles[i * TILEX + j].object = OBJECT::NONE;
 					_tiles[i * TILEX + j].tree = TREE::NONE;
 					_tiles[i * TILEX + j].character = CHARACTER::NONE;
+					_tiles[i * TILEX + j].building = BUILDING::NONE;	//빌딩 추가 
 					_tiles[i * TILEX + j].terrainFrameX = 0;
 					_tiles[i * TILEX + j].terrainFrameY = 0;
 					_tiles[i * TILEX + j].objectFrameX = 0;

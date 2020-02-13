@@ -82,6 +82,9 @@
     <Filter Include="playGround\ui">
       <UniqueIdentifier>{eaf15f7c-55df-4b9a-98c6-2b420dfbe2f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="playGround\object\building">
+      <UniqueIdentifier>{ca7f4f63-f8ea-4b18-9b1d-68c523fac5e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -237,6 +240,9 @@
     <ClInclude Include="build.h">
       <Filter>playGround\ui</Filter>
     </ClInclude>
+    <ClInclude Include="building.h">
+      <Filter>playGround\object\building</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -370,6 +376,9 @@
     </ClCompile>
     <ClCompile Include="build.cpp">
       <Filter>playGround\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="building.cpp">
+      <Filter>playGround\object\building</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -49,7 +49,6 @@ void cursor::setCursorChange()
 	_change = true;
 }
 
-
 // ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡ácursorBasic¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á
 
 cursorBasic::~cursorBasic()
@@ -58,6 +57,11 @@ cursorBasic::~cursorBasic()
 
 void cursorBasic::update()
 {
+	_cursor.x = CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x;
+	_cursor.y = CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y;
+	_cursor.idx = _cursor.x / 60;
+	_cursor.idy = _cursor.y / 60;
+	cout << " idx : " << _cursor.idx << " idy " << _cursor.idy << endl;
 }
 
 void cursorBasic::render()
@@ -82,6 +86,11 @@ cursorPoint::~cursorPoint()
 
 void cursorPoint::update()
 {
+	_cursor.x = CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x;
+	_cursor.y = CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y;
+	_cursor.idx = _cursor.x / 60;
+	_cursor.idy = _cursor.y / 60;
+	cout << " idx : " << _cursor.idx << " idy " << _cursor.idy << endl;
 }
 
 void cursorPoint::render()

@@ -18,14 +18,14 @@ public:
 	virtual void render();
 
 	virtual void setHp(int maxHp, int hp);
-	virtual void setTime(float time)  { _crops.time = time; }
-	virtual void setSpeed(int speed)  { _crops.speed = speed; }
-	virtual void setIsClick() { _crops.isClick = true; }
-	virtual void setTime() { _crops.time = TIMEMANAGER->getWorldTime(); }
-	virtual void setFrameX(int frameX) { _crops.frameX = frameX; }
+	virtual void setSpeed(int speed)		{ _crops.speed = speed; }
+	virtual void setFrameX(int frameX)		{ _crops.frameX = frameX; }
+	virtual void setTime(float time)		{ _crops.time = time; }
+	virtual void setIsClick()				{ _crops.isClick = true; }
+	virtual void setTime()					{ _crops.time = TIMEMANAGER->getWorldTime(); }
 
-	virtual void cropsHit(int damege) { _crops.hp -= damege; }
-	virtual tagObject* getCrops() { return &_crops; }
+	virtual void cropsHit(int damege)		{ _crops.hp -= damege; }
+	virtual tagObject* getCrops()		{ return &_crops; }
 };
 
 class imageCrops : public crops

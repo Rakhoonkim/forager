@@ -23,6 +23,7 @@ void playerManager::release()
 
 void playerManager::update()
 {
+
 	_player->update();
 	objectCollisionMouse();   // 마우스 포인터를 보여주기 위한 
 	itemCollisionPlayer();     // 아이템을 먹기 위한.
@@ -110,7 +111,7 @@ void playerManager::objectCollisionMouse()
 
 void playerManager::optionControl()
 {
-	if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE))
+	if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE) && !UIMANAGER->getBuild()->getisBuilding())
 	{
 		UIMANAGER->setOption();
 	}

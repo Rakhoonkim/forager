@@ -102,7 +102,9 @@ void uiManager::imageSetting()
 	IMAGEMANAGER->addFrameImage("longBox", "./image/ui/build/longBox.bmp", 156, 180, 1, 4, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("industry", "./image/ui/build/industry.bmp", 156, 180, 1, 4, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("farming", "./image/ui/build/farming.bmp", 156, 180, 1, 4, true, RGB(255, 0, 255));
-
+	//그냥 이미지
+	IMAGEMANAGER->addFrameImage("building", "./image/ui/build/building.bmp", 288, 144, 3, 1, true, RGB(255, 0, 255),true);
+	IMAGEMANAGER->addFrameImage("farmingImage", "./image/ui/build/farmingImage.bmp", 96, 42, 2, 1, true, RGB(255, 0, 255), true);
 }
 
 void uiManager::optionsSetting()
@@ -119,6 +121,8 @@ void uiManager::setButtonAlpha()
 			if (PtInRect(&_optionList[i].rc, _ptMouse))
 			{
 				_currentOption = i;
+				_build->setClickInit();// 건설 bool값을 초기화 해줌 
+				break;
 			}
 		}
 		KEYMANAGER->setKeyDown(VK_LBUTTON, false);

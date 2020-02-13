@@ -85,6 +85,16 @@ enum class CHARACTER
 	NONE,
 };
 
+enum class BUILDING
+{
+	FORGE,
+	SEWING_STATION,
+	FURNACE,
+	FISHTRAP,
+	BRIDGE,
+	NONE,
+};
+
 enum class TYPE
 {
 	TERRAIN,		// 지형 
@@ -93,8 +103,10 @@ enum class TYPE
 	OBJECT,			// 식물 
 	TREE, 
 	CHARACTER,		// PLAYER
-	NONE,			// NONE
+	BUILDING,
+	NONE			// NONE
 };
+
 
 // 왼쪽 그려지는 타일 
 struct tagTile
@@ -106,6 +118,7 @@ struct tagTile
 	TREE tree;				//나무 
 	OBJECT object;			//배경 
 	CHARACTER character;	//PLAYER
+	BUILDING building;
 	RECT rc;				//렉트
 	int terrainFrameX;		//지형 번호
 	int terrainFrameY;		//지형 번호

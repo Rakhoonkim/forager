@@ -12,6 +12,7 @@ buildManager::~buildManager()
 HRESULT buildManager::init()
 {
 	imageSetting();
+	//createImageBuilding(BUILDING::FORGE, 22, 16);
 	return S_OK;
 }
 
@@ -21,17 +22,26 @@ void buildManager::release()
 
 void buildManager::update()
 {
+	for (_viBuilding = _vBuilding.begin(); _viBuilding != _vBuilding.end(); _viBuilding++)
+	{
+		(*_viBuilding)->update();
+	}
 }
 
 void buildManager::render()
 {
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
-		cout << " ³ª´«¤©·Á?? " << endl;
-		
+		cout << " ´­¸®³Ä?? " << endl;
+		KEYMANAGER->setKeyDown(VK_LBUTTON, false);
+	}
+	for (_viBuilding = _vBuilding.begin(); _viBuilding != _vBuilding.end(); _viBuilding++)
+	{
+		(*_viBuilding)->render();
 	}
 
-	IMAGEMANAGER->findImage("fishTrap")->render(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2, CAMERAMANAGER->getWorldCamera().cameraY + WINSIZEY / 2);
+
+	//IMAGEMANAGER->findImage("fishTrap")->render(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2, CAMERAMANAGER->getWorldCamera().cameraY + WINSIZEY / 2);
 	//IMAGEMANAGER->findImage("bridge")->frameRender(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2, CAMERAMANAGER->getWorldCamera().cameraY + WINSIZEY / 2,0,0);
 
 }
@@ -46,5 +56,67 @@ void buildManager::imageSetting()
 	//³ó°æ
 	IMAGEMANAGER->addImage("fishTrap", "./image/ui/build/fishTrap.bmp", 48, 48, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("bridge", "./image/ui/build/bridge.bmp", 96, 42, 2, 1, true, RGB(255, 0, 255));
+}
 
+void buildManager::createImageBuilding(BUILDING build, int idx, int idy)
+{
+	if (build == BUILDING::FORGE)
+	{
+		building* construction;
+		construction = new imageBuilding;
+		construction->init(build, "forge", idx, idy);
+		construction->setHp(20, 20);
+		_vBuilding.push_back(construction);
+	}
+	else if (build == BUILDING::SEWING_STATION)
+	{
+		building* construction;
+		construction = new imageBuilding;
+		construction->init(build, "sewingStation", idx, idy);
+		construction->setHp(20, 20);
+		_vBuilding.push_back(construction);
+	}
+	else if (build == BUILDING::FURNACE)
+	{
+		building* construction;
+		construction = new frameBuilding;
+		construction->init(build, "furnace", idx, idy);
+		construction->setHp(20, 20);
+		_vBuilding.push_back(construction);
+	}
+	else if (build == BUILDING::FISHTRAP)
+	{
+		building* construction;
+		construction = new imageBuilding;
+		construction->init(build, "fishTrap", idx, idy);
+		construction->setHp(20, 20);
+		_vBuilding.push_back(construction);
+	}
+	else if (build == BUILDING::BRIDGE)
+	{
+		building* construction;
+		construction = new frameBuilding;
+		construction->init(build, "bridge", idx, idy);
+		construction->setHp(20, 20);
+		_vBuilding.push_back(construction);
+	}
+}
+
+void buildManager::createFrameBuilding(BUILDING build, int x, int y)
+{
+}
+
+void buildManager::removeBuilding()
+{
+	for (_viBuilding = _vBuilding.begin(); _viBuilding != _vBuilding.end(); ++_viBuilding)
+	{
+		if ((*_viBuilding)->getBuilding().hp <= 0)
+		{
+			_vBuilding.erase(_viBuilding);
+			CURSORMANAGER->setCursor();
+			CURSORMANAGER->getCursor()->setCursorChange();
+			break;
+		}
+		else ++_viBuilding;
+	}
 }

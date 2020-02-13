@@ -25,6 +25,7 @@ struct tagObject
 {
 	OBJECT object;
 	TREE tree;
+	BUILDING building;
 	RECT rc;
 	animation* ani;
 	const char* imageName;
