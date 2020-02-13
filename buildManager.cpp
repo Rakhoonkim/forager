@@ -41,8 +41,12 @@ void buildManager::render()
 	}
 
 
-	IMAGEMANAGER->findImage("furnaceBackground")->render(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2, CAMERAMANAGER->getWorldCamera().cameraY + 50 );
-	//IMAGEMANAGER->findImage("bridge")->frameRender(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2, CAMERAMANAGER->getWorldCamera().cameraY + WINSIZEY / 2,0,0);
+	IMAGEMANAGER->findImage("furnaceBackground")->render(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2 - 200, CAMERAMANAGER->getWorldCamera().cameraY + 50 );
+	IMAGEMANAGER->findImage("forgeBackground")->render(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2, CAMERAMANAGER->getWorldCamera().cameraY + 50);
+	IMAGEMANAGER->findImage("sewingBackground")->render(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2 + 200, CAMERAMANAGER->getWorldCamera().cameraY + 50);
+
+
+
 
 }
 
@@ -59,7 +63,13 @@ void buildManager::imageSetting()
 
 	//
 	IMAGEMANAGER->addImage("furnaceBackground", "./image/ui/build/furnaceBackground.bmp", 250, 512, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("furnaceList", "./image/ui/build/furnaceList.bmp", 220, 405,1,9, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("furnaceList", "./image/ui/build/furnaceList.bmp", 220, 405,1,9, true, RGB(255, 0, 255), true);
+
+	IMAGEMANAGER->addImage("forgeBackground", "./image/ui/build/forgeBackground.bmp", 250, 337, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("forgeList", "./image/ui/build/forgeList.bmp", 220, 225, 1, 5, true, RGB(255, 0, 255), true);
+
+	IMAGEMANAGER->addImage("sewingBackground", "./image/ui/build/sewingBackground.bmp", 250, 225, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("sewingList", "./image/ui/build/sewingList.bmp", 220,225, 1, 5, true, RGB(255, 0, 255),true);
 
 }
 
@@ -68,7 +78,7 @@ void buildManager::createImageBuilding(BUILDING build, int idx, int idy)
 	if (build == BUILDING::FORGE)
 	{
 		building* construction;
-		construction = new imageBuilding;
+		construction = new forge;
 		construction->init(build, "forge", idx, idy);
 		construction->setHp(20, 20);
 		_vBuilding.push_back(construction);
@@ -76,7 +86,7 @@ void buildManager::createImageBuilding(BUILDING build, int idx, int idy)
 	else if (build == BUILDING::SEWING_STATION)
 	{
 		building* construction;
-		construction = new imageBuilding;
+		construction = new sewingStation;
 		construction->init(build, "sewingStation", idx, idy);
 		construction->setHp(20, 20);
 		_vBuilding.push_back(construction);
@@ -84,7 +94,7 @@ void buildManager::createImageBuilding(BUILDING build, int idx, int idy)
 	else if (build == BUILDING::FURNACE)
 	{
 		building* construction;
-		construction = new frameBuilding;
+		construction = new furnace;
 		construction->init(build, "furnace", idx, idy);
 		construction->setHp(20, 20);
 		_vBuilding.push_back(construction);
@@ -92,7 +102,7 @@ void buildManager::createImageBuilding(BUILDING build, int idx, int idy)
 	else if (build == BUILDING::FISHTRAP)
 	{
 		building* construction;
-		construction = new imageBuilding;
+		construction = new fishTrap;
 		construction->init(build, "fishTrap", idx, idy,true);
 		construction->setHp(20, 20);
 		_vBuilding.push_back(construction);
@@ -100,7 +110,7 @@ void buildManager::createImageBuilding(BUILDING build, int idx, int idy)
 	else if (build == BUILDING::BRIDGE)
 	{
 		building* construction;
-		construction = new frameBuilding;
+		construction = new bridge;
 		construction->init(build, "bridge", idx, idy, true);
 		construction->setHp(20, 20);
 		_vBuilding.push_back(construction);

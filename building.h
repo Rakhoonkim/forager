@@ -5,7 +5,7 @@ class building
 {
 protected:
 	tagObject _building;
-
+	bool _isUse;
 public:
 	building();
 	~building();
@@ -19,23 +19,56 @@ public:
 	virtual tagObject getBuilding() { return _building; }
 };
 
-class imageBuilding : public building
+// furnace
+class furnace : public building
 {
 public:
-	imageBuilding() {}
-	~imageBuilding() {}
-	
-	virtual void update();
-	virtual void render();
-};
-
-class frameBuilding : public building
-{
-public:
-	frameBuilding() {}
-	~frameBuilding() {}
+	furnace() {}
+	~furnace() {}
 
 	virtual void update();
 	virtual void render();
 };
 
+// forge
+class forge : public building
+{
+public:
+	forge() {}
+	~forge() {}
+
+	virtual void update();
+	virtual void render();
+};
+
+// forge SEWING_STATION
+class sewingStation : public building
+{
+public:
+	sewingStation() {}
+	~sewingStation() {}
+
+	virtual void update();
+	virtual void render();
+};
+
+//FISHTRAP
+class fishTrap : public building
+{
+public:
+	fishTrap() {}
+	~fishTrap() {}
+
+	virtual void update();
+	virtual void render();
+};
+
+class bridge : public building
+{
+public:
+	bridge() {}
+	~bridge() {}
+
+	virtual void update();
+	virtual void render();
+};
