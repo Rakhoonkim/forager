@@ -87,7 +87,15 @@ void build::render(HDC hdc)
 
 		if (_industryList[i].isClick)
 		{
-			IMAGEMANAGER->findImage("building")->alphaFrameRender(hdc, _ptMouse.x - IMAGEMANAGER->findImage("building")->getFrameWidth() / 2, _ptMouse.y - IMAGEMANAGER->findImage("building")->getFrameHeight() / 2, i, 0, _industryList[i].alpha);
+			if (!MAPMANAGER->getBuildTiles(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y))
+			{
+				//빨간색 이미지로 바꿀 예정 
+				IMAGEMANAGER->findImage("building")->alphaFrameRender(hdc, _ptMouse.x - IMAGEMANAGER->findImage("building")->getFrameWidth() / 2, _ptMouse.y - IMAGEMANAGER->findImage("building")->getFrameHeight() / 2, i, 0, _industryList[i].alpha);
+			}
+			else
+			{
+				IMAGEMANAGER->findImage("building")->frameRender(hdc, _ptMouse.x - IMAGEMANAGER->findImage("building")->getFrameWidth() / 2, _ptMouse.y - IMAGEMANAGER->findImage("building")->getFrameHeight() / 2, i, 0);
+			}
 		}
 	}
 
@@ -99,7 +107,15 @@ void build::render(HDC hdc)
 
 		if (_farmingList[i].isClick)
 		{
-			IMAGEMANAGER->findImage("farmingImage")->alphaFrameRender(hdc, _ptMouse.x - IMAGEMANAGER->findImage("farmingImage")->getFrameWidth() / 2, _ptMouse.y - IMAGEMANAGER->findImage("farmingImage")->getFrameHeight() / 2, i, 0, _farmingList[i].alpha);
+			if (!MAPMANAGER->getBuildTilesFarming(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y))
+			{
+				//빨간색 이미지로 바꿀 예정 
+				IMAGEMANAGER->findImage("farmingImage")->alphaFrameRender(hdc, _ptMouse.x - IMAGEMANAGER->findImage("farmingImage")->getFrameWidth() / 2, _ptMouse.y - IMAGEMANAGER->findImage("farmingImage")->getFrameHeight() / 2, i, 0, _farmingList[i].alpha);
+			}
+			else
+			{
+				IMAGEMANAGER->findImage("farmingImage")->frameRender(hdc, _ptMouse.x - IMAGEMANAGER->findImage("farmingImage")->getFrameWidth() / 2, _ptMouse.y - IMAGEMANAGER->findImage("farmingImage")->getFrameHeight() / 2, i, 0);
+			}
 		}
 	}
 
@@ -281,12 +297,13 @@ void build::setClickInit()
 	}
 }
 
-void build::isClickBuild()
+void build::isClickBuild() // 4개 범위랑랑 1개 범위를 구별할 것  
 {
 	if (!_isBuilding) return;
-	if (!MAPMANAGER->getBuildTiles(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y)) return;
 	if (_industryList[0].isClick)
 	{
+		if (!MAPMANAGER->getBuildTiles(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y)) return;
+
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
 			_buildManager->createImageBuilding(BUILDING::FURNACE, CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
@@ -295,6 +312,8 @@ void build::isClickBuild()
 	}
 	else if (_industryList[1].isClick)
 	{
+		if (!MAPMANAGER->getBuildTiles(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y)) return;
+
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
 			_buildManager->createImageBuilding(BUILDING::FORGE, CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
@@ -303,6 +322,8 @@ void build::isClickBuild()
 	}
 	else if (_industryList[2].isClick)
 	{
+		if (!MAPMANAGER->getBuildTiles(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y)) return;
+
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
 			_buildManager->createImageBuilding(BUILDING::SEWING_STATION, CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
@@ -312,18 +333,23 @@ void build::isClickBuild()
 	}
 	else if (_farmingList[0].isClick)
 	{
+		if (!MAPMANAGER->getBuildTilesFarming(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y)) return;
+
+
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
 			_buildManager->createImageBuilding(BUILDING::BRIDGE, CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
-			MAPMANAGER->setBuildTiles(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
+			MAPMANAGER->setBuildTilesFarming(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
 		}
 	}
 	else if (_farmingList[1].isClick)
 	{
+		if (!MAPMANAGER->getBuildTilesFarming(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y)) return;
+
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
 			_buildManager->createImageBuilding(BUILDING::FISHTRAP, CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
-			MAPMANAGER->setBuildTiles(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
+			MAPMANAGER->setBuildTilesFarming(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
 		}
 	}
 }

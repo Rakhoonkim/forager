@@ -10,7 +10,7 @@ public:
 	building();
 	~building();
 
-	virtual HRESULT init(BUILDING building, const char* imageName,int idx, int idy);
+	virtual HRESULT init(BUILDING building, const char* imageName,int idx, int idy, bool farming = FALSE);
 	virtual void release();
 	virtual void update();
 	virtual void render();
@@ -38,3 +38,4 @@ public:
 	virtual void update();
 	virtual void render();
 };
+

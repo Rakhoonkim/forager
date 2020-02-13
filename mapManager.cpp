@@ -228,6 +228,24 @@ bool mapManager::getBuildTiles(int idx, int idy)
 	return true;
 }
 
+bool mapManager::getBuildTilesFarming(int idx, int idy)
+{
+	if (idx < 0) idx = 0;
+	if (idy < 0) idy = 0;
+	if (idx > TILEX) idx = TILEX;
+	if (idy > TILEY) idy = TILEY;
+
+	if (_tiles[idy * TILEX + idx].land== LAND::WATER) return true;
+
+
+	return false;
+}
+
+void mapManager::setBuildTilesFarming(int idx, int idy)
+{
+	_tiles[idy * TILEX + idx].isObject = true;
+}
+
 void mapManager::setBuildTiles(int idx, int idy)
 {
 	_tiles[idy * TILEX + idx].isObject = true;

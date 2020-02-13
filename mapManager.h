@@ -40,8 +40,10 @@ public:
 	
 	tagTile* getTiles(int idx, int idy) { return &_tiles[idy * TILEX + idx]; }
 	//건물 지을때 땅에 지정하기 위한 값
-	bool getBuildTiles(int idx, int idy);
+	bool getBuildTiles(int idx, int idy);	// 4칸 건물 
 	void setBuildTiles(int idx, int idy);
+	bool getBuildTilesFarming(int idx, int idy);  // 1칸 건물 
+	void setBuildTilesFarming(int idx, int idy);
 	
 	POINT randomObjectTile();
 };

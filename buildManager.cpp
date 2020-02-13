@@ -41,7 +41,7 @@ void buildManager::render()
 	}
 
 
-	//IMAGEMANAGER->findImage("fishTrap")->render(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2, CAMERAMANAGER->getWorldCamera().cameraY + WINSIZEY / 2);
+	IMAGEMANAGER->findImage("furnaceBackground")->render(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2, CAMERAMANAGER->getWorldCamera().cameraY + 50 );
 	//IMAGEMANAGER->findImage("bridge")->frameRender(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2, CAMERAMANAGER->getWorldCamera().cameraY + WINSIZEY / 2,0,0);
 
 }
@@ -56,6 +56,11 @@ void buildManager::imageSetting()
 	//³ó°æ
 	IMAGEMANAGER->addImage("fishTrap", "./image/ui/build/fishTrap.bmp", 48, 48, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("bridge", "./image/ui/build/bridge.bmp", 96, 42, 2, 1, true, RGB(255, 0, 255));
+
+	//
+	IMAGEMANAGER->addImage("furnaceBackground", "./image/ui/build/furnaceBackground.bmp", 250, 512, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("furnaceList", "./image/ui/build/furnaceList.bmp", 220, 405,1,9, true, RGB(255, 0, 255));
+
 }
 
 void buildManager::createImageBuilding(BUILDING build, int idx, int idy)
@@ -88,7 +93,7 @@ void buildManager::createImageBuilding(BUILDING build, int idx, int idy)
 	{
 		building* construction;
 		construction = new imageBuilding;
-		construction->init(build, "fishTrap", idx, idy);
+		construction->init(build, "fishTrap", idx, idy,true);
 		construction->setHp(20, 20);
 		_vBuilding.push_back(construction);
 	}
@@ -96,7 +101,7 @@ void buildManager::createImageBuilding(BUILDING build, int idx, int idy)
 	{
 		building* construction;
 		construction = new frameBuilding;
-		construction->init(build, "bridge", idx, idy);
+		construction->init(build, "bridge", idx, idy, true);
 		construction->setHp(20, 20);
 		_vBuilding.push_back(construction);
 	}

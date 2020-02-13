@@ -104,6 +104,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions);CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableSpecificWarnings>6031</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

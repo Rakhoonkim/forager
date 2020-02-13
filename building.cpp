@@ -9,7 +9,7 @@ building::~building()
 {
 }
 
-HRESULT building::init(BUILDING building, const char* imageName, int idx, int idy)
+HRESULT building::init(BUILDING building, const char* imageName, int idx, int idy, bool Farming)
 {
 	_building.object = OBJECT::NONE;
 	_building.tree = TREE::NONE;
@@ -18,8 +18,16 @@ HRESULT building::init(BUILDING building, const char* imageName, int idx, int id
 	_building.building = building;
 	_building.idx = idx;
 	_building.idy = idy;
-	_building.x = idx * 60 + 60;
-	_building.y = idy * 60 + 60;
+	if (Farming)
+	{
+		_building.x = idx * 60 + 30;
+		_building.y = idy * 60 + 30;
+	}
+	else
+	{
+		_building.x = idx * 60 + 60;
+		_building.y = idy * 60 + 60;
+	}
 	_building.frameX = 0;
 	_building.frameY = 0;
 
@@ -64,7 +72,7 @@ void imageBuilding::update()
 
 void imageBuilding::render()
 {
-	IMAGEMANAGER->findImage(_building.imageName)->render(CAMERAMANAGER->getWorldDC(), _building.x - (IMAGEMANAGER->findImage(_building.imageName)->getWidth() / 2), _building.y - (IMAGEMANAGER->findImage(_building.imageName)->getHeight() / 2)- 30);
+	IMAGEMANAGER->findImage(_building.imageName)->render(CAMERAMANAGER->getWorldDC(), _building.x - (IMAGEMANAGER->findImage(_building.imageName)->getWidth() / 2), _building.y - (IMAGEMANAGER->findImage(_building.imageName)->getHeight() / 2) - 30);
 	//Rectangle(CAMERAMANAGER->getWorldDC(), _building.rc);
 }
 
@@ -76,6 +84,8 @@ void frameBuilding::update()
 
 void frameBuilding::render()
 {
-	IMAGEMANAGER->findImage(_building.imageName)->frameRender(CAMERAMANAGER->getWorldDC(), _building.x -(IMAGEMANAGER->findImage(_building.imageName)->getFrameWidth() / 2), _building.y - (IMAGEMANAGER->findImage(_building.imageName)->getFrameHeight() / 2) - 15);
+	IMAGEMANAGER->findImage(_building.imageName)->frameRender(CAMERAMANAGER->getWorldDC(), _building.x - (IMAGEMANAGER->findImage(_building.imageName)->getFrameWidth() / 2), _building.y - (IMAGEMANAGER->findImage(_building.imageName)->getFrameHeight() / 2) - 15);
 
 }
+
+
