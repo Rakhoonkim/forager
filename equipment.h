@@ -12,7 +12,7 @@ private:
 	tagButton _sealButton[9];
 	tagButton _treasureButton[15];
 
-
+	bool _isSkill;
 public:
 	equipment();
 	~equipment();

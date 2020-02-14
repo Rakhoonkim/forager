@@ -2,24 +2,19 @@
 #include "gameNode.h"
 #include "animation.h"
 #include "playerState.h"
-// 플레이어의 상태를 나누자 
-// IDLE
-// MOVE
-// JUMP
-// ATTACK
 
 class player : public gameNode
 {
 private:
+	//플레이어 상태
 	playerState* _state;
-
 	playerIdle* _playerIdle;
 	playerMove* _playerMove;
 
 	tagPlayer _player;
 
-	int _keyCount;
-	bool _stateChange;
+	int		_keyCount;  // KEY 2개 눌리지않기
+	bool _stateChange;	// 상태변경 BOOL값
 public:
 
 	player();
@@ -30,8 +25,8 @@ public:
 	void update();
 	void render();
 
-	void KeyControl();
-	void IndexUpdate();
+	void KeyControl();		// KEY
+	void IndexUpdate();		// PLAYER INDEX 업데이트
 
 	tagPlayer* get_PlayerAddress() { return &_player; }
 	RECT get_playerRect() { return _player.rc; }

@@ -27,6 +27,10 @@ void itemState::render()
 {
 }
 
+void itemState::jump()
+{
+}
+
 void itemState::move()
 {
 }
@@ -36,11 +40,21 @@ void itemState::move()
 void itemDrop::update()
 {
 	move();
+	jump();
 }
 
 void itemDrop::render()
 {
 	IMAGEMANAGER->findImage(_item->imageName)->aniRender(CAMERAMANAGER->getWorldDC(), _item->x, _item->y, _item->ani);
+}
+
+void itemDrop::jump()
+{
+	if (!_item->move) return;
+
+	_item->y -= _item->jumpPower;
+	_item->jumpPower -= _item->jumpGravity;
+
 }
 
 void itemDrop::move()
@@ -51,7 +65,7 @@ void itemDrop::move()
 	_item->x += cosf(_item->angle) * _item->speed;
 	_item->y += -sinf(_item->angle) * _item->speed;
 
-	if (_item->time + 0.2 <= TIMEMANAGER->getWorldTime())
+	if (_item->time + 0.25 <= TIMEMANAGER->getWorldTime())
 	{
 		_item->move = false;
 		_item->drop = true;
@@ -77,7 +91,7 @@ void itemGain::move()
 	_item->x += cosf(_item->angle) * _item->speed;
 	_item->y += -sinf(_item->angle) * _item->speed;
 
-	if (_item->time + 0.2 <= TIMEMANAGER->getWorldTime())
+	if (_item->time + 0.25 <= TIMEMANAGER->getWorldTime())
 	{
 		_item->isClick = true;
 		_item->move = true;

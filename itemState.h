@@ -12,7 +12,7 @@ public:
 	virtual void release();
 	virtual void update();
 	virtual void render();
-
+	virtual void jump();
 	virtual void move();
 };
 
@@ -24,7 +24,7 @@ public:
 
 	virtual void update();
 	virtual void render();
-
+	virtual void jump();
 	virtual void move();
 };
 

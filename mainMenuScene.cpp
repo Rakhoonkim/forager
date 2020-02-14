@@ -11,12 +11,14 @@ mainMenuScene::~mainMenuScene()
 
 HRESULT mainMenuScene::init()
 {
-	CURSORMANAGER->setCursor();
+	CURSORMANAGER->setCursor();	//커서 
+
 	_buttonX = 60;
 	_buttonY = 40;
 	_distance = 20;
-	imageSetting();
-	buttonSetting();
+
+	imageSetting();		// 이미지 셋팅
+	buttonSetting();	// 버튼 이미지 셋팅
 
 	_offsetX = 0;
 	_offsetY = 0;
@@ -30,19 +32,19 @@ void mainMenuScene::release()
 void mainMenuScene::update()
 {
 	if (_offsetX > 1200) _offsetX = 0;
-	buttonEffect();
-	buttonClick();;
-
+	buttonEffect();		//버튼 이펙트
+	buttonClick();;		//버튼 클릭 판정
 }
 
 void mainMenuScene::render()
 {
-	//IMAGEMANAGER->findImage("mainMenuBackground")->render(getMemDC(), 0, 0);
 	_offsetX++;
 	IMAGEMANAGER->findImage("mainMenuBackground")->loopRender(getMemDC(), &RectMake(0, 0, WINSIZEX, WINSIZEY), _offsetX, _offsetY);
 
+	//버튼 렌더
 	for (int i = 0; i < 7; i++)
 	{
+		// 버튼 이펙트가 아니면
 		if (!_button[i].isEffect)
 		{
 			IMAGEMANAGER->findImage(_button[i].imageName)->render(getMemDC(), _button[i].rc.left, _button[i].rc.top);
@@ -52,21 +54,21 @@ void mainMenuScene::render()
 			IMAGEMANAGER->findImage(_button[i].imageName)->alphaRender(getMemDC(), _button[i].rc.left, _button[i].rc.top,_button[i].alpha);
 		}
 	}
+	//중앙 로고
 	IMAGEMANAGER->findImage("foragerLogo")->render(getMemDC(), WINSIZEX / 2 - (IMAGEMANAGER->findImage("foragerLogo")->getWidth() / 2), 30);
 
-	//세이브 
-	//추후 예정 
+	//세이브 관련 이미지 추후 예정 
 	//IMAGEMANAGER->findImage("startBackground")->alphaRender(getMemDC(), 0, 0,100);
 	//IMAGEMANAGER->findImage("saveSlot")->render(getMemDC(), (WINSIZEX / 2) - 450, WINSIZEY /5);
 	//IMAGEMANAGER->findImage("saveSlotBackground")->render(getMemDC(), (WINSIZEX / 2) - 465, WINSIZEY / 5 - 15);
 
-	cout << "x : " << _ptMouse.x << " y : " << _ptMouse.y << endl;
 }
 
 void mainMenuScene::imageSetting()
 {
+	//배경
 	IMAGEMANAGER->addImage("mainMenuBackground", "./image/ui/mainMenu/newMainMenuBackground.bmp", 1200, 720, false, RGB(255, 0, 255));
-
+	//버튼 이미지
 	IMAGEMANAGER->addImage("playButton", "./image/ui/mainMenu/play.bmp", 416, 132, true, RGB(255, 0, 255),true);
 	IMAGEMANAGER->addImage("extraButton", "./image/ui/mainMenu/extras.bmp", 396, 104, true, RGB(255, 0, 255),true);
 	IMAGEMANAGER->addImage("roadButton", "./image/ui/mainMenu/roadMap.bmp", 392, 104, true, RGB(255, 0, 255), true);
@@ -74,7 +76,7 @@ void mainMenuScene::imageSetting()
 	IMAGEMANAGER->addImage("creditsButton", "./image/ui/mainMenu/credits.bmp", 332, 88, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addImage("optionsButton", "./image/ui/mainMenu/options.bmp", 288, 100, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addImage("exitButton", "./image/ui/mainMenu/exit.bmp", 208, 100, true, RGB(255, 0, 255), true);
-
+	//중앙 로고
 	IMAGEMANAGER->addImage("foragerLogo", "./image/ui/mainMenu/foragerLogo.bmp", 250, 133, true, RGB(255, 0, 255), true);
 	
 
@@ -103,6 +105,7 @@ void mainMenuScene::buttonSetting()
 	_button[5].imageName = "optionsButton";
 	_button[6].imageName = "exitButton";
 
+	//버튼 7개 초기화 
 	for (int i = 0; i < 7; i++)
 	{
 		_button[i].isClick = false;
@@ -121,7 +124,7 @@ void mainMenuScene::buttonClick()
 			break;
 		}
 	}
-
+	//시작 버튼을 누르면 스테이지로 
 	if (_button[0].isClick)
 	{
 		SCENEMANAGER->changeScene("STAGE");
@@ -130,6 +133,7 @@ void mainMenuScene::buttonClick()
 
 void mainMenuScene::buttonEffect()
 {
+	//버튼 이펙트 판정
 	for (int i = 0; i < 7; i++)
 	{
 		if (_button[i].isEffect) continue;
@@ -142,10 +146,13 @@ void mainMenuScene::buttonEffect()
 
 	}
 
+	//버튼 이펙트이면 
 	for (int i = 0; i < 7; i++)
 	{
 		if (!_button[i].isEffect) continue;
+		//알파값 증가
 		_button[i].alpha += 5;
+		//알파값이 기준점 이상이면
 		if (_button[i].alpha >= 150)
 		{
 			if (!PtInRect(&_button[i].rc, _ptMouse))
@@ -156,5 +163,4 @@ void mainMenuScene::buttonEffect()
 			}
 		}
 	}
-
 }

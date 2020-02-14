@@ -56,6 +56,8 @@ struct tagItem
 	int speed;
 	int alpha;
 	int frameX, frameY;		// 인벤토리 사진출력 
+	float jumpPower;
+	float jumpGravity;
 	bool isClick;
 	bool move;
 	bool drop;

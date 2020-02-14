@@ -23,8 +23,8 @@ private:
 	int _farmingDirection;
 
 	buildManager* _buildManager;  // 건축하기 위한 
-	bool _isBuilding;
 
+	bool _isBuilding;	// 건설 중인지 판단
 public:
 	build();
 	~build();
@@ -44,9 +44,9 @@ public:
 
 	bool getisBuilding() { return _isBuilding; }
 	void setisBuilding() { _isBuilding = false; }
-	void setClickInit();		//산업 농경 클릭을 초기화 
+	void setClickInit();  //산업 농경 클릭을 초기화 
 
-	void setDirection() { _direction = 5; }//임의의 NULL값 
+	void setDirection() { _direction = 5; } //임의의 NULL값 
 
 	void isClickBuild();
 	void setBuildManager(buildManager* buildManager) { _buildManager = buildManager; }

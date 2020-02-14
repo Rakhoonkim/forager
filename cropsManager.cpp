@@ -12,8 +12,11 @@ cropsManager::~cropsManager()
 HRESULT cropsManager::init()
 {
 	imageSetting();
+
+	//TEST 오프젝트
 	createImageCrops(OBJECT::CINDERBLOOM, 17, 16);
 	createImageCrops(OBJECT::NIGHTSHADE, 18, 16);
+
 	createFrameCrops(OBJECT::BEET, 19, 16);
 	createFrameCrops(OBJECT::HOT_PEPPER, 20, 16);
 	createFrameCrops(OBJECT::COTTON, 21, 16);
@@ -27,6 +30,14 @@ HRESULT cropsManager::init()
 	createimageFrameCrops(OBJECT::VOLCANIC_COAL, 17, 17);
 	createimageFrameCrops(OBJECT::VOLCANIC_GOLD, 18, 17);
 	createimageFrameCrops(OBJECT::VOLCANIC_IRON, 19, 17);
+
+	createFrameCrops(OBJECT::FLOWER_1, 20, 17);
+	createFrameCrops(OBJECT::FLOWER_1, 21, 17);
+	createFrameCrops(OBJECT::FLOWER_1, 22, 17);
+	createFrameCrops(OBJECT::BUSH, 23, 17);
+	createFrameCrops(OBJECT::BUSH, 24, 17);
+	createFrameCrops(OBJECT::BUSH, 25, 17);
+
 
 	craateTreeCrops(TREE::BASIC, 17, 20);
 	craateTreeCrops(TREE::RED, 18, 20);
@@ -48,15 +59,15 @@ void cropsManager::update()
 		(*_viCrops)->update();
 	}
 
+	// TEST 랜덤 타일 넘버 
 	if (KEYMANAGER->isStayKeyDown('M'))
 	{
 		POINT rnd;
 		rnd = MAPMANAGER->randomObjectTile();
-
 		cout << rnd.x << rnd.y << endl;
 	}
 
-	removeCrops();			// 자동 제거 
+	removeCrops();			// 작물 HP < 0시 제거 
 }
 
 void cropsManager::render()
@@ -81,7 +92,7 @@ void cropsManager::imageSetting()
 	IMAGEMANAGER->addFrameImage("cotton", "./image/object/cottonObject.bmp", 124, 51, 3, 1, true, RGB(255, 0, 255));
 
 	// 01 -> 234 인 이미지 
-	IMAGEMANAGER->addFrameImage("bush", "./image/object/beetObject.bmp", 210, 42, 5, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("bush", "./image/object/bushObject.bmp", 210, 42, 5, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("flower", "./image/object/flowerObject.bmp", 135, 39, 5, 1, true, RGB(255, 0, 255));
 
 	// 0 , 1 , 2, 3 따로 사용하는 이미지 
@@ -132,7 +143,7 @@ void cropsManager::createFrameCrops(OBJECT object, int idx, int idy)
 		crops = new frameCrops;
 		crops->init(object, "beet", idx, idy);
 		crops->setHp(1, 1);
-		crops->setSpeed(10); 
+		crops->setSpeed(10);
 		crops->setTime();
 		_vCrops.push_back(crops);
 	}
@@ -172,6 +183,26 @@ void cropsManager::createFrameCrops(OBJECT object, int idx, int idy)
 		crops = new frameCrops;
 		crops->init(object, "cotton", idx, idy);
 		crops->setHp(1, 1);
+		crops->setSpeed(12);
+		crops->setTime();
+		_vCrops.push_back(crops);
+	}
+	else if (object == OBJECT::FLOWER_1 || object == OBJECT::FLOWER_2 || object == OBJECT::FLOWER_3)
+	{
+		crops* crops;
+		crops = new multiImageCrops;
+		crops->init(object, "flower", idx, idy);
+		crops->setHp(1, 1);
+		crops->setSpeed(12);
+		crops->setTime();
+		_vCrops.push_back(crops);
+	}
+	else if (object == OBJECT::BUSH)
+	{
+		crops* crops;
+		crops = new multiImageCrops;
+		crops->init(object, "bush", idx, idy);
+		crops->setHp(3, 3);
 		crops->setSpeed(12);
 		crops->setTime();
 		_vCrops.push_back(crops);
@@ -224,7 +255,7 @@ void cropsManager::createimageFrameCrops(OBJECT object, int idx, int idy)
 		crops->setFrameX(RND->getFromIntTo(2, 4));
 		_vCrops.push_back(crops);
 	}
-	else if(object == OBJECT::VOLCANIC_IRON)
+	else if (object == OBJECT::VOLCANIC_IRON)
 	{
 		crops* crops;
 		crops = new imageFrameCrops;
@@ -315,7 +346,7 @@ void cropsManager::removeCrops()
 			}
 			else
 			{
-				ITEMMANAGER->Dropitem((*_viCrops)->getCrops()->tree,  (*_viCrops)->getCrops()->centerX, (*_viCrops)->getCrops()->centerY);
+				ITEMMANAGER->Dropitem((*_viCrops)->getCrops()->tree, (*_viCrops)->getCrops()->centerX, (*_viCrops)->getCrops()->centerY);
 			}
 			_vCrops.erase(_viCrops);
 			//커서 초기화 

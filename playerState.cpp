@@ -113,6 +113,7 @@ void playerMove::changeImage(int right)
 	
 }
 
+// 2개 눌렀을 시 예외처리
 void playerMove::setAngleKeyCollision()
 {
 	// 대각 좌 2.355      우  0.785 

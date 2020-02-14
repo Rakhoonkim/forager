@@ -7,9 +7,9 @@ class mapToolScene : public gameNode
 	
 	tagPalette _terrainPalette[PALETTEX * PALETTEY];			// 지형 타일  7 X 7
 	tagPalette _landPalette[PALETTEX * PALETTEY];				// 땅 타일  7 X 7
-	tagPalette _landObjectPalette[LANDOBJECTX * LANDOBJECTY];	// 오프젝트 타일 5 X 5
-	tagPalette _objectPalette[OBJECTX * OBJECTY];
-	tagPalette _treePalette[TREETILEX * TREETILEY];
+	tagPalette _landObjectPalette[LANDOBJECTX * LANDOBJECTY];	// 타일 오브젝트 5 X 5
+	tagPalette _objectPalette[OBJECTX * OBJECTY];				// 오브젝트 타일
+	tagPalette _treePalette[TREETILEX * TREETILEY];				// 나무 타일
 
 
 	//버튼 RECT
@@ -33,7 +33,7 @@ class mapToolScene : public gameNode
 	tagButton _loadButton;	// LOAD  
 	tagButton _exitButton;	// 나가기 
 
-	tagPalette _currentTile;
+	tagPalette _currentTile;	// 현재 타일
 
 public:
 	mapToolScene();
@@ -53,18 +53,16 @@ public:
 
 	void MapToolCollision();	// 맵툴충돌		 : 선택할 때
 	void MapToolUpdate();		// 맵툴업데이트   : 선택하고 나서  
-	void MapToolEraser();
+	void MapToolEraser();		// 맵툴 삭제
 
-	void MapToolRender();
+	void MapToolRender();		// 맵툴렌더
 
+	//타일 속성 
 	TERRAIN MapToolTerrainSelect(int frameX, int frameY);
 	LAND MapToolLandSelect(int frameX, int frameY);
 	LANDOBJECT MapToolLandObjectSelect(int frameX, int frameY);
 	OBJECT MapToolObjectSelect(int frameX, int frameY);
 	TREE MapToolTreeSelect(int frameX, int frameY);
-
-
+	//예정
 	CHARACTER MapToolCharacterSelect(int frameX, int frameY);
-
-
 };

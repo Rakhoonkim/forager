@@ -17,7 +17,7 @@ HRESULT item::init(const char* imageName, float x, float y)
 
 	_item.x = x;
 	_item.y = y;
-	_item.speed = 5;
+	_item.speed = 4;
 
 	_item.angle = RND->getFromFloatTo(0.00f, 6.28f);
 	_item.time = TIMEMANAGER->getWorldTime();
@@ -34,6 +34,10 @@ HRESULT item::init(const char* imageName, float x, float y)
 
 	_item.object = OBJECT::NONE;
 	_item.tree = TREE::NONE;
+
+	//jump
+	_item.jumpPower = 10;
+	_item.jumpGravity = 1.2;
 
 	_itemState = new itemState;
 	_itemState->init(&_item);

@@ -9,10 +9,10 @@ HRESULT playerManager::init()
 	_player = new player();
 	_player->init();
 
-	_cropsManager = new cropsManager;
+	_cropsManager = new cropsManager;		//CROPS
 	_cropsManager->init();
 
-	_buildManager = new buildManager;
+	_buildManager = new buildManager;		//BUILD
 	_buildManager->init();
 
 	//옵션
@@ -32,12 +32,13 @@ void playerManager::update()
 	objectCollisionMouse();   // 마우스 포인터를 보여주기 위한 
 	itemCollisionPlayer();    // 아이템을 먹기 위한.
 	itemCollisionMouse();	  // 아이템을 먹기 위한.
-	optionControl();		  //옵션창 컨트롤 
+	optionControl();		  // 옵션창 컨트롤 
 }
 
 void playerManager::render()
 {
-	if(!_buildManager->usedCheck()) _player->render();
+	// 건물사용중이면 렌드를 끈다
+	if(!_buildManager->usedCheck()) _player->render();  
 }
 
 void playerManager::imageSetting()
@@ -58,28 +59,28 @@ void playerManager::imageSetting()
 	KEYANIMANAGER->addCoordinateFrameAnimation("playerPick_L", "playerPick", 7, 14, 20, false, false);
 }
 
+//아이템 충돌
 void playerManager::itemCollisionPlayer()
 {
 	for (int i = 0; i < ITEMMANAGER->getVItem().size(); i++)
 	{
+		//한번만 확인하기 위해 BOOL값 확인
 		if (!ITEMMANAGER->getVItem()[i]->getItem()->drop) continue;
 		RECT temp;
 		//아이템이랑 몸이랑 충돌 
-		if ((IntersectRect(&temp, &ITEMMANAGER->getVItem()[i]->getItem()->rc, &_player->get_playerRect())))
+		if ((IntersectRect(&temp, &ITEMMANAGER->getVItem()[i]->getItem()->rc, &_player->get_PlayerAddress()->rc)))
 		{
 			ITEMMANAGER->getVItem()[i]->setGain();
 			break;
 		}
-
 	}
-
 }
-
+// 아이템 충돌 
 void playerManager::itemCollisionMouse()
 {
-	// 아이템 충돌 
 	for (int i = 0; i < ITEMMANAGER->getVItem().size(); i++)
 	{
+		//한번만 확인하기 위해 BOOL값 확인
 		if (!ITEMMANAGER->getVItem()[i]->getItem()->drop) continue;
 		// 마우스와 아이템 충돌 
 		if ((PtInRect(&ITEMMANAGER->getVItem()[i]->getItem()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y))))
@@ -90,6 +91,7 @@ void playerManager::itemCollisionMouse()
 	}
 }
 
+//오브젝트와 마우스 충돌
 void playerManager::objectCollisionMouse()
 {
 	//■■■■■■■■■■■■■■■■■■■■■■ CropsCollision ■■■■■■■■■■■■■■■■■■■■■■
@@ -97,10 +99,9 @@ void playerManager::objectCollisionMouse()
 	{
 		if (_cropsManager->getVCrops()[i]->getCrops()->isClick && PtInRect(&_cropsManager->getVCrops()[i]->getCrops()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
 		{
-			//커서 매니져 
+			//커서 매니져 세팅
 			CURSORMANAGER->setCropsPoint();
 			CURSORMANAGER->getCursor()->setCursorXY(_cropsManager->getVCrops()[i]->getCrops()->centerX - CAMERAMANAGER->getWorldCamera().cameraX, _cropsManager->getVCrops()[i]->getCrops()->centerY - CAMERAMANAGER->getWorldCamera().cameraY);
-
 
 			objectAttack(i);
 			return;
@@ -115,7 +116,9 @@ void playerManager::objectCollisionMouse()
 			// 건물 USED 창 띄우지 않고 and 마우스가 충돌 나면 
 			if (!_buildManager->getVBuild()[i]->getUsed() && PtInRect(&_buildManager->getVBuild()[i]->getBuilding()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
 			{
+				//클릭 중으로 변경
 				_buildManager->getVBuild()[i]->getBuilding()->isClick = true;
+				// 건물마다 마우스 커서가 달라서 조건을 줌 
 				if (_buildManager->getVBuild()[i]->getBuilding()->building == BUILDING::BRIDGE || _buildManager->getVBuild()[i]->getBuilding()->building == BUILDING::FISHTRAP)
 				{
 					CURSORMANAGER->setBridgePoint();
@@ -126,8 +129,6 @@ void playerManager::objectCollisionMouse()
 					CURSORMANAGER->setBuildPoint();
 					CURSORMANAGER->getCursor()->setCursorXY(_buildManager->getVBuild()[i]->getBuilding()->centerX - CAMERAMANAGER->getWorldCamera().cameraX, _buildManager->getVBuild()[i]->getBuilding()->centerY - CAMERAMANAGER->getWorldCamera().cameraY);
 				}
-
-				cout << "충돌 x: " << _ptMouse.x << " y :" << _ptMouse.y << endl;
 				return;
 			}
 			else
@@ -137,18 +138,19 @@ void playerManager::objectCollisionMouse()
 		}
 		else
 		{
+			//BOOL값 초기화
 			_buildManager->getVBuild()[i]->getBuilding()->isClick = false;
 			_buildManager->getVBuild()[i]->setUsed();
 		}
 	}
-
+	
 	CURSORMANAGER->setCursor();
 	CURSORMANAGER->getCursor()->setCursorChange();
-
 }
 
 void playerManager::optionControl()
 {
+	//옵션창 컨트롤
 	if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE) && !UIMANAGER->getBuild()->getisBuilding() && !_buildManager->usedCheck())
 	{
 		UIMANAGER->setOption();

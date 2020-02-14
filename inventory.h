@@ -6,12 +6,12 @@
 class inventory 
 {
 private:
-	map<const char*, tagInven>			 _mInven;
+	map<const char*, tagInven>			   _mInven;  // INVEN
 	map<const char*, tagInven>::iterator  _miInven;
 
-	tagInven _inven[INVENX * INVENY];
-	int _invenSize;
+	tagInven _inven[INVENX * INVENY];		
 
+	int _invenSize;
 public:
 	inventory();
 	~inventory();

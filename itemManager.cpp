@@ -84,6 +84,53 @@ void itemManager::imageSetting()
 	KEYANIMANAGER->addDefaultFrameAnimation("cactusDrop", "cactusDrop", 30, false, true);
 	//두개다 
 	KEYANIMANAGER->addDefaultFrameAnimation("berryDrop", "berryDrop", 30, false, true);
+
+
+	//buildManger  드랍 아이템 이미지
+	IMAGEMANAGER->addFrameImage("breadDrop", "./image/item/buildItem/breadDrop.bmp", 720, 30, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("brickDrop", "./image/item/buildItem/brickDrop.bmp", 560, 26, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("cookedFishDrop", "./image/item/buildItem/cookedFishDrop.bmp", 600, 30, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("cookedMeat", "./image/item/buildItem/cookedMeat.bmp", 600, 30, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("goldingotDrop", "./image/item/buildItem/goldingotDrop.bmp", 560, 26, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("grassDrop", "./image/item/buildItem/grassDrop.bmp", 560, 28, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("ironingotDrop", "./image/item/buildItem/ironingotDrop.bmp", 560, 26, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("steelDrop", "./image/item/buildItem/steelDrop.bmp", 640, 22, 20, 1, true, RGB(255, 0, 255));
+
+	//forge
+	IMAGEMANAGER->addFrameImage("bottleDrop", "./image/item/buildItem/forge/bottleDrop.bmp", 640, 36, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("coinDrop", "./image/item/buildItem/forge/coinDrop.bmp", 560, 28, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("pickaxeDrop", "./image/item/buildItem/forge/pickaxeDrop.bmp",680, 34, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("shovleDrop", "./image/item/buildItem/forge/shovleDrop.bmp", 720, 36, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("swordDrop", "./image/item/buildItem/forge/swordDrop.bmp", 640, 32, 20, 1, true, RGB(255, 0, 255));
+	//sewing
+	IMAGEMANAGER->addFrameImage("mediumBackpackDrop", "./image/item/buildItem/sweing/mediumBackpackDrop.bmp", 640, 34, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("slimeWalletDrop", "./image/item/buildItem/sweing/slimeWalletDrop.bmp", 640, 32, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("smallBackpackDrop", "./image/item/buildItem/sweing/smallBackpackDrop.bmp", 640, 32, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("smallWalletDrop", "./image/item/buildItem/sweing/smallWalletDrop.bmp", 480, 30, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("threadDrop", "./image/item/buildItem/sweing/threadDrop.bmp", 720, 36, 20, 1, true, RGB(255, 0, 255));
+
+	//buildManger 
+	KEYANIMANAGER->addDefaultFrameAnimation("breadDrop", "breadDrop", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("brickDrop", "brickDrop", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("cookedFishDrop" ,"cookedFishDrop", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("cookedMeat", "cookedMeat", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("goldingotDrop", "goldingotDrop", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("grassDrop", "grassDrop", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("ironingotDrop", "ironingotDrop", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("steelDrop", "steelDrop", 30, false, true);
+	//forge
+	KEYANIMANAGER->addDefaultFrameAnimation("bottleDrop", "bottleDrop", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("coinDrop", "coinDrop", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("pickaxeDrop", "pickaxeDrop", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("shovleDrop", "shovleDrop", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("swordDrop", "swordDrop", 30, false, true);
+
+	//sewing
+	KEYANIMANAGER->addDefaultFrameAnimation("mediumBackpackDrop", "mediumBackpackDrop", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("slimeWalletDrop", "slimeWalletDrop", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("smallBackpackDrop", "smallBackpackDrop", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("smallWalletDrop", "smallWalletDrop", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("threadDrop", "threadDrop", 30, false, true);
 }
 
 void itemManager::Dropitem(const char* imageName, float x, float y)

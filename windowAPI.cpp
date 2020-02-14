@@ -96,7 +96,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 			TranslateMessage(&message);
 			DispatchMessage(&message);
 		}
-		else
+		else  // 가끔여기서 터지는데 원인 찾아보기
 		{
 			TIMEMANAGER->update(60.0f);
 			_pg.update();

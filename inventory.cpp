@@ -11,7 +11,7 @@ inventory::~inventory()
 
 HRESULT inventory::init()
 {
-	_invenSize = IMAGEMANAGER->findImage("invenSlot")->getWidth();
+	_invenSize = IMAGEMANAGER->findImage("invenSlot")->getWidth();	// 인벤 가로 길이 셋팅
 	invenSetting();
 
 	return S_OK;
@@ -41,18 +41,16 @@ void inventory::render(HDC hdc)
 	}
 	//인벤토리 아이템
 	for (_miInven = _mInven.begin(); _miInven != _mInven.end(); ++_miInven)
-	{
+	{	
 		IMAGEMANAGER->findImage("invenItem")->frameRender(hdc, _inven[_miInven->second.num].centerX - (IMAGEMANAGER->findImage("invenItem")->getFrameWidth() / 2), _inven[_miInven->second.num].centerY - (IMAGEMANAGER->findImage("invenItem")->getFrameHeight() / 2), _miInven->second.frameX, _miInven->second.frameY);
-		
+		// 숫자출력
 		invenItemCountRecder(hdc);
-
 		//디버깅용 인벤토리 숫자 
 		/*char str[100];
 		sprintf_s(str, "%d", _miInven->second.count);
 		TextOut(hdc, _inven[_miInven->second.num].rc.left + 20, _inven[_miInven->second.num].rc.top, str, strlen(str));*/
 	}
-
-	cout << _mInven.size() << endl;
+	//cout << _mInven.size() << endl;  // 인벤 사이즈 
 }
 
 void inventory::addInven(const char* imageName, int frameX, int frameY)
@@ -80,6 +78,7 @@ void inventory::addInven(const char* imageName, int frameX, int frameY)
 
 void inventory::invenSetting()
 {
+	//인벤토리 셋팅
 	for (int i = 0; i < INVENY; i++)
 	{
 		for (int j = 0; j < INVENX; j++)
@@ -93,18 +92,20 @@ void inventory::invenSetting()
 
 void inventory::invenItemCountRecder(HDC hdc)
 {
+	//인벤 개수 출력
 	for (int i = 0; i < 10; i++)
 	{
+		//1의 자리
 		if ((_miInven->second.count % 10) == i)
 		{
 			IMAGEMANAGER->findImage("invenNumber")->frameRender(hdc, _inven[_miInven->second.num].centerX + 20, _inven[_miInven->second.num].centerY - (IMAGEMANAGER->findImage("invenNumber")->getFrameHeight() / 2), i, 0);
 		}
-	
+		//10의 자리
 		if ((_miInven->second.count / 10) % 10 == i && _miInven->second.count >= 10)
 		{
 			IMAGEMANAGER->findImage("invenNumber")->frameRender(hdc, _inven[_miInven->second.num].centerX + 8, _inven[_miInven->second.num].centerY - (IMAGEMANAGER->findImage("invenNumber")->getFrameHeight() / 2), i, 0);
 		}
-
+		//100의 자리
 		if (_miInven->second.count / 100 == i && _miInven->second.count >= 100)
 		{
 			IMAGEMANAGER->findImage("invenNumber")->frameRender(hdc, _inven[_miInven->second.num].centerX - 4, _inven[_miInven->second.num].centerY - (IMAGEMANAGER->findImage("invenNumber")->getFrameHeight() / 2), i, 0);

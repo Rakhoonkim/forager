@@ -11,9 +11,9 @@ mapToolScene::~mapToolScene()
 
 HRESULT mapToolScene::init()
 {
-	MapToolImage(); // MAPMANAGER로 이동 
-	MapToolSetup();
-	CURSORMANAGER->setCursor();
+	MapToolImage();		// 이미지 셋팅
+	MapToolSetup();		// 맵툴 셋팅
+	CURSORMANAGER->setCursor();	// 커서 셋팅
 	return S_OK;
 }
 
@@ -23,8 +23,7 @@ void mapToolScene::release()
 
 void mapToolScene::update()
 {
-	//cout << "x:" << _ptMouse.x << "y:" << _ptMouse.y << endl;
-	SaveAndLoad();          // 세이브 
+	SaveAndLoad();          // 세이브 로드
 	
 	MapToolCollision();		// 클릭 
 	MapToolEraser();
@@ -32,8 +31,7 @@ void mapToolScene::update()
 
 void mapToolScene::render()
 {
-	
-	MapToolRender();
+	MapToolRender();		// 렌더
 }
 
 void mapToolScene::save()
@@ -66,6 +64,7 @@ void mapToolScene::SaveAndLoad()
 {	
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
+		//버튼 
 		for (int i = 0; i < 5; i++)
 		{
 			_saveSlot[i].isClick = false;
@@ -162,7 +161,7 @@ void mapToolScene::MapToolSetup()
 	// 이미지이름
 	_saveName = "inGameNumber1.map";
 
-	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■본 MAP ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 본 MAP ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 	for (int i = 0; i < TILEY; i++)
 	{
 		for (int j = 0; j < TILEX; j++)

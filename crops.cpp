@@ -151,3 +151,27 @@ void treeCrops::render()
 	IMAGEMANAGER->findImage(_crops.imageName)->frameRender(CAMERAMANAGER->getWorldDC(), _crops.centerX - (IMAGEMANAGER->findImage(_crops.imageName)->getFrameWidth() / 2), _crops.centerY - (IMAGEMANAGER->findImage(_crops.imageName)->getFrameHeight() * 4) / 5, _crops.frameX, _crops.frameY);
 	//Rectangle(CAMERAMANAGER->getWorldDC(), _crops.rc);
 }
+
+
+// ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á BUSH and FLOWER ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á
+void multiImageCrops::update()
+{
+	if (_crops.isClick) return;
+	if (_crops.time + _crops.speed <= TIMEMANAGER->getWorldTime())
+	{
+		_crops.frameX++;
+		_crops.speed += _crops.speed;
+		if (_crops.frameX == 2)
+		{
+			_crops.frameX = RND->getFromIntTo(2, 4);
+			_crops.isClick = true;
+		}	
+	}
+	_crops.rc = RectMake(_crops.centerX - (IMAGEMANAGER->findImage(_crops.imageName)->getFrameWidth() / 2), _crops.centerY - (IMAGEMANAGER->findImage(_crops.imageName)->getFrameHeight() / 2), IMAGEMANAGER->findImage(_crops.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_crops.imageName)->getFrameHeight());
+
+}
+
+void multiImageCrops::render()
+{
+	IMAGEMANAGER->findImage(_crops.imageName)->frameRender(CAMERAMANAGER->getWorldDC(), _crops.centerX - (IMAGEMANAGER->findImage(_crops.imageName)->getFrameWidth() / 2), _crops.centerY - (IMAGEMANAGER->findImage(_crops.imageName)->getFrameHeight() / 2), _crops.frameX, _crops.frameY);
+}
