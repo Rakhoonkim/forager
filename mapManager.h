@@ -44,6 +44,8 @@ public:
 	void setBuildTiles(int idx, int idy);
 	bool getBuildTilesFarming(int idx, int idy);  // 1Ä­ °Ç¹° 
 	void setBuildTilesFarming(int idx, int idy);
+
+	void setRemoveWater(int idx,int idy);
 	
 	POINT randomObjectTile();
 };

@@ -18,6 +18,7 @@ HRESULT objectManager::init()
 	_buildManager->init();
 
 	UIMANAGER->buildAdressLink(_buildManager);
+
 	return S_OK;
 }
 

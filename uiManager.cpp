@@ -12,9 +12,10 @@ uiManager::~uiManager()
 
 HRESULT uiManager::init()
 {
-	imageSetting();
+	imageSetting();			 // 이미지 세팅
 	_isOption = false;		 // UI를 제어하기 위한 값
-
+	
+	//최상위 옵션메뉴 초기화 
 	for (int i = 0; i < MAXOPTION; i++)
 	{
 		_optionList[i].isClick = false;
@@ -22,7 +23,9 @@ HRESULT uiManager::init()
 		_optionList[i].frameX = i;
 		_optionList[i].rc = RectMake((WINSIZEX / 2) - 210 + i * 90, 25, IMAGEMANAGER->findImage("optionListIcon")->getFrameWidth(), IMAGEMANAGER->findImage("optionListIcon")->getFrameHeight());
 	}
-	_currentOption = 1;
+	_currentOption = 1;		// 현재 버튼 값
+
+	//초기 버튼 값 초기화
 	_optionList[_currentOption].alpha = 0;
 	_optionList[_currentOption].isClick = true;
 
@@ -30,8 +33,11 @@ HRESULT uiManager::init()
 	_inven = new inventory;  // _currentOption = 1  일때
 	_inven->init();
 
-	_build = new build;
+	_build = new build;	//건설 창
 	_build->init();
+
+	_equipment = new equipment; //장비 창 
+	_equipment->init();
 
 	return S_OK;
 }
@@ -45,8 +51,11 @@ void uiManager::update()
 	if (_isOption)
 	{
 		setButtonAlpha();	//모든 옵션에 있어야 함 
-		
-		if (_currentOption == 1)
+		if (_currentOption == 0)
+		{
+			_equipment->update();
+		}
+		else if (_currentOption == 1)
 		{	
 			_inven->update();
 		}
@@ -69,8 +78,13 @@ void uiManager::render()
 			IMAGEMANAGER->findImage("optionListIcon")->alphaFrameRender(_backBuffer->getMemDC(), _optionList[i].rc.left, _optionList[i].rc.top, _optionList[i].frameX, 0,_optionList[i].alpha);
 			//Rectangle(_backBuffer->getMemDC(), _optionList[i].rc);
 		}
-		// 1일때 인벤토리
-		if (_currentOption == 1)
+
+		// 0장비창 : 1인벤토리 : 2건설창 
+		if (_currentOption == 0)
+		{
+			_equipment->render(_backBuffer->getMemDC());
+		}
+		else if (_currentOption == 1)
 		{
 			_inven->render(_backBuffer->getMemDC());
 		}
@@ -95,8 +109,13 @@ void uiManager::imageSetting()
 	IMAGEMANAGER->addFrameImage("invenItem", "./image/ui/inven/invenItem.bmp", 540, 108, 10, 2, true, RGB(255, 0, 255));
 
 	//장비
-	IMAGEMANAGER->addFrameImage("bigBox", "./image/ui/equipment/bigBox.bmp", 96, 192, 1, 4, true, RGB(255, 0, 255));
-	
+	IMAGEMANAGER->addFrameImage("bigBox", "./image/ui/equipment/bigBox.bmp", 120, 240, 1, 4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("disableBlock", "./image/ui/equipment/disableBlock.bmp", 192, 48, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("ableBlock", "./image/ui/equipment/ableBlock.bmp", 192, 48, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("skillIcon", "./image/ui/equipment/skillIcon.bmp", 139, 61, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("featIcon", "./image/ui/equipment/featIcon.bmp", 139, 61, true, RGB(255, 0, 255));
+
+
 	//건물 건설 
 	IMAGEMANAGER->addFrameImage("bigLongBox", "./image/ui/build/bigLongBox.bmp", 226, 290, 1, 4, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("longBox", "./image/ui/build/longBox.bmp", 156, 180, 1, 4, true, RGB(255, 0, 255));
@@ -114,6 +133,7 @@ void uiManager::optionsSetting()
 
 void uiManager::setButtonAlpha()
 {
+	// 옵션 메뉴창을 클릭
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
 		for (int i = 0; i < MAXOPTION; i++)
@@ -121,7 +141,7 @@ void uiManager::setButtonAlpha()
 			if (PtInRect(&_optionList[i].rc, _ptMouse))
 			{
 				_currentOption = i;
-				_build->setClickInit();// 건설 bool값을 초기화 해줌 
+				_build->setClickInit();	// 건설 bool값을 초기화 해줌 
 				break;
 			}
 		}

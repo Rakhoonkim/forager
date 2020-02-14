@@ -29,7 +29,11 @@ void cursor::release()
 
 void cursor::update()
 {
-
+	_cursor.x = CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x;
+	_cursor.y = CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y;
+	_cursor.idx = _cursor.x / 60;
+	_cursor.idy = _cursor.y / 60;
+	cout << " idx : " << _cursor.idx << " idy " << _cursor.idy << endl;
 }
 
 void cursor::render()
@@ -37,6 +41,14 @@ void cursor::render()
 }
 
 void cursor::imageChange()
+{
+}
+
+void cursor::imageChange1x1B()
+{
+}
+
+void cursor::imageChange3x3()
 {
 }
 
@@ -53,15 +65,6 @@ void cursor::setCursorChange()
 
 cursorBasic::~cursorBasic()
 {
-}
-
-void cursorBasic::update()
-{
-	_cursor.x = CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x;
-	_cursor.y = CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y;
-	_cursor.idx = _cursor.x / 60;
-	_cursor.idy = _cursor.y / 60;
-	cout << " idx : " << _cursor.idx << " idy " << _cursor.idy << endl;
 }
 
 void cursorBasic::render()
@@ -84,15 +87,6 @@ cursorPoint::~cursorPoint()
 {
 }
 
-void cursorPoint::update()
-{
-	_cursor.x = CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x;
-	_cursor.y = CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y;
-	_cursor.idx = _cursor.x / 60;
-	_cursor.idy = _cursor.y / 60;
-	cout << " idx : " << _cursor.idx << " idy " << _cursor.idy << endl;
-}
-
 void cursorPoint::render()
 {
 	// 임시로 y값 10만큼 증가 시켜놓음 
@@ -110,6 +104,65 @@ void cursorPoint::imageChange()
 }
 
 void cursorPoint::setCursorXY(float x, float y)
+{
+	_cursor.x = x - _cursor.image->getFrameWidth() / 2;
+	_cursor.y = y - _cursor.image->getFrameHeight() / 2;
+}
+
+//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■buildcursor■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+cursorBuild::~cursorBuild()
+{
+}
+
+void cursorBuild::render()
+{
+	_cursor.image->aniRender(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + _cursor.x, CAMERAMANAGER->getWorldCamera().cameraY + _cursor.y + 10, _cursor.ani);
+}
+
+void cursorBuild::imageChange()
+{
+	if (!_change) return;
+	_ObjectPoint = true;	//오브젝트를 가리킨다 
+	_cursor.image = IMAGEMANAGER->findImage("2x2cursor");
+	_cursor.ani = KEYANIMANAGER->findAnimation("2x2cursor");
+	_cursor.ani->start();
+	_change = false;
+}
+
+void cursorBuild::setCursorXY(float x, float y)
+{
+	_cursor.x = x - _cursor.image->getFrameWidth() / 2;
+	_cursor.y = y - _cursor.image->getFrameHeight() / 2;
+}
+
+void cursorBuild::imageChange1x1B()
+{
+}
+
+
+//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■buildcursor■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+cursorFarming::~cursorFarming()
+{
+}
+
+void cursorFarming::render()
+{
+	_cursor.image->aniRender(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + _cursor.x, CAMERAMANAGER->getWorldCamera().cameraY + _cursor.y + 10, _cursor.ani);
+}
+
+void cursorFarming::imageChange()
+{
+	if (!_change) return;
+	_ObjectPoint = true;	//오브젝트를 가리킨다 
+	_cursor.image = IMAGEMANAGER->findImage("1x1cursorB");
+	_cursor.ani = KEYANIMANAGER->findAnimation("1x1cursorB");
+	_cursor.ani->start();
+	_change = false;
+}
+
+void cursorFarming::setCursorXY(float x, float y)
 {
 	_cursor.x = x - _cursor.image->getFrameWidth() / 2;
 	_cursor.y = y - _cursor.image->getFrameHeight() / 2;

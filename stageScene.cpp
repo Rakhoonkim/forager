@@ -11,7 +11,7 @@ HRESULT stageScene::init()
 	_objectManager->init();
 	// ¸Ê 
 	_playerManager->set_CropsManager(_objectManager->get_CropsManager());
-
+	_playerManager->set_BuildManager(_objectManager->get_buildManager());
 	MAPMANAGER->MapLoad("inGameNumber1.map");
 	return S_OK;
 }

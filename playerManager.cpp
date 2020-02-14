@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "playerManager.h"
 #include "cropsManager.h"
+#include "buildManager.h"
 
 HRESULT playerManager::init()
 {
@@ -10,6 +11,9 @@ HRESULT playerManager::init()
 
 	_cropsManager = new cropsManager;
 	_cropsManager->init();
+
+	_buildManager = new buildManager;
+	_buildManager->init();
 
 	//옵션
 	_isOption = false;
@@ -26,14 +30,14 @@ void playerManager::update()
 
 	_player->update();
 	objectCollisionMouse();   // 마우스 포인터를 보여주기 위한 
-	itemCollisionPlayer();     // 아이템을 먹기 위한.
+	itemCollisionPlayer();    // 아이템을 먹기 위한.
 	itemCollisionMouse();	  // 아이템을 먹기 위한.
 	optionControl();		  //옵션창 컨트롤 
 }
 
 void playerManager::render()
 {
-	_player->render();
+	if(!_buildManager->usedCheck()) _player->render();
 }
 
 void playerManager::imageSetting()
@@ -48,7 +52,7 @@ void playerManager::imageSetting()
 	KEYANIMANAGER->addCoordinateFrameAnimation("playerWalk_L", "playerWalk", 6, 11, 15, false, true);
 
 	//곡괭이
-	IMAGEMANAGER->addFrameImage("playerPick","./image/player/playerPickaxe.bmp", 532, 106, 7, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("playerPick", "./image/player/playerPickaxe.bmp", 532, 106, 7, 2, true, RGB(255, 0, 255));
 
 	KEYANIMANAGER->addCoordinateFrameAnimation("playerPick_R", "playerPick", 0, 7, 20, false, false);
 	KEYANIMANAGER->addCoordinateFrameAnimation("playerPick_L", "playerPick", 7, 14, 20, false, false);
@@ -94,24 +98,58 @@ void playerManager::objectCollisionMouse()
 		if (_cropsManager->getVCrops()[i]->getCrops()->isClick && PtInRect(&_cropsManager->getVCrops()[i]->getCrops()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
 		{
 			//커서 매니져 
-			CURSORMANAGER->setPoint();
+			CURSORMANAGER->setCropsPoint();
 			CURSORMANAGER->getCursor()->setCursorXY(_cropsManager->getVCrops()[i]->getCrops()->centerX - CAMERAMANAGER->getWorldCamera().cameraX, _cropsManager->getVCrops()[i]->getCrops()->centerY - CAMERAMANAGER->getWorldCamera().cameraY);
-			cout << "충돌 x: " << _ptMouse.x << " y :" << _ptMouse.y << endl;
+
 
 			objectAttack(i);
-			break;
+			return;
+		}
+	}
+
+	//■■■■■■■■■■■■■■■■■■■■■■ buildAttackCollision ■■■■■■■■■■■■■■■■■■■■■■
+	for (int i = 0; i < _buildManager->getVBuild().size(); ++i)
+	{
+		if (180 >= getDistance(_buildManager->getVBuild()[i]->getBuilding()->centerX, _buildManager->getVBuild()[i]->getBuilding()->centerY, _player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y))
+		{
+			// 건물 USED 창 띄우지 않고 and 마우스가 충돌 나면 
+			if (!_buildManager->getVBuild()[i]->getUsed() && PtInRect(&_buildManager->getVBuild()[i]->getBuilding()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
+			{
+				_buildManager->getVBuild()[i]->getBuilding()->isClick = true;
+				if (_buildManager->getVBuild()[i]->getBuilding()->building == BUILDING::BRIDGE || _buildManager->getVBuild()[i]->getBuilding()->building == BUILDING::FISHTRAP)
+				{
+					CURSORMANAGER->setBridgePoint();
+					CURSORMANAGER->getCursor()->setCursorXY(_buildManager->getVBuild()[i]->getBuilding()->x - CAMERAMANAGER->getWorldCamera().cameraX, _buildManager->getVBuild()[i]->getBuilding()->y - CAMERAMANAGER->getWorldCamera().cameraY - 15);
+				}
+				else if (_buildManager->getVBuild()[i]->getBuilding()->building == BUILDING::FURNACE || _buildManager->getVBuild()[i]->getBuilding()->building == BUILDING::FORGE || _buildManager->getVBuild()[i]->getBuilding()->building == BUILDING::SEWING_STATION)
+				{
+					CURSORMANAGER->setBuildPoint();
+					CURSORMANAGER->getCursor()->setCursorXY(_buildManager->getVBuild()[i]->getBuilding()->centerX - CAMERAMANAGER->getWorldCamera().cameraX, _buildManager->getVBuild()[i]->getBuilding()->centerY - CAMERAMANAGER->getWorldCamera().cameraY);
+				}
+
+				cout << "충돌 x: " << _ptMouse.x << " y :" << _ptMouse.y << endl;
+				return;
+			}
+			else
+			{
+				_buildManager->getVBuild()[i]->getBuilding()->isClick = false;
+			}
 		}
 		else
 		{
-			CURSORMANAGER->setCursor();
-			CURSORMANAGER->getCursor()->setCursorChange();
+			_buildManager->getVBuild()[i]->getBuilding()->isClick = false;
+			_buildManager->getVBuild()[i]->setUsed();
 		}
 	}
+
+	CURSORMANAGER->setCursor();
+	CURSORMANAGER->getCursor()->setCursorChange();
+
 }
 
 void playerManager::optionControl()
 {
-	if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE) && !UIMANAGER->getBuild()->getisBuilding())
+	if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE) && !UIMANAGER->getBuild()->getisBuilding() && !_buildManager->usedCheck())
 	{
 		UIMANAGER->setOption();
 	}

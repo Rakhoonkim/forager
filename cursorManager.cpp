@@ -20,6 +20,10 @@ HRESULT cursorManager::init()
 
 	_cursorPoint = new cursorPoint;
 
+	_cursorBuild = new cursorBuild;
+
+	_cursorFarming = new cursorFarming;
+
 	_cursor = _cursorBasic;
 
 	return S_OK;
@@ -46,18 +50,30 @@ void  cursorManager::imageSetting()
 
 	IMAGEMANAGER->addFrameImage("1x1cursor", "./image/cursor/1x1cursor.bmp", 400, 40, 10, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("1x1cursorB", "./image/cursor/1x1cursorB.bmp", 640, 64, 10, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("2x2cursor", "./image/cursor/2x2cursor.bmp", 800, 80, 10, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("2x2cursor", "./image/cursor/2x2cursor.bmp", 1100, 110, 10, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("3x3cursor", "./image/cursor/3x3cursor.bmp", 1800, 180, 10, 1, true, RGB(255, 0, 255));
 
 	KEYANIMANAGER->addDefaultFrameAnimation("1x1cursor", "1x1cursor", 10, false, true);
-	KEYANIMANAGER->addDefaultFrameAnimation("1x1cursor", "1x1cursorB", 10, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("1x1cursorB", "1x1cursorB", 10, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("2x2cursor", "2x2cursor", 10, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("3x3cursor", "3x3cursor", 10, false, true);
 }
 
-void cursorManager::setPoint()
+void cursorManager::setCropsPoint()
 {
 	_cursor = _cursorPoint;
+	_cursor->imageChange();
+}
+
+void cursorManager::setBuildPoint()
+{
+	_cursor = _cursorBuild;
+	_cursor->imageChange();
+}
+
+void cursorManager::setBridgePoint()
+{
+	_cursor = _cursorFarming;
 	_cursor->imageChange();
 }
 

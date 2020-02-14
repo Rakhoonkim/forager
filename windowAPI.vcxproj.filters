@@ -231,9 +231,6 @@
     <ClInclude Include="skill.h">
       <Filter>playGround\player\ability</Filter>
     </ClInclude>
-    <ClInclude Include="equipment.h">
-      <Filter>playGround\player\ability</Filter>
-    </ClInclude>
     <ClInclude Include="uiManager.h">
       <Filter>playGround\ui</Filter>
     </ClInclude>
@@ -242,6 +239,9 @@
     </ClInclude>
     <ClInclude Include="building.h">
       <Filter>playGround\object\building</Filter>
+    </ClInclude>
+    <ClInclude Include="equipment.h">
+      <Filter>playGround\ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -368,9 +368,6 @@
     <ClCompile Include="inventory.cpp">
       <Filter>playGround\player\ability</Filter>
     </ClCompile>
-    <ClCompile Include="equipment.cpp">
-      <Filter>playGround\player\ability</Filter>
-    </ClCompile>
     <ClCompile Include="uiManager.cpp">
       <Filter>playGround\ui</Filter>
     </ClCompile>
@@ -379,6 +376,9 @@
     </ClCompile>
     <ClCompile Include="building.cpp">
       <Filter>playGround\object\building</Filter>
+    </ClCompile>
+    <ClCompile Include="equipment.cpp">
+      <Filter>playGround\ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

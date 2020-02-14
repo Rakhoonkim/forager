@@ -9,6 +9,7 @@ private:
 	vector<building*>				_vBuilding;
 	vector<building*>::iterator   _viBuilding;
 
+	bool _isUsed;
 public:
 	buildManager();
 	~buildManager();
@@ -25,7 +26,9 @@ public:
 
 
 	vector<building*>				 getVBuild() { return _vBuilding; }
-	vector<building*>::iterator   getViBuild() { return _viBuilding; }
+	vector<building*>::iterator     getViBuild() { return _viBuilding; }
+
+	bool usedCheck();   // use È®ÀÎ¿ë 
 
 	void removeBuilding();
 };

@@ -12,7 +12,7 @@ class playerManager: public gameNode
 private:
 	player* _player;
 	cropsManager* _cropsManager;
-
+	buildManager* _buildManager;
 	bool _isOption;
 public:
 	playerManager() {}
@@ -33,5 +33,6 @@ public:
 
 	void objectAttack(int num);		  // 공격하기 
 	void set_CropsManager(cropsManager* cropsManager) { _cropsManager = cropsManager; }
+	void set_BuildManager(buildManager* buildManager) { _buildManager = buildManager; }
 };
 

@@ -20,5 +20,6 @@ public:
 	void render();
 
 	cropsManager* get_CropsManager() { return _cropsManager; }
+	buildManager* get_buildManager() { return _buildManager; }
 };
 

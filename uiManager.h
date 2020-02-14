@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "inventory.h"
 #include "build.h"
+#include "equipment.h"
 
 class gameNode;
 
@@ -11,7 +12,7 @@ class uiManager : public singletonBase<uiManager>
 {
 private:
 	tagButton _optionList[MAXOPTION];
-
+	equipment* _equipment;
 	inventory* _inven;
 	build* _build;
 

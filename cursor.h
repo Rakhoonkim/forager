@@ -27,6 +27,8 @@ public:
 	virtual void update();
 	virtual void render();
 	virtual void imageChange();
+	virtual void imageChange1x1B();
+	virtual void imageChange3x3();
 	virtual void setCursorXY(float x, float y);
 	virtual void setCursorChange();
 	virtual bool getObjectPoint() { return _ObjectPoint; }
@@ -38,7 +40,6 @@ public:
 class cursorBasic : public cursor
 {
 	~cursorBasic();
-	virtual void update();
 	virtual void render();
 	virtual void imageChange();
 };
@@ -48,8 +49,27 @@ class cursorPoint : public cursor
 {
 public:
 	~cursorPoint();
+	virtual void render();
+	virtual void imageChange();
+	virtual void setCursorXY(float x, float y);
+};
 
-	virtual void update();
+//2x2
+class cursorBuild : public cursor
+{
+public:
+	~cursorBuild();
+
+	virtual void render();
+	virtual void imageChange();
+	virtual void imageChange1x1B();
+	virtual void setCursorXY(float x, float y);
+};
+
+class cursorFarming : public cursor
+{
+public:
+	~cursorFarming();
 	virtual void render();
 	virtual void imageChange();
 	virtual void setCursorXY(float x, float y);

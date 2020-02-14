@@ -246,6 +246,12 @@ void mapManager::setBuildTilesFarming(int idx, int idy)
 	_tiles[idy * TILEX + idx].isObject = true;
 }
 
+void mapManager::setRemoveWater(int idx, int idy)
+{
+	_tiles[idy * TILEX + idx].type = TYPE::OBJECT;
+	_tiles[idy * TILEX + idx].isObject = true;
+}
+
 void mapManager::setBuildTiles(int idx, int idy)
 {
 	_tiles[idy * TILEX + idx].isObject = true;
