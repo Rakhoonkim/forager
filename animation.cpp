@@ -44,7 +44,8 @@ HRESULT animation::init(int totalW, int totalH, int frameW, int frameH)
 			_frameList.push_back(framePos);
 		}
 	}
-
+	
+	_last = false;
 	return S_OK;
 }
 

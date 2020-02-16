@@ -77,6 +77,17 @@ void buildManager::imageSetting()
 
 	IMAGEMANAGER->addImage("EbuttonFarming", "./image/ui/build/EbuttonFarming.bmp", 25, 25, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Ebutton", "./image/ui/build/Ebutton.bmp", 50, 50, true, RGB(255, 0, 255));
+
+
+	//¿¬±â
+
+	IMAGEMANAGER->addFrameImage("smoke", "./image/ui/build/smoke.bmp", 135, 26, 5, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("smokeExplosion", "./image/ui/build/smokeExplosion.bmp", 135, 26, 5, 1, true, RGB(255, 0, 255));
+	EFFECTMANAGER->addEffect("smoke", "smoke", 135, 26, 27, 26, 1, 0.1f, 10);
+
+
+	EFFECTMANAGER->addEffect("smokeExplosion", "smokeExplosion", 135, 26, 27, 26, 10, 0.8f, 5);
+
 }
 
 void buildManager::createImageBuilding(BUILDING build, int idx, int idy)

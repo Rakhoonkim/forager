@@ -132,6 +132,28 @@ void itemManager::imageSetting()
 	KEYANIMANAGER->addDefaultFrameAnimation("smallBackpackDrop", "smallBackpackDrop", 30, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("smallWalletDrop", "smallWalletDrop", 30, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("threadDrop", "threadDrop", 30, false, true);
+
+
+	//fishtrap
+	IMAGEMANAGER->addFrameImage("fishDrop", "./image/item/buildItem/fishtrap/fishDrop.bmp", 600, 30, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("seaweedDrop", "./image/item/buildItem/fishtrap/seaweedDrop.bmp", 680, 32, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("sandDrop", "./image/item/buildItem/fishtrap/sandDrop.bmp", 720, 26, 20, 1, true, RGB(255, 0, 255));
+
+	KEYANIMANAGER->addDefaultFrameAnimation("sandDrop", "sandDrop", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("seaweedDrop", "seaweedDrop", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("fishDrop", "fishDrop", 30, false, true);
+
+
+	//enemyItem
+	IMAGEMANAGER->addFrameImage("jellyDrop", "./image/item/enemyItem/jellyDrop.bmp", 640, 32, 20, 1, true, RGB(255, 0, 255));
+
+	KEYANIMANAGER->addDefaultFrameAnimation("jellyDrop", "jellyDrop", 30, false, true);
+	//enemyInven
+	//jelly 7, 1 
+
+
+	
+
 }
 
 void itemManager::Dropitem(const char* imageName, float x, float y)
@@ -477,6 +499,156 @@ void itemManager::DropFurnaceItem(FURNACERECIPE recipe, float x, float y, int nu
 	}
 	
 
+}
+
+void itemManager::DropForgeItem(FORGERECIPE recipe, float x, float y, int num)
+{
+	if (recipe == FORGERECIPE::COIN)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("coinDrop", x, y);		//수정
+			tempItem->setIvenFrame(0, 3);			//수정 예정 
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (recipe == FORGERECIPE::SHOVEL)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("shovleDrop", x, y);		//수정
+			tempItem->setIvenFrame(1, 3);			//수정 예정 
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (recipe == FORGERECIPE::SWORD)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("swordDrop", x, y);		//수정
+			tempItem->setIvenFrame(2, 3);			//수정 예정 
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (recipe == FORGERECIPE::PICKAXE)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("pickaxeDrop", x, y);		//수정
+			tempItem->setIvenFrame(3, 3);			//수정 예정 
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (recipe == FORGERECIPE::BOTTLE)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("bottleDrop", x, y);		//수정
+			tempItem->setIvenFrame(4, 3);			//수정 예정 
+			_vItem.push_back(tempItem);
+		}
+	}
+}
+
+void itemManager::DropsewingItem(SEWINGRECIPE recipe, float x, float y, int num)
+{
+	if (recipe == SEWINGRECIPE::THREAD)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("threadDrop", x, y);	
+			tempItem->setIvenFrame(0, 4);			
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (recipe == SEWINGRECIPE::SMALL_BACKPACK)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("smallBackpackDrop", x, y);
+			tempItem->setIvenFrame(1, 4);
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (recipe == SEWINGRECIPE::MEDIUM_BACKPACK)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("mediumBackpackDrop", x, y);
+			tempItem->setIvenFrame(2, 4);
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (recipe == SEWINGRECIPE::SMALL_WALLET)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("smallWalletDrop", x, y);
+			tempItem->setIvenFrame(3, 4);
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (recipe == SEWINGRECIPE::SLIME_WALLET)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("slimeWalletDrop", x, y);
+			tempItem->setIvenFrame(4, 4);
+			_vItem.push_back(tempItem);
+		}
+	}
+
+}
+
+void itemManager::DropFishTrapItem(float x, float y)
+{
+	int rndNum;
+	rndNum = RND->getFromIntTo(0, 10);
+
+	if (rndNum <= 5)
+	{
+		item* tempItem;
+		tempItem = new item;
+		tempItem->init("fishDrop", x, y);
+		tempItem->setIvenFrame(7, 3);
+		_vItem.push_back(tempItem);
+	}
+	else if (rndNum > 5 && rndNum < 7)
+	{
+		item* tempItem;
+		tempItem = new item;
+		tempItem->init("seaweedDrop", x, y);
+		tempItem->setIvenFrame(6, 4);
+		_vItem.push_back(tempItem);
+	}
+	else
+	{
+		item* tempItem;
+		tempItem = new item;
+		tempItem->init("sandDrop", x, y);
+		tempItem->setIvenFrame(5, 4);
+		_vItem.push_back(tempItem);
+	}
 }
 
 void itemManager::findItem()

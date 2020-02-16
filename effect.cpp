@@ -24,7 +24,10 @@ HRESULT effect::init(image* effectImage, int frameW, int frameH, int fps, float 
 	_isRunning = false;
 	_effectImage = effectImage;
 	_elapsedTime = elapsedTime;
-
+	_last = false;
+	_move = false;
+	_moveCount = 0;
+	_angle = 1.57;
 	if (!_effectAnimation) _effectAnimation = new animation;
 
 	_effectAnimation->init(_effectImage->getWidth(), _effectImage->getHeight(), frameW, frameH);
@@ -44,7 +47,7 @@ HRESULT effect::init(image* effectImage, int frameW, int frameH, int fps, float 
 	_effectImage = effectImage;
 	_elapsedTime = elapsedTime;
 	_last = last;
-
+	_move = false;
 	if (!_effectAnimation) _effectAnimation = new animation;
 
 	_effectAnimation->init(_effectImage->getWidth(), _effectImage->getHeight(), frameW, frameH);
@@ -64,7 +67,7 @@ HRESULT effect::init(image* effectImage, int frameW, int frameH, int fps, float 
 	_effectImage = effectImage;
 	_elapsedTime = elapsedTime;
 	_last = last;
-
+	_move = false;
 	if (!_effectAnimation) _effectAnimation = new animation;
 
 	_effectAnimation->init(_effectImage->getWidth(), _effectImage->getHeight(), frameW, frameH);
@@ -107,6 +110,7 @@ void effect::update()
 			killEffect();
 		}
 	}
+	move();
 }
 
 void effect::render()
@@ -124,6 +128,21 @@ void effect::render(HDC hdc)
 	//_effectImage->aniRender(getMemDC(), _x, _y, _effectAnimation);
 
 	_effectImage->aniRender(hdc, _x, _y, _effectAnimation);
+}
+
+void effect::move()
+{
+	if (!_move) return;
+
+	cout << "move 중이다 " << endl;  // 이펙트 무브 조절해야함 
+	_moveCount++;
+	if (_moveCount > RND->getFromIntTo(3,10))
+	{
+		_angle -= RND->getFromFloatTo(0.10f,0.30f);
+		_moveCount = 0;
+	}
+	_x += cosf(_angle) * 2;
+	_y += -sinf(_angle) * 2;
 }
 
 
@@ -150,6 +169,20 @@ void effect::startEffect(float x, float y)
 
 	_isRunning = true;
 
+	_effectAnimation->start();
+}
+
+void effect::startEffect(float x, float y, bool move)
+{
+	if (!_effectImage || !_effectAnimation) return;
+
+	//일단 중앙값으로... 레탑들은 레탑으로 해...
+	_x = x; //- (_effectAnimation->getFrameWidth() / 2);
+	_y = y; //- (_effectAnimation->getFrameHeight() / 2);
+
+	_isRunning = true;
+	_move = move;
+	_angle = 1.57;
 	_effectAnimation->start();
 }
 

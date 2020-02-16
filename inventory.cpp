@@ -223,11 +223,127 @@ bool inventory::foranceRecipes(FURNACERECIPE recipe, int count)
 
 bool inventory::forgeRecipes(FORGERECIPE recipe, int count)
 {
+	if (_mInven.size() <= 0) return false;
+
+	if (recipe == FORGERECIPE::COIN)
+	{
+		//key 값을 찾아내는 방법 
+		// count 함수  -> 0이면 
+		// find 함수 있는지 확인  find == m.end() 없는것
+		if (_mInven.count("goldingotDrop") == 0) return false;  // 없으면 
+		if (_mInven["goldingotDrop"].count >= 1)
+		{
+			return true;
+		}
+		return false;
+	}
+	else if (recipe == FORGERECIPE::SHOVEL)
+	{
+		if (_mInven.count("ironingotDrop") == 0 || _mInven.count("woodDrop") == 0) return false;  // 없으면 
+		if (_mInven["woodDrop"].count >= 20 && _mInven["ironingotDrop"].count >= 20)
+		{
+			return true;
+		}
+		return false;
+	}
+	else if (recipe == FORGERECIPE::SWORD)
+	{
+		if (_mInven.count("ironingotDrop") == 0) return false;  // 젤리 추가 예정  
+		if (_mInven["ironingotDrop"].count >= 20)
+		{
+			return true;
+		}
+		return false;
+	}
+	else if (recipe == FORGERECIPE::PICKAXE)
+	{
+		if (_mInven.count("ironingotDrop") == 0 || _mInven.count("coalDrop") == 0) return false;  // 젤리 추가 예정 
+		if (_mInven["ironingotDrop"].count >= 15 && _mInven["coalDrop"].count >= 2)
+		{
+			return true;
+		}
+		return false;
+	}
+	else if (recipe == FORGERECIPE::BOTTLE)
+	{
+		if (_mInven.count("threadDrop") == 0|| _mInven.count("grassDrop") == 0) return false;  // 없으면 
+		if (_mInven["threadDrop"].count >= 1 && _mInven["grassDrop"].count >= 2)
+		{
+			return true;
+		}
+		return false;
+	}
+
+
+
 	return false;
 }
 
-bool inventory::sweingRecipes(SEWINGRECIPE recipe, int count)
+bool inventory::sewingRecipes(SEWINGRECIPE recipe, int count)
 {
+	if (_mInven.size() <= 0) return false;
+
+	if (recipe == SEWINGRECIPE::THREAD)
+	{
+		//key 값을 찾아내는 방법 
+		// count 함수  -> 0이면 
+		// find 함수 있는지 확인  find == m.end() 없는것
+		if (_mInven.count("fiberDrop") == 0) return false;  // 없으면 
+		if (_mInven["fiberDrop"].count >= 2)
+		{
+			return true;
+		}
+		return false;
+	}
+	else if (recipe == SEWINGRECIPE::SMALL_BACKPACK)
+	{
+		//key 값을 찾아내는 방법 
+		// count 함수  -> 0이면 
+		// find 함수 있는지 확인  find == m.end() 없는것
+		if (_mInven.count("threadDrop") == 0 || _mInven.count("ironOreDrop") == 0) return false;  // 없으면 
+		if (_mInven["threadDrop"].count >= 10 && _mInven["ironOreDrop"].count >= 10)
+		{
+			return true;
+		}
+		return false;
+	}
+	else if (recipe == SEWINGRECIPE::MEDIUM_BACKPACK)
+	{
+		//key 값을 찾아내는 방법 
+		// count 함수  -> 0이면 
+		// find 함수 있는지 확인  find == m.end() 없는것
+		if (_mInven.count("threadDrop") == 0 || _mInven.count("ironingotDrop") == 0) return false;  // 없으면 
+		if (_mInven["threadDrop"].count >= 20 && _mInven["ironingotDrop"].count >= 15)
+		{
+			return true;
+		}
+		return false;
+	}
+	else if (recipe == SEWINGRECIPE::SMALL_WALLET)
+	{
+		//key 값을 찾아내는 방법 
+		// count 함수  -> 0이면 
+		// find 함수 있는지 확인  find == m.end() 없는것
+		if (_mInven.count("threadDrop") == 0 || _mInven.count("goldOreDrop") == 0) return false;  // 없으면 
+		if (_mInven["threadDrop"].count >= 10 && _mInven["goldOreDrop"].count >= 10)
+		{
+			return true;
+		}
+		return false;
+	}
+	else if (recipe == SEWINGRECIPE::SLIME_WALLET)
+	{
+		//key 값을 찾아내는 방법 
+		// count 함수  -> 0이면 
+		// find 함수 있는지 확인  find == m.end() 없는것
+		if (_mInven.count("threadDrop") == 0 || _mInven.count("goldingotDrop") == 0) return false;  // 없으면 
+		if (_mInven["threadDrop"].count >= 20 && _mInven["goldingotDrop"].count >= 10)
+		{
+			return true;
+		}
+		return false;
+	}
 	return false;
 }
+
 

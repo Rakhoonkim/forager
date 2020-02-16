@@ -30,6 +30,7 @@ public:
 	void release();
 	void update();
 	void render();
+	void render(HDC hdc);
 
 	void addEffect(string effectName, const char* imageName, int imageWidth, int imageHeight,
 		int effectWidth, int effectHeight, int fps, float elapsedTime, int buffer);
@@ -37,5 +38,7 @@ public:
 		int effectWidth, int effectHeight, int fps, float elapsedTime, int buffer, bool last);
 
 	void play(string effectName, int x, int y);
+	void MovePlay(string effectName, int x, int y, bool move);
+
 };
 

@@ -27,7 +27,11 @@ public:
 
 	//recipe
 	void DropFurnaceItem(FURNACERECIPE recipe, float x, float y, int num);
+	void DropForgeItem(FORGERECIPE recipe, float x, float y, int num);
+	void DropsewingItem(SEWINGRECIPE recipe, float x, float y, int num);
 
+	// fishtrap
+	void DropFishTrapItem(float x, float y);
 	void findItem();
 	void removeItem();
 

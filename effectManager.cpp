@@ -79,6 +79,24 @@ void effectManager::render()
 	}
 }
 
+void effectManager::render(HDC hdc)
+{
+	iterTotalEffect vIter;
+	iterEffect mIter;
+
+	for (vIter = _vTotalEffect.begin(); vIter != _vTotalEffect.end(); ++vIter)
+	{
+		for (mIter = vIter->begin(); mIter != vIter->end(); ++mIter)
+		{
+			iterEffects vArrIter;
+			for (vArrIter = mIter->second.begin(); vArrIter != mIter->second.end(); ++vArrIter)
+			{
+				(*vArrIter)->render(hdc);
+			}
+		}
+	}
+}
+
 void effectManager::addEffect(string effectName, const char* imageName, int imageWidth, int imageHeight, int effectWidth, int effectHeight, int fps, float elapsedTime, int buffer)
 {
 	image* img;
@@ -147,6 +165,28 @@ void effectManager::play(string effectName, int x, int y)
 			{
 				if ((*vArrIter)->getIsRunning()) continue;
 				(*vArrIter)->startEffect(x, y);
+				return;
+			}
+		}
+	}
+}
+
+void effectManager::MovePlay(string effectName, int x, int y, bool move)
+{
+	iterTotalEffect vIter;
+	iterEffect mIter;
+
+	for (vIter = _vTotalEffect.begin(); vIter != _vTotalEffect.end(); ++vIter)
+	{
+		for (mIter = vIter->begin(); mIter != vIter->end(); ++mIter)
+		{
+			if (!(mIter->first == effectName)) break;
+
+			iterEffects vArrIter;
+			for (vArrIter = mIter->second.begin(); vArrIter != mIter->second.end(); ++vArrIter)
+			{
+				if ((*vArrIter)->getIsRunning()) continue;
+				(*vArrIter)->startEffect(x, y,move);
 				return;
 			}
 		}

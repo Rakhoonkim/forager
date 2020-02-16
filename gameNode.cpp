@@ -83,6 +83,7 @@ void gameNode::update()
 	CURSORMANAGER->update();
 	ITEMMANAGER->update();
 	UIMANAGER->update();     // UI MANAGER
+	EFFECTMANAGER->update();
 }
 
 void gameNode::render()

@@ -33,7 +33,7 @@ public:
 	//recipes ·¹½ÃÇÇ 
 	bool foranceRecipes(FURNACERECIPE recipe, int count);
 	bool forgeRecipes(FORGERECIPE recipe, int count);
-	bool sweingRecipes(SEWINGRECIPE recipe, int count);
+	bool sewingRecipes(SEWINGRECIPE recipe, int count);
 
 };
 

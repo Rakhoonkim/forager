@@ -16,6 +16,9 @@ protected:
 	tagButton _craftButton;
 	tagButton _addButton[2];
 	FURNACERECIPE _furnace;
+	FORGERECIPE _forge;
+	SEWINGRECIPE _sewing;
+
 	int _direction; // 현재 버튼을 어딜 가리키는지 
 	float _timer;
 	bool _craftPage;
@@ -26,6 +29,8 @@ protected:
 	int _backPack;
 	int _wallet;
 
+
+	int _effectCount;
 	bool _isUse;
 public:
 	building();
@@ -79,6 +84,9 @@ public:
 	//제어함수 
 	virtual void buttonEffect();
 	virtual void buttonClick();
+	virtual void buttonInit();
+	virtual void isWorking();
+	virtual void craftButton();
 };
 
 // forge SEWING_STATION
@@ -95,6 +103,9 @@ public:
 	//제어함수 
 	virtual void buttonEffect();
 	virtual void buttonClick();
+	virtual void buttonInit();
+	virtual void isWorking();
+	virtual void craftButton();
 };
 
 //FISHTRAP
@@ -107,6 +118,7 @@ public:
 	virtual void update();
 	virtual void render();	
 	virtual void EffectRender();
+	virtual void isWorking();
 
 };
 
