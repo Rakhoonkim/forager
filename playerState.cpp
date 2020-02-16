@@ -77,7 +77,7 @@ playerMove::playerMove(tagPlayer* player)
 
 void playerMove::update()
 {
-	cout << "나 이동상태야 " << endl;
+	//cout << "나 이동상태야 " << endl;
 	_player->x += cosf(_angle) * _speed;
 	_player->y += -sinf(_angle) * _speed;
 

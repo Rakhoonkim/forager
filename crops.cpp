@@ -77,7 +77,7 @@ void crops::setHp(int maxHp, int hp)
 {
 	_crops.maxHp = maxHp;
 	_crops.hp = hp;
-	cout << _crops.maxHp << _crops.hp << endl;
+	//cout << _crops.maxHp << _crops.hp << endl;
 }
 
 //¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á imageCrops ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á

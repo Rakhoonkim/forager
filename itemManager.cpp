@@ -13,9 +13,9 @@ HRESULT itemManager::init()
 {
 	imageSetting();
 
-	/*_inven = new inventory;
+	_inven = new inventory;
 	_inven->init();
-	UIMANAGER->setInven(_inven);*/
+	UIMANAGER->setInven(_inven);
 	
 	return S_OK;
 }
@@ -26,6 +26,7 @@ void itemManager::release()
 
 void itemManager::update()
 {
+
 	for (_viItem = _vItem.begin(); _viItem != _vItem.end(); ++_viItem)
 	{
 		(*_viItem)->update();
@@ -90,7 +91,7 @@ void itemManager::imageSetting()
 	IMAGEMANAGER->addFrameImage("breadDrop", "./image/item/buildItem/breadDrop.bmp", 720, 30, 20, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("brickDrop", "./image/item/buildItem/brickDrop.bmp", 560, 26, 20, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("cookedFishDrop", "./image/item/buildItem/cookedFishDrop.bmp", 600, 30, 20, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("cookedMeat", "./image/item/buildItem/cookedMeat.bmp", 600, 30, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("cookedMeatDrop", "./image/item/buildItem/cookedMeat.bmp", 600, 30, 20, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("goldingotDrop", "./image/item/buildItem/goldingotDrop.bmp", 560, 26, 20, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("grassDrop", "./image/item/buildItem/grassDrop.bmp", 560, 28, 20, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("ironingotDrop", "./image/item/buildItem/ironingotDrop.bmp", 560, 26, 20, 1, true, RGB(255, 0, 255));
@@ -113,7 +114,7 @@ void itemManager::imageSetting()
 	KEYANIMANAGER->addDefaultFrameAnimation("breadDrop", "breadDrop", 30, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("brickDrop", "brickDrop", 30, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("cookedFishDrop" ,"cookedFishDrop", 30, false, true);
-	KEYANIMANAGER->addDefaultFrameAnimation("cookedMeat", "cookedMeat", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("cookedMeatDrop", "cookedMeatDrop", 30, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("goldingotDrop", "goldingotDrop", 30, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("grassDrop", "grassDrop", 30, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("ironingotDrop", "ironingotDrop", 30, false, true);
@@ -371,6 +372,111 @@ void itemManager::Dropitem(TREE tree, float x, float y)
 			_vItem.push_back(tempItem);
 		}
 	}
+}
+
+void itemManager::DropFurnaceItem(FURNACERECIPE recipe, float x, float y, int num)
+{
+	if (recipe == FURNACERECIPE::COAL)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("coalDrop", x, y);
+			tempItem->setIvenFrame(1, 0);
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (recipe == FURNACERECIPE::BRICK)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("brickDrop", x, y);
+			tempItem->setIvenFrame(0, 2);   // 수정 
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (recipe == FURNACERECIPE::IRON)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("ironingotDrop", x, y);
+			tempItem->setIvenFrame(1, 2);   // 수정 
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (recipe == FURNACERECIPE::GOLD)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("goldingotDrop", x, y);
+			tempItem->setIvenFrame(2, 2);   // 수정 
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (recipe == FURNACERECIPE::STEEL)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("steelDrop", x, y);
+			tempItem->setIvenFrame(3, 2);   // 수정 
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (recipe == FURNACERECIPE::GLASS)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("grassDrop", x, y);
+			tempItem->setIvenFrame(4, 2);   // 수정 
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (recipe == FURNACERECIPE::BREAD)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("breadDrop", x, y);
+			tempItem->setIvenFrame(5, 2);   // 수정 
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (recipe == FURNACERECIPE::FISH)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("cookedFishDrop", x, y);
+			tempItem->setIvenFrame(6, 2);   // 수정 
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (recipe == FURNACERECIPE::MEAT)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("cookedMeatDrop", x, y);
+			tempItem->setIvenFrame(7, 2);   // 수정 
+			_vItem.push_back(tempItem);
+		}
+	}
+	
+
 }
 
 void itemManager::findItem()

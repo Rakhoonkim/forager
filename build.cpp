@@ -335,7 +335,6 @@ void build::isClickBuild() // 4개 범위랑랑 1개 범위를 구별할 것
 	{
 		if (!MAPMANAGER->getBuildTilesFarming(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y)) return;
 
-
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
 			_buildManager->createImageBuilding(BUILDING::BRIDGE, CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);

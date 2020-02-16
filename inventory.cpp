@@ -76,6 +76,18 @@ void inventory::addInven(const char* imageName, int frameX, int frameY)
 	//_mInven.emplace(pair<const char*,tagInven>(imageName, inven));
 }
 
+//아직 실험 안함 
+//인벤 삭제 
+void inventory::removeInven(const char* imageName, int count)
+{
+	_mInven[imageName].count = _mInven[imageName].count - count;
+	if (_mInven[imageName].count <= 0)
+	{
+		_mInven.erase(imageName);
+		return;
+	}
+}
+
 void inventory::invenSetting()
 {
 	//인벤토리 셋팅
@@ -88,6 +100,7 @@ void inventory::invenSetting()
 			_inven[i * INVENX + j].centerY = _inven[i * INVENX + j].rc.top + (_invenSize / 2);
 		}
 	}
+
 }
 
 void inventory::invenItemCountRecder(HDC hdc)
@@ -112,3 +125,109 @@ void inventory::invenItemCountRecder(HDC hdc)
 		}
 	}
 }
+
+bool inventory::foranceRecipes(FURNACERECIPE recipe, int count)
+{
+	if (_mInven.size() <= 0) return false;
+
+	if (recipe == FURNACERECIPE::COAL)
+	{
+		//key 값을 찾아내는 방법 
+		// count 함수  -> 0이면 
+		// find 함수 있는지 확인  find == m.end() 없는것
+		if (_mInven.count("woodDrop") == 0) return false;  // 없으면 
+		if (_mInven["woodDrop"].count >= 2)
+		{
+			return true;
+		}
+		return false;
+	}
+	else if (recipe == FURNACERECIPE::BRICK)
+	{
+		if (_mInven.count("stoneDrop") == 0 || _mInven.count("coalDrop") == 0) return false;  // 없으면 
+		if (_mInven["stoneDrop"].count >= 2 && _mInven["coalDrop"].count >= 1)
+		{ 
+			return true;
+		}
+		return false;
+	}
+	else if (recipe == FURNACERECIPE::IRON)
+	{
+		if (_mInven.count("ironOreDrop") == 0 || _mInven.count("coalDrop") == 0) return false;  // 없으면 
+		if (_mInven["ironOreDrop"].count >= 2 && _mInven["coalDrop"].count >= 1)
+		{
+			return true;
+		}
+		return false;
+	}
+	else if (recipe == FURNACERECIPE::GOLD)
+	{
+		if (_mInven.count("goldOreDrop") == 0 || _mInven.count("coalDrop") == 0) return false;  // 없으면 
+		if (_mInven["goldOreDrop"].count >= 2 && _mInven["coalDrop"].count >= 1)
+		{
+			return true;
+		}
+		return false;
+	}
+	else if (recipe == FURNACERECIPE::STEEL)
+	{
+		if (_mInven.count("goldOreDrop") == 0 || _mInven.count("coalDrop") == 0|| _mInven.count("ironOreDrop") == 0) return false;  // 없으면 
+		if (_mInven["goldOreDrop"].count >= 2 && _mInven["coalDrop"].count >= 1&& _mInven["ironOreDrop"].count >=2)
+		{
+			return true;
+		}
+		return false;
+	}
+	else if (recipe == FURNACERECIPE::GLASS) // 모래 추가할 예정 
+	{
+		if ( _mInven.count("coalDrop") == 0 ) return false;  // 없으면 
+			if ( _mInven["coalDrop"].count >= 2 )
+			{
+				return true;
+			}
+		return false;
+	}
+	else if (recipe == FURNACERECIPE::BREAD) // 밀가루 추가할 예정 
+	{
+		if (_mInven.count("coalDrop") == 0) return false;  // 없으면 
+		if (_mInven["coalDrop"].count >= 2)
+		{
+			return true;
+		}
+		return false;
+	}
+	else if (recipe == FURNACERECIPE::FISH) // fish 추가할 예정 
+	{
+		if (_mInven.count("coalDrop") == 0) return false;  // 없으면 
+		if (_mInven["coalDrop"].count >= 2)
+		{
+			return true;
+		}
+		return false;
+	}
+	else if (recipe == FURNACERECIPE::MEAT) // meat 추가할 예정 
+	{
+		if (_mInven.count("coalDrop") == 0) return false;  // 없으면 
+		if (_mInven["coalDrop"].count >= 2)
+		{
+			return true;
+		}
+		return false;
+	}
+	else 
+	{
+		return false;
+	}
+	return false;
+}
+
+bool inventory::forgeRecipes(FORGERECIPE recipe, int count)
+{
+	return false;
+}
+
+bool inventory::sweingRecipes(SEWINGRECIPE recipe, int count)
+{
+	return false;
+}
+

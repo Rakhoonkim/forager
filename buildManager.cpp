@@ -37,7 +37,7 @@ void buildManager::render()
 {
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
-		cout << " 눌리냐?? " << endl;
+		//cout << " 눌리냐?? " << endl;
 		KEYMANAGER->setKeyDown(VK_LBUTTON, false);
 	}
 	for (_viBuilding = _vBuilding.begin(); _viBuilding != _vBuilding.end(); _viBuilding++)
@@ -60,7 +60,7 @@ void buildManager::imageSetting()
 	IMAGEMANAGER->addImage("forge", "./image/ui/build/forge.bmp", 96, 96, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("sewingStation", "./image/ui/build/sewingStation.bmp", 96, 144, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("furnace", "./image/ui/build/furnace.bmp", 1170, 129, 13, 1, true, RGB(255, 0, 255));
-
+	KEYANIMANAGER->addDefaultFrameAnimation("furnace", "furnace", 10, false, true);
 	//농경
 	IMAGEMANAGER->addImage("fishTrap", "./image/ui/build/fishTrap.bmp", 48, 48, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("bridge", "./image/ui/build/bridge.bmp", 96, 42, 2, 1, true, RGB(255, 0, 255));
@@ -103,6 +103,7 @@ void buildManager::createImageBuilding(BUILDING build, int idx, int idy)
 		construction = new furnace;
 		construction->init(build, "furnace", idx, idy);
 		construction->setHp(20, 20);
+		construction->setAni();
 		_vBuilding.push_back(construction);
 	}
 	else if (build == BUILDING::FISHTRAP)

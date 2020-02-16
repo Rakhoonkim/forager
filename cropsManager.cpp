@@ -64,7 +64,7 @@ void cropsManager::update()
 	{
 		POINT rnd;
 		rnd = MAPMANAGER->randomObjectTile();
-		cout << rnd.x << rnd.y << endl;
+		//cout << rnd.x << rnd.y << endl;
 	}
 
 	removeCrops();			// 작물 HP < 0시 제거 

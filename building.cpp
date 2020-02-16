@@ -13,7 +13,6 @@ HRESULT building::init(BUILDING building, const char* imageName, int idx, int id
 {
 	_building.object = OBJECT::NONE;
 	_building.tree = TREE::NONE;
-
 	_building.imageName = imageName;
 	_building.building = building;
 	_building.idx = idx;
@@ -43,7 +42,14 @@ HRESULT building::init(BUILDING building, const char* imageName, int idx, int id
 	_building.isClick = false;
 	_isUse = false;
 
+	//크래프트 버튼 
+	_craftButton.isClick = false;
+	_craftPage = false;
+	// 작동중
+	_isWork = false;
+	_timer = 0;
 	//가방지갑
+	_direction = 0;
 
 	_backPack = 1;  // 1- 스몰   2 - 미디엄
 	_wallet = 3;    // 3- 스몰 , 4 - 슬라임
@@ -109,10 +115,22 @@ void building::buttonClick()
 {
 }
 
+void building::craftButton()
+{
+}
+
+void building::isWorking()
+{
+}
+
 void building::setHp(int maxHp, int hp)
 {
 	_building.maxHp = maxHp;
 	_building.hp = hp;
+}
+
+void building::buttonInit()
+{
 }
 
 //■■■■■■■■■■■■■■■■■■■■■■ furnace ■■■■■■■■■■■■■■■■■■■■■■
@@ -149,11 +167,23 @@ void furnace::update()
 	{
 		_furnaceButton[i].rc = RectMake(CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2 - IMAGEMANAGER->findImage("furnaceBackground")->getWidth() / 2 + 15, CAMERAMANAGER->getWorldCamera().cameraY + 140 + i * (IMAGEMANAGER->findImage("furnaceList")->getFrameHeight() + 3), IMAGEMANAGER->findImage("furnaceList")->getFrameWidth(), IMAGEMANAGER->findImage("furnaceList")->getFrameHeight());
 	}
+	_craftButton.rc = RectMake(CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2 + 160, CAMERAMANAGER->getWorldCamera().cameraY + 300, 180, 45);
+	_addButton[0].rc = RectMake(CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2 + 128, CAMERAMANAGER->getWorldCamera().cameraY + 300, 32, 45);
+	_addButton[1].rc = RectMake(CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2 + 160 + IMAGEMANAGER->findImage("craft")->getWidth(), CAMERAMANAGER->getWorldCamera().cameraY + 300, 32, 45);
+
+	isWorking();
 }
 
 void furnace::render()
 {
-	IMAGEMANAGER->findImage(_building.imageName)->frameRender(CAMERAMANAGER->getWorldDC(), _building.x - (IMAGEMANAGER->findImage(_building.imageName)->getFrameWidth() / 2), _building.y - (IMAGEMANAGER->findImage(_building.imageName)->getFrameHeight() / 2) - 15);
+	if (!_isWork)
+	{
+		IMAGEMANAGER->findImage(_building.imageName)->frameRender(CAMERAMANAGER->getWorldDC(), _building.x - (IMAGEMANAGER->findImage(_building.imageName)->getFrameWidth() / 2), _building.y - (IMAGEMANAGER->findImage(_building.imageName)->getFrameHeight() / 2) - 15);
+	}
+	else
+	{
+		IMAGEMANAGER->findImage(_building.imageName)->aniRender(CAMERAMANAGER->getWorldDC(), _building.x - (IMAGEMANAGER->findImage(_building.imageName)->getFrameWidth() / 2), _building.y - (IMAGEMANAGER->findImage(_building.imageName)->getFrameHeight() / 2) - 15,_building.ani);
+	}
 	if (_building.isClick) IMAGEMANAGER->findImage("Ebutton")->render(CAMERAMANAGER->getWorldDC(), _building.centerX - (IMAGEMANAGER->findImage("Ebutton")->getWidth() / 2), _building.centerY - (IMAGEMANAGER->findImage("Ebutton")->getHeight() / 2));
 	//Rectangle(CAMERAMANAGER->getWorldDC(), _building.rc);
 }
@@ -164,19 +194,40 @@ void furnace::EffectRender()
 	{
 		IMAGEMANAGER->findImage("furnaceBackground")->render(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2 - IMAGEMANAGER->findImage("furnaceBackground")->getWidth() / 2, CAMERAMANAGER->getWorldCamera().cameraY + 75);
 
+		//로직 다시 생각하기 
+		if (_craftPage)
+		{
+			IMAGEMANAGER->findImage("craftBackground")->render(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2 + IMAGEMANAGER->findImage("furnaceBackground")->getWidth() / 2, CAMERAMANAGER->getWorldCamera().cameraY + 130);
+			//Rectangle(CAMERAMANAGER->getWorldDC(), _craftButton.rc);
+			IMAGEMANAGER->findImage("craft")->render(CAMERAMANAGER->getWorldDC(), _craftButton.rc.left, _craftButton.rc.top);
+			//Rectangle(CAMERAMANAGER->getWorldDC(), _addButton[0].rc);
+			//Rectangle(CAMERAMANAGER->getWorldDC(), _addButton[1].rc);
+			IMAGEMANAGER->findImage("arrowButton")->frameRender(CAMERAMANAGER->getWorldDC(), _addButton[0].rc.left, _addButton[0].rc.top, 1, 0);
+			IMAGEMANAGER->findImage("arrowButton")->frameRender(CAMERAMANAGER->getWorldDC(), _addButton[1].rc.left, _addButton[1].rc.top, 0, 0);
+			IMAGEMANAGER->findImage("piece")->render(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2 + 240, CAMERAMANAGER->getWorldCamera().cameraY + 150);
+		}
+
+
+
 		for (int i = 0; i < MAXFURNACELIST; i++)
 		{
 			if (!_furnaceButton[i].isEffect)
 			{
-				IMAGEMANAGER->findImage("furnaceList")->alphaFrameRender(CAMERAMANAGER->getWorldDC(), _furnaceButton[i].rc.left, _furnaceButton[i].rc.top, 0, i,120);
+				IMAGEMANAGER->findImage("furnaceList")->alphaFrameRender(CAMERAMANAGER->getWorldDC(), _furnaceButton[i].rc.left, _furnaceButton[i].rc.top, 0, i, 120);
 			}
 			else
 			{
 				IMAGEMANAGER->findImage("furnaceList")->frameRender(CAMERAMANAGER->getWorldDC(), _furnaceButton[i].rc.left, _furnaceButton[i].rc.top, 0, i);
 			}
 			//Rectangle(CAMERAMANAGER->getWorldDC(), _furnaceButton[i].rc);
+			if (_craftPage && _furnaceButton[i].isClick)
+			{
+				IMAGEMANAGER->findImage("craftItem")->frameRender(CAMERAMANAGER->getWorldDC(), _craftButton.rc.left + 30, CAMERAMANAGER->getWorldCamera().cameraY + 135, i, 0);
+				IMAGEMANAGER->findImage("pieceList")->frameRender(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2 + 185, CAMERAMANAGER->getWorldCamera().cameraY + 180, i, 0);
+			}
 		}
 	}
+
 }
 
 void furnace::buttonEffect()
@@ -210,11 +261,188 @@ void furnace::buttonClick()
 	{
 		for (int i = 0; i < MAXFURNACELIST; i++)
 		{
-			if (PtInRect(&_furnaceButton[i].rc, _ptMouse)) _furnaceButton[i].isClick = true;
-			break;
+			if (!_isWork && PtInRect(&_furnaceButton[i].rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
+			{
+				_direction = i;
+				_itemCount = 1;  // 일단 기본값 
+				_craftPage = true;
+				break;
+			}
+		}
+
+		//버튼 클릭 초기화 
+		for (int i = 0; i < MAXFURNACELIST; i++)
+		{
+			_furnaceButton[i].isClick = false;
+		}
+		_furnaceButton[_direction].isClick = true;
+
+
+		//크래프트 버튼 클릭
+		if (PtInRect(&_craftButton.rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
+		{
+			craftButton();
 		}
 	}
 }
+
+void furnace::buttonInit()
+{
+	// 버튼 초기화 하는 함수 
+	_isWork = true;
+	_building.ani->start();
+	_craftPage = false;
+	_isUse = false;
+	_furnaceButton[_direction].isClick = false;
+}
+
+void furnace::isWorking()
+{
+	if (!_isWork) return;
+
+	if (_timer + 5 <= TIMEMANAGER->getWorldTime())
+	{
+		switch (_furnace)
+		{
+		case FURNACERECIPE::COAL:
+			ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::COAL, _building.x, _building.y, _itemCount);
+			break;
+		case FURNACERECIPE::BRICK:
+			ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::BRICK, _building.x, _building.y, _itemCount);
+			break;
+		case FURNACERECIPE::IRON:
+			ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::IRON, _building.x, _building.y, _itemCount);
+			break;
+		case FURNACERECIPE::GOLD:
+			ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::GOLD, _building.x, _building.y, _itemCount);
+			break;
+		case FURNACERECIPE::STEEL:
+			ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::STEEL, _building.x, _building.y, _itemCount);
+			break;
+		case FURNACERECIPE::GLASS:
+			ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::GLASS, _building.x, _building.y, _itemCount);
+			break;
+		case FURNACERECIPE::BREAD:
+			ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::BREAD, _building.x, _building.y, _itemCount);
+			break;
+		case FURNACERECIPE::FISH:
+			ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::FISH, _building.x, _building.y, _itemCount);
+			break;
+		case FURNACERECIPE::MEAT:
+			ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::MEAT, _building.x, _building.y, _itemCount);
+			break;
+		case FURNACERECIPE::NONE:
+			break;
+		default:
+			break;
+		}
+		_isWork = false;
+
+	}
+
+	cout << "작동중이다 " << endl;
+}
+
+void furnace::craftButton()
+{
+	if (_furnaceButton[0].isClick)
+	{
+		if (ITEMMANAGER->getInventory()->foranceRecipes(FURNACERECIPE::COAL, _itemCount))
+		{
+			ITEMMANAGER->getInventory()->removeInven("woodDrop", 2);
+			_timer = TIMEMANAGER->getWorldTime(); //현재시간등록 
+			_furnace = FURNACERECIPE::COAL;
+			buttonInit();
+		}
+	}
+	else if (_furnaceButton[1].isClick)
+	{
+		if (ITEMMANAGER->getInventory()->foranceRecipes(FURNACERECIPE::BRICK, _itemCount))
+		{
+			ITEMMANAGER->getInventory()->removeInven("stoneDrop", 2);
+			ITEMMANAGER->getInventory()->removeInven("coalDrop", 1);
+			_timer = TIMEMANAGER->getWorldTime(); //현재시간등록 
+			_furnace = FURNACERECIPE::BRICK;
+			buttonInit();
+		}
+	}
+	else if (_furnaceButton[2].isClick)
+	{
+		if (ITEMMANAGER->getInventory()->foranceRecipes(FURNACERECIPE::IRON, _itemCount))
+		{
+			ITEMMANAGER->getInventory()->removeInven("coalDrop", 1);
+			ITEMMANAGER->getInventory()->removeInven("ironOreDrop", 2);
+			_timer = TIMEMANAGER->getWorldTime(); //현재시간등록 
+			_furnace = FURNACERECIPE::IRON;
+			buttonInit();
+		}
+	}
+	else if (_furnaceButton[3].isClick)
+	{
+		if (ITEMMANAGER->getInventory()->foranceRecipes(FURNACERECIPE::GOLD, _itemCount))
+		{
+			ITEMMANAGER->getInventory()->removeInven("coalDrop", 1);
+			ITEMMANAGER->getInventory()->removeInven("goldOreDrop", 2);
+			_timer = TIMEMANAGER->getWorldTime(); //현재시간등록 
+			_furnace = FURNACERECIPE::GOLD;
+			buttonInit();
+		}
+	}
+	else if (_furnaceButton[4].isClick)
+	{
+		if (ITEMMANAGER->getInventory()->foranceRecipes(FURNACERECIPE::STEEL, _itemCount))
+		{
+			ITEMMANAGER->getInventory()->removeInven("coalDrop", 2);
+			ITEMMANAGER->getInventory()->removeInven("goldOreDrop", 2);
+			ITEMMANAGER->getInventory()->removeInven("ironOreDrop", 2);
+			_timer = TIMEMANAGER->getWorldTime(); //현재시간등록 
+			_furnace = FURNACERECIPE::STEEL;
+			buttonInit();
+		}
+	}
+	else if (_furnaceButton[5].isClick)
+	{
+		if (ITEMMANAGER->getInventory()->foranceRecipes(FURNACERECIPE::GLASS, _itemCount))
+		{
+			ITEMMANAGER->getInventory()->removeInven("coalDrop", 2);
+			//모래 추가 예정
+			_timer = TIMEMANAGER->getWorldTime(); //현재시간등록 
+			_furnace = FURNACERECIPE::GLASS;
+			buttonInit();
+		}
+	}
+	else if (_furnaceButton[6].isClick)  //============================================== 추가 예정
+	{
+		if (ITEMMANAGER->getInventory()->foranceRecipes(FURNACERECIPE::BREAD, _itemCount))
+		{
+			ITEMMANAGER->getInventory()->removeInven("coalDrop", 1);
+			_timer = TIMEMANAGER->getWorldTime(); //현재시간등록 
+			_furnace = FURNACERECIPE::BREAD;
+			buttonInit();
+		}
+	}
+	else if (_furnaceButton[7].isClick)
+	{
+		if (ITEMMANAGER->getInventory()->foranceRecipes(FURNACERECIPE::FISH, _itemCount))
+		{
+			ITEMMANAGER->getInventory()->removeInven("coalDrop", 1);
+			_timer = TIMEMANAGER->getWorldTime(); //현재시간등록 
+			_furnace = FURNACERECIPE::FISH;
+			buttonInit();
+		}
+	}
+	else if (_furnaceButton[8].isClick)
+	{
+		if (ITEMMANAGER->getInventory()->foranceRecipes(FURNACERECIPE::MEAT, _itemCount))
+		{
+			ITEMMANAGER->getInventory()->removeInven("coalDrop", 1);
+			_timer = TIMEMANAGER->getWorldTime(); //현재시간등록 
+			_furnace = FURNACERECIPE::MEAT;
+			buttonInit();
+		}
+	}
+}
+
 
 //■■■■■■■■■■■■■■■■■■■■■■ forge ■■■■■■■■■■■■■■■■■■■■■■
 void forge::update()
@@ -257,7 +485,7 @@ void forge::EffectRender()
 		{
 			if (!_forgeButton[i].isEffect)
 			{
-				IMAGEMANAGER->findImage("forgeList")->alphaFrameRender(CAMERAMANAGER->getWorldDC(), _forgeButton[i].rc.left, _forgeButton[i].rc.top, 0, i,120);
+				IMAGEMANAGER->findImage("forgeList")->alphaFrameRender(CAMERAMANAGER->getWorldDC(), _forgeButton[i].rc.left, _forgeButton[i].rc.top, 0, i, 120);
 			}
 			else
 			{
@@ -342,7 +570,7 @@ void sewingStation::EffectRender()
 
 		if (!_sewingButton[1].isEffect)
 		{
-			IMAGEMANAGER->findImage("sewingList")->alphaFrameRender(CAMERAMANAGER->getWorldDC(), _sewingButton[1].rc.left, _sewingButton[1].rc.top, 0, _backPack,120);
+			IMAGEMANAGER->findImage("sewingList")->alphaFrameRender(CAMERAMANAGER->getWorldDC(), _sewingButton[1].rc.left, _sewingButton[1].rc.top, 0, _backPack, 120);
 		}
 		else
 		{
@@ -356,7 +584,7 @@ void sewingStation::EffectRender()
 		else
 		{
 			IMAGEMANAGER->findImage("sewingList")->frameRender(CAMERAMANAGER->getWorldDC(), _sewingButton[2].rc.left, _sewingButton[2].rc.top, 0, _wallet);
-		}	
+		}
 	}
 }
 

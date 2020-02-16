@@ -33,7 +33,7 @@ void cursor::update()
 	_cursor.y = CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y;
 	_cursor.idx = _cursor.x / 60;
 	_cursor.idy = _cursor.y / 60;
-	cout << " idx : " << _cursor.idx << " idy " << _cursor.idy << endl;
+	//cout << " idx : " << _cursor.idx << " idy " << _cursor.idy << endl;
 }
 
 void cursor::render()

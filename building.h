@@ -12,10 +12,21 @@ protected:
 	tagButton _furnaceButton[MAXFURNACELIST];
 	tagButton _forgeButton[MAXFORGELIST];
 	tagButton _sewingButton[MAXSEWINGLIST];
+
+	tagButton _craftButton;
+	tagButton _addButton[2];
+	FURNACERECIPE _furnace;
+	int _direction; // 현재 버튼을 어딜 가리키는지 
+	float _timer;
+	bool _craftPage;
+
+	bool _isWork;
+	int _itemCount;
+
 	int _backPack;
 	int _wallet;
-	bool _isUse;
 
+	bool _isUse;
 public:
 	building();
 	~building();
@@ -27,7 +38,11 @@ public:
 	virtual void EffectRender();
 	virtual void buttonEffect();
 	virtual void buttonClick();
+	virtual void craftButton();
+	virtual void isWorking();
 	virtual void setHp(int maxHp, int hp);
+	virtual void buttonInit();
+	virtual void setAni() { _building.ani = KEYANIMANAGER->findAnimation("furnace"); }
 	virtual bool getUsed() { return _isUse; }
 	virtual void setUsed() { _isUse = false; }
 	virtual tagObject* getBuilding() { return &_building; }
@@ -46,6 +61,9 @@ public:
 	//제어함수 
 	virtual void buttonEffect();
 	virtual void buttonClick();
+	virtual void buttonInit();
+	virtual void isWorking();
+	virtual void craftButton();  
 };
 
 // forge

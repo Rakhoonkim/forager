@@ -22,13 +22,18 @@ public:
 
 	void imageSetting();
 	void Dropitem(const char* imageName, float x, float y);
-	void Dropitem(OBJECT object, float x, float y);
+	void Dropitem(OBJECT object, float x, float y );
 	void Dropitem(TREE tree, float x, float y);
+
+	//recipe
+	void DropFurnaceItem(FURNACERECIPE recipe, float x, float y, int num);
 
 	void findItem();
 	void removeItem();
 
 	vector<item*> getVItem()			{ return _vItem; }
 	vector<item*>::iterator getViItem() { return _viItem; }
+
+	inventory* getInventory() { return _inven; }
 };
 

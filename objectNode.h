@@ -73,3 +73,42 @@ struct tagInven
 	int centerX, centerY;		// 인벤토리 위치
 	int num;			// 번호
 };
+
+// recipe 
+
+
+enum class FURNACERECIPE
+{
+	COAL,
+	BRICK,
+	IRON,
+	GOLD,
+	STEEL,
+	GLASS,
+	BREAD,
+	FISH,
+	MEAT,
+	NONE,
+};
+
+enum class FORGERECIPE
+{
+	COIN,
+	SHOVEL,
+	SWORD,
+	PICKAXE,
+	BOTTLE,
+	NONE,
+};
+
+enum class SEWINGRECIPE
+{
+	THREAD,
+	SMALL_BACKPACK,
+	MEDIUM_BACKPACK,
+	SMALL_WALLET,
+	SLIME_WALLET,
+	NONE,
+};
+
+
