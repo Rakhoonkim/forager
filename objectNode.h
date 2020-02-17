@@ -39,6 +39,7 @@ struct tagObject
 	OBJECT object;
 	TREE tree;
 	BUILDING building;
+	DIRECTION direc;
 	ENEMY enemy;
 	RECT rc;
 	animation* ani;
@@ -46,6 +47,7 @@ struct tagObject
 	float centerX, centerY;
 	float x, y;
 	float time;
+	float angle;
 	int idx, idy;
 	int frameX, frameY;
 	int speed;
