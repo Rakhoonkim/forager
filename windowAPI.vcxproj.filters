@@ -85,6 +85,9 @@
     <Filter Include="playGround\object\building">
       <UniqueIdentifier>{ca7f4f63-f8ea-4b18-9b1d-68c523fac5e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="playGround\object\enemy">
+      <UniqueIdentifier>{9dde42bc-fb30-42c1-b433-efd68cb30610}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -243,6 +246,12 @@
     <ClInclude Include="equipment.h">
       <Filter>playGround\ui</Filter>
     </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>playGround\object\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyState.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -379,6 +388,12 @@
     </ClCompile>
     <ClCompile Include="equipment.cpp">
       <Filter>playGround\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>playGround\object\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyState.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

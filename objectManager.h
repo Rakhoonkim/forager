@@ -2,7 +2,7 @@
 #include "gameNode.h"
 #include "cropsManager.h"
 #include "buildManager.h"
-
+#include "enemyManager.h"
 
 class objectManager : public gameNode
 {
@@ -10,6 +10,8 @@ class objectManager : public gameNode
 private:
 	cropsManager* _cropsManager;  //cropsManager   
 	buildManager* _buildManager;  //buildManager
+	enemyManager* _enemyManager;  //enemyManager
+
 public:
 	objectManager();
 	~objectManager();
@@ -21,5 +23,6 @@ public:
 
 	cropsManager* get_CropsManager() { return _cropsManager; }
 	buildManager* get_buildManager() { return _buildManager; }
+	enemyManager* get_enemyManager() { return _enemyManager; }
 };
 

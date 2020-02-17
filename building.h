@@ -111,8 +111,17 @@ public:
 //FISHTRAP
 class fishTrap : public building
 {
+private:
+	float _startY;
+
+	bool _upDown;
+	bool _caught;
 public:
-	fishTrap() {}
+	fishTrap() {
+		_caught = false; 
+		_upDown = false;
+		_startY = 10;
+	}
 	~fishTrap() {}
 
 	virtual void update();

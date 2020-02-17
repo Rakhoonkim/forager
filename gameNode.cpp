@@ -84,6 +84,7 @@ void gameNode::update()
 	ITEMMANAGER->update();
 	UIMANAGER->update();     // UI MANAGER
 	EFFECTMANAGER->update();
+	CAMERAMANAGER->update();
 }
 
 void gameNode::render()

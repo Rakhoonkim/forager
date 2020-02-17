@@ -162,7 +162,9 @@
     <ClInclude Include="cursorManager.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="effectManager.h" />
+    <ClInclude Include="enemy.h" />
     <ClInclude Include="enemyManager.h" />
+    <ClInclude Include="enemyState.h" />
     <ClInclude Include="equipment.h" />
     <ClInclude Include="gameNode.h" />
     <ClInclude Include="image.h" />
@@ -215,7 +217,9 @@
     <ClCompile Include="cursorManager.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effectManager.cpp" />
+    <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemyManager.cpp" />
+    <ClCompile Include="enemyState.cpp" />
     <ClCompile Include="equipment.cpp" />
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="image.cpp" />

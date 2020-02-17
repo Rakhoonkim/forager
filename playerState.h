@@ -22,6 +22,9 @@ protected:
 	float _angle;
 	float _speed;
 	int _direction; // 0 ¿ÞÂÊ 1 ¿À¸¥ÂÊ 
+	float _width;
+	float _height;
+	float _acel;
 public:
 	playerState();
 	virtual	~playerState();
@@ -33,6 +36,8 @@ public:
 	virtual void setSpeed(float speed) { _speed = speed; }
 	virtual void setAngleKeyCollision();
 	virtual void setWeaponXY();
+	virtual void shadow();
+	virtual void direction();
 	virtual float getAngle() { return _angle; }
 };
 
@@ -45,6 +50,7 @@ public:
 	virtual void changeImage(int right);
 	virtual void setAngleKeyCollision();
 	virtual void setWeaponXY();
+	virtual void shadow();
 };
 
 

@@ -54,7 +54,7 @@ void itemDrop::jump()
 
 	_item->y -= _item->jumpPower;
 	_item->jumpPower -= _item->jumpGravity;
-
+	/*_item->jumpGravity += 0.1f;*/
 }
 
 void itemDrop::move()
@@ -64,7 +64,10 @@ void itemDrop::move()
 
 	_item->x += cosf(_item->angle) * _item->speed;
 	_item->y += -sinf(_item->angle) * _item->speed;
-
+	//if (_item->speed <= 4)
+	//{
+	//	_item->speed += 0.25;
+	//}
 	if (_item->time + 0.25 <= TIMEMANAGER->getWorldTime())
 	{
 		_item->move = false;

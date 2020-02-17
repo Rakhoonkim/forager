@@ -16,14 +16,16 @@ HRESULT player::init()
 	_player.weaponImage = IMAGEMANAGER->findImage("playerPick");
 	_player.weaponAni = KEYANIMANAGER->findAnimation("playerPick_R");
 	_player.playerAni->start();
+	_player.direc = DIRECTION::RIGHT;
 	_player.idx = 22;
 	_player.idy = 18;
 	_player.x = _player.idx * 60 + 30;
 	_player.y = _player.idy * 60 + 30;
 	_player.weaponX = _player.x -15;
 	_player.weaponY = _player.y -5;
-	_player.direction = 0;     // 0 왼쪽 1 오른쪽 
-	
+	_player.imageDirection = 0;     // 0 왼쪽 1 오른쪽 
+	_player.speed = 5;
+	_player.acel = 1.1;
 	_player.hp = 3;
 	_player.maxHp = 3;
 	_player.health = 100;
@@ -41,6 +43,8 @@ HRESULT player::init()
 
 	_player.rc = RectMake(_player.x, _player.y, _player.playerImage->getFrameWidth(), _player.playerImage->getFrameHeight());
 
+
+	CAMERAMANAGER->setCameraInit(_player.x, _player.y);
 	return S_OK;
 }
 
@@ -62,7 +66,7 @@ void player::update()
 		KEYMANAGER->setKeyDown(VK_LBUTTON, false);
 	}
 	_player.rc = RectMake(_player.x, _player.y, _player.playerImage->getFrameWidth(), _player.playerImage->getFrameHeight());
-
+	cout << "마우스 : x" <<  _ptMouse.x << endl;
 }
 
 void player::render()
@@ -70,7 +74,7 @@ void player::render()
 	_player.playerImage->aniRender(CAMERAMANAGER->getWorldDC(), _player.x, _player.y, _player.playerAni);
 	_player.weaponImage->aniRender(CAMERAMANAGER->getWorldDC(), _player.weaponX, _player.weaponY, _player.weaponAni);
 
-	Rectangle(CAMERAMANAGER->getWorldDC(), _player.rc);
+	//Rectangle(CAMERAMANAGER->getWorldDC(), _player.rc);
 	char str[100];
 	sprintf_s(str, "%f", _state->getAngle());
 	TextOut(CAMERAMANAGER->getWorldDC(), _player.x, _player.y+50, str, strlen(str));
@@ -80,31 +84,33 @@ void player::render()
 	char strIdy[100];
 	sprintf_s(strIdy, "idy : %d", _player.idy);
 	TextOut(CAMERAMANAGER->getWorldDC(), _player.x+ 100, _player.y, strIdy, strlen(strIdy));
-
-
 }
 
 void player::KeyControl()
 {
 	if (_keyCount > 2) return;
 	// UP
+
 	if (KEYMANAGER->isStayKeyDown('W'))
 	{
 		if (!_stateChange)
 		{
 			_keyCount++;
 			_state = _playerMove;
-			_state->changeImage(_player.direction);
+			_state->changeImage(_player.imageDirection);
 			_stateChange = true;
 			_state->setAngle(1.57f);
 			_state->setSpeed(5);
+			_player.direc = DIRECTION::UP;
+			_player.acel = 1;
 		}
+		acelPlus();
 	}
 	if (KEYMANAGER->isOnceKeyUp('W'))
 	{
 		_keyCount--;
 		_state = _playerIdle;
-		_state->changeImage(_player.direction);
+		_state->changeImage(_player.imageDirection);
 		_stateChange = false;
 	}
 	//DOWN
@@ -114,17 +120,20 @@ void player::KeyControl()
 		{
 			_keyCount++;
 			_state = _playerMove;
-			_state->changeImage(_player.direction);
+			_state->changeImage(_player.imageDirection);
 			_stateChange = true;
 			_state->setAngle(4.71f);
 			_state->setSpeed(5);
+			_player.direc = DIRECTION::DOWN;
+			_player.acel = 1;
 		}
+		acelPlus();
 	}
 	if (KEYMANAGER->isOnceKeyUp('S'))
 	{
 		_keyCount--;
 		_state = _playerIdle;
-		_state->changeImage(_player.direction);
+		_state->changeImage(_player.imageDirection);
 		_stateChange = false;
 	}
 	// LEFT
@@ -133,19 +142,21 @@ void player::KeyControl()
 		if (!_stateChange)
 		{
 			_keyCount++;
-			_player.direction = 0;
+			_player.imageDirection = 0;
 			_state = _playerMove;
-			_state->changeImage(_player.direction);
+			_state->changeImage(_player.imageDirection);
 			_stateChange = true;
+			_player.direc = DIRECTION::LEFT;
+			_player.acel = 1;
 		}
+		acelPlus();
 	}
 	if (KEYMANAGER->isOnceKeyUp('A'))
 	{
 		_keyCount--;
 		_state = _playerIdle;
-		_state->changeImage(_player.direction);
+		_state->changeImage(_player.imageDirection);
 		_stateChange = false;
-
 	}
 	// RIGHT
 	if (KEYMANAGER->isStayKeyDown('D'))
@@ -153,11 +164,14 @@ void player::KeyControl()
 		if (!_stateChange)
 		{
 			_keyCount++;
-			_player.direction = 1;
+			_player.imageDirection = 1;
 			_state = _playerMove;
-			_state->changeImage(_player.direction);
+			_state->changeImage(_player.imageDirection);
 			_stateChange = true;
+			_player.direc = DIRECTION::RIGHT;
+			_player.acel = 1;
 		}
+		acelPlus();
 	}
 	if (KEYMANAGER->isOnceKeyUp('D'))
 	{
@@ -174,5 +188,12 @@ void player::IndexUpdate()
 	_player.idx = (int)(_player.x + 30) / 60;
 	_player.idy = (int)(_player.y + 30) / 60;
 }
+
+void player::acelPlus()
+{
+	if (_player.acel >= 2) return;
+	_player.acel += 0.05;
+}
+
 
 

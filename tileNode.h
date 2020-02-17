@@ -95,6 +95,15 @@ enum class BUILDING
 	NONE,
 };
 
+enum class ENEMY
+{
+	SLIME,
+	BOAR,
+	DEMON,
+	GREAT_DEMON,
+};
+
+
 enum class TYPE
 {
 	TERRAIN,		// ÁöÇü 

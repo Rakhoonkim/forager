@@ -7,8 +7,11 @@ struct tagCamera
 	HDC hdc;
 	image* image;
 	float cameraX, cameraY;
+	float cameraCenterX, cameraCenterY;
 	float cameraSizeX, cameraSizeY;
 	float cameraWorldSizeX, cameraWorldSizeY;
+	float cameraAngle;
+	float cameraSpeed;
 };
 class cameraManager : public singletonBase<cameraManager>
 {
@@ -17,6 +20,8 @@ private:
 	tagCamera _worldCamera;
 	tagCamera _mapToolCamera;
 
+	
+	bool _cameraMove;
 
 public:
 	cameraManager();
@@ -27,6 +32,7 @@ public:
 	void update();
 	void render();
 
+	void move();
 	// 카메라 접근자 
 	tagCamera getWorldCamera()		{ return _worldCamera; }
 	tagCamera getMapToolCamera()	{ return _mapToolCamera; }
@@ -35,10 +41,10 @@ public:
 	void setCameraSizeXY(float x, float y);
 	void setCameraXY(int x, int y);
 	void setCameraXY(float x, float y);
-
+	void setCameraInit(float x, float y);
 	void setCameraMapToolXY(int x, int y);
 	
-
+	void ColiisionWorldCamera();
 	// 맵툴 카메라 
 	void setMapToolCameraXY(float x, float y);
 

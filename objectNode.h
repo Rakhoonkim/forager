@@ -2,6 +2,16 @@
 #include "stdafx.h"
 
 
+//플레이어의 방향 
+
+enum class DIRECTION
+{
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT,
+};
+
 struct tagPlayer
 {
 	animation* playerAni;
@@ -9,23 +19,27 @@ struct tagPlayer
 	image* playerImage;
 	image* weaponImage;
 	RECT rc;
+	DIRECTION direc;
 	float x, y;
 	float weaponX, weaponY;
+	float acel;
 	int idx, idy;
 	int hp, maxHp;
 	int speed;
 	int damage;
 	int health;
-	int direction;
+	int imageDirection;
 };
 
 
 // 작물 , 몬스터, 건물
 struct tagObject
 {
+	TYPE type;
 	OBJECT object;
 	TREE tree;
 	BUILDING building;
+	ENEMY enemy;
 	RECT rc;
 	animation* ani;
 	const char* imageName;
@@ -110,5 +124,4 @@ enum class SEWINGRECIPE
 	SLIME_WALLET,
 	NONE,
 };
-
 

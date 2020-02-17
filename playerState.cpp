@@ -16,6 +16,8 @@ HRESULT playerState::init(tagPlayer* player)
 	_angle = 0;
 	_speed = 0;
 	_direction = false;
+	_width = _player->playerImage->getFrameWidth();
+	_height = _player->playerImage->getFrameHeight();
 	return S_OK;
 }
 
@@ -34,6 +36,15 @@ void playerState::setAngleKeyCollision()
 
 void playerState::setWeaponXY()
 {
+}
+
+void playerState::shadow()
+{
+}
+
+void playerState::direction()
+{
+
 }
 
 playerIdle::playerIdle(tagPlayer* player)
@@ -78,17 +89,18 @@ playerMove::playerMove(tagPlayer* player)
 void playerMove::update()
 {
 	//cout << "나 이동상태야 " << endl;
-	_player->x += cosf(_angle) * _speed;
-	_player->y += -sinf(_angle) * _speed;
+	_player->x += cosf(_angle) * _speed * TIMEMANAGER->getElapsedTime() * 50 * _player->acel;
+	_player->y += -sinf(_angle) * _speed * TIMEMANAGER->getElapsedTime() * 50 * _player->acel;
 
 
 	setWeaponXY();
 	setAngleKeyCollision();
+	shadow();
 }
 
 void playerMove::changeImage(int right)
 {
-	if (right == 1)
+	if (right == 1)  // 오른쪽 
 	{
 		_player->playerImage = IMAGEMANAGER->findImage("playerWalk");
 		_player->playerAni = KEYANIMANAGER->findAnimation("playerWalk_R");
@@ -99,7 +111,7 @@ void playerMove::changeImage(int right)
 		_angle = 0;
 		_direction = 1;
 	}
-	else
+	else  // 왼쪽 
 	{
 		_player->playerImage = IMAGEMANAGER->findImage("playerWalk");
 		_player->playerAni = KEYANIMANAGER->findAnimation("playerWalk_L");
@@ -180,7 +192,7 @@ void playerMove::setAngleKeyCollision()
 
 void playerMove::setWeaponXY()
 {
-	if (_player->direction == 1) // 오른쪽
+	if (_player->imageDirection == 1) // 오른쪽
 	{
 		_player->weaponX = _player->x - 20;
 		_player->weaponY = _player->y - 5;
@@ -189,6 +201,38 @@ void playerMove::setWeaponXY()
 	{
 		_player->weaponX = _player->x - 25;
 		_player->weaponY = _player->y - 5;
+	}
+}
+
+void playerMove::shadow()
+{
+	if (_player->direc == DIRECTION::UP) // 위
+	{
+		if (RND->getInt(2) == 1)
+		{
+			EFFECTMANAGER->play("shadow", _player->x + (_width / 2) - RND->getFromFloatTo(-5.0f, 5.0f), _player->y + _height - RND->getFromFloatTo(-5.0f, 5.0f));
+		}
+	}
+	else if(_player->direc == DIRECTION::DOWN) // 아래  
+	{
+		if (RND->getInt(3) == 1)
+		{
+			EFFECTMANAGER->play("shadow", _player->x + (_width / 2) - RND->getFromFloatTo(-5.0f,5.0f), _player->y + (_height / 5) - RND->getFromFloatTo(-5.0f, 5.0f));
+		}
+	}
+	else if (_player->direc == DIRECTION::LEFT) // 오른쪽 
+	{
+		if (RND->getInt(2) == 1)
+		{
+			EFFECTMANAGER->play("shadow", _player->x + _width - RND->getFromFloatTo(-5.0f, 5.0f), _player->y + _height - RND->getFromFloatTo(-5.0f, 5.0f));
+		}
+	}
+	else if (_player->direc == DIRECTION::RIGHT) // 아래  
+	{
+		if (RND->getInt(2) == 1)
+		{
+			EFFECTMANAGER->play("shadow", _player->x - RND->getFromFloatTo(-5.0f, 5.0f), _player->y + _height - RND->getFromFloatTo(-5.0f, 5.0f));
+		}
 	}
 }
 

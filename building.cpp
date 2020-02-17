@@ -940,14 +940,40 @@ void sewingStation::craftButton() // 수정
 // 입력하는것 수정할 것 
 void fishTrap::update()
 {
-	if (KEYMANAGER->isOnceKeyDown('E'))
+	if (!_upDown)
 	{
-		if (!_isWork && !_isUse)
+		_building.y += TIMEMANAGER->getElapsedTime() * 3;
+		if ((_building.idy + 1) * 60 - 20  <= _building.y)
 		{
-			_isWork = true;
-			_timer = TIMEMANAGER->getWorldTime();
+			_upDown = true;
 		}
+	}
+	else
+	{
+		_building.y -= TIMEMANAGER->getElapsedTime() * 3;
+		if (_building.idy  * 60 + 35 >= _building.y)
+		{
+			_upDown = false;
+		}
+	}
 
+
+	if (_building.isClick)
+	{
+		if (KEYMANAGER->isOnceKeyDown('E'))
+		{
+			if (!_caught)
+			{
+				_isWork = true;
+				_timer = TIMEMANAGER->getWorldTime();
+			}
+
+			if (_caught)
+			{
+				ITEMMANAGER->DropFishTrapItem(_building.x, _building.y);
+				_caught = false;
+			}
+		}
 	}
 	isWorking();
 }
@@ -955,7 +981,8 @@ void fishTrap::update()
 void fishTrap::render()
 {
 	IMAGEMANAGER->findImage(_building.imageName)->render(CAMERAMANAGER->getWorldDC(), _building.x - (IMAGEMANAGER->findImage(_building.imageName)->getWidth() / 2), _building.y - (IMAGEMANAGER->findImage(_building.imageName)->getHeight() / 2));
-	if ((_building.isClick)) IMAGEMANAGER->findImage("EbuttonFarming")->render(CAMERAMANAGER->getWorldDC(), _building.x - (IMAGEMANAGER->findImage("EbuttonFarming")->getWidth() / 2), _building.y - (IMAGEMANAGER->findImage("EbuttonFarming")->getHeight() / 2) - 10);
+	if (!_isWork &&_building.isClick) IMAGEMANAGER->findImage("EbuttonFarming")->render(CAMERAMANAGER->getWorldDC(), _building.x - (IMAGEMANAGER->findImage("EbuttonFarming")->getWidth() / 2), _building.y - (IMAGEMANAGER->findImage("EbuttonFarming")->getHeight() / 2) - 10);
+	if(_caught) IMAGEMANAGER->findImage("caught")->render(CAMERAMANAGER->getWorldDC(), _building.x - (IMAGEMANAGER->findImage("caught")->getWidth() / 2), _building.y - (IMAGEMANAGER->findImage("caught")->getHeight() / 2) - 10);
 }
 
 void fishTrap::EffectRender()
@@ -968,7 +995,7 @@ void fishTrap::isWorking()
 
 	if (_timer + 15 < TIMEMANAGER->getWorldTime())
 	{
-		ITEMMANAGER->DropFishTrapItem(_building.x, _building.y);
+		_caught = true;
 		_isWork = false;
 	}
 

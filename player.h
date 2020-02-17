@@ -27,7 +27,7 @@ public:
 
 	void KeyControl();		// KEY
 	void IndexUpdate();		// PLAYER INDEX 업데이트
-
+	void acelPlus();
 	tagPlayer* get_PlayerAddress() { return &_player; }
 	RECT get_playerRect() { return _player.rc; }
 };

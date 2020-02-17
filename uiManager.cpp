@@ -128,6 +128,9 @@ void uiManager::imageSetting()
 	IMAGEMANAGER->addFrameImage("craftItem", "./image/ui/build/craftItem.bmp", 405, 135, 9, 3, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("piece", "./image/ui/build/piece.bmp", 84, 16, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("pieceList", "./image/ui/build/pieceList.bmp", 954, 297, 9, 3, true, RGB(255, 0, 255));
+
+	//fishtrap
+	IMAGEMANAGER->addImage("caught", "./image/ui/build/caught.bmp", 112, 16, true, RGB(255, 0, 255));
 }
 
 void uiManager::optionsSetting()

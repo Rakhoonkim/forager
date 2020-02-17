@@ -15,7 +15,7 @@ HRESULT buildManager::init()
 	createImageBuilding(BUILDING::FURNACE, 17, 14);
 	createImageBuilding(BUILDING::FORGE, 20, 14);
 	createImageBuilding(BUILDING::SEWING_STATION, 23, 14);
-	//createImageBuilding(BUILDING::FORGE, 22, 16);
+	createImageBuilding(BUILDING::FISHTRAP, 28, 20);
 	_isUsed = false;
 	return S_OK;
 }
@@ -80,13 +80,11 @@ void buildManager::imageSetting()
 
 
 	//¿¬±â
-
 	IMAGEMANAGER->addFrameImage("smoke", "./image/ui/build/smoke.bmp", 135, 26, 5, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("smokeExplosion", "./image/ui/build/smokeExplosion.bmp", 135, 26, 5, 1, true, RGB(255, 0, 255));
 	EFFECTMANAGER->addEffect("smoke", "smoke", 135, 26, 27, 26, 1, 0.1f, 10);
-
-
 	EFFECTMANAGER->addEffect("smokeExplosion", "smokeExplosion", 135, 26, 27, 26, 10, 0.8f, 5);
+
 
 }
 
