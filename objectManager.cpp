@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "objectManager.h"
+#include "playerManager.h"
 
 objectManager::objectManager()
 {
@@ -13,7 +14,7 @@ HRESULT objectManager::init()
 {
 	_cropsManager = new cropsManager;
 	_cropsManager->init();
-
+	// ġŲ ġŲ ġŲ ġŲ ġŲ ġŲ
 	_buildManager = new buildManager;
 	_buildManager->init();
 

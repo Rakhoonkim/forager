@@ -66,7 +66,6 @@ void player::update()
 		KEYMANAGER->setKeyDown(VK_LBUTTON, false);
 	}
 	_player.rc = RectMake(_player.x, _player.y, _player.playerImage->getFrameWidth(), _player.playerImage->getFrameHeight());
-	cout << "¸¶¿ì½º : x" <<  _ptMouse.x << endl;
 }
 
 void player::render()

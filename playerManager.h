@@ -2,10 +2,8 @@
 #include "gameNode.h"
 #include "player.h"
 
-
 class cropsManager;
 class buildManager;
-
 
 class playerManager: public gameNode
 {
@@ -34,5 +32,7 @@ public:
 	void objectAttack(int num);		  // 공격하기 
 	void set_CropsManager(cropsManager* cropsManager) { _cropsManager = cropsManager; }
 	void set_BuildManager(buildManager* buildManager) { _buildManager = buildManager; }
+
+	player* get_player() { return _player; }
 };
 

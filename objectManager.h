@@ -4,6 +4,8 @@
 #include "buildManager.h"
 #include "enemyManager.h"
 
+class playerManager;
+
 class objectManager : public gameNode
 {
 
@@ -24,5 +26,6 @@ public:
 	cropsManager* get_CropsManager() { return _cropsManager; }
 	buildManager* get_buildManager() { return _buildManager; }
 	enemyManager* get_enemyManager() { return _enemyManager; }
+
 };
 

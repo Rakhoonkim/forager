@@ -1,25 +1,32 @@
 #pragma once
 #include "stdafx.h"
 
+class enemyStateManager;
+
 class enemyState
 {
 protected:
 	tagObject* _enemy;
 
-	bool _isMove;
+	enemyStateManager* _enemyStateManager;
 public:
 	enemyState();
 	~enemyState();
-
+	virtual HRESULT init();
 	virtual HRESULT init(tagObject* enemy);
 	virtual void update();
 	virtual void release();
 	virtual void render();
 
-	virtual void IdleImage();
-	virtual void MoveImage();
-	virtual void AttackImage();
-	virtual void JumpImage();
+	virtual void ChangeImage();
+	virtual void Enter();
+
+
+	virtual void direction(); // 방향값 정의
+	virtual void Jump();
+
+	//enemyStateManagerLink연결
+	virtual void Set_enemyStateManager(enemyStateManager* enemyStateManager) { _enemyStateManager = enemyStateManager; }
 };
 
 
@@ -27,25 +34,50 @@ public:
 class enemyIdle : public enemyState
 {
 public:
-	enemyIdle(tagObject* enemy) { _enemy = enemy; }
+	enemyIdle(enemyStateManager* enemyStateManager, tagObject* enemy) { this->Set_enemyStateManager(enemyStateManager); _enemy = enemy; }
 	~enemyIdle() {}
+
+	virtual void Enter();
 	virtual void update();
+	virtual void ChangeImage();
 };
 
 
 class enemyMove : public enemyState
 {
 public:
-	enemyMove(tagObject* enemy) { _enemy = enemy; }
+	enemyMove(enemyStateManager* enemyStateManager, tagObject* enemy) { this->Set_enemyStateManager(enemyStateManager); _enemy = enemy; }
 	~enemyMove() {}
+	virtual void Enter();
 	virtual void update();
+	virtual void ChangeImage();
 };
 
 class enemyAttack : public enemyState
 {
 public:
-	enemyAttack(tagObject* enemy) { _enemy = enemy; }
+	enemyAttack(enemyStateManager* enemyStateManager, tagObject* enemy) { this->Set_enemyStateManager(enemyStateManager); _enemy = enemy; }
 	~enemyAttack() {}
+
+	virtual void Enter();
 	virtual void update();
+	virtual void ChangeImage();
 };
 
+class enemyJump : public enemyState
+{
+private:
+	DIRECTION _direction;
+	float _jumpPower;
+	float _gravity;
+public:
+	enemyJump(enemyStateManager* enemyStateManager, tagObject* enemy) { this->Set_enemyStateManager(enemyStateManager); _enemy = enemy; }
+	~enemyJump() {}
+
+	virtual void Enter();
+	virtual void update();
+	virtual void ChangeImage();
+	virtual void direction();
+	virtual void JumpInit();
+	virtual void Jump();
+};

@@ -2,14 +2,18 @@
 #include "gameNode.h"
 #include "enemy.h"
 
+class player;
+
 class enemyManager : public gameNode
 {
 private:
 	vector<enemy*>				_vEnemy;
 	vector<enemy*>::iterator	_viEnemy;
 	
-	enemy* _enemy;
+	float _timer;   
 
+	enemy* _enemy;
+	player* _player;
 public:
 	enemyManager();
 	~enemyManager();
@@ -19,5 +23,8 @@ public:
 	void render();
 
 	void imageSetting();
+
+	enemy* getEnemy() { return _enemy; }
+	void setPlayer(player* player) { _player = player;}
 };
 

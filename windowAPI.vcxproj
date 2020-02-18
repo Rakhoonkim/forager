@@ -165,6 +165,7 @@
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemyManager.h" />
     <ClInclude Include="enemyState.h" />
+    <ClInclude Include="enemyStateManager.h" />
     <ClInclude Include="equipment.h" />
     <ClInclude Include="gameNode.h" />
     <ClInclude Include="image.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemyManager.cpp" />
     <ClCompile Include="enemyState.cpp" />
+    <ClCompile Include="enemyStateManager.cpp" />
     <ClCompile Include="equipment.cpp" />
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="image.cpp" />

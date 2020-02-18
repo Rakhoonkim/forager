@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "enemyManager.h"
+#include "playerManager.h"
 
 enemyManager::enemyManager()
 {
@@ -12,11 +13,12 @@ enemyManager::~enemyManager()
 HRESULT enemyManager::init()
 {
 	imageSetting();
+	_player = new player;
 
-	_enemy = new enemy;
+	_enemy = new slime;
 	_enemy->init(ENEMY::SLIME,"slime",25,19);
 	_enemy->setAni("slimeIdleLeft");
-	
+	_enemy->Set_PlayerLink(_player->get_PlayerAddress());
 	return S_OK;
 }
 
@@ -52,9 +54,9 @@ void enemyManager::imageSetting()
 	KEYANIMANAGER->addArrayFrameAnimation("slimeIdleRight", "slime", IdleRight, 2, 5, true);
 
 	int JumpLeft[] = { 2 };
-	KEYANIMANAGER->addArrayFrameAnimation("slimeJumpLeft", "slime", JumpLeft, 2, 5, true);
+	KEYANIMANAGER->addArrayFrameAnimation("slimeJumpLeft", "slime", JumpLeft, 1, 5, true);
 	int JumpRight[] = { 7 };
-	KEYANIMANAGER->addArrayFrameAnimation("slimeJumpRight", "slime", JumpRight, 2, 5, true);
+	KEYANIMANAGER->addArrayFrameAnimation("slimeJumpRight", "slime", JumpRight, 1, 5, true);
 
 	int AttackLeft[] = { 3,4 };
 	KEYANIMANAGER->addArrayFrameAnimation("slimeAttackLeft", "slime", AttackLeft, 2, 5, true);
