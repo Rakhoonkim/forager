@@ -9,7 +9,8 @@ public:
 	typedef map<string, enemyState*>::iterator	mapStateIter;
 
 private:
-	static enemyState* _currentState;
+	//static enemyState* _currentState;
+	enemyState* _currentState;
 
 	mapStateList			_mState;
 	mapStateIter		   _miState;

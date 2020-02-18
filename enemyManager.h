@@ -24,7 +24,11 @@ public:
 
 	void imageSetting();
 
+
 	enemy* getEnemy() { return _enemy; }
+	
+	void CreateEnemy(ENEMY enemyType, float x, float y);
+	
 	void setPlayer(player* player) { _player = player;}
 };
 

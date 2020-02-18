@@ -14,11 +14,9 @@ HRESULT enemyManager::init()
 {
 	imageSetting();
 	_player = new player;
+	_player->init();
+	//몬스터 init에서 해주면 안됨 
 
-	_enemy = new slime;
-	_enemy->init(ENEMY::SLIME,"slime",25,19);
-	_enemy->setAni("slimeIdleLeft");
-	_enemy->Set_PlayerLink(_player->get_PlayerAddress());
 	return S_OK;
 }
 
@@ -32,7 +30,11 @@ void enemyManager::update()
 	{
 		(*_viEnemy)->update();
 	}
-	_enemy->update();
+
+	if (KEYMANAGER->isOnceKeyDown('U'))
+	{
+		CreateEnemy(ENEMY::SLIME, 24, 19);
+	}
 }
 
 void enemyManager::render()
@@ -41,7 +43,8 @@ void enemyManager::render()
 	{
 		(*_viEnemy)->render();
 	}
-	_enemy->render();
+
+
 }
 
 void enemyManager::imageSetting()
@@ -62,5 +65,27 @@ void enemyManager::imageSetting()
 	KEYANIMANAGER->addArrayFrameAnimation("slimeAttackLeft", "slime", AttackLeft, 2, 2, true);
 	int AttackRight[] = { 5,6 };
 	KEYANIMANAGER->addArrayFrameAnimation("slimeAttackRight", "slime", AttackRight, 2, 2, true);
+
+
+	//BOAR
+
+	IMAGEMANAGER->addFrameImage("boarIdle", "./image/enemy/boarIdle.bmp", 405, 63, 5, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boarWalk", "./image/enemy/boarWalk.bmp", 567, 63, 7, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boarCharge", "./image/enemy/boarCharge.bmp", 405, 69, 5, 1, true, RGB(255, 0, 255));
+
+	KEYANIMANAGER->addDefaultFrameAnimation("boarIdle", "boarIdle", 10, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("boarWalk", "boarWalk", 10, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("boarCharge", "boarCharge", 10, false, true);
+
+}
+
+void enemyManager::CreateEnemy(ENEMY enemyType, float x, float y)
+{
+	enemy* temp;
+	temp = new slime;
+	temp->init(enemyType, "slime", x, y);
+	temp->setAni("slimeIdleLeft");
+	temp->Set_PlayerLink(_player->get_PlayerAddress());
+	_vEnemy.push_back(temp);
 
 }

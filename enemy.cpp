@@ -14,6 +14,7 @@ enemy::~enemy()
 HRESULT enemy::init(ENEMY enemy,const char* imageName,int idx,int idy)
 {
 	_player = new tagPlayer;
+	
 
 	_enemy.imageName = imageName;
 
@@ -73,6 +74,7 @@ void enemy::release()
 
 void enemy::update()
 {
+	cout << "s나 Enemy이야" << endl;
 	_enemyState->update();
 	IndexUpdate();
 }
@@ -128,6 +130,8 @@ slime::~slime()
 
 void slime::update()
 {
+	//cout << _player->x << endl;
+	//cout << _player->y << endl;
 	//거리가 가까워지면 공격 상태로 바꾼다
 	if (getDistance(_player->x, _player->y, _enemy.x, _enemy.y) <= 120)
 	{
@@ -148,4 +152,22 @@ void slime::update()
 	IndexUpdate();
 	_enemyState->update();
 	_enemy.rc = RectMake(_enemy.x, _enemy.y, IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight());
+}
+
+//■■■■■■■■■■■■■■■■■■■■■■■■■■■■ boar ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+boar::boar()
+{
+}
+
+boar::~boar()
+{
+}
+
+void boar::update()
+{
+	IndexUpdate();
+	_enemyState->update();
+	_enemy.rc = RectMake(_enemy.x, _enemy.y, IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight());
+
 }

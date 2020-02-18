@@ -13,6 +13,7 @@ protected:
 	tagObject	_enemy;		// enemy
 	tagPlayer* _player;		// player
 
+
 	bool _isJump;
 	//임시 
 	DIRECTION _previousDirection;
@@ -29,10 +30,9 @@ public:
 	virtual void render();
 	virtual void IndexUpdate();
 
+	tagObject* getEnemy()					{ return &_enemy; }		 // enemy 참조 
+	void Set_PlayerLink(tagPlayer* player)  { _player = player; }
 
-
-	tagObject* getEnemy() { return &_enemy; }						 // enemy 참조 
-	void Set_PlayerLink(tagPlayer* player) { _player = player; }
 	// 세팅 함수 
 	virtual void setImage(const char* imageName)	 { _enemy.imageName = imageName; } 			//이미지 
 	virtual void setHp(int MaxHp, int hp)			 { _enemy.maxHp = MaxHp; _enemy.hp = hp; }  // 체력 
@@ -46,9 +46,15 @@ class slime : public enemy
 public:
 	slime();
 	~slime();
-
 	void update();
 };
 
+class boar : public enemy
+{
+public:
+	boar();
+	~boar();
+	void update();
+};
 
 

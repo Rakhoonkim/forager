@@ -9,7 +9,7 @@ enemyStateManager::~enemyStateManager()
 {
 }
 
-enemyState* enemyStateManager::_currentState = NULL;
+//enemyState* enemyStateManager::_currentState = NULL;
 
 HRESULT enemyStateManager::init()
 {

@@ -13,7 +13,7 @@ HRESULT stageScene::init()
 	_playerManager->set_CropsManager(_objectManager->get_CropsManager());
 	_playerManager->set_BuildManager(_objectManager->get_buildManager());
 	
-	_objectManager->get_enemyManager()->getEnemy()->Set_PlayerLink(_playerManager->get_player()->get_PlayerAddress());
+	_objectManager->get_enemyManager()->setPlayer(_playerManager->get_player());  // 플레이어 링크 
 
 	// 맵 
 	MAPMANAGER->MapLoad("inGameNumber1.map");
