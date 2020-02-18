@@ -64,9 +64,14 @@ void enemyIdle::update()
 {
 	if (_enemy->enemy == ENEMY::SLIME)
 	{
+		if (_enemy->isJump)
+		{
+			if (_enemy->time + 1 < TIMEMANAGER->getWorldTime()) _enemy->isJump = false;
+		}
 		if (_enemy->time + 10 <= TIMEMANAGER->getWorldTime()) // 어느정도 시간이 지나면 MOVE 상태로
 		{
 			_enemyStateManager->chanageState("MOVE");  // 이동상태로 전환 
+			_enemyStateManager->getState()->ChangeImage();
 			_enemyStateManager->getState()->Enter();   // 이동 초기값 적용
 		}
 	}
@@ -101,12 +106,19 @@ void enemyMove::update()
 {
 	if (_enemy->enemy == ENEMY::SLIME)
 	{
+		if (_enemy->isJump)
+		{
+			if (_enemy->time +1 < TIMEMANAGER->getWorldTime()) _enemy->isJump = false;
+		}
+
 		_enemy->x += cosf(_enemy->angle) * 3 * TIMEMANAGER->getElapsedTime();
 		_enemy->y += -sinf(_enemy->angle) * 3 * TIMEMANAGER->getElapsedTime();
 		
+
 		if (_enemy->time + 10 <= TIMEMANAGER->getWorldTime())
 		{
 			_enemyStateManager->chanageState("IDLE");
+			_enemyStateManager->getState()->ChangeImage();
 			_enemyStateManager->getState()->Enter();
 		}
 	}
@@ -140,13 +152,12 @@ void enemyAttack::update()
 {
 	if (_enemy->enemy == ENEMY::SLIME)
 	{
-		/*if (!_isAttack)
+		if (_enemy->ani->getNowPlayNum() == _enemy->ani->getFrameMaxFrame() - 1)
 		{
-			if (_enemy->ani->getMaxFrame() == 2)
-			{
-				_isAttack = true;
-			}
-		}*/
+			_enemyStateManager->chanageState("MOVE");
+			_enemyStateManager->getState()->ChangeImage();
+			_enemyStateManager->getState()->Enter();
+		}
 	}
 }
 
@@ -169,30 +180,53 @@ void enemyAttack::ChangeImage()
 
 //■■■■■■■■■■■■■■■■■■■■■■■■■■ enemyAttack ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 
+enemyJump::enemyJump(enemyStateManager* enemyStateManager, tagObject* enemy)
+{
+	this->Set_enemyStateManager(enemyStateManager); 
+	_enemy = enemy;
+	_direction = DIRECTION::RIGHT;
+	_jumpPower = 15;
+	_gravity = 0.9;
+	_isJump = true;
+	_isMove = true;
+}
+
 void enemyJump::Enter()
 {
+	_enemy->time = TIMEMANAGER->getWorldTime();
+	_jumpPower = 15;
+	_gravity = 0.9;
+	_isJump = true;
+	_isMove = true;
 }
 
 void enemyJump::update()
 {
-	//if (!_isMove) return;
-	//direction(); // 방향 정의 
-	//Jump();
+	if (_enemy->enemy == ENEMY::SLIME)
+	{
+		if (!_isMove) return;
+		direction(); // 방향 정의 
+		Jump();
 
-	//float elapsedTime = TIMEMANAGER->getElapsedTime();
+		float elapsedTime = TIMEMANAGER->getElapsedTime();
 
-	////200정도의 거리를 2초에 걸쳐서 도달해야한다면 속도값을 구해줌
-	//float moveSpeed = (elapsedTime / 1.0f) * getDistance(_enemy->sourX, _enemy->sourY, _enemy->dstX, _enemy->dstY);
-
-	//_enemy->x += cosf(_enemy->angle) * moveSpeed;
-	//_enemy->y += -sinf(_enemy->angle) * moveSpeed;
-
-	//if (_enemy->time + 1 <= TIMEMANAGER->getWorldTime())
-	//{
-	//	_enemy->centerX = _enemy->x;
-	//	_enemy->centerY = _enemy->y;
-	//	_isMove = false;
-	//}
+		//200정도의 거리를 2초에 걸쳐서 도달해야한다면 속도값을 구해줌
+		float moveSpeed = (elapsedTime / 1.0f) * getDistance(_enemy->sourX, _enemy->sourY, _enemy->dstX, _enemy->dstY);
+		if (_isJump)
+		{
+			_enemy->x += cosf(_enemy->angle) * moveSpeed;
+			_enemy->y += -sinf(_enemy->angle) * moveSpeed;
+		}
+		if (_enemy->time + 1 <= TIMEMANAGER->getWorldTime())
+		{
+			_enemy->centerX = _enemy->x;
+			_enemy->centerY = _enemy->y;
+			_isMove = false;
+			_enemyStateManager->chanageState("ATTACK");
+			_enemyStateManager->getState()->ChangeImage();
+			_enemyStateManager->getState()->Enter();
+		}
+	}
 }
 
 void enemyJump::ChangeImage()
@@ -233,14 +267,9 @@ void enemyJump::direction()
 	}
 }
 
-void enemyJump::JumpInit()
-{
-
-}
-
 void enemyJump::Jump()
 {
-	/*if (!_isJump)  return;
+	if (!_isJump)  return;
 
 	_enemy->y -= _jumpPower;
 	_jumpPower -= _gravity;
@@ -248,7 +277,7 @@ void enemyJump::Jump()
 
 	if (_direction == DIRECTION::DOWN)
 	{
-		if (_enemy->dstY <= _enemy->y)
+		if (_enemy->dstY + 10 <= _enemy->y)
 		{
 			_isJump = false;
 		}
@@ -266,5 +295,5 @@ void enemyJump::Jump()
 		{
 			_isJump = false;
 		}
-	}*/
+	}
 }

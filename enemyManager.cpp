@@ -51,7 +51,7 @@ void enemyManager::imageSetting()
 	int IdleLeft[] = {0, 1};
 	KEYANIMANAGER->addArrayFrameAnimation("slimeIdleLeft", "slime", IdleLeft, 2, 1, true);
 	int IdleRight[] = { 8,9 };
-	KEYANIMANAGER->addArrayFrameAnimation("slimeIdleRight", "slime", IdleRight, 2, 5, true);
+	KEYANIMANAGER->addArrayFrameAnimation("slimeIdleRight", "slime", IdleRight, 2, 1, true);
 
 	int JumpLeft[] = { 2 };
 	KEYANIMANAGER->addArrayFrameAnimation("slimeJumpLeft", "slime", JumpLeft, 1, 5, true);
@@ -59,8 +59,8 @@ void enemyManager::imageSetting()
 	KEYANIMANAGER->addArrayFrameAnimation("slimeJumpRight", "slime", JumpRight, 1, 5, true);
 
 	int AttackLeft[] = { 3,4 };
-	KEYANIMANAGER->addArrayFrameAnimation("slimeAttackLeft", "slime", AttackLeft, 2, 5, true);
+	KEYANIMANAGER->addArrayFrameAnimation("slimeAttackLeft", "slime", AttackLeft, 2, 2, true);
 	int AttackRight[] = { 5,6 };
-	KEYANIMANAGER->addArrayFrameAnimation("slimeAttackRight", "slime", AttackRight, 2, 5, true);
+	KEYANIMANAGER->addArrayFrameAnimation("slimeAttackRight", "slime", AttackRight, 2, 2, true);
 
 }

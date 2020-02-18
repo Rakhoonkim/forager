@@ -56,6 +56,7 @@ struct tagObject
 	int hp, maxHp;
 	int damage;
 	bool isClick;
+	bool isJump;
 };
 
 

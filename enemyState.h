@@ -2,13 +2,14 @@
 #include "stdafx.h"
 
 class enemyStateManager;
+class player;
 
 class enemyState
 {
 protected:
-	tagObject* _enemy;
-
 	enemyStateManager* _enemyStateManager;
+	tagObject* _enemy;
+	tagPlayer* _player;
 public:
 	enemyState();
 	~enemyState();
@@ -27,6 +28,7 @@ public:
 
 	//enemyStateManagerLink¿¬°á
 	virtual void Set_enemyStateManager(enemyStateManager* enemyStateManager) { _enemyStateManager = enemyStateManager; }
+	virtual void Set_PlayerLink(tagPlayer* player) { _player = player; }
 };
 
 
@@ -70,14 +72,15 @@ private:
 	DIRECTION _direction;
 	float _jumpPower;
 	float _gravity;
+	bool _isJump;
+	bool _isMove;
 public:
-	enemyJump(enemyStateManager* enemyStateManager, tagObject* enemy) { this->Set_enemyStateManager(enemyStateManager); _enemy = enemy; }
+	enemyJump(enemyStateManager* enemyStateManager, tagObject* enemy); //{ this->Set_enemyStateManager(enemyStateManager); _enemy = enemy; }
 	~enemyJump() {}
 
 	virtual void Enter();
 	virtual void update();
 	virtual void ChangeImage();
 	virtual void direction();
-	virtual void JumpInit();
 	virtual void Jump();
 };

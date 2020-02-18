@@ -44,10 +44,10 @@ HRESULT enemy::init(ENEMY enemy,const char* imageName,int idx,int idy)
 
 	_StateAttack = false;
 	_StateTurn = false;
-
+	_enemy.isJump = false;
 	//새로 세팅해야 하는 값		
-	_enemy.maxHp = 0;			// 최대 HP
-	_enemy.hp = 0;				// HP
+	_enemy.maxHp = 3;			// 최대 HP
+	_enemy.hp = 3;				// HP
 	_enemy.damage = 0;			// 데미지
 
 	_enemy.time = TIMEMANAGER->getWorldTime();
@@ -58,26 +58,10 @@ HRESULT enemy::init(ENEMY enemy,const char* imageName,int idx,int idy)
 
 	_enemyState->addState("IDLE", new enemyIdle(_enemyState , &_enemy));
 	_enemyState->addState("MOVE", new enemyMove(_enemyState , &_enemy));
-	_enemyState->addState("ATTACK", new enemyAttack(_enemyState ,&_enemy));
 	_enemyState->addState("JUMP", new enemyJump(_enemyState , &_enemy));
+	_enemyState->addState("ATTACK", new enemyAttack(_enemyState ,&_enemy));
 
 	_enemyState->chanageState("IDLE");
-
-
-
-
-	
-
-
-	////상태정의
-	//_enemyState = new enemyState();
-	//_enemyState->init(&_enemy);
-
-	//_enemyIdle = new enemyIdle(&_enemy);
-	//_enemyMove = new enemyMove(&_enemy);
-	//_enemyAttack = new enemyAttack(&_enemy);
-	//_enemyJump = new enemyJump(&_enemy);
-	//_enemyState = _enemyIdle;
 
 	_enemy.rc = RectMake(_enemy.x, _enemy.y, IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight());
 	return S_OK;
@@ -144,48 +128,24 @@ slime::~slime()
 
 void slime::update()
 {
-	//cout << "나지금 슬라임 update" << endl;
- //	if (!_enemyState->getAttack() && !_enemyState->getJump())
-	//{
-	//	cout << " if 안으로 들어왔음 " << endl;
-	//	if (_enemy.time + 10 <= TIMEMANAGER->getWorldTime())
-	//	{
-	//		_enemy.time = TIMEMANAGER->getWorldTime();
-	//		// 상태 정의 
-	//		if (RND->getInt(2) == 0)  //  1/2 
-	//		{
-	//			_enemyState = _enemyIdle;
-	//			cout << "Idle 상태로" << endl;
-	//		}
-	//		else
-	//		{
-	//			_enemyState = _enemyMove;
-	//			_enemyState->setMove(true);
-	//			cout << "Move 상태로" << endl;
-	//		}
-	//	}
-	//}
+	//거리가 가까워지면 공격 상태로 바꾼다
+	if (getDistance(_player->x, _player->y, _enemy.x, _enemy.y) <= 120)
+	{
+		if (!_enemy.isJump)
+		{
+			_enemyState->chanageState("JUMP");
+			_enemyState->getState()->ChangeImage();
+			_enemyState->getState()->Enter();
+			_enemy.sourX = _enemy.centerX;
+			_enemy.sourY = _enemy.centerY;
+			_enemy.dstX = _player->x;
+			_enemy.dstY = _player->y;
+			_enemy.angle = getAngle(_enemy.sourX, _enemy.sourY, _enemy.dstX, _enemy.dstY);
+			_enemy.isJump = true;
+		}
+	}
 
-	//if (getDistance(_player->x,_player->y,_enemy.x,_enemy.y) <= 60 && !_enemyState->getJump())
-	//{
-	//	_enemyState = _enemyJump;
-	//	_enemyState->ChangeImage();
-	//	_enemyState->JumpInit();
-	//	_enemyState->setMove(true);
-	//	_enemy.sourX = _enemy.centerX;
-	//	_enemy.sourY = _enemy.centerY;
-	//	_enemy.dstX = _player->x;
-	//	_enemy.dstY = _player->y;
-	//}
-	//else if (!_enemyState->getMove() && !_enemyState->getJump())
-	//{
-	//	_enemyState = _enemyAttack;
-	//	_enemyState->ChangeImage();
-	//}
-
-
-
-	_enemyState->update();
 	IndexUpdate();
+	_enemyState->update();
 	_enemy.rc = RectMake(_enemy.x, _enemy.y, IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight());
 }

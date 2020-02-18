@@ -77,6 +77,8 @@ public:
 	inline int getMaxFrame() { return _frameNum; }	 // 마지막번째 프레임
 	inline int getFrameWidth() { return _frameWidth; }
 	inline int getFrameHeight() { return _frameHeight; }
+	inline DWORD getNowPlayNum() { return _nowPlayIndex; }
+	inline int getFrameMaxFrame() { return _playList.size(); }
 
 	void setPlayIndex(int arrNum) { _nowPlayIndex = arrNum; }
 };
