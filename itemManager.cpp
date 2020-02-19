@@ -638,7 +638,7 @@ void itemManager::DropFishTrapItem(float x, float y)
 		item* tempItem;
 		tempItem = new item;
 		tempItem->init("seaweedDrop", x, y);
-		tempItem->setIvenFrame(6, 4);
+		tempItem->setIvenFrame(6, 3);
 		_vItem.push_back(tempItem);
 	}
 	else
@@ -646,7 +646,7 @@ void itemManager::DropFishTrapItem(float x, float y)
 		item* tempItem;
 		tempItem = new item;
 		tempItem->init("sandDrop", x, y);
-		tempItem->setIvenFrame(5, 4);
+		tempItem->setIvenFrame(5, 3);
 		_vItem.push_back(tempItem);
 	}
 }

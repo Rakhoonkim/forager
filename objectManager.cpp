@@ -14,7 +14,7 @@ HRESULT objectManager::init()
 {
 	_cropsManager = new cropsManager;
 	_cropsManager->init();
-	// ġŲ ġŲ ġŲ ġŲ ġŲ ġŲ
+
 	_buildManager = new buildManager;
 	_buildManager->init();
 
@@ -43,6 +43,6 @@ void objectManager::update()
 void objectManager::render()
 {
 	_cropsManager->render();
-	_enemyManager->render();
 	_buildManager->render();
+	_enemyManager->render();
 }

@@ -63,10 +63,11 @@ HRESULT enemyStateManager::chanageState(string stateName)
 
 	if (SUCCEEDED(find->second->init()))
 	{
-		if (_currentState) _currentState->release();
+		//if (_currentState) _currentState->release();
 	
-		_currentState = find->second;
-
+		_currentState = find->second;	// 교체 
+		_currentState->ChangeImage();   
+		_currentState->Enter();			// 들어가면서 
 		return S_OK;
 	}
 

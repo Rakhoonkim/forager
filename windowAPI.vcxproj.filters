@@ -255,6 +255,12 @@
     <ClInclude Include="enemyStateManager.h">
       <Filter>playGround\object\enemy</Filter>
     </ClInclude>
+    <ClInclude Include="bulletManager.h">
+      <Filter>playGround\object\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet.h">
+      <Filter>playGround\object\enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -399,6 +405,12 @@
       <Filter>playGround\object\enemy</Filter>
     </ClCompile>
     <ClCompile Include="enemyStateManager.cpp">
+      <Filter>playGround\object\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="bulletManager.cpp">
+      <Filter>playGround\object\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet.cpp">
       <Filter>playGround\object\enemy</Filter>
     </ClCompile>
   </ItemGroup>

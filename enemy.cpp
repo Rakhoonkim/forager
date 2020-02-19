@@ -15,7 +15,6 @@ HRESULT enemy::init(ENEMY enemy,const char* imageName,int idx,int idy)
 {
 	_player = new tagPlayer;
 	
-
 	_enemy.imageName = imageName;
 
 	_enemy.building = BUILDING::NONE;
@@ -37,15 +36,16 @@ HRESULT enemy::init(ENEMY enemy,const char* imageName,int idx,int idy)
 
 	_enemy.isClick = false;
 
+	_enemy.acel = 1.0f;
 	_enemy.angle = 0;
 	_enemy.x = idx * 60;
 	_enemy.y = idy * 60;
 	_enemy.centerX = _enemy.x + 30;
 	_enemy.centerY = _enemy.y + 30;
 
-	_StateAttack = false;
-	_StateTurn = false;
+	_enemy.AttackTerm = false;
 	_enemy.isJump = false;
+	_enemy.isAttack = false;
 	//새로 세팅해야 하는 값		
 	_enemy.maxHp = 3;			// 최대 HP
 	_enemy.hp = 3;				// HP
@@ -65,6 +65,10 @@ HRESULT enemy::init(ENEMY enemy,const char* imageName,int idx,int idy)
 	_enemyState->chanageState("IDLE");
 
 	_enemy.rc = RectMake(_enemy.x, _enemy.y, IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight());
+	
+	_bulletManager = new bulletManager;
+	_bulletManager->init();
+	
 	return S_OK;
 }
 
@@ -76,12 +80,14 @@ void enemy::update()
 {
 	cout << "s나 Enemy이야" << endl;
 	_enemyState->update();
+	_bulletManager->update();
 	IndexUpdate();
 }
 
 void enemy::render()
 {
 	_enemyState->render();
+	_bulletManager->render();
 }
 
 void enemy::IndexUpdate()
@@ -92,6 +98,8 @@ void enemy::IndexUpdate()
 	_enemy.idy = _enemy.y / 60;
 
 	//이미지방향값 정의
+	cout << "enemy angle: " << _enemy.angle << endl;
+	cout << "enemy Driection(2: left , 3 : right) : " << (int)_enemy.imageDirection << endl;
 	if (_enemy.angle >= 0 && _enemy.angle <= 1.57)
 	{
 		_enemy.imageDirection = DIRECTION::RIGHT;
@@ -100,11 +108,11 @@ void enemy::IndexUpdate()
 	{
 		_enemy.imageDirection = DIRECTION::LEFT;
 	}
-	else if (_enemy.angle <= 4.71 && _enemy.angle > 3.14)
+	else if ((_enemy.angle <= 4.71 && _enemy.angle > 3.14) || (_enemy.angle > -3.14 && _enemy.angle <= -1.57))
 	{
 		_enemy.imageDirection = DIRECTION::LEFT;
 	}
-	else
+	else if(_enemy.angle <= 6.28 && _enemy.angle > 4.71 || (_enemy.angle < 0 && _enemy.angle >= -1.57) )
 	{
 		_enemy.imageDirection = DIRECTION::RIGHT;
 	}
@@ -112,10 +120,15 @@ void enemy::IndexUpdate()
 	//방향이 달라지면 이미지 변화를 호출한다.
 	if (_previousDirection != _enemy.imageDirection)
 	{
+		cout << "이미지 바꾼다" << endl;
 		_previousDirection = _enemy.imageDirection;
 		_enemyState->getState()->ChangeImage();
 	}
 	//cout << "enemy idx : " << _enemy.idx << "enemy idy : " << _enemy.idy << endl;
+}
+
+void enemy::bullet()
+{
 }
 
 //■■■■■■■■■■■■■■■■■■■■■■■■■■■■ slime ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -138,8 +151,6 @@ void slime::update()
 		if (!_enemy.isJump)
 		{
 			_enemyState->chanageState("JUMP");
-			_enemyState->getState()->ChangeImage();
-			_enemyState->getState()->Enter();
 			_enemy.sourX = _enemy.centerX;
 			_enemy.sourY = _enemy.centerY;
 			_enemy.dstX = _player->x;
@@ -166,8 +177,76 @@ boar::~boar()
 
 void boar::update()
 {
+	if (getDistance(_player->x, _player->y, _enemy.x, _enemy.y) <= 150 && !_enemy.AttackTerm)
+	{
+		_enemyState->chanageState("ATTACK");
+		_enemy.angle = getAngle(_enemy.x, _enemy.y, _player->x, _player->y);
+	}
+
+	if (_enemy.isAttack)
+	{
+		_enemy.angle = getAngle(_enemy.x, _enemy.y, _player->x, _player->y);
+		RECT temp;
+		if (IntersectRect(&temp, &_enemy.rc, &_player->rc))
+		{
+			_enemy.isAttack= false;
+		}
+	}
 	IndexUpdate();
 	_enemyState->update();
 	_enemy.rc = RectMake(_enemy.x, _enemy.y, IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight());
+}
 
+//■■■■■■■■■■■■■■■■■■■■■■■■■■■■ Demon ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+demon::demon()
+{
+}
+
+demon::~demon()
+{
+}
+
+void demon::update()
+{
+	//도망가는 코드 만들 예정 
+	if (getDistance(_enemy.x, _enemy.y,_player->x, _player->y) <= 50)
+	{
+		if(!_enemy.isAttack) _enemyState->chanageState("ATTACK");
+		RECT temp;
+	}
+	if(getDistance(_enemy.x, _enemy.y, _player->x, _player->y) <= 150)
+	{
+		_enemy.angle = getAngle(_enemy.x, _enemy.y, _player->x, _player->y);
+	}
+	IndexUpdate();
+	_enemyState->update();
+	_enemy.rc = RectMake(_enemy.x, _enemy.y, IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight());
+}
+
+
+//■■■■■■■■■■■■■■■■■■■■■■■■■■■■ SKULL ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+skull::skull()
+{
+}
+
+skull::~skull()
+{
+}
+
+void skull::update()
+{
+	if (KEYMANAGER->isOnceKeyDown('Y'))
+	{
+		cout << "Y : 눌렸다" << endl;
+		_bulletManager->fire("fireBall", _enemy.x+ IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth() /2, _enemy.y + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight() /2, 0, 5);
+		_bulletManager->fire("fireBall", _enemy.x + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth() / 2, _enemy.y + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight() / 2, 1.57,5);
+		_bulletManager->fire("fireBall", _enemy.x + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth() / 2, _enemy.y + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight() / 2, 3.14,5);
+		_bulletManager->fire("fireBall", _enemy.x + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth() / 2, _enemy.y + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight() / 2, 4.71, 5);
+	}
+	_bulletManager->update();
+	IndexUpdate();
+	_enemyState->update();
+	_enemy.rc = RectMake(_enemy.x, _enemy.y, IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight());
 }

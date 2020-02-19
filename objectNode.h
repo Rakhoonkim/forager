@@ -50,6 +50,7 @@ struct tagObject
 	float angle;
 	float sourX, sourY;
 	float dstX, dstY;
+	float acel;
 	int idx, idy;
 	int frameX, frameY;
 	int speed;
@@ -57,6 +58,8 @@ struct tagObject
 	int damage;
 	bool isClick;
 	bool isJump;
+	bool isAttack;
+	bool AttackTerm;
 };
 
 
@@ -93,9 +96,21 @@ struct tagInven
 	int num;			// ¹øÈ£
 };
 
+
+struct tagBullet
+{
+	animation* ani;
+	RECT rc;
+	float startX, startY;
+	float x, y;
+	bool isFire;
+	float startAngle;
+	float angle;
+	float speed;
+	float time;
+};
+
 // recipe 
-
-
 enum class FURNACERECIPE
 {
 	COAL,

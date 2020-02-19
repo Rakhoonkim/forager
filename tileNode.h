@@ -100,6 +100,7 @@ enum class ENEMY
 	SLIME,
 	BOAR,
 	DEMON,
+	SKULL,
 	GREAT_DEMON,
 };
 

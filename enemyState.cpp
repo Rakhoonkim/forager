@@ -58,6 +58,7 @@ void enemyIdle::Enter()
 {
 	_enemy->time = TIMEMANAGER->getWorldTime();
 	_enemy->angle = RND->getFromFloatTo(0, 6.28f);
+	_enemy->AttackTerm = true;
 }
 
 void enemyIdle::update()
@@ -71,8 +72,33 @@ void enemyIdle::update()
 		if (_enemy->time + 10 <= TIMEMANAGER->getWorldTime()) // 어느정도 시간이 지나면 MOVE 상태로
 		{
 			_enemyStateManager->chanageState("MOVE");  // 이동상태로 전환 
-			_enemyStateManager->getState()->ChangeImage();
-			_enemyStateManager->getState()->Enter();   // 이동 초기값 적용
+		}
+	}
+	else if (_enemy->enemy == ENEMY::BOAR)
+	{
+		_enemy->AttackTerm = false;
+		if (_enemy->time + RND->getFromIntTo(3,10) <= TIMEMANAGER->getWorldTime()) // 어느정도 시간이 지나면 MOVE 상태로
+		{
+			_enemyStateManager->chanageState("MOVE");  // 이동상태로 전환 
+		}
+	}
+	else if (_enemy->enemy == ENEMY::DEMON)
+	{
+		if (_enemy->time + 3 <= TIMEMANAGER->getWorldTime())
+		{
+			_enemy->AttackTerm = false;
+		}
+		if (_enemy->time + RND->getFromIntTo(5, 10) <= TIMEMANAGER->getWorldTime()) // 어느정도 시간이 지나면 MOVE 상태로
+		{
+			_enemyStateManager->chanageState("MOVE");  // 이동상태로 전환 
+			_enemy->isAttack = false;
+		}
+	}
+	else if (_enemy->enemy == ENEMY::SKULL)
+	{
+		if (_enemy->time + RND->getInt(5) <= TIMEMANAGER->getWorldTime())
+		{
+			_enemyStateManager->chanageState("MOVE");  // 이동상태로 전환 
 		}
 	}
 }
@@ -92,14 +118,82 @@ void enemyIdle::ChangeImage()
 			_enemy->ani->start();
 		}
 	}
+	else if (_enemy->enemy == ENEMY::BOAR)
+	{
+		if (_enemy->imageDirection == DIRECTION::LEFT) // 왼쪽 
+		{
+			_enemy->imageName = "boarIdle";
+			_enemy->ani = KEYANIMANAGER->findAnimation("boarIdleLeft");
+			_enemy->ani->start();
+		}
+		else
+		{
+			_enemy->imageName = "boarIdle";
+			_enemy->ani = KEYANIMANAGER->findAnimation("boarIdleRight");
+			_enemy->ani->start();
+		}
+	}
+	else if (_enemy->enemy == ENEMY::DEMON)
+	{
+		if (_enemy->imageDirection == DIRECTION::LEFT) // 왼쪽 
+		{
+			_enemy->imageName = "demonWalk";
+			_enemy->ani = KEYANIMANAGER->findAnimation("demonIdleLeft");
+			_enemy->ani->start();
+		}
+		else
+		{
+			_enemy->imageName = "demonWalk";
+			_enemy->ani = KEYANIMANAGER->findAnimation("demonIdleRight");
+			_enemy->ani->start();
+		}
+	}
+	else if (_enemy->enemy == ENEMY::SKULL)
+	{
+		if (_enemy->imageDirection == DIRECTION::LEFT) // 왼쪽 
+		{
+			_enemy->ani = KEYANIMANAGER->findAnimation("skullLeft");
+			_enemy->ani->start();
+		}
+		else
+		{
+			_enemy->ani = KEYANIMANAGER->findAnimation("skullRight");
+			_enemy->ani->start();
+		}
+	}
 }
 
 //■■■■■■■■■■■■■■■■■■■■■■■■■■ enemyMove ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 
 void enemyMove::Enter()
 {
-	_enemy->angle = RND->getFromFloatTo(0, 6.28f);
+	//보어일때
+	if (_enemy->enemy == ENEMY::BOAR)
+	{
+		if (_enemy->imageDirection == DIRECTION::LEFT)
+		{
+			_enemy->angle = RND->getFromFloatTo(1.57, 4.81f);
+		}
+		else
+		{
+			_enemy->angle = RND->getFromFloatTo(-1.57, 1.57f);
+		}
+	}
 	_enemy->time = TIMEMANAGER->getWorldTime();
+	_enemy->AttackTerm = true;
+	//스컬
+	if (_enemy->enemy == ENEMY::SKULL)
+	{
+		if (RND->getInt(2) == 0)
+		{
+			_move = 0.1f;
+		}
+		else
+		{
+			_move = -0.1f;
+		}
+		_movePattern = RND->getInt(2);
+	}
 }
 
 void enemyMove::update()
@@ -118,10 +212,39 @@ void enemyMove::update()
 		if (_enemy->time + 10 <= TIMEMANAGER->getWorldTime())
 		{
 			_enemyStateManager->chanageState("IDLE");
-			_enemyStateManager->getState()->ChangeImage();
-			_enemyStateManager->getState()->Enter();
 		}
 	}
+	else if (_enemy->enemy == ENEMY::BOAR)
+	{
+		_enemy->x += cosf(_enemy->angle) * 10 * TIMEMANAGER->getElapsedTime();
+		_enemy->y += -sinf(_enemy->angle) * 10 * TIMEMANAGER->getElapsedTime();
+
+		if (_enemy->time + RND->getFromIntTo(3,10) <= TIMEMANAGER->getWorldTime())
+		{
+			_enemyStateManager->chanageState("IDLE");
+		}
+	}
+	else if (_enemy->enemy == ENEMY::DEMON)
+	{
+		_enemy->x += cosf(_enemy->angle) * 20 * TIMEMANAGER->getElapsedTime();
+		_enemy->y += -sinf(_enemy->angle) * 20 * TIMEMANAGER->getElapsedTime();
+
+		if (_enemy->time + RND->getFromIntTo(5, 10) <= TIMEMANAGER->getWorldTime())
+		{
+			_enemyStateManager->chanageState("IDLE");
+		}
+	}
+	else if (_enemy->enemy == ENEMY::SKULL)
+	{
+		if (_movePattern == 0)_enemy->angle += _move;
+		_enemy->x += cosf(_enemy->angle) * 100 * TIMEMANAGER->getElapsedTime();
+		_enemy->y += -sinf(_enemy->angle) * 100 * TIMEMANAGER->getElapsedTime();
+		if (_enemy->time + 3 <= TIMEMANAGER->getWorldTime())
+		{
+			_enemyStateManager->chanageState("IDLE");  // 이동상태로 전환 
+		}
+	}
+
 }
 
 void enemyMove::ChangeImage()
@@ -139,6 +262,49 @@ void enemyMove::ChangeImage()
 			_enemy->ani->start();
 		}
 	}
+	else if (_enemy->enemy == ENEMY::BOAR)
+	{
+		if (_enemy->imageDirection == DIRECTION::LEFT) // 왼쪽 
+		{
+			_enemy->imageName = "boarWalk";
+			_enemy->ani = KEYANIMANAGER->findAnimation("boarWalkLeft");
+			_enemy->ani->start();
+		}
+		else
+		{
+			_enemy->imageName = "boarWalk";
+			_enemy->ani = KEYANIMANAGER->findAnimation("boarWalkRight");
+			_enemy->ani->start();
+		}
+	}
+	else if (_enemy->enemy == ENEMY::DEMON)
+	{
+		if (_enemy->imageDirection == DIRECTION::LEFT) // 왼쪽 
+		{
+			_enemy->imageName = "demonWalk";
+			_enemy->ani = KEYANIMANAGER->findAnimation("demonWalkLeft");
+			_enemy->ani->start();
+		}
+		else
+		{
+			_enemy->imageName = "demonWalk";
+			_enemy->ani = KEYANIMANAGER->findAnimation("demonWalkRight");
+			_enemy->ani->start();
+		}
+	}
+	else if (_enemy->enemy == ENEMY::SKULL)
+	{
+		if (_enemy->imageDirection == DIRECTION::LEFT) // 왼쪽 
+		{
+			_enemy->ani = KEYANIMANAGER->findAnimation("skullLeft");
+			_enemy->ani->start();
+		}
+		else
+		{
+			_enemy->ani = KEYANIMANAGER->findAnimation("skullRight");
+			_enemy->ani->start();
+		}
+	}
 }
 
 //■■■■■■■■■■■■■■■■■■■■■■■■■■ enemyAttack ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -146,6 +312,9 @@ void enemyMove::ChangeImage()
 void enemyAttack::Enter()
 {
 	_enemy->time = TIMEMANAGER->getWorldTime();
+	_enemy->isAttack = true;
+	_enemy->AttackTerm = false;
+	_enemy->acel = 1.0f;
 }
 
 void enemyAttack::update()
@@ -155,8 +324,24 @@ void enemyAttack::update()
 		if (_enemy->ani->getNowPlayNum() == _enemy->ani->getFrameMaxFrame() - 1)
 		{
 			_enemyStateManager->chanageState("MOVE");
-			_enemyStateManager->getState()->ChangeImage();
-			_enemyStateManager->getState()->Enter();
+		}
+	}
+	else if (_enemy->enemy == ENEMY::BOAR)
+	{
+		_enemy->x += cosf(_enemy->angle) * 20 * TIMEMANAGER->getElapsedTime() * _enemy->acel;
+		_enemy->y += -sinf(_enemy->angle) * 20 * TIMEMANAGER->getElapsedTime() * _enemy->acel;
+		if(_enemy->acel <= 8.0f ) _enemy->acel += 0.40f;
+
+		if (!_enemy->isAttack)
+		{
+			_enemyStateManager->chanageState("MOVE");
+		}
+	}
+	else if (_enemy->enemy == ENEMY::DEMON)
+	{
+		if (_enemy->ani->getNowPlayNum() == _enemy->ani->getFrameMaxFrame() - 1)
+		{
+			_enemyStateManager->chanageState("IDLE");  //ATTAC-> idle 넘어가는거 
 		}
 	}
 }
@@ -176,9 +361,64 @@ void enemyAttack::ChangeImage()
 			_enemy->ani->start();
 		}
 	}
+	else if (_enemy->enemy == ENEMY::BOAR)
+	{
+		if (_enemy->imageDirection == DIRECTION::LEFT) // 왼쪽 
+		{
+			_enemy->imageName = "boarCharge";
+			_enemy->ani = KEYANIMANAGER->findAnimation("boarChargeLeft");
+			_enemy->ani->start();
+		}
+		else
+		{
+			_enemy->imageName = "boarCharge";
+			_enemy->ani = KEYANIMANAGER->findAnimation("boarChargeRight");
+			_enemy->ani->start();
+		}
+	}
+	else if (_enemy->enemy == ENEMY::DEMON)
+	{
+		if (_enemy->imageDirection == DIRECTION::LEFT) // 왼쪽 
+		{
+			_enemy->imageName = "demonAttack";
+			_enemy->ani = KEYANIMANAGER->findAnimation("demonAttackLeft");
+			_enemy->ani->start();
+		}
+		else
+		{
+			_enemy->imageName = "demonAttack";
+			_enemy->ani = KEYANIMANAGER->findAnimation("demonAttackRight");
+			_enemy->ani->start();
+		}
+	}
+	else if (_enemy->enemy == ENEMY::SKULL)
+	{
+		if (_enemy->imageDirection == DIRECTION::LEFT) // 왼쪽 
+		{
+			_enemy->ani = KEYANIMANAGER->findAnimation("skullLeft");
+			_enemy->ani->start();
+		}
+		else
+		{
+			_enemy->ani = KEYANIMANAGER->findAnimation("skullRight");
+			_enemy->ani->start();
+		}
+	}
 }
 
-//■■■■■■■■■■■■■■■■■■■■■■■■■■ enemyAttack ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+void enemyAttack::render()
+{
+	if (_enemy->enemy == ENEMY::DEMON)
+	{
+		IMAGEMANAGER->findImage(_enemy->imageName)->aniRender(CAMERAMANAGER->getWorldDC(), _enemy->x, _enemy->y - 18, _enemy->ani);
+	}
+	else
+	{
+		IMAGEMANAGER->findImage(_enemy->imageName)->aniRender(CAMERAMANAGER->getWorldDC(), _enemy->x, _enemy->y, _enemy->ani);
+	}
+}
+
+//■■■■■■■■■■■■■■■■■■■■■■■■■■ enemyJUMP ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 
 enemyJump::enemyJump(enemyStateManager* enemyStateManager, tagObject* enemy)
 {
@@ -223,8 +463,6 @@ void enemyJump::update()
 			_enemy->centerY = _enemy->y;
 			_isMove = false;
 			_enemyStateManager->chanageState("ATTACK");
-			_enemyStateManager->getState()->ChangeImage();
-			_enemyStateManager->getState()->Enter();
 		}
 	}
 }

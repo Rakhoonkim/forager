@@ -153,6 +153,8 @@
     <ClInclude Include="build.h" />
     <ClInclude Include="building.h" />
     <ClInclude Include="buildManager.h" />
+    <ClInclude Include="bullet.h" />
+    <ClInclude Include="bulletManager.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="cameraManager.h" />
     <ClInclude Include="commonMacroFunction.h" />
@@ -210,6 +212,8 @@
     <ClCompile Include="build.cpp" />
     <ClCompile Include="building.cpp" />
     <ClCompile Include="buildManager.cpp" />
+    <ClCompile Include="bullet.cpp" />
+    <ClCompile Include="bulletManager.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="cameraManager.cpp" />
     <ClCompile Include="crops.cpp" />

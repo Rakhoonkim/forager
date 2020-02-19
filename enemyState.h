@@ -48,6 +48,9 @@ public:
 class enemyMove : public enemyState
 {
 public:
+	float _move;		 // 스컬
+	int _movePattern;    // 스컬
+public:
 	enemyMove(enemyStateManager* enemyStateManager, tagObject* enemy) { this->Set_enemyStateManager(enemyStateManager); _enemy = enemy; }
 	~enemyMove() {}
 	virtual void Enter();
@@ -64,6 +67,7 @@ public:
 	virtual void Enter();
 	virtual void update();
 	virtual void ChangeImage();
+	virtual void render();
 };
 
 class enemyJump : public enemyState
