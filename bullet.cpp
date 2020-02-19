@@ -9,22 +9,11 @@ bullet::~bullet()
 {
 }
 
-HRESULT bullet::init(const char* imageName, float x, float y, float angle, float speed)
+HRESULT bullet::init(const char* imageName)
 {
 	_imageName = imageName;
-	_bullet.ani = KEYANIMANAGER->findAnimation(imageName);
-	_bullet.ani->start();
-
-	_bullet.x = _bullet.startX = x;
-	_bullet.y = _bullet.startY = y;
-	_bullet.angle = _bullet.startAngle = angle;
-	_bullet.speed = speed;
-	_bullet.isFire = true;
-
-	_bullet.time = TIMEMANAGER->getWorldTime();
+	OBJECTPOOL->Init(10000);
 	//방향 판단 
-	_count = 0;
-	_angle = 0;
 	return S_OK;
 }
 
@@ -39,45 +28,87 @@ void bullet::update()
 
 void bullet::render()
 {
-	if (_bullet.isFire) IMAGEMANAGER->findImage(_imageName)->aniRender(CAMERAMANAGER->getWorldDC(), _bullet.x, _bullet.y, _bullet.ani);
+	vector<tagBullet*>::iterator iter = _vBullet.begin();
+	vector<tagBullet*>::iterator endIter = _vBullet.end();
+	for (iter; iter != endIter; iter++)
+	{
+		if (!(*iter)->isFire) continue;
+		IMAGEMANAGER->findImage(_imageName)->aniRender(CAMERAMANAGER->getWorldDC(), (*iter)->x, (*iter)->y, (*iter)->ani);
+	}
 }
 
 
 void bullet::move()
 {
-	if (!_bullet.isFire) return;
+	vector<tagBullet*>::iterator iter = _vBullet.begin();
+	vector<tagBullet*>::iterator endIter = _vBullet.end();
 
-	//0.1 초마다 호출
-	if (_bullet.time + 0.1f <= TIMEMANAGER->getWorldTime())
+	for (iter; iter != endIter; iter++)
 	{
-		// 0~4 왼족 5~9 오른쪽 9일때 다시 0 으로 초기화 
-		if (_count < 5)
+		if (!(*iter)->isFire) continue;
+
+		if ((*iter)->time + 0.1f <= TIMEMANAGER->getWorldTime())
 		{
-			_bullet.angle += 0.4;
-		}
-		else if (_count >=5 && _count < 10)
-		{
-			_bullet.angle -= 0.4;
+			if ((*iter)->count < 5)
+			{
+				(*iter)->angle += 0.4;
+			}
+			else if ((*iter)->count >= 5 && (*iter)->count < 10)
+			{
+				(*iter)->angle -= 0.4;
+			}
+
+			if ((*iter)->count == 9) (*iter)->count = 0;
+			(*iter)->count++;
+			(*iter)->time = TIMEMANAGER->getWorldTime();
 		}
 
-		if (_count == 9) _count = 0;
-		_count++; // 카운트 증가 
-		_bullet.time = TIMEMANAGER->getWorldTime();
+
+		(*iter)->x += cosf((*iter)->startAngle) * (*iter)->speed * TIMEMANAGER->getElapsedTime() * 20;
+		(*iter)->y += -sinf((*iter)->startAngle) * (*iter)->speed * TIMEMANAGER->getElapsedTime() * 20;
+		//계속변화해주는 값 
+		(*iter)->x += cosf((*iter)->angle) * (*iter)->speed * TIMEMANAGER->getElapsedTime() * 20;
+		(*iter)->y += -sinf((*iter)->angle) * (*iter)->speed * TIMEMANAGER->getElapsedTime() * 20;
+
+		(*iter)->rc = RectMake((*iter)->x, (*iter)->y, IMAGEMANAGER->findImage(_imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_imageName)->getFrameHeight());
+
+		//총알이 사라지는 구간 
+		if (getDistance((*iter)->startX, (*iter)->startY, (*iter)->x, (*iter)->y) >= 500)
+		{
+			EFFECTMANAGER->play("fireBall", (*iter)->x, (*iter)->y);
+			(*iter)->isFire = false;
+		}
+	}
+}
+
+void bullet::remove()
+{
+	vector<tagBullet*>::iterator iter = _vBullet.begin();
+	vector<tagBullet*>::iterator endIter = _vBullet.end();
+	for (iter; iter != endIter;)
+	{
+		if (!(*iter)->isFire)
+		{
+			OBJECTPOOL->returnObject((*iter));
+			iter = _vBullet.erase(iter);
+		}
+		else iter++;
 	}
 
-	// 시작각도에서 출발 
-	_bullet.x += cosf(_bullet.startAngle) * _bullet.speed * TIMEMANAGER->getElapsedTime() * 20;
-	_bullet.y += -sinf(_bullet.startAngle) * _bullet.speed * TIMEMANAGER->getElapsedTime() * 20;
-	//계속변화해주는 값 
-	_bullet.x += cosf(_bullet.angle) * _bullet.speed * TIMEMANAGER->getElapsedTime() * 20;
-	_bullet.y += -sinf(_bullet.angle) * _bullet.speed * TIMEMANAGER->getElapsedTime() * 20;
-	
-	_bullet.rc = RectMake(_bullet.x, _bullet.y, IMAGEMANAGER->findImage(_imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_imageName)->getFrameHeight());
+}
 
-	//총알이 사라지는 구간 
-	if (getDistance(_bullet.startX, _bullet.startY, _bullet.x, _bullet.y) >= 500)
-	{
-		EFFECTMANAGER->play("fireBall", _bullet.x, _bullet.y);
-		_bullet.isFire = false;
-	}
+void bullet::fire(float x, float y, float angle, float speed)
+{
+	tagBullet* tempBullet = OBJECTPOOL->getObject();
+	//tempBullet = new tagBullet;
+	tempBullet->ani = KEYANIMANAGER->findAnimation(_imageName);
+	tempBullet->ani->start();
+	tempBullet->x = tempBullet->startX = x;
+	tempBullet->y = tempBullet->startY = y;
+	tempBullet->angle = tempBullet->startAngle = angle;
+	tempBullet->speed = speed;
+	tempBullet->count = 0;
+	tempBullet->isFire = true;
+	tempBullet->time = TIMEMANAGER->getWorldTime();
+	_vBullet.push_back(tempBullet);
 }

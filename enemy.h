@@ -14,7 +14,7 @@ protected:
 	tagObject	_enemy;		// enemy
 	tagPlayer* _player;		// player
 
-
+	bool _bossAttack;
 	bool _isJump;
 	//임시 
 	DIRECTION _previousDirection;
@@ -38,8 +38,11 @@ public:
 	virtual void setHp(int MaxHp, int hp)			 { _enemy.maxHp = MaxHp; _enemy.hp = hp; }  // 체력 
 	virtual void setAni(const char* imageName)		 { _enemy.ani = KEYANIMANAGER->findAnimation(imageName); _enemy.ani->start(); }
 
+	virtual bool getBossAttack() { return _enemy.isAttack; }
+	virtual void SetBossAttack(bool value) { _enemy.isAttack = value; }
+
 	virtual void bullet();
-	//void setEnemyAttack() { _enemyState = _enemyAttack; }		//공격상태로 정의 
+	
 };
 
 class slime : public enemy
@@ -68,10 +71,21 @@ public:
 
 class skull : public enemy
 {
-
+private:
+	float firetime;
 public:
 	skull();
 	~skull();
 
 	void update();
+};
+
+class demonBoss : public enemy
+{
+public:
+	demonBoss();
+	~demonBoss();
+
+	void update();
+
 };

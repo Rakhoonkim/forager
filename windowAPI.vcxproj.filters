@@ -261,6 +261,9 @@
     <ClInclude Include="bullet.h">
       <Filter>playGround\object\enemy</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectPool.h">
+      <Filter>2DGameFramework\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

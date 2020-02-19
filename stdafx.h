@@ -34,22 +34,22 @@ using namespace std;
 #include "cursorManager.h"			//CURSOR
 #include "itemManager.h"			//ITEM
 #include "uiManager.h"              //UI
-
+#include "ObjectPool.h"
 using namespace SEVENTEEN_UTIL;
 
 //========================================
 // ## D2D관련
-#include <wincodec.h>
-#include <math.h>
-#include <wchar.h>
-#include <d2d1.h>
-#include <d2d1_1helper.h>
-#include <dwrite.h>
-#include <wincodec.h>
-#include <cassert>
-#pragma comment(lib,"d2d1.lib")
-#pragma comment(lib,"WindowsCodecs.lib")
-using namespace D2D1;
+//#include <wincodec.h>
+//#include <math.h>
+//#include <wchar.h>
+//#include <d2d1.h>
+//#include <d2d1_1helper.h>
+//#include <dwrite.h>
+//#include <wincodec.h>
+//#include <cassert>
+//#pragma comment(lib,"d2d1.lib")
+//#pragma comment(lib,"WindowsCodecs.lib")
+//using namespace D2D1;
 //=========================================
 // ## 19.10.30 ## - 디파인문 -
 //=========================================
@@ -76,7 +76,7 @@ using namespace D2D1;
 #define CURSORMANAGER cursorManager::getSingleton()
 #define ITEMMANAGER itemManager::getSingleton()
 #define UIMANAGER uiManager::getSingleton()
-
+#define OBJECTPOOL ObjectPool<tagBullet>::getSingleton()
 #define SAFE_DELETE(p) {if(p) {delete(p); (p)=NULL;}}
 #define SAFE_RELEASE(p) {if(p) {(p)->release(); (p) = NULL;}}
 #define SAFE_DELETE_ARRAY(p) {if(p) { delete[](p); (p) = NULL;}}
@@ -88,11 +88,11 @@ extern HINSTANCE	_hInstance;
 extern HWND			_hWnd;
 extern POINT		_ptMouse;
 extern BOOL			_leftButtonDown;
-extern ID2D1Factory* _gp_D2DFactory;
-extern ID2D1HwndRenderTarget* _gp_RenderTarget;
-extern IWICImagingFactory* _gp_WICFactory;
-extern IWICFormatConverter* _gp_ipConvertedSrcBmp;
-extern ID2D1Bitmap* _gp_D2DBitMap;
+//extern ID2D1Factory* _gp_D2DFactory;
+//extern ID2D1HwndRenderTarget* _gp_RenderTarget;
+//extern IWICImagingFactory* _gp_WICFactory;
+//extern IWICFormatConverter* _gp_ipConvertedSrcBmp;
+//extern ID2D1Bitmap* _gp_D2DBitMap;
 
 #ifdef UNICODE
 #pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")

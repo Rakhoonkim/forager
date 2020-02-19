@@ -28,7 +28,7 @@ public:
 	enemy* getEnemy() { return _enemy; }
 	
 	void CreateEnemy(ENEMY enemyType, float x, float y);
-	
+	void bossAttack();
 	void setPlayer(player* player) { _player = player;}
 };
 

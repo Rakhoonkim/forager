@@ -11,11 +11,11 @@ BOOL _leftButtonDown;	//중복 클릭 방지용
 playGround _pg;
 
 //D2D관련
-ID2D1Factory* _gp_D2DFactory = nullptr;
-ID2D1HwndRenderTarget* _gp_RenderTarget = nullptr;
-IWICImagingFactory* _gp_WICFactory;
-IWICFormatConverter* _gp_ipConvertedSrcBmp;
-ID2D1Bitmap* _gp_D2DBitMap;
+//ID2D1Factory* _gp_D2DFactory = nullptr;
+//ID2D1HwndRenderTarget* _gp_RenderTarget = nullptr;
+//IWICImagingFactory* _gp_WICFactory;
+//IWICFormatConverter* _gp_ipConvertedSrcBmp;
+//ID2D1Bitmap* _gp_D2DBitMap;
 
 //함수의 프로토타입 선언
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);

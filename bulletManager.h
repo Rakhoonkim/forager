@@ -5,8 +5,7 @@
 class bulletManager
 {
 private:
-	vector<bullet*>				_vBullet;
-	vector<bullet*>::iterator  _viBullet;
+	bullet*		_bullet;
 
 public:
 	bulletManager();
@@ -17,7 +16,6 @@ public:
 	void release();
 	void render();
 
-	void remove();
-	void fire(const char* imageName, float x, float y, float angle, float speed);
+	bullet* getBullet() { return _bullet; }
 };
 

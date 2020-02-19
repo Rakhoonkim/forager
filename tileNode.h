@@ -101,7 +101,7 @@ enum class ENEMY
 	BOAR,
 	DEMON,
 	SKULL,
-	GREAT_DEMON,
+	DEMON_BOSS,
 };
 
 

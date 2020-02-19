@@ -50,6 +50,7 @@ class enemyMove : public enemyState
 public:
 	float _move;		 // 스컬
 	int _movePattern;    // 스컬
+	float _isAttackTime;      // Boss
 public:
 	enemyMove(enemyStateManager* enemyStateManager, tagObject* enemy) { this->Set_enemyStateManager(enemyStateManager); _enemy = enemy; }
 	~enemyMove() {}

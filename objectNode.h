@@ -108,6 +108,7 @@ struct tagBullet
 	float angle;
 	float speed;
 	float time;
+	int count;
 };
 
 // recipe 

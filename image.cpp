@@ -320,35 +320,35 @@ HRESULT image::init(const char* fileName, int width, int height, int frameX, int
 
 HRESULT image::init(const char* fileName)
 {
-	// 디코더 생성 
-	HRESULT hr = E_FAIL;
-	IWICBitmapDecoder* DecoderPtr = nullptr;
-	
-	hr = ::_gp_WICFactory->CreateDecoderFromFilename((LPCWSTR)fileName, nullptr, GENERIC_READ, WICDecodeMetadataCacheOnDemand, &DecoderPtr);
+	//// 디코더 생성 
+	//HRESULT hr = E_FAIL;
+	//IWICBitmapDecoder* DecoderPtr = nullptr;
+	//
+	//hr = ::_gp_WICFactory->CreateDecoderFromFilename((LPCWSTR)fileName, nullptr, GENERIC_READ, WICDecodeMetadataCacheOnDemand, &DecoderPtr);
 
-	assert(hr == S_OK);
-	//프레임 얻기 
-	IWICBitmapFrameDecode* FramePtr = nullptr;
-	hr = DecoderPtr->GetFrame(0, &FramePtr);
-	assert(hr == S_OK);
+	//assert(hr == S_OK);
+	////프레임 얻기 
+	//IWICBitmapFrameDecode* FramePtr = nullptr;
+	//hr = DecoderPtr->GetFrame(0, &FramePtr);
+	//assert(hr == S_OK);
 
-	// 포맷 컨버터 만들기 
-	SafeRelease(_gp_ipConvertedSrcBmp);
+	//// 포맷 컨버터 만들기 
+	//SafeRelease(_gp_ipConvertedSrcBmp);
 
-	hr = ::_gp_WICFactory->CreateFormatConverter(&::_gp_ipConvertedSrcBmp);
-	assert(hr == S_OK);
+	//hr = ::_gp_WICFactory->CreateFormatConverter(&::_gp_ipConvertedSrcBmp);
+	//assert(hr == S_OK);
 
-	hr = ::_gp_ipConvertedSrcBmp->Initialize(FramePtr, GUID_WICPixelFormat32bppPBGRA, WICBitmapDitherTypeNone,
-		nullptr, 0.0f, WICBitmapPaletteTypeCustom);
-	assert(hr == S_OK);
+	//hr = ::_gp_ipConvertedSrcBmp->Initialize(FramePtr, GUID_WICPixelFormat32bppPBGRA, WICBitmapDitherTypeNone,
+	//	nullptr, 0.0f, WICBitmapPaletteTypeCustom);
+	//assert(hr == S_OK);
 
-	// 실제 비트맨 만들기
-	SafeRelease(_gp_D2DBitMap);
-	hr = ::_gp_RenderTarget->CreateBitmapFromWicBitmap(::_gp_ipConvertedSrcBmp, nullptr, &::_gp_D2DBitMap);
+	//// 실제 비트맨 만들기
+	//SafeRelease(_gp_D2DBitMap);
+	//hr = ::_gp_RenderTarget->CreateBitmapFromWicBitmap(::_gp_ipConvertedSrcBmp, nullptr, &::_gp_D2DBitMap);
 
-	assert(hr == S_OK);
-	SafeRelease(DecoderPtr);
-	SafeRelease(FramePtr);
+	//assert(hr == S_OK);
+	//SafeRelease(DecoderPtr);
+	//SafeRelease(FramePtr);
 
 	return S_OK;
 }

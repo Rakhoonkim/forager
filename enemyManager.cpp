@@ -15,6 +15,7 @@ HRESULT enemyManager::init()
 	imageSetting();
 	_player = new player;
 	_player->init();
+
 	//몬스터 init에서 해주면 안됨 
 
 	return S_OK;
@@ -26,18 +27,34 @@ void enemyManager::release()
 
 void enemyManager::update()
 {
-	for (_viEnemy = _vEnemy.begin(); _viEnemy != _vEnemy.end(); _viEnemy++)
+	for (int i = 0;i < _vEnemy.size(); i++)
 	{
-		(*_viEnemy)->update();
+		_vEnemy[i]->update();
+		if (_vEnemy[i]->getEnemy()->enemy == ENEMY::DEMON_BOSS)
+		{
+			if (_vEnemy[i]->getBossAttack())
+			{
+				this->CreateEnemy(ENEMY::SKULL, _vEnemy[i]->getEnemy()->idx + 1, _vEnemy[i]->getEnemy()->idy);
+				this->CreateEnemy(ENEMY::SKULL, _vEnemy[i]->getEnemy()->idx + 1, _vEnemy[i]->getEnemy()->idy);
+				this->CreateEnemy(ENEMY::SKULL, _vEnemy[i]->getEnemy()->idx + 1, _vEnemy[i]->getEnemy()->idy);
+				_vEnemy[i]->SetBossAttack(false);
+			}
+		}
 	}
+	//for (_viEnemy = _vEnemy.begin(); _viEnemy != _vEnemy.end(); _viEnemy++)
+	//{
+	//	(*_viEnemy)->update();
+	//}
 
 	if (KEYMANAGER->isOnceKeyDown('U'))
 	{
 		//CreateEnemy(ENEMY::SLIME, 24, 19);
 		//CreateEnemy(ENEMY::BOAR, 24, 20);
-		CreateEnemy(ENEMY::DEMON, 24, 21);
+		//CreateEnemy(ENEMY::DEMON, 24, 21);
 		CreateEnemy(ENEMY::SKULL, 24, 21);
+		CreateEnemy(ENEMY::DEMON_BOSS, 24, 21);
 	}
+	bossAttack();
 }
 
 void enemyManager::render()
@@ -112,7 +129,28 @@ void enemyManager::imageSetting()
 	IMAGEMANAGER->addFrameImage("fireBall", "./image/enemy/fireBall.bmp", 195, 39, 5, 1, true, RGB(255, 0, 255));
 	KEYANIMANAGER->addDefaultFrameAnimation("fireBall", "fireBall", 10, false, true);
 	IMAGEMANAGER->addFrameImage("effectFireBall", "./image/enemy/effectFireBall.bmp", 2760, 176, 15, 1, true, RGB(255, 0, 255));
-	EFFECTMANAGER->addEffect("fireBall", "effectFireBall", 2760, 176, 184, 176, 1, 0.35f, 10);
+	EFFECTMANAGER->addEffect("fireBall", "effectFireBall", 2760, 176, 184, 176, 1, 0.35f, 100);
+
+	// boss
+	IMAGEMANAGER->addFrameImage("bossWalk", "./image/enemy/damonBossWalk.bmp", 1728, 312, 9, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("bossAttack", "./image/enemy/damonBossAttack.bmp", 1728, 360, 9, 2, true, RGB(255, 0, 255));
+
+	int idleRight[] = { 0 };
+	KEYANIMANAGER->addArrayFrameAnimation("bossIdleRight", "bossWalk", idleRight, 1, 10, true);
+	int idleLeft[] = { 17 };
+	KEYANIMANAGER->addArrayFrameAnimation("bossIdleLeft", "bossWalk", idleLeft, 1, 10, true);
+
+	int walkRight[] = { 0,1,2,3,4,5,6,7,8 };
+	KEYANIMANAGER->addArrayFrameAnimation("bossWalkRight", "bossWalk", walkRight, 9, 5, true);
+	int walkLeft[] = { 17,16,15,14,13,12,11,10,9 };
+	KEYANIMANAGER->addArrayFrameAnimation("bossWalkLeft", "bossWalk", walkLeft, 9, 5, true);
+
+	//공격
+	KEYANIMANAGER->addCoordinateFrameAnimation("bossAttackRight", "bossAttack", 0, 8, 10, false, true);
+	KEYANIMANAGER->addCoordinateFrameAnimation("bossAttackLeft", "bossAttack", 9, 17, 10, false, true);
+
+
+
 }
 
 void enemyManager::CreateEnemy(ENEMY enemyType, float x, float y)
@@ -153,5 +191,30 @@ void enemyManager::CreateEnemy(ENEMY enemyType, float x, float y)
 		temp->Set_PlayerLink(_player->get_PlayerAddress());
 		_vEnemy.push_back(temp);
 	}
+	else if (enemyType == ENEMY::DEMON_BOSS)
+	{
+		enemy* temp;
+		temp = new demonBoss;
+		temp->init(enemyType, "bossWalk", x, y);
+		temp->setAni("bossIdleLeft");
+		temp->Set_PlayerLink(_player->get_PlayerAddress());
+		_vEnemy.push_back(temp);
+	}
 
+}
+
+void enemyManager::bossAttack()
+{
+	for (int i = 0;i < _vEnemy.size(); i++)
+	{
+		if (_vEnemy[i]->getEnemy()->enemy == ENEMY::DEMON_BOSS)
+		{
+			if (_vEnemy[i]->getBossAttack())
+			{
+				this->CreateEnemy(ENEMY::SKULL, _vEnemy[i]->getEnemy()->idx, _vEnemy[i]->getEnemy()->idy);
+				_vEnemy[i]->SetBossAttack(false);
+				break;
+			}
+		}
+	}
 }

@@ -69,6 +69,7 @@ HRESULT enemy::init(ENEMY enemy,const char* imageName,int idx,int idy)
 	_bulletManager = new bulletManager;
 	_bulletManager->init();
 	
+
 	return S_OK;
 }
 
@@ -229,6 +230,7 @@ void demon::update()
 
 skull::skull()
 {
+	firetime = TIMEMANAGER->getWorldTime();
 }
 
 skull::~skull()
@@ -237,15 +239,36 @@ skull::~skull()
 
 void skull::update()
 {
-	if (KEYMANAGER->isOnceKeyDown('Y'))
+	if (firetime + RND->getFromIntTo(5,10) <= TIMEMANAGER->getWorldTime())
 	{
-		cout << "Y : ´­·È´Ù" << endl;
-		_bulletManager->fire("fireBall", _enemy.x+ IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth() /2, _enemy.y + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight() /2, 0, 5);
-		_bulletManager->fire("fireBall", _enemy.x + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth() / 2, _enemy.y + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight() / 2, 1.57,5);
-		_bulletManager->fire("fireBall", _enemy.x + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth() / 2, _enemy.y + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight() / 2, 3.14,5);
-		_bulletManager->fire("fireBall", _enemy.x + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth() / 2, _enemy.y + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight() / 2, 4.71, 5);
+		_bulletManager->getBullet()->fire(_enemy.x + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth() / 2, _enemy.y + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight() / 2, 0, 6);	
+		_bulletManager->getBullet()->fire( _enemy.x + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth() / 2, _enemy.y + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight() / 2, 1.57, 6);
+		_bulletManager->getBullet()->fire( _enemy.x + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth() / 2, _enemy.y + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight() / 2, 3.14, 6);
+		_bulletManager->getBullet()->fire( _enemy.x + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth() / 2, _enemy.y + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight() / 2, 4.71, 6);
+		firetime = TIMEMANAGER->getWorldTime();
 	}
 	_bulletManager->update();
+	IndexUpdate();
+	_enemyState->update();
+	_enemy.rc = RectMake(_enemy.x, _enemy.y, IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight());
+}
+
+//¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á DemonBoss ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á
+
+demonBoss::demonBoss()
+{
+}
+
+demonBoss::~demonBoss()
+{
+}
+
+void demonBoss::update()
+{
+	if (KEYMANAGER->isOnceKeyDown('Y'))
+	{
+		_enemy.isAttack = true;
+	}
 	IndexUpdate();
 	_enemyState->update();
 	_enemy.rc = RectMake(_enemy.x, _enemy.y, IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight());

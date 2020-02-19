@@ -184,6 +184,7 @@
     <ClInclude Include="mapToolScene.h" />
     <ClInclude Include="objectManager.h" />
     <ClInclude Include="objectNode.h" />
+    <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="playerManager.h" />
     <ClInclude Include="playerState.h" />
