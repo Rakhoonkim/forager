@@ -33,6 +33,7 @@ HRESULT crops::init(OBJECT object, const char* imageName, int idx, int idy)
 	_crops.hp = 0;
 	_crops.maxHp = 0;
 	_crops.isClick = false;
+	_crops.isEffect = false;
 	_crops.frameX = _crops.frameY = 0;
 	_crops.exp = 0;
 
@@ -55,6 +56,7 @@ HRESULT crops::init(TREE tree, const char* imageName, int idx, int idy)
 	_crops.hp = 0;
 	_crops.maxHp = 0;
 	_crops.isClick = false;
+	_crops.isEffect = false;
 	_crops.frameX = _crops.frameY = 0;
 	_crops.exp = 0;
 

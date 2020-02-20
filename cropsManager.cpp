@@ -62,6 +62,11 @@ void cropsManager::update()
 	for (_viCrops = _vCrops.begin(); _viCrops != _vCrops.end(); ++_viCrops)
 	{
 		(*_viCrops)->update();
+		if ((*_viCrops)->getCrops()->isEffect)
+		{
+			EFFECTMANAGER->play("attackEffect", (*_viCrops)->getCrops()->centerX, (*_viCrops)->getCrops()->centerY);
+			(*_viCrops)->getCrops()->isEffect = false;
+		}
 	}
 
 	// TEST 랜덤 타일 넘버 
@@ -357,6 +362,11 @@ void cropsManager::craateTreeCrops(TREE tree, int idx, int idy)
 		crops->setExpCrops(10);
 		_vCrops.push_back(crops);
 	}
+}
+
+void cropsManager::CropsEffect()
+{
+
 }
 
 void cropsManager::removeCrops()

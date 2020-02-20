@@ -23,13 +23,18 @@ public:
 	void render();
 
 	void imageSetting();
+	
+
 	void createImageCrops(OBJECT object,int idx,int idy);
 	void createFrameCrops(OBJECT object,int idx, int idy);
 	void createimageFrameCrops(OBJECT object, int idx, int idy);
 	void craateTreeCrops(TREE tree, int idx, int idy);
-
+	
 	vector<crops*>				getVCrops()	 { return _vCrops; }
 	vector<crops*>::iterator	getViCrops() { return _viCrops; }
+
+	//¸ÂÀ» ¶§ 
+	void CropsEffect(); 
 
 	void removeCrops(int arrNum) { _vCrops.erase(_vCrops.begin() + arrNum);}
 	void removeCrops();

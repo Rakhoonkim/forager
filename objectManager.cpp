@@ -42,7 +42,7 @@ void objectManager::update()
 
 void objectManager::render()
 {
-	_cropsManager->render();
 	_buildManager->render();
 	_enemyManager->render();
+	_cropsManager->render();
 }

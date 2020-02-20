@@ -162,7 +162,7 @@ void furnace::update()
 			_isUse = false;
 		}
 		buttonClick();
-		buttonEffect();
+		//buttonEffect(); 버튼 이펙트
 	}
 	for (int i = 0; i < MAXFURNACELIST; i++)
 	{
@@ -212,15 +212,16 @@ void furnace::EffectRender()
 
 		for (int i = 0; i < MAXFURNACELIST; i++)
 		{
-			if (!_furnaceButton[i].isEffect)
-			{
-				IMAGEMANAGER->findImage("furnaceList")->alphaFrameRender(CAMERAMANAGER->getWorldDC(), _furnaceButton[i].rc.left, _furnaceButton[i].rc.top, 0, i, 120);
-			}
-			else
+
+			if (ITEMMANAGER->getInventory()->foranceRecipes((FURNACERECIPE)i, _itemCount))
 			{
 				IMAGEMANAGER->findImage("furnaceList")->frameRender(CAMERAMANAGER->getWorldDC(), _furnaceButton[i].rc.left, _furnaceButton[i].rc.top, 0, i);
 			}
-			//Rectangle(CAMERAMANAGER->getWorldDC(), _furnaceButton[i].rc);
+			else
+			{
+				IMAGEMANAGER->findImage("furnaceList")->alphaFrameRender(CAMERAMANAGER->getWorldDC(), _furnaceButton[i].rc.left, _furnaceButton[i].rc.top, 0, i, 120);
+			}
+		
 			if (_craftPage && _furnaceButton[i].isClick)
 			{
 				IMAGEMANAGER->findImage("craftItem")->frameRender(CAMERAMANAGER->getWorldDC(), _craftButton.rc.left + 30, CAMERAMANAGER->getWorldCamera().cameraY + 135, i, 0);
@@ -471,7 +472,7 @@ void forge::update()
 			_isUse = false;
 		}
 		buttonClick();
-		buttonEffect();
+		//buttonEffect(); 버튼 효과주는 방법 
 	}
 	for (int i = 0; i < MAXFORGELIST; i++)
 	{
@@ -509,13 +510,13 @@ void forge::EffectRender()
 
 		for (int i = 0; i < MAXFORGELIST; i++)
 		{
-			if (!_forgeButton[i].isEffect)
+			if (ITEMMANAGER->getInventory()->forgeRecipes((FORGERECIPE)i, _itemCount))
 			{
-				IMAGEMANAGER->findImage("forgeList")->alphaFrameRender(CAMERAMANAGER->getWorldDC(), _forgeButton[i].rc.left, _forgeButton[i].rc.top, 0, i, 120);
+				IMAGEMANAGER->findImage("forgeList")->frameRender(CAMERAMANAGER->getWorldDC(), _forgeButton[i].rc.left, _forgeButton[i].rc.top, 0, i);
 			}
 			else
 			{
-				IMAGEMANAGER->findImage("forgeList")->frameRender(CAMERAMANAGER->getWorldDC(), _forgeButton[i].rc.left, _forgeButton[i].rc.top, 0, i);
+				IMAGEMANAGER->findImage("forgeList")->alphaFrameRender(CAMERAMANAGER->getWorldDC(), _forgeButton[i].rc.left, _forgeButton[i].rc.top, 0, i, 120);
 			}
 			//Rectangle(CAMERAMANAGER->getWorldDC(), _forgeButton[i].rc);
 			if (_craftPage && _forgeButton[i].isClick)
@@ -734,33 +735,32 @@ void sewingStation::EffectRender()
 		}
 
 		//케릭터의 장비에 따른 고정 렌더링 
-		if (!_sewingButton[0].isEffect)
-		{
-			IMAGEMANAGER->findImage("sewingList")->alphaFrameRender(CAMERAMANAGER->getWorldDC(), _sewingButton[0].rc.left, _sewingButton[0].rc.top, 0, 0, 120);
-		}
-		else
+		if (ITEMMANAGER->getInventory()->sewingRecipes(SEWINGRECIPE::THREAD, _itemCount))
 		{
 			IMAGEMANAGER->findImage("sewingList")->frameRender(CAMERAMANAGER->getWorldDC(), _sewingButton[0].rc.left, _sewingButton[0].rc.top, 0, 0);
 		}
-
-		if (!_sewingButton[1].isEffect)
-		{
-			IMAGEMANAGER->findImage("sewingList")->alphaFrameRender(CAMERAMANAGER->getWorldDC(), _sewingButton[1].rc.left, _sewingButton[1].rc.top, 0, _backPack, 120);
-		}
 		else
+		{
+			IMAGEMANAGER->findImage("sewingList")->alphaFrameRender(CAMERAMANAGER->getWorldDC(), _sewingButton[0].rc.left, _sewingButton[0].rc.top, 0, 0, 120);
+		}
+
+		if (ITEMMANAGER->getInventory()->sewingRecipes((SEWINGRECIPE)_backPack, _itemCount))
 		{
 			IMAGEMANAGER->findImage("sewingList")->frameRender(CAMERAMANAGER->getWorldDC(), _sewingButton[1].rc.left, _sewingButton[1].rc.top, 0, _backPack);
 		}
-
-		if (!_sewingButton[2].isEffect)
-		{
-			IMAGEMANAGER->findImage("sewingList")->alphaFrameRender(CAMERAMANAGER->getWorldDC(), _sewingButton[2].rc.left, _sewingButton[2].rc.top, 0, _wallet, 120);
-		}
 		else
+		{
+			IMAGEMANAGER->findImage("sewingList")->alphaFrameRender(CAMERAMANAGER->getWorldDC(), _sewingButton[1].rc.left, _sewingButton[1].rc.top, 0, _backPack, 120);
+		}
+
+		if (ITEMMANAGER->getInventory()->sewingRecipes((SEWINGRECIPE)_wallet, _itemCount))
 		{
 			IMAGEMANAGER->findImage("sewingList")->frameRender(CAMERAMANAGER->getWorldDC(), _sewingButton[2].rc.left, _sewingButton[2].rc.top, 0, _wallet);
 		}
-
+		else
+		{
+			IMAGEMANAGER->findImage("sewingList")->alphaFrameRender(CAMERAMANAGER->getWorldDC(), _sewingButton[2].rc.left, _sewingButton[2].rc.top, 0, _wallet, 120);
+		}
 
 		if (_craftPage && _sewingButton[0].isClick)
 		{
@@ -777,7 +777,6 @@ void sewingStation::EffectRender()
 			IMAGEMANAGER->findImage("craftItem")->frameRender(CAMERAMANAGER->getWorldDC(), _craftButton.rc.left + 30, CAMERAMANAGER->getWorldCamera().cameraY + 295, _wallet, 2);
 			IMAGEMANAGER->findImage("pieceList")->frameRender(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2 + 185, CAMERAMANAGER->getWorldCamera().cameraY + 340, _wallet, 2);
 		}
-
 	}
 }
 

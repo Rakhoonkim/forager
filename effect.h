@@ -16,6 +16,7 @@ protected:
 	BOOL		_move;   //¿Ãµø 
 	float		_elapsedTime;
 
+	bool _AttacEffect;
 	int _moveCount;
 	float _angle;
 public:

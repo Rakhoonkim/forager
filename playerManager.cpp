@@ -220,6 +220,7 @@ void playerManager::objectAttack(int num)
 		if (getDistance(_player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y, _cropsManager->getVCrops()[num]->getCrops()->centerX, _cropsManager->getVCrops()[num]->getCrops()->centerY) <= 120)
 		{
 			_player->playerHealth(3);
+			_cropsManager->getVCrops()[num]->setCropsEffect(true);
 			_cropsManager->getVCrops()[num]->cropsHit(_player->get_PlayerAddress()->damage);
 		}
 		//KEYMANAGER->setKeyDown(VK_LBUTTON, false);

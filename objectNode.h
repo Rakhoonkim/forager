@@ -63,6 +63,7 @@ struct tagObject
 	bool isClick;
 	bool isJump;
 	bool isAttack;
+	bool isEffect;			// ¿Ã∆Â∆Æ 
 	bool AttackTerm;
 };
 

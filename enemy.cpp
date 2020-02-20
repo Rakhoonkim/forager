@@ -47,6 +47,7 @@ HRESULT enemy::init(ENEMY enemy,const char* imageName,int idx,int idy)
 	_enemy.centerX = _enemy.x + 30;
 	_enemy.centerY = _enemy.y + 30;
 
+	_enemy.isEffect = false;
 	_enemy.AttackTerm = false;
 	_enemy.isJump = false;
 	_enemy.isAttack = false;

@@ -38,6 +38,8 @@ void stageScene::render()
 	//PatBlt(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX, CAMERAMANAGER->getWorldCamera().cameraY, WINSIZEX, WINSIZEY,WHITENESS);
 	IMAGEMANAGER->findImage("background")->render(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX, CAMERAMANAGER->getWorldCamera().cameraY);
 	MAPMANAGER->render();      //MAP
+	// ÀÌÆåÆ®?
+	EFFECTMANAGER->EffectRender(CAMERAMANAGER->getWorldDC());		 // ÀÌÆåÆ®
 	if (CURSORMANAGER->getCursor()->getObjectPoint()) CURSORMANAGER->render(); // CURSOR
 	_objectManager->render();  //OBJECT
 	ITEMMANAGER->render();

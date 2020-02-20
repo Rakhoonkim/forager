@@ -155,6 +155,10 @@ void uiManager::imageSetting()
 
 	IMAGEMANAGER->addImage("level", "./image/ui/player/level.bmp", 70, 16, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("slush", "./image/ui/player/slush.bmp", 24, 24, true, RGB(255, 0, 255));
+
+	// °ø°Ý ÀÌÆåÆ®
+	IMAGEMANAGER->addFrameImage("attackEffect", "./image/ui/player/attackEffect.bmp", 510, 85, 6, 1, true, RGB(255, 0, 255));
+	EFFECTMANAGER->addEffect("attackEffect", "attackEffect", 510,85, 85, 85, 10, 0.1f, 10,true);
 }
 
 

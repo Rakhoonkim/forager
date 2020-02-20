@@ -26,6 +26,7 @@ HRESULT effect::init(image* effectImage, int frameW, int frameH, int fps, float 
 	_elapsedTime = elapsedTime;
 	_last = false;
 	_move = false;
+	_AttacEffect = false;
 	_moveCount = 0;
 	_angle = 1.57;
 	if (!_effectAnimation) _effectAnimation = new animation;
@@ -105,10 +106,7 @@ void effect::update()
 	//만약 애니메이션 재생신호가 false면 이펙트를 꺼라
 	if (!_effectAnimation->isPlay())
 	{
-		if (!_effectAnimation->isLast())
-		{
-			killEffect();
-		}
+		killEffect();	
 	}
 	move();
 }

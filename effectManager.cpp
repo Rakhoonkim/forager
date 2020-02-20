@@ -91,7 +91,31 @@ void effectManager::render(HDC hdc)
 			iterEffects vArrIter;
 			for (vArrIter = mIter->second.begin(); vArrIter != mIter->second.end(); ++vArrIter)
 			{
-				(*vArrIter)->render(hdc);
+				if (!(*vArrIter)->getIsLast())
+				{
+					(*vArrIter)->render(hdc);
+				}
+			}
+		}
+	}
+}
+
+void effectManager::EffectRender(HDC hdc)
+{
+	iterTotalEffect vIter;
+	iterEffect mIter;
+
+	for (vIter = _vTotalEffect.begin(); vIter != _vTotalEffect.end(); ++vIter)
+	{
+		for (mIter = vIter->begin(); mIter != vIter->end(); ++mIter)
+		{
+			iterEffects vArrIter;
+			for (vArrIter = mIter->second.begin(); vArrIter != mIter->second.end(); ++vArrIter)
+			{
+				if ((*vArrIter)->getIsLast())
+				{
+					(*vArrIter)->render(hdc);
+				}
 			}
 		}
 	}
