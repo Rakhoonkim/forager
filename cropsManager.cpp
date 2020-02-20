@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "cropsManager.h"
+#include "player.h"
 
 cropsManager::cropsManager()
 {
@@ -44,7 +45,11 @@ HRESULT cropsManager::init()
 	craateTreeCrops(TREE::CACTUS, 19, 20);
 	craateTreeCrops(TREE::SNOW, 20, 20);
 
+	_player = new player;
+	_player->init();
 
+	_effect = new alphaEffect;
+	_effect->init();
 	return S_OK;
 }
 
@@ -68,6 +73,7 @@ void cropsManager::update()
 	}
 
 	removeCrops();			// 작물 HP < 0시 제거 
+	_effect->update();
 }
 
 void cropsManager::render()
@@ -76,6 +82,7 @@ void cropsManager::render()
 	{
 		(*_viCrops)->render();
 	}
+	_effect->render();
 }
 
 void cropsManager::imageSetting()
@@ -118,6 +125,7 @@ void cropsManager::createImageCrops(OBJECT object, int idx, int idy)
 		crops->init(object, "cinderBloom", idx, idy);
 		crops->setHp(1, 1);
 		crops->setIsClick();
+		crops->setExpCrops(5);
 		_vCrops.push_back(crops);
 	}
 	else if (object == OBJECT::NIGHTSHADE)
@@ -127,6 +135,7 @@ void cropsManager::createImageCrops(OBJECT object, int idx, int idy)
 		crops->init(object, "nightShade", idx, idy);
 		crops->setHp(1, 1);
 		crops->setIsClick();
+		crops->setExpCrops(10);
 		_vCrops.push_back(crops);
 	}
 	else
@@ -144,6 +153,7 @@ void cropsManager::createFrameCrops(OBJECT object, int idx, int idy)
 		crops->init(object, "beet", idx, idy);
 		crops->setHp(1, 1);
 		crops->setSpeed(10);
+		crops->setExpCrops(5);
 		crops->setTime();
 		_vCrops.push_back(crops);
 	}
@@ -154,6 +164,7 @@ void cropsManager::createFrameCrops(OBJECT object, int idx, int idy)
 		crops->init(object, "hotPepper", idx, idy);
 		crops->setHp(1, 1);
 		crops->setSpeed(12);
+		crops->setExpCrops(15);
 		crops->setTime();
 		_vCrops.push_back(crops);
 	}
@@ -164,6 +175,7 @@ void cropsManager::createFrameCrops(OBJECT object, int idx, int idy)
 		crops->init(object, "wheat", idx, idy);
 		crops->setHp(1, 1);
 		crops->setSpeed(10);
+		crops->setExpCrops(5);
 		crops->setTime();
 		_vCrops.push_back(crops);
 	}
@@ -174,6 +186,7 @@ void cropsManager::createFrameCrops(OBJECT object, int idx, int idy)
 		crops->init(object, "pumpkin", idx, idy);
 		crops->setHp(1, 1);
 		crops->setSpeed(14);
+		crops->setExpCrops(15);
 		crops->setTime();
 		_vCrops.push_back(crops);
 	}
@@ -184,6 +197,7 @@ void cropsManager::createFrameCrops(OBJECT object, int idx, int idy)
 		crops->init(object, "cotton", idx, idy);
 		crops->setHp(1, 1);
 		crops->setSpeed(12);
+		crops->setExpCrops(10);
 		crops->setTime();
 		_vCrops.push_back(crops);
 	}
@@ -194,6 +208,7 @@ void cropsManager::createFrameCrops(OBJECT object, int idx, int idy)
 		crops->init(object, "flower", idx, idy);
 		crops->setHp(1, 1);
 		crops->setSpeed(12);
+		crops->setExpCrops(10);
 		crops->setTime();
 		_vCrops.push_back(crops);
 	}
@@ -204,6 +219,7 @@ void cropsManager::createFrameCrops(OBJECT object, int idx, int idy)
 		crops->init(object, "bush", idx, idy);
 		crops->setHp(3, 3);
 		crops->setSpeed(12);
+		crops->setExpCrops(7);
 		crops->setTime();
 		_vCrops.push_back(crops);
 	}
@@ -222,6 +238,7 @@ void cropsManager::createimageFrameCrops(OBJECT object, int idx, int idy)
 		crops->init(object, "rock", idx, idy);
 		crops->setHp(3, 3);
 		crops->setIsClick();
+		crops->setExpCrops(10);
 		crops->setFrameX(RND->getInt(2));
 		_vCrops.push_back(crops);
 	}
@@ -232,6 +249,7 @@ void cropsManager::createimageFrameCrops(OBJECT object, int idx, int idy)
 		crops->init(object, "rock", idx, idy);
 		crops->setHp(4, 4);
 		crops->setIsClick();
+		crops->setExpCrops(10);
 		crops->setFrameX(RND->getFromIntTo(6, 8));
 		_vCrops.push_back(crops);
 	}
@@ -242,6 +260,7 @@ void cropsManager::createimageFrameCrops(OBJECT object, int idx, int idy)
 		crops->init(object, "rock", idx, idy);
 		crops->setHp(5, 5);
 		crops->setIsClick();
+		crops->setExpCrops(15);
 		crops->setFrameX(RND->getFromIntTo(4, 6));
 		_vCrops.push_back(crops);
 	}
@@ -252,6 +271,7 @@ void cropsManager::createimageFrameCrops(OBJECT object, int idx, int idy)
 		crops->init(object, "rock", idx, idy);
 		crops->setHp(4, 4);
 		crops->setIsClick();
+		crops->setExpCrops(15);
 		crops->setFrameX(RND->getFromIntTo(2, 4));
 		_vCrops.push_back(crops);
 	}
@@ -262,6 +282,7 @@ void cropsManager::createimageFrameCrops(OBJECT object, int idx, int idy)
 		crops->init(object, "volcano", idx, idy);
 		crops->setHp(10, 10);
 		crops->setIsClick();
+		crops->setExpCrops(15);
 		crops->setFrameX(RND->getFromIntTo(4, 6));
 		_vCrops.push_back(crops);
 	}
@@ -272,6 +293,7 @@ void cropsManager::createimageFrameCrops(OBJECT object, int idx, int idy)
 		crops->init(object, "volcano", idx, idy);
 		crops->setHp(10, 10);
 		crops->setIsClick();
+		crops->setExpCrops(15);
 		crops->setFrameX(RND->getInt(2));
 		_vCrops.push_back(crops);
 	}
@@ -282,6 +304,7 @@ void cropsManager::createimageFrameCrops(OBJECT object, int idx, int idy)
 		crops->init(object, "volcano", idx, idy);
 		crops->setHp(10, 10);
 		crops->setIsClick();
+		crops->setExpCrops(20);
 		crops->setFrameX(RND->getFromIntTo(2, 4));
 		_vCrops.push_back(crops);
 	}
@@ -298,6 +321,7 @@ void cropsManager::craateTreeCrops(TREE tree, int idx, int idy)
 		crops->setHp(5, 5);
 		crops->setIsClick();
 		crops->setFrameX(0);
+		crops->setExpCrops(5);
 		_vCrops.push_back(crops);
 	}
 	else if (tree == TREE::RED)
@@ -308,6 +332,7 @@ void cropsManager::craateTreeCrops(TREE tree, int idx, int idy)
 		crops->setHp(5, 5);
 		crops->setIsClick();
 		crops->setFrameX(2);
+		crops->setExpCrops(10);
 		_vCrops.push_back(crops);
 	}
 	else if (tree == TREE::SNOW)
@@ -318,6 +343,7 @@ void cropsManager::craateTreeCrops(TREE tree, int idx, int idy)
 		crops->setHp(5, 5);
 		crops->setIsClick();
 		crops->setFrameX(3);
+		crops->setExpCrops(10);
 		_vCrops.push_back(crops);
 	}
 	else if (tree == TREE::CACTUS)
@@ -328,6 +354,7 @@ void cropsManager::craateTreeCrops(TREE tree, int idx, int idy)
 		crops->setHp(5, 5);
 		crops->setIsClick();
 		crops->setFrameX(RND->getInt(4));
+		crops->setExpCrops(10);
 		_vCrops.push_back(crops);
 	}
 }
@@ -348,6 +375,11 @@ void cropsManager::removeCrops()
 			{
 				ITEMMANAGER->Dropitem((*_viCrops)->getCrops()->tree, (*_viCrops)->getCrops()->centerX, (*_viCrops)->getCrops()->centerY);
 			}
+			//경험치 증가
+			_player->playerExp((*_viCrops)->getCrops()->exp);
+			//이펙트
+			_effect->play("expNum", (*_viCrops)->getCrops()->exp, _player->get_PlayerAddress()->x - 15, _player->get_PlayerAddress()->y - 15);
+			//작물 제거 
 			_vCrops.erase(_viCrops);
 			//커서 초기화 
 			CURSORMANAGER->setCursor();

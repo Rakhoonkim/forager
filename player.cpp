@@ -30,7 +30,9 @@ HRESULT player::init()
 	_player.maxHp = 3;
 	_player.health = 100;
 	_player.damage = 1;
-
+	_player.level = 1;
+	_player.expMax = 30;
+	_player.exp = 0;
 	_state = new playerState();
 	_state->init(&_player);
 
@@ -45,6 +47,7 @@ HRESULT player::init()
 
 
 	CAMERAMANAGER->setCameraInit(_player.x, _player.y);
+
 	return S_OK;
 }
 
@@ -64,6 +67,7 @@ void player::update()
 		_player.weaponAni->start();
 		//ITEMMANAGER->Dropitem("woodDrop", _player.x, _player.y);
 		KEYMANAGER->setKeyDown(VK_LBUTTON, false);
+		cout << "player health: " << _player.health << endl;
 	}
 	_player.rc = RectMake(_player.x, _player.y, _player.playerImage->getFrameWidth(), _player.playerImage->getFrameHeight());
 }
@@ -190,8 +194,41 @@ void player::IndexUpdate()
 
 void player::acelPlus()
 {
+	//가속도
 	if (_player.acel >= 2) return;
 	_player.acel += 0.05;
+}
+
+void player::setPlayerExpMax(int level)
+{
+	_player.level++;
+	_player.exp = _player.exp - _player.expMax;
+	_player.expMax = _player.level * 30;
+
+	
+}
+
+void player::playerExp(int exp)
+{
+	_player.exp += exp;
+
+	//만약 획득한 경험치가 MAX값에 도달하면 
+	if (_player.exp >= _player.expMax)
+	{
+		//레벨 증가 시킨다.
+		this->setPlayerExpMax(_player.level);
+	}
+}
+
+void player::playerHealth(int health)
+{
+	//체력을 감소시킨다.
+	_player.health -= health;
+	// 체력은 0보다 작으면 0으로 고정 
+	if (_player.health <= 0)
+	{
+		_player.health = 0;
+	}
 }
 
 

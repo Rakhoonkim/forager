@@ -66,10 +66,21 @@ public:
 	virtual void setCursorXY(float x, float y);
 };
 
+//farmgin
 class cursorFarming : public cursor
 {
 public:
 	~cursorFarming();
+	virtual void render();
+	virtual void imageChange();
+	virtual void setCursorXY(float x, float y);
+};
+
+class cursorEnemyBoss : public cursor
+{
+public:
+	~cursorEnemyBoss();
+
 	virtual void render();
 	virtual void imageChange();
 	virtual void setCursorXY(float x, float y);

@@ -167,3 +167,32 @@ void cursorFarming::setCursorXY(float x, float y)
 	_cursor.x = x - _cursor.image->getFrameWidth() / 2;
 	_cursor.y = y - _cursor.image->getFrameHeight() / 2;
 }
+
+
+//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■EnemyBoss■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+
+cursorEnemyBoss::~cursorEnemyBoss()
+{
+}
+
+void cursorEnemyBoss::render()
+{
+	_cursor.image->aniRender(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + _cursor.x, CAMERAMANAGER->getWorldCamera().cameraY + _cursor.y + 10, _cursor.ani);
+}
+
+void cursorEnemyBoss::imageChange()
+{
+	if (!_change) return;
+	_ObjectPoint = true;	//오브젝트를 가리킨다 
+	_cursor.image = IMAGEMANAGER->findImage("3x3cursor");
+	_cursor.ani = KEYANIMANAGER->findAnimation("3x3cursor");
+	_cursor.ani->start();
+	_change = false;
+}
+
+void cursorEnemyBoss::setCursorXY(float x, float y)
+{
+	_cursor.x = x - _cursor.image->getFrameWidth() / 2;
+	_cursor.y = y - _cursor.image->getFrameHeight() / 2;
+}

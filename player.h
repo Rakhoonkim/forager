@@ -28,6 +28,9 @@ public:
 	void KeyControl();		// KEY
 	void IndexUpdate();		// PLAYER INDEX 업데이트
 	void acelPlus();
+	void setPlayerExpMax(int expMax);
+	void playerExp(int exp);
+	void playerHealth(int health);
 	tagPlayer get_PlayerAddressLinK() { return _player; }
 	tagPlayer* get_PlayerAddress() { return &_player; }
 	RECT get_playerRect() { return _player.rc; }

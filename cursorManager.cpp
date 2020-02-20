@@ -24,6 +24,8 @@ HRESULT cursorManager::init()
 
 	_cursorFarming = new cursorFarming;
 
+	_cursorEnemyBoss = new cursorEnemyBoss;
+
 	_cursor = _cursorBasic;
 
 	return S_OK;
@@ -74,6 +76,12 @@ void cursorManager::setBuildPoint()
 void cursorManager::setBridgePoint()
 {
 	_cursor = _cursorFarming;
+	_cursor->imageChange();
+}
+
+void cursorManager::setBossPoint()
+{
+	_cursor = _cursorEnemyBoss;
 	_cursor->imageChange();
 }
 

@@ -10,25 +10,27 @@ private:
 	vector<enemy*>				_vEnemy;
 	vector<enemy*>::iterator	_viEnemy;
 	
-	float _timer;   
-
-	enemy* _enemy;
 	player* _player;
+
+	float _timer;   
 public:
 	enemyManager();
 	~enemyManager();
+
 	HRESULT init();
 	void release();
 	void update();
 	void render();
+	void imageSetting();		 // 이미지 셋팅
 
-	void imageSetting();
+	void enemyRemove();			 // 몬스터 삭제
 
+	void bossAttack();			 //보스 공격 판정 사용안할예정 
 
-	enemy* getEnemy() { return _enemy; }
-	
-	void CreateEnemy(ENEMY enemyType, float x, float y);
-	void bossAttack();
-	void setPlayer(player* player) { _player = player;}
+	void setPlayer(player* player)	{ _player = player;}		 // SET PLAYER 
+	void CreateEnemy(ENEMY enemyType, float x, float y);		 // CREATE ENEMY 
+
+	vector<enemy*> getVEnemy()			  { return _vEnemy;}     // ENEMY Vector
+	vector<enemy*>::iterator getViEnemy() { return _viEnemy;}	 // ENEMY Iterator
 };
 

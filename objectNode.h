@@ -25,6 +25,8 @@ struct tagPlayer
 	float acel;
 	int idx, idy;
 	int hp, maxHp;
+	int level;			// LEVEL
+	int expMax, exp;	// 경험치최대치, 경험치 
 	int speed;
 	int damage;
 	int health;
@@ -44,8 +46,9 @@ struct tagObject
 	RECT rc;
 	animation* ani;
 	const char* imageName;
-	float centerX, centerY;
-	float x, y;
+	float x, y;					// (x,y)
+	float width, height;
+	float centerX, centerY;		// (x + width/2, y + height/2)  중점
 	float time;
 	float angle;
 	float sourX, sourY;
@@ -56,6 +59,7 @@ struct tagObject
 	int speed;
 	int hp, maxHp;
 	int damage;
+	int exp;
 	bool isClick;
 	bool isJump;
 	bool isAttack;

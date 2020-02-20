@@ -264,6 +264,12 @@
     <ClInclude Include="ObjectPool.h">
       <Filter>2DGameFramework\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="gameData.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="alphaEffect.h">
+      <Filter>2DGameFramework\effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -415,6 +421,12 @@
     </ClCompile>
     <ClCompile Include="bullet.cpp">
       <Filter>playGround\object\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="gameData.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="alphaEffect.cpp">
+      <Filter>2DGameFramework\effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

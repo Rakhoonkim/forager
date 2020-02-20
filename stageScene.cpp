@@ -12,9 +12,10 @@ HRESULT stageScene::init()
 	
 	_playerManager->set_CropsManager(_objectManager->get_CropsManager());
 	_playerManager->set_BuildManager(_objectManager->get_buildManager());
-	
-	_objectManager->get_enemyManager()->setPlayer(_playerManager->get_player());  // 플레이어 링크 
+	_playerManager->set_EnemyManager(_objectManager->get_enemyManager());
 
+	_objectManager->get_enemyManager()->setPlayer(_playerManager->get_player());  // 플레이어 링크 
+	_objectManager->get_CropsManager()->setPlayer(_playerManager->get_player());
 	// 맵 
 	MAPMANAGER->MapLoad("inGameNumber1.map");
 	return S_OK;

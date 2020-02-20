@@ -40,6 +40,10 @@ HRESULT enemy::init(ENEMY enemy,const char* imageName,int idx,int idy)
 	_enemy.angle = 0;
 	_enemy.x = idx * 60;
 	_enemy.y = idy * 60;
+
+	_enemy.width = IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth();
+	_enemy.height = IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight();
+
 	_enemy.centerX = _enemy.x + 30;
 	_enemy.centerY = _enemy.y + 30;
 
@@ -69,7 +73,6 @@ HRESULT enemy::init(ENEMY enemy,const char* imageName,int idx,int idy)
 	_bulletManager = new bulletManager;
 	_bulletManager->init();
 	
-
 	return S_OK;
 }
 
@@ -79,7 +82,6 @@ void enemy::release()
 
 void enemy::update()
 {
-	cout << "s나 Enemy이야" << endl;
 	_enemyState->update();
 	_bulletManager->update();
 	IndexUpdate();
@@ -93,10 +95,15 @@ void enemy::render()
 
 void enemy::IndexUpdate()
 {
+	_enemy.width = IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth();
+	_enemy.height = IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight();
+
 	//RECT idx, idy
 	_enemy.rc = RectMake(_enemy.x, _enemy.y, IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight());
 	_enemy.idx = _enemy.x / 60;
 	_enemy.idy = _enemy.y / 60;
+	_enemy.centerX = _enemy.x + (_enemy.width / 2);
+	_enemy.centerY = _enemy.y + (_enemy.height / 2);
 
 	//이미지방향값 정의
 	cout << "enemy angle: " << _enemy.angle << endl;
@@ -121,15 +128,10 @@ void enemy::IndexUpdate()
 	//방향이 달라지면 이미지 변화를 호출한다.
 	if (_previousDirection != _enemy.imageDirection)
 	{
-		cout << "이미지 바꾼다" << endl;
 		_previousDirection = _enemy.imageDirection;
 		_enemyState->getState()->ChangeImage();
 	}
 	//cout << "enemy idx : " << _enemy.idx << "enemy idy : " << _enemy.idy << endl;
-}
-
-void enemy::bullet()
-{
 }
 
 //■■■■■■■■■■■■■■■■■■■■■■■■■■■■ slime ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -147,7 +149,7 @@ void slime::update()
 	//cout << _player->x << endl;
 	//cout << _player->y << endl;
 	//거리가 가까워지면 공격 상태로 바꾼다
-	if (getDistance(_player->x, _player->y, _enemy.x, _enemy.y) <= 120)
+	if (getDistance(_player->x, _player->y, _enemy.x, _enemy.y) <= 150)
 	{
 		if (!_enemy.isJump)
 		{
@@ -160,7 +162,6 @@ void slime::update()
 			_enemy.isJump = true;
 		}
 	}
-
 	IndexUpdate();
 	_enemyState->update();
 	_enemy.rc = RectMake(_enemy.x, _enemy.y, IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight());
@@ -265,10 +266,6 @@ demonBoss::~demonBoss()
 
 void demonBoss::update()
 {
-	if (KEYMANAGER->isOnceKeyDown('Y'))
-	{
-		_enemy.isAttack = true;
-	}
 	IndexUpdate();
 	_enemyState->update();
 	_enemy.rc = RectMake(_enemy.x, _enemy.y, IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight());

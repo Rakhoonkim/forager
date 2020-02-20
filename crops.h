@@ -24,7 +24,7 @@ public:
 	virtual void setIsClick()				{ _crops.isClick = true; }
 	virtual void setTime()					{ _crops.time = TIMEMANAGER->getWorldTime(); }
 	virtual void cropsHit(int damege)		{ _crops.hp -= damege; }
-
+	virtual void setExpCrops(int exp)		{ _crops.exp = exp; }
 	virtual tagObject* getCrops()		{ return &_crops; }
 };
 

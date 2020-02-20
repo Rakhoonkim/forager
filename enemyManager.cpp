@@ -51,10 +51,10 @@ void enemyManager::update()
 		//CreateEnemy(ENEMY::SLIME, 24, 19);
 		//CreateEnemy(ENEMY::BOAR, 24, 20);
 		//CreateEnemy(ENEMY::DEMON, 24, 21);
-		CreateEnemy(ENEMY::SKULL, 24, 21);
-		CreateEnemy(ENEMY::DEMON_BOSS, 24, 21);
+		//CreateEnemy(ENEMY::SKULL, 24, 21);
+		//CreateEnemy(ENEMY::DEMON_BOSS, 24, 21);
 	}
-	bossAttack();
+	enemyRemove();
 }
 
 void enemyManager::render()
@@ -63,8 +63,6 @@ void enemyManager::render()
 	{
 		(*_viEnemy)->render();
 	}
-
-
 }
 
 void enemyManager::imageSetting()
@@ -149,8 +147,20 @@ void enemyManager::imageSetting()
 	KEYANIMANAGER->addCoordinateFrameAnimation("bossAttackRight", "bossAttack", 0, 8, 10, false, true);
 	KEYANIMANAGER->addCoordinateFrameAnimation("bossAttackLeft", "bossAttack", 9, 17, 10, false, true);
 
+}
 
-
+void enemyManager::enemyRemove()
+{
+	for (_viEnemy = _vEnemy.begin(); _viEnemy != _vEnemy.end(); _viEnemy++)
+	{
+		if ((*_viEnemy)->getEnemy()->hp <= 0)
+		{
+			// Enemey 삭제  
+			//1. 아이템 생성 추가 할 예정 
+			_vEnemy.erase(_viEnemy);
+			break;
+		}
+	}
 }
 
 void enemyManager::CreateEnemy(ENEMY enemyType, float x, float y)
@@ -161,6 +171,7 @@ void enemyManager::CreateEnemy(ENEMY enemyType, float x, float y)
 		temp = new slime;
 		temp->init(enemyType, "slime", x, y);
 		temp->setAni("slimeIdleLeft");
+		temp->setHp(5, 5);
 		temp->Set_PlayerLink(_player->get_PlayerAddress());
 		_vEnemy.push_back(temp);
 	}
@@ -188,6 +199,7 @@ void enemyManager::CreateEnemy(ENEMY enemyType, float x, float y)
 		temp = new skull;
 		temp->init(enemyType, "skull", x, y);
 		temp->setAni("skullLeft");
+		temp->set_skullEnemyXY();
 		temp->Set_PlayerLink(_player->get_PlayerAddress());
 		_vEnemy.push_back(temp);
 	}

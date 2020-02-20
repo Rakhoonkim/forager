@@ -18,6 +18,12 @@ private:
 
 	int _currentOption;
 	bool _isOption;
+
+	// === player Setting;
+	tagPlayer* _player;
+	float _healthBar;   // 체력바 가로 
+	float _expBar;		// 경험치바 가로 
+	float _slushX;
 public:
 	uiManager();
 	~uiManager();
@@ -28,6 +34,10 @@ public:
 	void render();
 
 	void imageSetting();
+
+	// 플레이어 옵션 창
+	void PlayerUIRender();
+	// 이외의 옵션 
 	void optionsSetting();
 	void setButtonAlpha();
 	bool getOption() { return _isOption; }
@@ -41,9 +51,11 @@ public:
 	}
 
 
-	void setInven(inventory* inven) { _inven = inven; }
-	inventory* getInven() { return _inven; }
-	build* getBuild() { return _build; }
+	void setInven(inventory* inven)			{ _inven = inven; }
+	void playerAdressLink(tagPlayer* player)	{ _player = player;}
 	void buildAdressLink(buildManager* buildManager) { _build->setBuildManager(buildManager);}
+	
+	build* getBuild() { return _build; }
+	inventory* getInven() { return _inven; }
 };
 

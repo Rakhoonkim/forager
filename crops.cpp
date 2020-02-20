@@ -34,6 +34,7 @@ HRESULT crops::init(OBJECT object, const char* imageName, int idx, int idy)
 	_crops.maxHp = 0;
 	_crops.isClick = false;
 	_crops.frameX = _crops.frameY = 0;
+	_crops.exp = 0;
 
 	_crops.rc = RectMake(_crops.x, _crops.y, IMAGEMANAGER->findImage(_crops.imageName)->getWidth(), IMAGEMANAGER->findImage(_crops.imageName)->getHeight());
 	return S_OK;
@@ -55,6 +56,7 @@ HRESULT crops::init(TREE tree, const char* imageName, int idx, int idy)
 	_crops.maxHp = 0;
 	_crops.isClick = false;
 	_crops.frameX = _crops.frameY = 0;
+	_crops.exp = 0;
 
 	_crops.rc = RectMake(_crops.x, _crops.y, IMAGEMANAGER->findImage(_crops.imageName)->getWidth(), IMAGEMANAGER->findImage(_crops.imageName)->getHeight());
 

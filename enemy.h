@@ -33,15 +33,15 @@ public:
 	tagObject* getEnemy()					{ return &_enemy; }		 // enemy 참조 
 	void Set_PlayerLink(tagPlayer* player)  { _player = player; }
 
+	void set_skullEnemyXY() { _enemy.x += 30;_enemy.y += 30;}
 	// 세팅 함수 
 	virtual void setImage(const char* imageName)	 { _enemy.imageName = imageName; } 			//이미지 
 	virtual void setHp(int MaxHp, int hp)			 { _enemy.maxHp = MaxHp; _enemy.hp = hp; }  // 체력 
 	virtual void setAni(const char* imageName)		 { _enemy.ani = KEYANIMANAGER->findAnimation(imageName); _enemy.ani->start(); }
-
+	virtual void enemyHit(int damege)				 { _enemy.hp -= damege; }
+	
 	virtual bool getBossAttack() { return _enemy.isAttack; }
 	virtual void SetBossAttack(bool value) { _enemy.isAttack = value; }
-
-	virtual void bullet();
 	
 };
 

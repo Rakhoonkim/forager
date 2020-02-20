@@ -15,7 +15,7 @@ private:
 	typedef map<string, arrEffects>::iterator  iterEffect;
 
 	typedef vector<map<string, arrEffects>>				arrTotalEffect;
-	typedef vector<map<string, arrEffects>>::iterator iterTotalEffect;
+	typedef vector<map<string, arrEffects>>::iterator  iterTotalEffect;
 
 private:
 	arrTotalEffect _vTotalEffect;

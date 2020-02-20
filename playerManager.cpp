@@ -2,6 +2,7 @@
 #include "playerManager.h"
 #include "cropsManager.h"
 #include "buildManager.h"
+#include "enemyManager.h"
 
 HRESULT playerManager::init()
 {
@@ -15,14 +16,23 @@ HRESULT playerManager::init()
 	_buildManager = new buildManager;		//BUILD
 	_buildManager->init();
 
+	_enemyManager = new enemyManager;
+	_enemyManager->init();
+
 	//옵션
 	_isOption = false;
+
+	//UI 셋팅
+	UIMANAGER->playerAdressLink(_player->get_PlayerAddress()); // 구조체 전달
+	_alphaEffect = new alphaEffect;
+	_alphaEffect->init();
 	return S_OK;
 }
 
 void playerManager::release()
 {
 	_player->release();
+	_alphaEffect->release();			// 숫자 지우기
 }
 
 void playerManager::update()
@@ -33,12 +43,19 @@ void playerManager::update()
 	itemCollisionPlayer();    // 아이템을 먹기 위한.
 	itemCollisionMouse();	  // 아이템을 먹기 위한.
 	optionControl();		  // 옵션창 컨트롤 
+	_alphaEffect->update();	  // UI 경험치 
+	if (KEYMANAGER->isOnceKeyDown('N'))
+	{
+		cout << "눌렷나?" << endl;
+		_alphaEffect->play("expNum",15,_player->get_PlayerAddress()->x - 15, _player->get_PlayerAddress()->y - 15);
+	}
 }
 
 void playerManager::render()
 {
 	// 건물사용중이면 렌드를 끈다
 	if(!_buildManager->usedCheck()) _player->render();  
+	_alphaEffect->render();
 }
 
 void playerManager::imageSetting()
@@ -96,7 +113,6 @@ void playerManager::itemCollisionMouse()
 		}
 	}
 }
-
 //오브젝트와 마우스 충돌
 void playerManager::objectCollisionMouse()
 {
@@ -109,7 +125,7 @@ void playerManager::objectCollisionMouse()
 			CURSORMANAGER->setCropsPoint();
 			CURSORMANAGER->getCursor()->setCursorXY(_cropsManager->getVCrops()[i]->getCrops()->centerX - CAMERAMANAGER->getWorldCamera().cameraX, _cropsManager->getVCrops()[i]->getCrops()->centerY - CAMERAMANAGER->getWorldCamera().cameraY);
 
-			objectAttack(i);
+			if(_player->get_PlayerAddress()->health > 0) objectAttack(i);
 			return;
 		}
 	}
@@ -150,10 +166,42 @@ void playerManager::objectCollisionMouse()
 		}
 	}
 	
+	//■■■■■■■■■■■■■■■■■■■■■■ EnemyCollision ■■■■■■■■■■■■■■■■■■■■■■
+	for (int i = 0; i < _enemyManager->getVEnemy().size(); ++i)
+	{
+		if (PtInRect(&_enemyManager->getVEnemy()[i]->getEnemy()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
+		{
+			if (_enemyManager->getVEnemy()[i]->getEnemy()->enemy == ENEMY::SLIME)
+			{
+				CURSORMANAGER->setCropsPoint();
+				CURSORMANAGER->getCursor()->setCursorXY(_enemyManager->getVEnemy()[i]->getEnemy()->centerX - CAMERAMANAGER->getWorldCamera().cameraX, _enemyManager->getVEnemy()[i]->getEnemy()->centerY - CAMERAMANAGER->getWorldCamera().cameraY);
+			}
+			else if(_enemyManager->getVEnemy()[i]->getEnemy()->enemy == ENEMY::DEMON ||
+				_enemyManager->getVEnemy()[i]->getEnemy()->enemy == ENEMY::BOAR)
+			{
+				CURSORMANAGER->setBridgePoint();
+				CURSORMANAGER->getCursor()->setCursorXY(_enemyManager->getVEnemy()[i]->getEnemy()->centerX - CAMERAMANAGER->getWorldCamera().cameraX, _enemyManager->getVEnemy()[i]->getEnemy()->centerY - CAMERAMANAGER->getWorldCamera().cameraY);
+			}
+			else if (_enemyManager->getVEnemy()[i]->getEnemy()->enemy == ENEMY::SKULL)
+			{
+				CURSORMANAGER->setBridgePoint();
+				CURSORMANAGER->getCursor()->setCursorXY(_enemyManager->getVEnemy()[i]->getEnemy()->centerX - CAMERAMANAGER->getWorldCamera().cameraX, _enemyManager->getVEnemy()[i]->getEnemy()->centerY - CAMERAMANAGER->getWorldCamera().cameraY + 25);
+			}
+			else if (_enemyManager->getVEnemy()[i]->getEnemy()->enemy == ENEMY::DEMON_BOSS)
+			{
+				CURSORMANAGER->setBossPoint();
+				CURSORMANAGER->getCursor()->setCursorXY(_enemyManager->getVEnemy()[i]->getEnemy()->centerX - CAMERAMANAGER->getWorldCamera().cameraX, _enemyManager->getVEnemy()[i]->getEnemy()->centerY - CAMERAMANAGER->getWorldCamera().cameraY + 25);
+
+			}
+			if (_player->get_PlayerAddress()->health > 0) enemyAttack(i);
+			return;
+		}
+	}
 	CURSORMANAGER->setCursor();
 	CURSORMANAGER->getCursor()->setCursorChange();
 }
 
+//옵션창 컨드롤 
 void playerManager::optionControl()
 {
 	//옵션창 컨트롤
@@ -171,7 +219,21 @@ void playerManager::objectAttack(int num)
 		//거리가 좁혀지면 데미지를 입힌다.
 		if (getDistance(_player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y, _cropsManager->getVCrops()[num]->getCrops()->centerX, _cropsManager->getVCrops()[num]->getCrops()->centerY) <= 120)
 		{
+			_player->playerHealth(3);
 			_cropsManager->getVCrops()[num]->cropsHit(_player->get_PlayerAddress()->damage);
+		}
+		//KEYMANAGER->setKeyDown(VK_LBUTTON, false);
+	}
+}
+
+void playerManager::enemyAttack(int num)
+{
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+		//거리가 좁혀지면 데미지를 입힌다.
+		if (getDistance(_player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y, _enemyManager->getVEnemy()[num]->getEnemy()->centerX, _enemyManager->getVEnemy()[num]->getEnemy()->centerY) <= 80)
+		{
+			_enemyManager->getVEnemy()[num]->enemyHit(_player->get_PlayerAddress()->damage);
 		}
 		//KEYMANAGER->setKeyDown(VK_LBUTTON, false);
 	}

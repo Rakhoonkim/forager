@@ -14,7 +14,7 @@ HRESULT uiManager::init()
 {
 	imageSetting();			 // 이미지 세팅
 	_isOption = false;		 // UI를 제어하기 위한 값
-	
+
 	//최상위 옵션메뉴 초기화 
 	for (int i = 0; i < MAXOPTION; i++)
 	{
@@ -39,6 +39,11 @@ HRESULT uiManager::init()
 	_equipment = new equipment; //장비 창 
 	_equipment->init();
 
+	_player = new tagPlayer; // 플레이어 
+	_healthBar = 0;			 // 플레이어의 체력 
+
+
+	_slushX = 0;
 	return S_OK;
 }
 
@@ -93,6 +98,10 @@ void uiManager::render()
 			_build->render(_backBuffer->getMemDC());
 		}
 	}
+	else 	//===== PlayerRender
+	{
+		PlayerUIRender();
+	}
 }
 
 void uiManager::imageSetting()
@@ -131,6 +140,97 @@ void uiManager::imageSetting()
 
 	//fishtrap
 	IMAGEMANAGER->addImage("caught", "./image/ui/build/caught.bmp", 112, 16, true, RGB(255, 0, 255));
+
+	//====================playerUI ======================
+
+	IMAGEMANAGER->addFrameImage("heart", "./image/ui/player/heart.bmp", 68, 30, 2, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("healthBar", "./image/ui/player/healthBar.bmp", 100, 72, 1, 3, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("expBar", "./image/ui/player/expBar.bmp", 800, 60, 1, 2, false, RGB(255, 0, 255));
+
+	//expnum
+	
+	IMAGEMANAGER->addFrameImage("expNum", "./image/ui/player/expNum.bmp", 208, 18, 13, 1, true, RGB(255, 0, 255),true);
+	//level
+	IMAGEMANAGER->addFrameImage("whiteNum", "./image/ui/player/whiteNum.bmp", 140, 16, 10, 1, true, RGB(255, 0, 255), true);
+
+	IMAGEMANAGER->addImage("level", "./image/ui/player/level.bmp", 70, 16, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("slush", "./image/ui/player/slush.bmp", 24, 24, true, RGB(255, 0, 255));
+}
+
+
+void uiManager::PlayerUIRender()
+{	
+	// PLAYER 체력
+	for (int i = 0; i < _player->maxHp; i++)
+	{
+		IMAGEMANAGER->findImage("heart")->frameRender(_backBuffer->getMemDC(), 15 + (i * 35), 15,1,0);
+	}
+	for (int i = 0; i < _player->hp; i++)
+	{
+		IMAGEMANAGER->findImage("heart")->frameRender(_backBuffer->getMemDC(), 15 + (i * 35), 15, 0, 0);
+	}
+
+	_healthBar = (_player->health * 0.80);
+	IMAGEMANAGER->findImage("healthBar")->render(_backBuffer->getMemDC(), 15, 50, 0, 24, 86,24);	 // 화이트
+	IMAGEMANAGER->findImage("healthBar")->render(_backBuffer->getMemDC(), 16, 51, 0, 0, 84,22);		 // 블랙
+	IMAGEMANAGER->findImage("healthBar")->render(_backBuffer->getMemDC(), 18, 53, 0, 54, _healthBar, 18);	 // 체력
+	//경험치 바
+	//_expBar = 696;
+	_expBar = ((float)_player->exp / (float)_player->expMax) * 696;
+	IMAGEMANAGER->findImage("expBar")->render(_backBuffer->getMemDC(), WINSIZEX / 2 - 350, 10, 0, 0, 700, 30);
+	IMAGEMANAGER->findImage("expBar")->render(_backBuffer->getMemDC(), WINSIZEX / 2 - 348, 12, 0, 32, _expBar, 26);
+	IMAGEMANAGER->findImage("level")->render(_backBuffer->getMemDC(), WINSIZEX / 2 - 100, 17);
+	
+	//레벨 출력 
+	if (_player->level < 10)
+	{
+		IMAGEMANAGER->findImage("whiteNum")->frameRender(_backBuffer->getMemDC(), WINSIZEX / 2 - 10, 17,_player->level,0);
+	}
+	else
+	{
+		IMAGEMANAGER->findImage("whiteNum")->frameRender(_backBuffer->getMemDC(), WINSIZEX / 2 - 10, 17, _player->level % 10, 0);
+		IMAGEMANAGER->findImage("whiteNum")->frameRender(_backBuffer->getMemDC(), WINSIZEX / 2 - 10, 17, _player->level / 10, 0);
+	}
+
+	//Player 경험치 및 MAX값 출력 
+	if (_player->exp < 10)
+	{
+		_slushX = WINSIZEX / 2 + 70;
+		IMAGEMANAGER->findImage("whiteNum")->frameRender(_backBuffer->getMemDC(), WINSIZEX / 2 + 50, 17, _player->exp, 0);
+		IMAGEMANAGER->findImage("slush")->render(_backBuffer->getMemDC(), _slushX, 14);
+	}
+	else if(_player->exp < 100)
+	{
+		_slushX = WINSIZEX / 2 + 70;
+		IMAGEMANAGER->findImage("whiteNum")->frameRender(_backBuffer->getMemDC(), WINSIZEX / 2 + 55, 17, _player->exp % 10, 0);
+		IMAGEMANAGER->findImage("whiteNum")->frameRender(_backBuffer->getMemDC(), WINSIZEX / 2 + 40, 17, _player->exp / 10, 0);
+		IMAGEMANAGER->findImage("slush")->render(_backBuffer->getMemDC(), _slushX, 14);
+	}
+	else if (_player->exp < 1000)
+	{
+		_slushX = WINSIZEX / 2 + 85;
+		IMAGEMANAGER->findImage("whiteNum")->frameRender(_backBuffer->getMemDC(), WINSIZEX / 2 + 70, 17, _player->exp % 10, 0);
+		IMAGEMANAGER->findImage("whiteNum")->frameRender(_backBuffer->getMemDC(), WINSIZEX / 2 + 55, 17, (_player->exp / 10)%10, 0);
+		IMAGEMANAGER->findImage("whiteNum")->frameRender(_backBuffer->getMemDC(), WINSIZEX / 2 + 40, 17, _player->exp / 100, 0);
+		IMAGEMANAGER->findImage("slush")->render(_backBuffer->getMemDC(), _slushX, 14);
+	}
+
+	if (_player->expMax < 10)
+	{
+		IMAGEMANAGER->findImage("whiteNum")->frameRender(_backBuffer->getMemDC(), _slushX + 30, 17, _player->expMax, 0);
+	}
+	else if (_player->expMax < 100)
+	{
+		IMAGEMANAGER->findImage("whiteNum")->frameRender(_backBuffer->getMemDC(), _slushX + 45, 17, _player->expMax % 10, 0);  // 1의 자리 
+		IMAGEMANAGER->findImage("whiteNum")->frameRender(_backBuffer->getMemDC(), _slushX + 30, 17, _player->expMax / 10, 0);  // 10의 자리
+	}
+	else if (_player->expMax < 1000)
+	{
+		IMAGEMANAGER->findImage("whiteNum")->frameRender(_backBuffer->getMemDC(), _slushX + 60, 17, _player->expMax % 10, 0);  // 1
+		IMAGEMANAGER->findImage("whiteNum")->frameRender(_backBuffer->getMemDC(), _slushX + 45, 17, (_player->expMax / 10) % 10, 0);  // 10
+		IMAGEMANAGER->findImage("whiteNum")->frameRender(_backBuffer->getMemDC(), _slushX + 30, 17, _player->expMax / 100, 0);  // 100
+	}
+
 }
 
 void uiManager::optionsSetting()
@@ -169,6 +269,4 @@ void uiManager::setButtonAlpha()
 			_optionList[i].alpha = 100;
 		}
 	}
-
-
 }

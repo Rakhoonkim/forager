@@ -52,7 +52,7 @@ public:
 	int _movePattern;    // ½ºÄÃ
 	float _isAttackTime;      // Boss
 public:
-	enemyMove(enemyStateManager* enemyStateManager, tagObject* enemy) { this->Set_enemyStateManager(enemyStateManager); _enemy = enemy; }
+	enemyMove(enemyStateManager* enemyStateManager, tagObject* enemy);
 	~enemyMove() {}
 	virtual void Enter();
 	virtual void update();

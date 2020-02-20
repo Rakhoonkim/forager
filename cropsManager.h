@@ -1,15 +1,18 @@
 #pragma once
 #include "gameNode.h"
 #include "crops.h"
+#include "alphaEffect.h"
 // 상속받은 클래스 
-//
-//
 
+class player;
 class cropsManager:public gameNode
 {
 private:
 	vector<crops*>			 _vCrops;
 	vector<crops*>::iterator _viCrops;
+
+	alphaEffect* _effect;
+	player* _player;
 public:
 	cropsManager();
 	~cropsManager();
@@ -30,5 +33,7 @@ public:
 
 	void removeCrops(int arrNum) { _vCrops.erase(_vCrops.begin() + arrNum);}
 	void removeCrops();
+
+	void setPlayer(player* player) { _player = player; }
 };
 

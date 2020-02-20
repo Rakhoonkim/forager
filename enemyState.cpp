@@ -192,6 +192,16 @@ void enemyIdle::ChangeImage()
 
 //■■■■■■■■■■■■■■■■■■■■■■■■■■ enemyMove ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 
+enemyMove::enemyMove(enemyStateManager* enemyStateManager, tagObject* enemy)
+{
+	//값 초기화
+	this->Set_enemyStateManager(enemyStateManager); 
+	_enemy = enemy; 
+	_move =0;		 // 스컬
+	_movePattern =0;    // 스컬
+	_isAttackTime =0;      // Boss
+}
+
 void enemyMove::Enter()
 {
 	//보어일때
@@ -411,7 +421,7 @@ void enemyAttack::update()
 	}
 	else if (_enemy->enemy == ENEMY::DEMON_BOSS)
 	{
-		if (_enemy->ani->getNowPlayNum() == _enemy->ani->getFrameMaxFrame() - 3)
+		if (_enemy->ani->getNowPlayNum() == _enemy->ani->getFrameMaxFrame() - 4)
 		{
 			_enemy->isAttack = true;
 			_enemyStateManager->chanageState("IDLE");  //ATTAC-> idle 넘어가는거 
