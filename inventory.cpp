@@ -13,7 +13,8 @@ HRESULT inventory::init()
 {
 	_invenSize = IMAGEMANAGER->findImage("invenSlot")->getWidth();	// 인벤 가로 길이 셋팅
 	invenSetting();
-
+	_direction = NULL;
+	_invenItemSlot = false;
 	return S_OK;
 }
 
@@ -23,6 +24,9 @@ void inventory::release()
 
 void inventory::update()
 {
+	invenClick();
+	InvenPointer();
+	invenMove();
 }
 
 void inventory::render()
@@ -34,17 +38,73 @@ void inventory::render(HDC hdc)
 	//인벤토리 슬롯 
 	for (int i = 0; i < INVENX * INVENY; i++)
 	{
-		IMAGEMANAGER->findImage("invenSlot")->render(hdc, _inven[i].rc.left, _inven[i].rc.top);
+		IMAGEMANAGER->findImage("invenSlot")->render(hdc, _inven[i].x, _inven[i].y);
+		Rectangle(hdc, _inven[i].rc);
 		char str[100];
 		sprintf_s(str, "%d", i);
 		TextOut(hdc, _inven[i].rc.left, _inven[i].rc.top, str, strlen(str));
+		if (_inven[i].isClick)
+		{
+			IMAGEMANAGER->findImage("invenSlotCursor")->aniRender(hdc, _inven[i].rc.left - 7, _inven[i].rc.top -9,KEYANIMANAGER->findAnimation("invenSlotCursor"));	
+		}
 	}
+
+
+	if (_invenItemSlot)
+	{
+		IMAGEMANAGER->findImage("invenItemSlot")->render(hdc, _inven[7].x + 100, _inven[7].y);
+		IMAGEMANAGER->findImage("viewItem")->frameRender(hdc, _inven[7].x + 200, _inven[7].y + 50, _inven[_direction].frameX, _inven[_direction].frameY);
+	
+		if (_inven[_direction].isUse)
+		{
+			IMAGEMANAGER->findImage("stamina")->render(hdc, _inven[7].x + 150, _inven[7].y + 200);
+			IMAGEMANAGER->findImage("heartContainer")->render(hdc, _inven[7].x + 250, _inven[7].y + 200);
+
+			//stemina창
+			if (_inven[_direction].stemina < 10)
+			{
+				IMAGEMANAGER->findImage("staminaNumber")->frameRender(hdc, _inven[7].x + 190, _inven[7].y + 220, _inven[_direction].stemina % 10, 0);
+			}
+			else if (_inven[_direction].stemina < 100)
+			{
+				IMAGEMANAGER->findImage("staminaNumber")->frameRender(hdc, _inven[7].x + 210, _inven[7].y + 220, _inven[_direction].stemina % 10, 0);
+				IMAGEMANAGER->findImage("staminaNumber")->frameRender(hdc, _inven[7].x + 190, _inven[7].y + 220, (_inven[_direction].stemina /10)%10, 0);
+			}
+
+			//heart창 
+			if (_inven[_direction].heart < 10)
+			{
+				IMAGEMANAGER->findImage("heartNumber")->frameRender(hdc, _inven[7].x + 310, _inven[7].y + 220, _inven[_direction].heart % 10, 0);
+			}
+			else if (_inven[_direction].heart < 100)
+			{
+				IMAGEMANAGER->findImage("heartNumber")->frameRender(hdc, _inven[7].x + 330, _inven[7].y + 220, _inven[_direction].heart % 10, 0);
+				IMAGEMANAGER->findImage("heartNumber")->frameRender(hdc, _inven[7].x + 310, _inven[7].y + 220, (_inven[_direction].heart / 10) % 10, 0);
+			}
+
+		}
+		
+
+
+		IMAGEMANAGER->findImage("useButton")->render(hdc, _useButton.x, _useButton.y);
+		IMAGEMANAGER->findImage("disButton")->render(hdc, _disButton.x, _disButton.y);
+
+
+		//하트 체력 
+	}
+
+
+
 	//인벤토리 아이템
 	for (_miInven = _mInven.begin(); _miInven != _mInven.end(); ++_miInven)
 	{	
 		IMAGEMANAGER->findImage("invenItem")->frameRender(hdc, _inven[_miInven->second.num].centerX - (IMAGEMANAGER->findImage("invenItem")->getFrameWidth() / 2), _inven[_miInven->second.num].centerY - (IMAGEMANAGER->findImage("invenItem")->getFrameHeight() / 2), _miInven->second.frameX, _miInven->second.frameY);
 		// 숫자출력
 		invenItemCountRecder(hdc);
+
+		//SELECTION출력
+
+
 		//디버깅용 인벤토리 숫자 
 		/*char str[100];
 		sprintf_s(str, "%d", _miInven->second.count);
@@ -53,7 +113,7 @@ void inventory::render(HDC hdc)
 	//cout << _mInven.size() << endl;  // 인벤 사이즈 
 }
 
-void inventory::addInven(const char* imageName, int frameX, int frameY)
+void inventory::addInven(const char* imageName, int frameX, int frameY,int stemina, int heart , bool use)
 {
 	int count = 0;
 	// for문 돌려서 있으면 1증가 
@@ -61,7 +121,7 @@ void inventory::addInven(const char* imageName, int frameX, int frameY)
 	{
 		if (_miInven->first == imageName)
 		{
-			_miInven->second.count++;
+			_miInven->second.count++; // 개수 추가 
 			return;
 		}
 		count++;
@@ -71,7 +131,13 @@ void inventory::addInven(const char* imageName, int frameX, int frameY)
 	inven.count = 1;   // 개수 
 	inven.frameX = frameX;
 	inven.frameY = frameY;
-	inven.num = count; 
+	inven.num = this->invenNumber(); // 인밴의 위치 
+	_inven[inven.num].stemina = inven.stemina = stemina;
+	_inven[inven.num].heart = inven.heart = heart;
+	_inven[inven.num].isItem = true;
+	_inven[inven.num].frameX = frameX;
+	_inven[inven.num].frameY = frameY;
+	_inven[inven.num].isUse = use;
 	_mInven.insert(pair<const char*, tagInven>(imageName, inven));
 	//_mInven.emplace(pair<const char*,tagInven>(imageName, inven));
 }
@@ -83,8 +149,51 @@ void inventory::removeInven(const char* imageName, int count)
 	_mInven[imageName].count = _mInven[imageName].count - count;
 	if (_mInven[imageName].count <= 0)
 	{
+		_inven[_mInven[imageName].num].isItem = false;
 		_mInven.erase(imageName);
 		return;
+	}
+}
+
+void inventory::InvenPointer()
+{
+	for (int i = 0; i < INVENY * INVENX; i++)
+	{
+		if (_direction != i) _inven[i].isClick = false;
+		if (PtInRect(&_inven[i].rc,  _ptMouse))
+		{
+			CURSORMANAGER->setInvenCursor();
+			CURSORMANAGER->getCursor()->setCursorXY(_inven[i].rc.left + _invenSize / 2, _inven[i].rc.top + _invenSize / 2);
+			cout << "인벤슬롯이랑 충돌중이다" << endl;
+
+			return;
+		}
+	}
+
+	CURSORMANAGER->setCursor();
+	CURSORMANAGER->getCursor()->setCursorChange();
+}
+
+void inventory::invenMove()
+{
+	if (_inven[_direction].isClick && _inven[_direction].isItem)
+	{
+		for (int i = 0; i < INVENX * INVENY; i++)
+		{
+			if (_inven[0].x > 50)
+			{
+				_inven[i].x -= 5;
+			}
+			else if (_inven[0].x < 50)
+			{
+				_invenItemSlot = true;
+				break;
+			}
+			_inven[i].rc = RectMake(_inven[i].x, _inven[i].y, _invenSize, _invenSize);
+			_inven[i].centerX = _inven[i].x + (_invenSize / 2);
+			_inven[i].centerY = _inven[i].y + (_invenSize / 2);
+
+		}
 	}
 }
 
@@ -96,11 +205,39 @@ void inventory::invenSetting()
 		for (int j = 0; j < INVENX; j++)
 		{
 			_inven[i * INVENX + j].rc = RectMake(WINSIZEX / 2 - 400 + j * 100 + ((100 -_invenSize)/2), WINSIZEY / 2 - 200 + i * 100, _invenSize, _invenSize);
-			_inven[i * INVENX + j].centerX = _inven[i * INVENX + j].rc.left + (_invenSize / 2);
-			_inven[i * INVENX + j].centerY = _inven[i * INVENX + j].rc.top + (_invenSize / 2);
+			_inven[i * INVENX + j].isClick = false;
+			_inven[i * INVENX + j].isItem = false;
+			_inven[i * INVENX + j].x = _inven[i * INVENX + j].rc.left;
+			_inven[i * INVENX + j].y = _inven[i * INVENX + j].rc.top;
+			_inven[i * INVENX + j].centerX = _inven[i * INVENX + j].x + (_invenSize / 2);
+			_inven[i * INVENX + j].centerY = _inven[i * INVENX + j].y + (_invenSize / 2);
+			_inven[i * INVENX + j].stemina = 0;
+			_inven[i * INVENX + j].heart = 0;
 		}
 	}
+	_useButton.x = WINSIZEX / 2+ 280;
+	_useButton.y = WINSIZEY / 2 +100;
+	_useButton.rc = RectMake(_useButton.x, _useButton.y, IMAGEMANAGER->findImage("useButton")->getWidth(), IMAGEMANAGER->findImage("useButton")->getHeight());
+	_disButton.x = _useButton.rc.right + 10;
+	_disButton.y = _useButton.y;
+	_disButton.rc = RectMake(_disButton.x, _disButton.y, IMAGEMANAGER->findImage("useButton")->getWidth(), IMAGEMANAGER->findImage("useButton")->getHeight());
+}
 
+void inventory::invenClick()
+{
+	if(KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{ 
+		for (int i = 0; i < INVENY * INVENX; i++)
+		{
+			if (PtInRect(&_inven[i].rc, _ptMouse))
+			{
+				_direction = i;
+				break;
+			}
+		}
+
+		_inven[_direction].isClick = true;
+	}
 }
 
 void inventory::invenItemCountRecder(HDC hdc)
@@ -124,6 +261,19 @@ void inventory::invenItemCountRecder(HDC hdc)
 			IMAGEMANAGER->findImage("invenNumber")->frameRender(hdc, _inven[_miInven->second.num].centerX - 4, _inven[_miInven->second.num].centerY - (IMAGEMANAGER->findImage("invenNumber")->getFrameHeight() / 2), i, 0);
 		}
 	}
+}
+
+int inventory::invenNumber()
+{
+	// 인벤 숫자 반환하기 계산
+	
+	for (int i = 0; i < INVENX * INVENY; i++)
+	{
+		if (_inven[i].isItem) continue;
+		if (!_inven[i].isItem) return i;
+	}
+	
+	
 }
 
 bool inventory::foranceRecipes(FURNACERECIPE recipe, int count)

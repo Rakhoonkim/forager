@@ -44,7 +44,7 @@ void cursor::imageChange()
 {
 }
 
-void cursor::imageChange1x1B()
+void cursor::imageChangeInven()
 {
 }
 
@@ -79,7 +79,6 @@ void cursorBasic::imageChange()
 	_cursor.image = IMAGEMANAGER->findImage("cursor");
 	_change = false;
 }
-
 
 // ■■■■■■■■■■■■■■■■■■■■■■■■■■cursorPoint■■■■■■■■■■■■■■■■■■■■■■■■■■
 
@@ -136,10 +135,6 @@ void cursorBuild::setCursorXY(float x, float y)
 	_cursor.y = y - _cursor.image->getFrameHeight() / 2;
 }
 
-void cursorBuild::imageChange1x1B()
-{
-}
-
 
 //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■buildcursor■■■■■■■■■■■■■■■■■■■■■■■■■■
 
@@ -192,6 +187,33 @@ void cursorEnemyBoss::imageChange()
 }
 
 void cursorEnemyBoss::setCursorXY(float x, float y)
+{
+	_cursor.x = x - _cursor.image->getFrameWidth() / 2;
+	_cursor.y = y - _cursor.image->getFrameHeight() / 2;
+}
+
+//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■Invencursor■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+cursorInven::~cursorInven()
+{
+}
+
+void cursorInven::render()
+{
+	_cursor.image->aniRender(_backBuffer->getMemDC(), _cursor.x,  _cursor.y, _cursor.ani);
+}
+
+void cursorInven::imageChange()
+{
+	if (!_change) return;
+	_ObjectPoint = false;	//오브젝트를 가리킨다 
+	_cursor.image = IMAGEMANAGER->findImage("invenSlotCursor");
+	_cursor.ani = KEYANIMANAGER->findAnimation("invenSlotCursor");
+	_cursor.ani->start();
+	_change = false;
+}
+
+void cursorInven::setCursorXY(float x, float y)
 {
 	_cursor.x = x - _cursor.image->getFrameWidth() / 2;
 	_cursor.y = y - _cursor.image->getFrameHeight() / 2;

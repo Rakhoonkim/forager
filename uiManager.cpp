@@ -115,6 +115,18 @@ void uiManager::imageSetting()
 	//인벤토리 
 	IMAGEMANAGER->addImage("invenSlot", "./image/ui/inven/invenSlot.bmp", 72, 72, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("invenItem", "./image/ui/inven/invenItem.bmp", 540, 270, 10, 5, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("viewItem", "./image/ui/inven/viewItem.bmp", 1080, 540, 10, 5, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("invenItemSlot", "./image/ui/inven/invenItemSlot.bmp", 300, 400, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("useButton", "./image/ui/inven/useButton.bmp", 120, 60, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("disButton", "./image/ui/inven/disButton.bmp", 120, 60, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("stamina", "./image/ui/inven/stamina.bmp", 45, 45, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("heartContainer", "./image/ui/inven/heartContainer.bmp", 45, 45, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("heartNumber", "./image/ui/inven/heartNumber.bmp", 140, 16,10,1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("staminaNumber", "./image/ui/inven/staminaNumber.bmp", 140, 16, 10, 1, true, RGB(255, 0, 255));
+
+
+	//인벤토리 커서는 커서매니져로
+
 	//장비
 	IMAGEMANAGER->addFrameImage("bigBox", "./image/ui/equipment/bigBox.bmp", 120, 240, 1, 4, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("disableBlock", "./image/ui/equipment/disableBlock.bmp", 288, 72, 4, 1, true, RGB(255, 0, 255));
@@ -148,7 +160,6 @@ void uiManager::imageSetting()
 	IMAGEMANAGER->addFrameImage("expBar", "./image/ui/player/expBar.bmp", 800, 60, 1, 2, false, RGB(255, 0, 255));
 
 	//expnum
-	
 	IMAGEMANAGER->addFrameImage("expNum", "./image/ui/player/expNum.bmp", 208, 18, 13, 1, true, RGB(255, 0, 255),true);
 	//level
 	IMAGEMANAGER->addFrameImage("whiteNum", "./image/ui/player/whiteNum.bmp", 140, 16, 10, 1, true, RGB(255, 0, 255), true);
@@ -158,7 +169,7 @@ void uiManager::imageSetting()
 
 	// 공격 이펙트
 	IMAGEMANAGER->addFrameImage("attackEffect", "./image/ui/player/attackEffect.bmp", 510, 85, 6, 1, true, RGB(255, 0, 255));
-	EFFECTMANAGER->addEffect("attackEffect", "attackEffect", 510,85, 85, 85, 10, 0.1f, 10,true);
+	EFFECTMANAGER->addEffect("attackEffect", "attackEffect", 510,85, 85, 85, 10, 0.5f, 10,true);
 }
 
 
@@ -196,7 +207,7 @@ void uiManager::PlayerUIRender()
 		IMAGEMANAGER->findImage("whiteNum")->frameRender(_backBuffer->getMemDC(), WINSIZEX / 2 - 10, 17, _player->level / 10, 0);
 	}
 
-	//Player 경험치 및 MAX값 출력 
+	//Player 경험치 
 	if (_player->exp < 10)
 	{
 		_slushX = WINSIZEX / 2 + 70;
@@ -218,7 +229,7 @@ void uiManager::PlayerUIRender()
 		IMAGEMANAGER->findImage("whiteNum")->frameRender(_backBuffer->getMemDC(), WINSIZEX / 2 + 40, 17, _player->exp / 100, 0);
 		IMAGEMANAGER->findImage("slush")->render(_backBuffer->getMemDC(), _slushX, 14);
 	}
-
+	// 경험치 MAX값
 	if (_player->expMax < 10)
 	{
 		IMAGEMANAGER->findImage("whiteNum")->frameRender(_backBuffer->getMemDC(), _slushX + 30, 17, _player->expMax, 0);

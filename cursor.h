@@ -27,7 +27,7 @@ public:
 	virtual void update();
 	virtual void render();
 	virtual void imageChange();
-	virtual void imageChange1x1B();
+	virtual void imageChangeInven();
 	virtual void imageChange3x3();
 	virtual void setCursorXY(float x, float y);
 	virtual void setCursorChange();
@@ -62,7 +62,6 @@ public:
 
 	virtual void render();
 	virtual void imageChange();
-	virtual void imageChange1x1B();
 	virtual void setCursorXY(float x, float y);
 };
 
@@ -84,4 +83,14 @@ public:
 	virtual void render();
 	virtual void imageChange();
 	virtual void setCursorXY(float x, float y);
+};
+
+class cursorInven : public cursor
+{
+public:
+	~cursorInven();
+	virtual void render();
+	virtual void imageChange();
+	virtual void setCursorXY(float x, float y);
+
 };

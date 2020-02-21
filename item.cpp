@@ -30,6 +30,9 @@ HRESULT item::init(const char* imageName, float x, float y)
 	_item.isClick = false;
 	_item.drop = false;
 
+	_item.stemina = 0;
+	_item.heart = 0;
+	_item.isUse = false;
 	_item.rc = RectMake(x, y, IMAGEMANAGER->findImage(imageName)->getFrameWidth(), IMAGEMANAGER->findImage(imageName)->getFrameHeight());
 
 	_item.object = OBJECT::NONE;

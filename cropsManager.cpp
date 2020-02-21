@@ -62,11 +62,40 @@ void cropsManager::update()
 	for (_viCrops = _vCrops.begin(); _viCrops != _vCrops.end(); ++_viCrops)
 	{
 		(*_viCrops)->update();
+
+
+		//===========================================
+		// 바닥 퍼지는 이펙트 
 		if ((*_viCrops)->getCrops()->isEffect)
 		{
 			EFFECTMANAGER->play("attackEffect", (*_viCrops)->getCrops()->centerX, (*_viCrops)->getCrops()->centerY);
 			(*_viCrops)->getCrops()->isEffect = false;
 		}
+		//깜박거리는 효과 
+		if (!(*_viCrops)->getCrops()->isHit)
+		{
+			(*_viCrops)->getCrops()->hitTime = TIMEMANAGER->getWorldTime();
+		}
+		else
+		{
+		    // 깜박거리는 카운터 
+			(*_viCrops)->getCrops()->hitCount++;
+			if ((*_viCrops)->getCrops()->hitCount % 10 ==0)
+			{
+				if ((*_viCrops)->getCrops()->alpha == 0)
+				{
+					(*_viCrops)->getCrops()->alpha = 150;
+				}
+				else (*_viCrops)->getCrops()->alpha = 0;
+			}
+			// 0.7초가 지나면 되돌린다.
+			if ((*_viCrops)->getCrops()->hitTime + 0.7 <= TIMEMANAGER->getWorldTime())
+			{
+				(*_viCrops)->getCrops()->isHit = false;
+				(*_viCrops)->getCrops()->hitCount = 0;
+			}
+		}
+		//===========================================
 	}
 
 	// TEST 랜덤 타일 넘버 
@@ -93,25 +122,30 @@ void cropsManager::render()
 void cropsManager::imageSetting()
 {
 	// 1장짜리 
-	IMAGEMANAGER->addImage("cinderBloom", "./image/object/cinderBloomObject.bmp", 54, 54, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("nightShade", "./image/object/nightShadeObject.bmp", 48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("cinderBloom", "./image/object/cinderBloomObject.bmp", 54, 54, true, RGB(255, 0, 255), true);
+	IMAGEMANAGER->addImage("nightShade", "./image/object/nightShadeObject.bmp", 48, 48, true, RGB(255, 0, 255), true);
 
 	// 0 1 2 이미지 
-	IMAGEMANAGER->addFrameImage("beet", "./image/object/beetObject.bmp", 90, 36, 3, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("hotPepper", "./image/object/hotPepperObject.bmp", 135, 42, 3, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("wheat", "./image/object/wheatObject.bmp", 135, 51, 3, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("pumpkin", "./image/object/pumpkinObject.bmp", 135, 48, 3, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("cotton", "./image/object/cottonObject.bmp", 124, 51, 3, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("beet", "./image/object/beetObject.bmp", 90, 36, 3, 1, true, RGB(255, 0, 255), true);
+	IMAGEMANAGER->addFrameImage("hotPepper", "./image/object/hotPepperObject.bmp", 135, 42, 3, 1, true, RGB(255, 0, 255), true);
+	IMAGEMANAGER->addFrameImage("wheat", "./image/object/wheatObject.bmp", 135, 51, 3, 1, true, RGB(255, 0, 255), true);
+	IMAGEMANAGER->addFrameImage("pumpkin", "./image/object/pumpkinObject.bmp", 135, 48, 3, 1, true, RGB(255, 0, 255), true);
+	IMAGEMANAGER->addFrameImage("cotton", "./image/object/cottonObject.bmp", 124, 51, 3, 1, true, RGB(255, 0, 255), true);
 
 	// 01 -> 234 인 이미지 
-	IMAGEMANAGER->addFrameImage("bush", "./image/object/bushObject.bmp", 210, 42, 5, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("flower", "./image/object/flowerObject.bmp", 135, 39, 5, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("bush", "./image/object/bushObject.bmp", 210, 42, 5, 1, true, RGB(255, 0, 255), true);
+	IMAGEMANAGER->addFrameImage("flower", "./image/object/flowerObject.bmp", 135, 39, 5, 1, true, RGB(255, 0, 255), true);
 
 	// 0 , 1 , 2, 3 따로 사용하는 이미지 
-	IMAGEMANAGER->addFrameImage("volcano", "./image/object/volcanoObject.bmp", 288, 51, 6, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("rock", "./image/object/rockObject.bmp", 384, 51, 8, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("cactus", "./image/object/cactusObject.bmp", 276, 96, 4, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("tree", "./image/object/treeObject.bmp", 468, 126, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("volcano", "./image/object/volcanoObject.bmp", 288, 51, 6, 1, true, RGB(255, 0, 255), true);
+	IMAGEMANAGER->addFrameImage("rock", "./image/object/rockObject.bmp", 384, 51, 8, 1, true, RGB(255, 0, 255), true);
+	IMAGEMANAGER->addFrameImage("cactus", "./image/object/cactusObject.bmp", 276, 96, 4, 1, true, RGB(255, 0, 255), true);
+	IMAGEMANAGER->addFrameImage("tree", "./image/object/treeObject.bmp", 468, 126, 4, 1, true, RGB(255, 0, 255),true);
+}
+
+void cropsManager::imageIsHit()
+{
+	
 }
 
 //enum class OBJECT
@@ -362,11 +396,6 @@ void cropsManager::craateTreeCrops(TREE tree, int idx, int idy)
 		crops->setExpCrops(10);
 		_vCrops.push_back(crops);
 	}
-}
-
-void cropsManager::CropsEffect()
-{
-
 }
 
 void cropsManager::removeCrops()

@@ -54,16 +54,20 @@ struct tagObject
 	float sourX, sourY;
 	float dstX, dstY;
 	float acel;
+	float hitTime;
 	int idx, idy;
 	int frameX, frameY;
 	int speed;
 	int hp, maxHp;
 	int damage;
 	int exp;
+	int alpha;
+	int hitCount;
 	bool isClick;
 	bool isJump;
 	bool isAttack;
 	bool isEffect;			// 이펙트 
+	bool isHit;
 	bool AttackTerm;
 };
 
@@ -82,12 +86,14 @@ struct tagItem
 	float time;
 	int speed;
 	int alpha;
+	int stemina, heart;
 	int frameX, frameY;		// 인벤토리 사진출력 
 	float jumpPower;
 	float jumpGravity;
 	bool isClick;
 	bool move;
 	bool drop;
+	bool isUse;
 };
 
 // Inven
@@ -98,7 +104,12 @@ struct tagInven
 	int count;			// 인벤토리 개수 
 	int frameX, frameY; // 인벤토리 사진 
 	int centerX, centerY;		// 인벤토리 위치
+	int stemina, heart;
 	int num;			// 번호
+	float x, y;
+	bool isClick;
+	bool isItem;
+	bool isUse;
 };
 
 

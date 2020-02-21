@@ -24,6 +24,8 @@ public:
 
 	void imageSetting();
 	
+	//맞을때
+	void imageIsHit();
 
 	void createImageCrops(OBJECT object,int idx,int idy);
 	void createFrameCrops(OBJECT object,int idx, int idy);
@@ -32,9 +34,6 @@ public:
 	
 	vector<crops*>				getVCrops()	 { return _vCrops; }
 	vector<crops*>::iterator	getViCrops() { return _viCrops; }
-
-	//맞을 때 
-	void CropsEffect(); 
 
 	void removeCrops(int arrNum) { _vCrops.erase(_vCrops.begin() + arrNum);}
 	void removeCrops();

@@ -39,7 +39,7 @@ void playerManager::update()
 {
 
 	_player->update();
-	objectCollisionMouse();   // 마우스 포인터를 보여주기 위한 
+	if(!UIMANAGER->getOption()) objectCollisionMouse();   // 마우스 포인터를 보여주기 위한 
 	itemCollisionPlayer();    // 아이템을 먹기 위한.
 	itemCollisionMouse();	  // 아이템을 먹기 위한.
 	optionControl();		  // 옵션창 컨트롤 
@@ -77,7 +77,6 @@ void playerManager::imageSetting()
 
 	// image
 	IMAGEMANAGER->addFrameImage("shadow", "./image/player/shadow.bmp", 80, 16, 5, 1, true, RGB(255, 0, 255));
-	
 	EFFECTMANAGER->addEffect("shadow", "shadow", 80, 16, 16, 16, 1, 0.3f, 20);
 
 }
@@ -221,6 +220,7 @@ void playerManager::objectAttack(int num)
 		{
 			_player->playerHealth(3);
 			_cropsManager->getVCrops()[num]->setCropsEffect(true);
+			_cropsManager->getVCrops()[num]->setCropsIsHit(true);
 			_cropsManager->getVCrops()[num]->cropsHit(_player->get_PlayerAddress()->damage);
 		}
 		//KEYMANAGER->setKeyDown(VK_LBUTTON, false);

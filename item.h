@@ -24,6 +24,8 @@ public:
 	void setGain(float x, float y);
 	void setGain() { _item.isClick = true; }
 	void setIvenFrame(int x,int y);
+	void setSteminaHeart(int stemina, int heart) { _item.stemina = stemina; _item.heart = heart; }
+	void setItemUse() { _item.isUse = true; }
 	itemState* getItemState() { return _itemState; }
 	itemGain* getItemGain() {return _itemGain;}
 	tagItem* getItem() { return &_item; }

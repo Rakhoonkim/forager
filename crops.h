@@ -26,6 +26,8 @@ public:
 	virtual void cropsHit(int damege)		{ _crops.hp -= damege; }
 	virtual void setExpCrops(int exp)		{ _crops.exp = exp; }
 	virtual void setCropsEffect(bool value)		{ _crops.isEffect = value; }
+	virtual void setCropsIsHit(bool value) { _crops.isHit = value; }
+
 	virtual tagObject* getCrops()		{ return &_crops; }
 };
 

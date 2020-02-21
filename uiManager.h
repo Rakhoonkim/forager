@@ -48,11 +48,11 @@ public:
 			_isOption = true;
 		}
 		else _isOption = false;
-	}
+	}		 // 옵션세팅
 
 
-	void setInven(inventory* inven)			{ _inven = inven; }
-	void playerAdressLink(tagPlayer* player)	{ _player = player;}
+	void setInven(inventory* inven)					 { _inven = inven; }
+	void playerAdressLink(tagPlayer* player)	     { _player = player;}
 	void buildAdressLink(buildManager* buildManager) { _build->setBuildManager(buildManager);}
 	
 	build* getBuild() { return _build; }

@@ -175,6 +175,8 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			tempItem->init("beetDrop", x, y);
 			tempItem->setIvenFrame(2, 1);
 			tempItem->setObject(object);
+			tempItem->setSteminaHeart(15, 0);
+			tempItem->setItemUse();
 			_vItem.push_back(tempItem);
 		}
 		return;
@@ -214,6 +216,8 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			tempItem->init("berryDrop", x, y);
 			tempItem->setIvenFrame(3, 1);
 			tempItem->setObject(object);
+			tempItem->setSteminaHeart(15, 0);
+			tempItem->setItemUse();
 			_vItem.push_back(tempItem);
 		}
 		return;
@@ -242,6 +246,8 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			tempItem->init("hotPepperDrop", x, y);
 			tempItem->setIvenFrame(9, 0);
 			tempItem->setObject(object);
+			tempItem->setSteminaHeart(10, 0);
+			tempItem->setItemUse();
 			_vItem.push_back(tempItem);
 		}
 		return;
@@ -255,6 +261,8 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			tempItem->init("pumpkinDrop", x, y);
 			tempItem->setIvenFrame(0, 1);
 			tempItem->setObject(object);
+			tempItem->setSteminaHeart(10, 0);
+			tempItem->setItemUse();
 			_vItem.push_back(tempItem);
 		}
 		return;
@@ -369,6 +377,8 @@ void itemManager::Dropitem(TREE tree, float x, float y)
 				tempItem->init("citrusDrop", x, y);
 				tempItem->setIvenFrame(6, 0);
 				tempItem->setTree(tree);
+				tempItem->setSteminaHeart(10, 0);
+				tempItem->setItemUse();
 				_vItem.push_back(tempItem);
 			}
 			else
@@ -391,6 +401,8 @@ void itemManager::Dropitem(TREE tree, float x, float y)
 			tempItem->init("cactusDrop", x, y);
 			tempItem->setIvenFrame(7, 0);
 			tempItem->setTree(tree);
+			tempItem->setSteminaHeart(10, 0);
+			tempItem->setItemUse();
 			_vItem.push_back(tempItem);
 		}
 	}
@@ -472,6 +484,8 @@ void itemManager::DropFurnaceItem(FURNACERECIPE recipe, float x, float y, int nu
 			tempItem = new item;
 			tempItem->init("breadDrop", x, y);
 			tempItem->setIvenFrame(5, 2);   // 수정 
+			tempItem->setSteminaHeart(20, 1);
+			tempItem->setItemUse();
 			_vItem.push_back(tempItem);
 		}
 	}
@@ -483,6 +497,8 @@ void itemManager::DropFurnaceItem(FURNACERECIPE recipe, float x, float y, int nu
 			tempItem = new item;
 			tempItem->init("cookedFishDrop", x, y);
 			tempItem->setIvenFrame(6, 2);   // 수정 
+			tempItem->setSteminaHeart(20, 1);
+			tempItem->setItemUse();
 			_vItem.push_back(tempItem);
 		}
 	}
@@ -493,7 +509,9 @@ void itemManager::DropFurnaceItem(FURNACERECIPE recipe, float x, float y, int nu
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("cookedMeatDrop", x, y);
-			tempItem->setIvenFrame(7, 2);   // 수정 
+			tempItem->setIvenFrame(7, 2);   // 수정
+			tempItem->setSteminaHeart(20,1);
+			tempItem->setItemUse();
 			_vItem.push_back(tempItem);
 		}
 	}
@@ -630,6 +648,8 @@ void itemManager::DropFishTrapItem(float x, float y)
 		item* tempItem;
 		tempItem = new item;
 		tempItem->init("fishDrop", x, y);
+		tempItem->setSteminaHeart(10, 0);
+		tempItem->setItemUse();
 		tempItem->setIvenFrame(7, 3);
 		_vItem.push_back(tempItem);
 	}
@@ -664,7 +684,7 @@ void itemManager::removeItem()
 			//인벤토리 증가 예정 
 			//아이템의 프레임 x y 만들 예정 
 			//_inven->addInven((*_viItem)->getItem()->imageName, (*_viItem)->getItem()->frameX, (*_viItem)->getItem()->frameY);
-			UIMANAGER->getInven()->addInven((*_viItem)->getItem()->imageName, (*_viItem)->getItem()->frameX, (*_viItem)->getItem()->frameY);
+			UIMANAGER->getInven()->addInven((*_viItem)->getItem()->imageName, (*_viItem)->getItem()->frameX, (*_viItem)->getItem()->frameY, (*_viItem)->getItem()->stemina, (*_viItem)->getItem()->heart, (*_viItem)->getItem()->isUse);
 			_vItem.erase(_viItem);
 			break;
 		}

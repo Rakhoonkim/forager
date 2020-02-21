@@ -10,6 +10,7 @@ private:
 	cursorBasic* _cursorBasic;  // 기본이미지 
 	cursorPoint* _cursorPoint;	// 포인트 이미지 
 	cursorBuild* _cursorBuild;
+	cursorInven* _cursorInven;
 	cursorEnemyBoss* _cursorEnemyBoss;
 
 	cursorFarming* _cursorFarming;
@@ -29,6 +30,7 @@ public:
 	void setBridgePoint();
 	void setBossPoint();
 	void setCursor();
+	void setInvenCursor();
 
 	cursor* getCursor(){ return _cursor; }
 };

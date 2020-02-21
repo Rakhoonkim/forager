@@ -26,6 +26,8 @@ HRESULT cursorManager::init()
 
 	_cursorEnemyBoss = new cursorEnemyBoss;
 
+	_cursorInven = new cursorInven;
+
 	_cursor = _cursorBasic;
 
 	return S_OK;
@@ -54,11 +56,16 @@ void  cursorManager::imageSetting()
 	IMAGEMANAGER->addFrameImage("1x1cursorB", "./image/cursor/1x1cursorB.bmp", 640, 64, 10, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("2x2cursor", "./image/cursor/2x2cursor.bmp", 1100, 110, 10, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("3x3cursor", "./image/cursor/3x3cursor.bmp", 1800, 180, 10, 1, true, RGB(255, 0, 255));
+	
+	IMAGEMANAGER->addFrameImage("invenSlotCursor", "./image/cursor/invenSlotCursor.bmp", 860, 90, 10, 1, true, RGB(255, 0, 255));
+	KEYANIMANAGER->addDefaultFrameAnimation("invenSlotCursor", "invenSlotCursor", 10, false, true);
+
 
 	KEYANIMANAGER->addDefaultFrameAnimation("1x1cursor", "1x1cursor", 10, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("1x1cursorB", "1x1cursorB", 10, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("2x2cursor", "2x2cursor", 10, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("3x3cursor", "3x3cursor", 10, false, true);
+
 }
 
 void cursorManager::setCropsPoint()
@@ -88,5 +95,11 @@ void cursorManager::setBossPoint()
 void cursorManager::setCursor()
 {
 	_cursor = _cursorBasic;
+	_cursor->imageChange();
+}
+
+void cursorManager::setInvenCursor()
+{
+	_cursor = _cursorInven;
 	_cursor->imageChange();
 }
