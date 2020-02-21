@@ -24,8 +24,11 @@ HRESULT playerManager::init()
 
 	//UI 셋팅
 	UIMANAGER->playerAdressLink(_player->get_PlayerAddress()); // 구조체 전달
+	UIMANAGER->getInven()->setPlayer(_player->get_PlayerAddress());
+
 	_alphaEffect = new alphaEffect;
 	_alphaEffect->init();
+	
 	return S_OK;
 }
 

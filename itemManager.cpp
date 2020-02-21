@@ -91,7 +91,7 @@ void itemManager::imageSetting()
 	IMAGEMANAGER->addFrameImage("breadDrop", "./image/item/buildItem/breadDrop.bmp", 720, 30, 20, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("brickDrop", "./image/item/buildItem/brickDrop.bmp", 560, 26, 20, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("cookedFishDrop", "./image/item/buildItem/cookedFishDrop.bmp", 600, 30, 20, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("cookedMeatDrop", "./image/item/buildItem/cookedMeat.bmp", 600, 30, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("cookedMeatDrop", "./image/item/buildItem/cookedMeatDrop.bmp", 600, 30, 20, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("goldingotDrop", "./image/item/buildItem/goldingotDrop.bmp", 560, 26, 20, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("grassDrop", "./image/item/buildItem/grassDrop.bmp", 560, 28, 20, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("ironingotDrop", "./image/item/buildItem/ironingotDrop.bmp", 560, 26, 20, 1, true, RGB(255, 0, 255));
@@ -146,8 +146,12 @@ void itemManager::imageSetting()
 
 	//enemyItem
 	IMAGEMANAGER->addFrameImage("jellyDrop", "./image/item/enemyItem/jellyDrop.bmp", 640, 32, 20, 1, true, RGB(255, 0, 255));
-
+	IMAGEMANAGER->addFrameImage("meatDrop", "./image/item/enemyItem/meatDrop.bmp", 600, 30, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("demonHornDrop", "./image/item/enemyItem/demonHornDrop.bmp", 560, 30, 20, 1, true, RGB(255, 0, 255));
 	KEYANIMANAGER->addDefaultFrameAnimation("jellyDrop", "jellyDrop", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("meatDrop", "meatDrop", 30, false, true);
+	KEYANIMANAGER->addDefaultFrameAnimation("demonHornDrop", "demonHornDrop", 30, false, true);
+
 	//enemyInven
 	//jelly 7, 1 
 
@@ -668,6 +672,66 @@ void itemManager::DropFishTrapItem(float x, float y)
 		tempItem->init("sandDrop", x, y);
 		tempItem->setIvenFrame(5, 3);
 		_vItem.push_back(tempItem);
+	}
+}
+
+void itemManager::DropEnemyItem(ENEMY enemy, float x, float y)
+{
+	if (enemy == ENEMY::SLIME)
+	{
+		for (int i = 0; i < RND->getInt(2) + 1; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("jellyDrop", x, y);
+			tempItem->setIvenFrame(7, 1);
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (enemy == ENEMY::BOAR)
+	{
+		for (int i = 0; i < RND->getInt(2) + 1; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("meatDrop", x, y);
+			tempItem->setIvenFrame(8, 1);
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (enemy == ENEMY::DEMON || enemy == ENEMY::SKULL)
+	{
+		for (int i = 0; i < RND->getInt(2) + 1; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("demonHornDrop", x, y);
+			tempItem->setIvenFrame(9, 1);
+			_vItem.push_back(tempItem);
+		}
+	}
+	else if (enemy == ENEMY::DEMON_BOSS)
+	{
+		for (int i = 0; i < RND->getInt(10) + 1; i++)
+		{
+			if (RND->getInt(2) == 1)
+			{
+				item* tempItem;
+				tempItem = new item;
+				tempItem->init("demonHornDrop", x, y);
+				tempItem->setIvenFrame(9, 1);
+				_vItem.push_back(tempItem);
+			}
+			else 
+			{
+				item* tempItem;
+				tempItem = new item;
+				tempItem->init("meatDrop", x, y);
+				tempItem->setIvenFrame(8, 1);
+				_vItem.push_back(tempItem);
+			}
+
+		}
 	}
 }
 

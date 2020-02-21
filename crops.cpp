@@ -41,6 +41,7 @@ HRESULT crops::init(OBJECT object, const char* imageName, int idx, int idy)
 	_crops.exp = 0;
 	_crops.alpha = 0;
 
+	_crops.hpBar = 0;
 	_crops.rc = RectMake(_crops.x, _crops.y, IMAGEMANAGER->findImage(_crops.imageName)->getWidth(), IMAGEMANAGER->findImage(_crops.imageName)->getHeight());
 	return S_OK;
 }
@@ -64,6 +65,8 @@ HRESULT crops::init(TREE tree, const char* imageName, int idx, int idy)
 	_crops.isHit = false;
 	_crops.hitTime = 0;
 	_crops.hitCount = 0;
+
+	_crops.hpBar = 0;
 	_crops.frameX = _crops.frameY = 0;
 	_crops.exp = 0;
 	_crops.alpha = 0;
@@ -117,6 +120,14 @@ void imageCrops::render()
 	{
 		IMAGEMANAGER->findImage(_crops.imageName)->render(CAMERAMANAGER->getWorldDC(), _crops.x, _crops.y);
 	}
+
+	if (_crops.maxHp > _crops.hp)
+	{
+		_crops.hpBar = ((float)_crops.hp / (float)_crops.maxHp) * 41;
+		IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _crops.centerX - 22, _crops.centerY + 30, 0, 0, 45, 12);
+		IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _crops.centerX - 20, _crops.centerY + 32, 0, 72, _crops.hpBar, 8);
+	}
+	
 	//Rectangle(CAMERAMANAGER->getWorldDC(), _crops.rc);
 }
 
@@ -148,6 +159,12 @@ void frameCrops::render()
 	{
 		IMAGEMANAGER->findImage(_crops.imageName)->frameRender(CAMERAMANAGER->getWorldDC(), _crops.centerX - (IMAGEMANAGER->findImage(_crops.imageName)->getFrameWidth() / 2), _crops.centerY - (IMAGEMANAGER->findImage(_crops.imageName)->getFrameHeight() / 2), _crops.frameX, _crops.frameY);
 	}
+	if (_crops.maxHp > _crops.hp)
+	{
+		_crops.hpBar = ((float)_crops.hp / (float)_crops.maxHp) * 41;
+		IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _crops.centerX - 22, _crops.centerY + 30, 0, 0, 45, 12);
+		IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _crops.centerX - 20, _crops.centerY + 32, 0, 72, _crops.hpBar, 8);
+	}
 	//Rectangle(CAMERAMANAGER->getWorldDC(), _crops.rc);
 }
 
@@ -169,6 +186,12 @@ void imageFrameCrops::render()
 		IMAGEMANAGER->findImage(_crops.imageName)->frameRender(CAMERAMANAGER->getWorldDC(), _crops.centerX - (IMAGEMANAGER->findImage(_crops.imageName)->getFrameWidth() / 2), _crops.centerY - (IMAGEMANAGER->findImage(_crops.imageName)->getFrameHeight() / 2), _crops.frameX, _crops.frameY);
 		//Rectangle(CAMERAMANAGER->getWorldDC(), _crops.rc);
 	}
+	if (_crops.maxHp > _crops.hp)
+	{
+		_crops.hpBar = ((float)_crops.hp / (float)_crops.maxHp) * 41;
+		IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _crops.centerX - 22, _crops.centerY + 30, 0, 0, 45, 12);
+		IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _crops.centerX - 20, _crops.centerY + 32, 0, 72, _crops.hpBar, 8);
+	}
 }
 
 //¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á treeCrops ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á
@@ -189,6 +212,12 @@ void treeCrops::render()
 	{
 		IMAGEMANAGER->findImage(_crops.imageName)->frameRender(CAMERAMANAGER->getWorldDC(), _crops.centerX - (IMAGEMANAGER->findImage(_crops.imageName)->getFrameWidth() / 2), _crops.centerY - (IMAGEMANAGER->findImage(_crops.imageName)->getFrameHeight() * 4) / 5, _crops.frameX, _crops.frameY);
 		//Rectangle(CAMERAMANAGER->getWorldDC(), _crops.rc);
+	}
+	if (_crops.maxHp > _crops.hp)
+	{
+		_crops.hpBar = ((float)_crops.hp / (float)_crops.maxHp) * 41;
+		IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _crops.centerX - 22, _crops.centerY + 30, 0, 0, 45, 12);
+		IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _crops.centerX - 20, _crops.centerY + 32, 0, 72, _crops.hpBar, 8);
 	}
 }
 
@@ -220,5 +249,11 @@ void multiImageCrops::render()
 	else
 	{
 		IMAGEMANAGER->findImage(_crops.imageName)->frameRender(CAMERAMANAGER->getWorldDC(), _crops.centerX - (IMAGEMANAGER->findImage(_crops.imageName)->getFrameWidth() / 2), _crops.centerY - (IMAGEMANAGER->findImage(_crops.imageName)->getFrameHeight() / 2), _crops.frameX, _crops.frameY);
+	}
+	if (_crops.maxHp > _crops.hp)
+	{
+		_crops.hpBar = ((float)_crops.hp / (float)_crops.maxHp) * 41;
+		IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _crops.centerX - 22, _crops.centerY + 30, 0, 0, 45, 12);
+		IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _crops.centerX - 20, _crops.centerY + 32, 0, 72, _crops.hpBar, 8);
 	}
 }

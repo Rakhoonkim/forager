@@ -55,6 +55,7 @@ struct tagObject
 	float dstX, dstY;
 	float acel;
 	float hitTime;
+	float hpBar;
 	int idx, idy;
 	int frameX, frameY;
 	int speed;
@@ -100,6 +101,7 @@ struct tagItem
 
 struct tagInven
 {
+	const char* imageName;
 	RECT rc;
 	int count;			// 인벤토리 개수 
 	int frameX, frameY; // 인벤토리 사진 

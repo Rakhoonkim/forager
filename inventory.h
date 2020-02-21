@@ -3,6 +3,7 @@
 
 #define INVENX 8
 #define INVENY 3
+
 class inventory 
 {
 private:
@@ -14,6 +15,8 @@ private:
 
 	tagButton _useButton;  // 사용버튼
 	tagButton _disButton;  // 버리기 버튼
+
+	tagPlayer* _player;
 
 	float _invenStartX;
 	int _invenSize;			// 인벤슬롯이 가로 세로 크기(정사각형)
@@ -33,6 +36,7 @@ public:
 	void removeInven(const char* imageName, int count);
 	void InvenPointer();												// 마우스 포인터 
 
+	void itemUse();
 	void invenMove();
 	void invenSetting();
 	void invenClick();
@@ -44,6 +48,9 @@ public:
 	bool foranceRecipes(FURNACERECIPE recipe, int count);
 	bool forgeRecipes(FORGERECIPE recipe, int count);
 	bool sewingRecipes(SEWINGRECIPE recipe, int count);
+
+	//세팅
+	void setPlayer(tagPlayer* player) { _player = player; }
 
 };
 

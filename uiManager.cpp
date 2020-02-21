@@ -156,7 +156,7 @@ void uiManager::imageSetting()
 	//====================playerUI ======================
 
 	IMAGEMANAGER->addFrameImage("heart", "./image/ui/player/heart.bmp", 68, 30, 2, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("healthBar", "./image/ui/player/healthBar.bmp", 100, 72, 1, 3, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("healthBar", "./image/ui/player/healthBar.bmp", 100, 96, 1, 4, false, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("expBar", "./image/ui/player/expBar.bmp", 800, 60, 1, 2, false, RGB(255, 0, 255));
 
 	//expnum

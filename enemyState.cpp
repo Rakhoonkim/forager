@@ -50,6 +50,34 @@ void enemyState::render()
 {
 	IMAGEMANAGER->findImage(_enemy->imageName)->aniRender(CAMERAMANAGER->getWorldDC(), _enemy->x, _enemy->y, _enemy->ani);
 	//Rectangle(CAMERAMANAGER->getWorldDC(), _enemy->rc);
+	if (_enemy->enemy == ENEMY::SKULL)
+	{
+		if (_enemy->maxHp > _enemy->hp)
+		{
+			_enemy->hpBar = ((float)_enemy->hp / (float)_enemy->maxHp) * 41;
+			IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _enemy->centerX - 22, _enemy->centerY + 54, 0, 0, 45, 12);
+			IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _enemy->centerX - 20, _enemy->centerY + 56, 0, 72, _enemy->hpBar, 8);
+		}
+	}
+	else if (_enemy->enemy == ENEMY::DEMON_BOSS)
+	{
+		if (_enemy->maxHp > _enemy->hp)
+		{
+			_enemy->hpBar = ((float)_enemy->hp / (float)_enemy->maxHp) * 61;
+			IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _enemy->centerX - 42, _enemy->centerY + 80, 0, 0, 65, 12);
+			IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _enemy->centerX - 40, _enemy->centerY + 82, 0, 72, _enemy->hpBar, 8);
+		}
+	}
+	else
+	{
+		if (_enemy->maxHp > _enemy->hp)
+		{
+			_enemy->hpBar = ((float)_enemy->hp / (float)_enemy->maxHp) * 41;
+			IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _enemy->centerX - 22, _enemy->centerY + 30, 0, 0, 45, 12);
+			IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _enemy->centerX - 20, _enemy->centerY + 32, 0, 72, _enemy->hpBar, 8);
+		}
+	}
+
 }
 
 //¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á enemyIdle ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á
@@ -510,11 +538,34 @@ void enemyAttack::render()
 	if (_enemy->enemy == ENEMY::DEMON)
 	{
 		IMAGEMANAGER->findImage(_enemy->imageName)->aniRender(CAMERAMANAGER->getWorldDC(), _enemy->x, _enemy->y - 18, _enemy->ani);
+		if (_enemy->maxHp > _enemy->hp)
+		{
+			_enemy->hpBar = ((float)_enemy->hp / (float)_enemy->maxHp) * 41;
+			IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _enemy->centerX - 22, _enemy->centerY + 30, 0, 0, 45, 12);
+			IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _enemy->centerX - 20, _enemy->centerY + 32, 0, 72, _enemy->hpBar, 8);
+		}
+	}
+	else if (_enemy->enemy == ENEMY::DEMON_BOSS)
+	{
+		IMAGEMANAGER->findImage(_enemy->imageName)->aniRender(CAMERAMANAGER->getWorldDC(), _enemy->x, _enemy->y, _enemy->ani);
+		if (_enemy->maxHp > _enemy->hp)
+		{
+			_enemy->hpBar = ((float)_enemy->hp / (float)_enemy->maxHp) * 61;
+			IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _enemy->centerX - 42, _enemy->centerY + 80, 0, 0, 65, 12);
+			IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _enemy->centerX - 40, _enemy->centerY + 82, 0, 72, _enemy->hpBar, 8);
+		}
 	}
 	else
 	{
 		IMAGEMANAGER->findImage(_enemy->imageName)->aniRender(CAMERAMANAGER->getWorldDC(), _enemy->x, _enemy->y, _enemy->ani);
+		if (_enemy->maxHp > _enemy->hp)
+		{
+			_enemy->hpBar = ((float)_enemy->hp / (float)_enemy->maxHp) * 41;
+			IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _enemy->centerX - 22, _enemy->centerY + 30, 0, 0, 45, 12);
+			IMAGEMANAGER->findImage("healthBar")->render(CAMERAMANAGER->getWorldDC(), _enemy->centerX - 20, _enemy->centerY + 32, 0, 72, _enemy->hpBar, 8);
+		}
 	}
+
 }
 
 //¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á enemyJUMP ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á

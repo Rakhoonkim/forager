@@ -48,11 +48,11 @@ void enemyManager::update()
 
 	if (KEYMANAGER->isOnceKeyDown('U'))
 	{
-		//CreateEnemy(ENEMY::SLIME, 24, 19);
-		//CreateEnemy(ENEMY::BOAR, 24, 20);
-		//CreateEnemy(ENEMY::DEMON, 24, 21);
-		//CreateEnemy(ENEMY::SKULL, 24, 21);
-		//CreateEnemy(ENEMY::DEMON_BOSS, 24, 21);
+		CreateEnemy(ENEMY::SLIME, 24, 19);
+		CreateEnemy(ENEMY::BOAR, 24, 20);
+		CreateEnemy(ENEMY::DEMON, 24, 21);
+		CreateEnemy(ENEMY::SKULL, 24, 21);
+		CreateEnemy(ENEMY::DEMON_BOSS, 24, 21);
 	}
 	enemyRemove();
 }
@@ -156,7 +156,7 @@ void enemyManager::enemyRemove()
 		if ((*_viEnemy)->getEnemy()->hp <= 0)
 		{
 			// Enemey 삭제  
-			//1. 아이템 생성 추가 할 예정 
+			ITEMMANAGER->DropEnemyItem((*_viEnemy)->getEnemy()->enemy, (*_viEnemy)->getEnemy()->centerX, (*_viEnemy)->getEnemy()->centerY);
 			_vEnemy.erase(_viEnemy);
 			break;
 		}

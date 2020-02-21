@@ -32,6 +32,9 @@ public:
 
 	// fishtrap
 	void DropFishTrapItem(float x, float y);
+
+	// enemy
+	void DropEnemyItem(ENEMY enemy, float x, float y);
 	void findItem();
 	void removeItem();
 

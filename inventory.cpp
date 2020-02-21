@@ -11,6 +11,7 @@ inventory::~inventory()
 
 HRESULT inventory::init()
 {
+	_player = new tagPlayer; // 플레이어 
 	_invenSize = IMAGEMANAGER->findImage("invenSlot")->getWidth();	// 인벤 가로 길이 셋팅
 	invenSetting();
 	_direction = NULL;
@@ -39,10 +40,10 @@ void inventory::render(HDC hdc)
 	for (int i = 0; i < INVENX * INVENY; i++)
 	{
 		IMAGEMANAGER->findImage("invenSlot")->render(hdc, _inven[i].x, _inven[i].y);
-		Rectangle(hdc, _inven[i].rc);
-		char str[100];
+		//Rectangle(hdc, _inven[i].rc);
+	/*	char str[100];
 		sprintf_s(str, "%d", i);
-		TextOut(hdc, _inven[i].rc.left, _inven[i].rc.top, str, strlen(str));
+		TextOut(hdc, _inven[i].rc.left, _inven[i].rc.top, str, strlen(str));*/
 		if (_inven[i].isClick)
 		{
 			IMAGEMANAGER->findImage("invenSlotCursor")->aniRender(hdc, _inven[i].rc.left - 7, _inven[i].rc.top -9,KEYANIMANAGER->findAnimation("invenSlotCursor"));	
@@ -50,9 +51,10 @@ void inventory::render(HDC hdc)
 	}
 
 
-	if (_invenItemSlot)
+	if (_invenItemSlot && _inven[_direction].isItem)
 	{
 		IMAGEMANAGER->findImage("invenItemSlot")->render(hdc, _inven[7].x + 100, _inven[7].y);
+
 		IMAGEMANAGER->findImage("viewItem")->frameRender(hdc, _inven[7].x + 200, _inven[7].y + 50, _inven[_direction].frameX, _inven[_direction].frameY);
 	
 		if (_inven[_direction].isUse)
@@ -98,6 +100,7 @@ void inventory::render(HDC hdc)
 	//인벤토리 아이템
 	for (_miInven = _mInven.begin(); _miInven != _mInven.end(); ++_miInven)
 	{	
+		if (!_inven[_miInven->second.num].isItem) continue;
 		IMAGEMANAGER->findImage("invenItem")->frameRender(hdc, _inven[_miInven->second.num].centerX - (IMAGEMANAGER->findImage("invenItem")->getFrameWidth() / 2), _inven[_miInven->second.num].centerY - (IMAGEMANAGER->findImage("invenItem")->getFrameHeight() / 2), _miInven->second.frameX, _miInven->second.frameY);
 		// 숫자출력
 		invenItemCountRecder(hdc);
@@ -128,10 +131,12 @@ void inventory::addInven(const char* imageName, int frameX, int frameY,int stemi
 	}
 	//없으면 추가하기 
 	tagInven inven;
+	inven.imageName = imageName;
 	inven.count = 1;   // 개수 
 	inven.frameX = frameX;
 	inven.frameY = frameY;
 	inven.num = this->invenNumber(); // 인밴의 위치 
+	_inven[inven.num].imageName = imageName;
 	_inven[inven.num].stemina = inven.stemina = stemina;
 	_inven[inven.num].heart = inven.heart = heart;
 	_inven[inven.num].isItem = true;
@@ -150,6 +155,14 @@ void inventory::removeInven(const char* imageName, int count)
 	if (_mInven[imageName].count <= 0)
 	{
 		_inven[_mInven[imageName].num].isItem = false;
+		_inven[_mInven[imageName].num].isUse = false;
+		_inven[_mInven[imageName].num].frameX = NULL;
+		_inven[_mInven[imageName].num].frameY = NULL;
+		_inven[_mInven[imageName].num].imageName = NULL;
+		_inven[_mInven[imageName].num].heart = NULL;
+		_inven[_mInven[imageName].num].stemina = NULL;
+		_inven[_mInven[imageName].num].num = NULL;
+		_inven[_mInven[imageName].num].count = NULL;
 		_mInven.erase(imageName);
 		return;
 	}
@@ -172,6 +185,11 @@ void inventory::InvenPointer()
 
 	CURSORMANAGER->setCursor();
 	CURSORMANAGER->getCursor()->setCursorChange();
+}
+
+void inventory::itemUse()
+{
+
 }
 
 void inventory::invenMove()
@@ -227,6 +245,7 @@ void inventory::invenClick()
 {
 	if(KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{ 
+		//인벤토리 선택
 		for (int i = 0; i < INVENY * INVENX; i++)
 		{
 			if (PtInRect(&_inven[i].rc, _ptMouse))
@@ -235,8 +254,35 @@ void inventory::invenClick()
 				break;
 			}
 		}
-
+		//클릭 
 		_inven[_direction].isClick = true;
+
+		//사용 및 
+		if (_invenItemSlot && _inven[_direction].isUse)
+		{
+			if (PtInRect(&_useButton.rc, _ptMouse))
+			{
+				//체력증가
+				_player->health += _inven[_direction].stemina;
+				_player->hp += _inven[_direction].heart;
+
+				//인벤토리 1개 마이너스
+				this->removeInven(_inven[_direction].imageName, 1);
+
+				if (_player->health >= 100) _player->health = 100;					// 스테미나 최대값 예외처리
+				if (_player->hp >= _player->maxHp)	_player->hp = _player->maxHp;	// 체력 최대값 예외처리
+				return;
+			}
+		}
+		//삭제 버튼을 누르면 
+		if (_invenItemSlot)
+		{
+			if (PtInRect(&_disButton.rc, _ptMouse))
+			{
+				this->removeInven(_inven[_direction].imageName, 100);
+				return;
+			}
+		}
 	}
 }
 
@@ -328,10 +374,10 @@ bool inventory::foranceRecipes(FURNACERECIPE recipe, int count)
 		}
 		return false;
 	}
-	else if (recipe == FURNACERECIPE::GLASS) // 모래 추가할 예정 
+	else if (recipe == FURNACERECIPE::GLASS) 
 	{
-		if ( _mInven.count("coalDrop") == 0 ) return false;  // 없으면 
-			if ( _mInven["coalDrop"].count >= 2 )
+		if ( _mInven.count("coalDrop") == 0 || _mInven.count("sandDrop") == 0) return false;  // 없으면 
+			if ( _mInven["coalDrop"].count >= 2 && _mInven["sandDrop"].count >= 1)
 			{
 				return true;
 			}
@@ -346,10 +392,10 @@ bool inventory::foranceRecipes(FURNACERECIPE recipe, int count)
 		}
 		return false;
 	}
-	else if (recipe == FURNACERECIPE::FISH) // fish 추가할 예정 
+	else if (recipe == FURNACERECIPE::FISH) 
 	{
-		if (_mInven.count("coalDrop") == 0) return false;  // 없으면 
-		if (_mInven["coalDrop"].count >= 2)
+		if (_mInven.count("coalDrop") == 0 || _mInven.count("fishDrop") == 0) return false;  // 없으면 
+		if (_mInven["coalDrop"].count >= 2 && _mInven["fishDrop"].count >=1)
 		{
 			return true;
 		}
@@ -357,8 +403,8 @@ bool inventory::foranceRecipes(FURNACERECIPE recipe, int count)
 	}
 	else if (recipe == FURNACERECIPE::MEAT) // meat 추가할 예정 
 	{
-		if (_mInven.count("coalDrop") == 0) return false;  // 없으면 
-		if (_mInven["coalDrop"].count >= 2)
+		if (_mInven.count("coalDrop") == 0 || _mInven.count("meatDrop") == 0) return false;  // 없으면 
+		if (_mInven["coalDrop"].count >= 2 && _mInven.count("meatDrop") >= 1)
 		{
 			return true;
 		}

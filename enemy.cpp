@@ -58,6 +58,7 @@ HRESULT enemy::init(ENEMY enemy,const char* imageName,int idx,int idy)
 
 	_enemy.time = TIMEMANAGER->getWorldTime();
 	
+	_enemy.hpBar = 0;
 	//상태정의
 	_enemyState = new enemyStateManager;
 	_enemyState->init();
