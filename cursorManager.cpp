@@ -66,6 +66,8 @@ void  cursorManager::imageSetting()
 	KEYANIMANAGER->addDefaultFrameAnimation("2x2cursor", "2x2cursor", 10, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("3x3cursor", "3x3cursor", 10, false, true);
 
+	IMAGEMANAGER->addFrameImage("landCursor", "./image/cursor/landCursor.bmp", 4000, 400, 10, 1, true, RGB(255, 0, 255));
+	KEYANIMANAGER->addDefaultFrameAnimation("landCursor", "landCursor", 10, false, true);
 }
 
 void cursorManager::setCropsPoint()

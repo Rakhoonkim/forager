@@ -3,6 +3,8 @@
 #include "inventory.h"
 #include "build.h"
 #include "equipment.h"
+#include "land.h"
+#include "weather.h"
 
 class gameNode;
 
@@ -15,6 +17,8 @@ private:
 	equipment* _equipment;
 	inventory* _inven;
 	build* _build;
+	land* _land;
+	weather* _weather;
 
 	int _currentOption;
 	bool _isOption;
@@ -47,7 +51,11 @@ public:
 		{
 			_isOption = true;
 		}
-		else _isOption = false;
+		else
+		{
+			_equipment->setSkill();
+			_isOption = false;
+		}
 	}		 // 옵션세팅
 
 
@@ -55,7 +63,9 @@ public:
 	void playerAdressLink(tagPlayer* player)	     { _player = player;}
 	void buildAdressLink(buildManager* buildManager) { _build->setBuildManager(buildManager);}
 	
-	build* getBuild() { return _build; }
-	inventory* getInven() { return _inven; }
+	build* getBuild()			 { return _build; }
+	inventory* getInven()		 { return _inven; }
+	equipment* getEquipment()	 { return _equipment; }
+	land* getLand()				 { return _land; }
 };
 

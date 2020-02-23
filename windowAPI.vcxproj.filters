@@ -270,6 +270,12 @@
     <ClInclude Include="alphaEffect.h">
       <Filter>2DGameFramework\effect</Filter>
     </ClInclude>
+    <ClInclude Include="weather.h">
+      <Filter>playGround\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="land.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -427,6 +433,12 @@
     </ClCompile>
     <ClCompile Include="alphaEffect.cpp">
       <Filter>2DGameFramework\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="weather.cpp">
+      <Filter>playGround\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="land.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -30,6 +30,7 @@ HRESULT build::init()
 		_industryList[i].rc = RectMake(WINSIZEX - 200, 10 + _buildList[0].rc.bottom + (IMAGEMANAGER->findImage("industry")->getFrameHeight() + 5) * i, 156, IMAGEMANAGER->findImage("industry")->getFrameHeight());
 		_industryList[i].isClick = false;
 		_industryList[i].isEffect = false;
+		_industryList[i].alpha = 120;
 	}
 	//농업 리스트 초기화   == 1번
 	for (int i = 0; i < MAXFARMING; i++)
@@ -37,6 +38,7 @@ HRESULT build::init()
 		_farmingList[i].rc = RectMake(WINSIZEX - 200, 10 + _buildList[1].rc.bottom + (IMAGEMANAGER->findImage("farming")->getFrameHeight() + 5) * i, 156, IMAGEMANAGER->findImage("farming")->getFrameHeight());
 		_farmingList[i].isClick = false;
 		_farmingList[i].isEffect = false;
+		_farmingList[i].alpha = 120;
 	}
 
 	_direction = 0;
@@ -44,7 +46,7 @@ HRESULT build::init()
 	_buildManager = new buildManager;
 	_buildManager->init();
 
-	
+
 	return S_OK;
 }
 
@@ -54,7 +56,7 @@ void build::release()
 
 void build::update()
 {
-	if(!_isBuilding) buttonClick();
+	if (!_isBuilding) buttonClick();
 	//industryCheck();
 	//farmingCheck();
 	buildingCheck();
@@ -68,7 +70,6 @@ void build::render()
 
 void build::render(HDC hdc)
 {
-
 	for (int i = 0; i < 4; i++)
 	{
 		IMAGEMANAGER->findImage("bigLongBox")->frameRender(hdc, _buildList[i].rc.left, _buildList[i].rc.top, 0, i);
@@ -79,13 +80,39 @@ void build::render(HDC hdc)
 		//TextOut(hdc, _buildList[i].rc.left, _buildList[i].rc.top, str, strlen(str));
 	}
 
+	//재료 보이기 
+	for (int i = 0;i < MAXINDUSTRY;i++)
+	{
+		if (_buildList[0].isClick && PtInRect(&_industryList[i].rc, _ptMouse))
+		{
+			IMAGEMANAGER->findImage("industryMaterial")->frameRender(hdc, _buildList[0].rc.left - 200, _industryList[i].rc.top, i, 0);
+		}
+	}
+	for (int i = 0;i < MAXFARMING;i++)
+	{
+		if (_buildList[1].isClick && PtInRect(&_farmingList[i].rc, _ptMouse))
+		{
+			IMAGEMANAGER->findImage("farmingMaterial")->frameRender(hdc, _buildList[0].rc.left - 200, _farmingList[i].rc.top, i, 0);
+		}
+	}
+
 	for (int i = 0; i < 3; i++)
 	{
 		if (!_buildList[0].isClick) break;
-		IMAGEMANAGER->findImage("industry")->frameRender(hdc, _industryList[i].rc.left, _industryList[i].rc.top, 0, i);
-		//Rectangle(hdc, _industryList[i].rc);
 
-		if (_industryList[i].isClick)
+		if (UIMANAGER->getInven()->buildRecipes((BUILDING)i))
+		{
+			IMAGEMANAGER->findImage("industry")->frameRender(hdc, _industryList[i].rc.left, _industryList[i].rc.top, 0, i);
+		}
+		else
+		{
+			IMAGEMANAGER->findImage("industry")->alphaFrameRender(hdc, _industryList[i].rc.left, _industryList[i].rc.top, 0, i, _industryList[i].alpha);
+		}
+
+
+		//Rectangle(hdc, _industryList[i].rc);
+		// 0, 1, 2
+		if (_industryList[i].isClick && UIMANAGER->getInven()->buildRecipes((BUILDING)i))
 		{
 			if (!MAPMANAGER->getBuildTiles(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y))
 			{
@@ -102,10 +129,18 @@ void build::render(HDC hdc)
 	for (int i = 0; i < 2; i++)
 	{
 		if (!_buildList[1].isClick) break;
-		IMAGEMANAGER->findImage("farming")->frameRender(hdc, _farmingList[i].rc.left, _farmingList[i].rc.top, 0, i);
+
+		if (UIMANAGER->getInven()->buildRecipes((BUILDING)(i + 3)))
+		{
+			IMAGEMANAGER->findImage("farming")->frameRender(hdc, _farmingList[i].rc.left, _farmingList[i].rc.top, 0, i);
+		}
+		else
+		{
+			IMAGEMANAGER->findImage("farming")->alphaFrameRender(hdc, _farmingList[i].rc.left, _farmingList[i].rc.top, 0, i, _farmingList[i].alpha);
+		}
 		//Rectangle(hdc, _farmingList[i].rc);
 
-		if (_farmingList[i].isClick)
+		if (_farmingList[i].isClick && UIMANAGER->getInven()->buildRecipes((BUILDING)(i + 3)))
 		{
 			if (!MAPMANAGER->getBuildTilesFarming(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y))
 			{
@@ -300,53 +335,62 @@ void build::setClickInit()
 void build::isClickBuild() // 4개 범위랑랑 1개 범위를 구별할 것  
 {
 	if (!_isBuilding) return;
-	if (_industryList[0].isClick)
+	if (_industryList[0].isClick && UIMANAGER->getInven()->buildRecipes(BUILDING::FURNACE))
 	{
 		if (!MAPMANAGER->getBuildTiles(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y)) return;
 
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
+			UIMANAGER->getInven()->removeInven("stoneDrop", 10);
 			_buildManager->createImageBuilding(BUILDING::FURNACE, CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
 			MAPMANAGER->setBuildTiles(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
 		}
 	}
-	else if (_industryList[1].isClick)
+	else if (_industryList[1].isClick && UIMANAGER->getInven()->buildRecipes(BUILDING::FORGE))
 	{
 		if (!MAPMANAGER->getBuildTiles(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y)) return;
 
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
+			UIMANAGER->getInven()->removeInven("ironingotDrop", 4);
+			UIMANAGER->getInven()->removeInven("brickDrop", 4);
 			_buildManager->createImageBuilding(BUILDING::FORGE, CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
 			MAPMANAGER->setBuildTiles(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
 		}
 	}
-	else if (_industryList[2].isClick)
+	else if (_industryList[2].isClick && UIMANAGER->getInven()->buildRecipes(BUILDING::SEWING_STATION))
 	{
 		if (!MAPMANAGER->getBuildTiles(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y)) return;
 
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
+			UIMANAGER->getInven()->removeInven("woodDrop", 4);
+			UIMANAGER->getInven()->removeInven("brickDrop", 4);
+			UIMANAGER->getInven()->removeInven("fiberDrop", 2);
 			_buildManager->createImageBuilding(BUILDING::SEWING_STATION, CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
 			MAPMANAGER->setBuildTiles(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
 		}
 
 	}
-	else if (_farmingList[0].isClick)
+	else if (_farmingList[0].isClick && UIMANAGER->getInven()->buildRecipes(BUILDING::BRIDGE))
 	{
 		if (!MAPMANAGER->getBuildTilesFarming(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y)) return;
 
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
+			UIMANAGER->getInven()->removeInven("woodDrop", 4);
 			_buildManager->createImageBuilding(BUILDING::BRIDGE, CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
 			MAPMANAGER->setBuildTilesFarming(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
 		}
 	}
-	else if (_farmingList[1].isClick)
+	else if (_farmingList[1].isClick && UIMANAGER->getInven()->buildRecipes(BUILDING::FISHTRAP))
 	{
 		if (!MAPMANAGER->getBuildTilesFarming(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y)) return;
 
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
+			UIMANAGER->getInven()->removeInven("woodDrop", 4);
+			UIMANAGER->getInven()->removeInven("berryDrop", 4);
 			_buildManager->createImageBuilding(BUILDING::FISHTRAP, CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
 			MAPMANAGER->setBuildTilesFarming(CURSORMANAGER->getCursor()->getCursorIdXY().x, CURSORMANAGER->getCursor()->getCursorIdXY().y);
 		}

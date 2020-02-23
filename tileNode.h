@@ -87,11 +87,11 @@ enum class CHARACTER
 
 enum class BUILDING
 {
+	FURNACE,
 	FORGE,
 	SEWING_STATION,
-	FURNACE,
-	FISHTRAP,
 	BRIDGE,
+	FISHTRAP,
 	NONE,
 };
 
@@ -145,6 +145,7 @@ struct tagTile
 	int idx, idy;
 	bool isClick;
 	bool isObject;			// 식물이 있는지 없는지 
+	bool isRender;
 };
 
 // 오른쪽 팔레트 타일셋 
@@ -162,6 +163,7 @@ struct tagButton
 	const char* imageName;
 	RECT rc;
 	float x, y;
+	float centerX, centerY;
 	int frameX; 
 	int alpha;
 	bool isClick;

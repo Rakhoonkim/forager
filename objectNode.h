@@ -31,6 +31,9 @@ struct tagPlayer
 	int damage;
 	int health;
 	int imageDirection;
+	int skillPount;
+	float angle;
+	bool isAttack;
 };
 
 
@@ -99,21 +102,32 @@ struct tagItem
 
 // Inven
 
-struct tagInven
+struct tagInven                                    
 {
 	const char* imageName;
-	RECT rc;
-	int count;			// 인벤토리 개수 
-	int frameX, frameY; // 인벤토리 사진 
-	int centerX, centerY;		// 인벤토리 위치
-	int stemina, heart;
-	int num;			// 번호
-	float x, y;
-	bool isClick;
+	RECT rc;                                  
+	int count;					// 인벤토리 개수     
+	int frameX, frameY;			// 인벤토리 사진	
+	int centerX, centerY;		// 인벤토리 위치		
+	int stemina, heart;                
+	int num;			// 번호                      
+	float x, y;                                    
+	bool isClick;                                
 	bool isItem;
-	bool isUse;
+	bool isUse;                                   
 };
 
+// SKILL
+struct tagSkill
+{
+	RECT rc;
+	int frameX, frameY;			// 인벤토리 사진		// 스킬 프레임 위치 
+	int alpha;
+	int skillPoint;
+	float x, y;                                     //  x,y
+	bool isClick;                                   // 클릭
+	bool isUse;                                     // 스킬적용 여부
+};
 
 struct tagBullet
 {

@@ -18,6 +18,8 @@ HRESULT stageScene::init()
 	_objectManager->get_CropsManager()->setPlayer(_playerManager->get_player());
 	// ¸Ê 
 	MAPMANAGER->MapLoad("inGameNumber1.map");
+	UIMANAGER->getEquipment()->setSkillPount(&_playerManager->get_player()->get_PlayerAddress()->skillPount);
+	
 	return S_OK;
 }
 
@@ -31,6 +33,7 @@ void stageScene::update()
 {
 	_playerManager->update();
 	_objectManager->update();
+
 }
 
 void stageScene::render()

@@ -13,6 +13,8 @@ private:
 
 	tagPlayer _player;
 
+
+	DIRECTION _tempDirection;		// 이전 방향을 확인 
 	int		_keyCount;  // KEY 2개 눌리지않기
 	bool _stateChange;	// 상태변경 BOOL값
 public:
@@ -25,12 +27,14 @@ public:
 	void update();
 	void render();
 
+	void setDirection();
 	void KeyControl();		// KEY
 	void IndexUpdate();		// PLAYER INDEX 업데이트
 	void acelPlus();
 	void setPlayerExpMax(int expMax);
 	void playerExp(int exp);
 	void playerHealth(int health);
+
 	tagPlayer get_PlayerAddressLinK() { return _player; }
 	tagPlayer* get_PlayerAddress() { return &_player; }
 	RECT get_playerRect() { return _player.rc; }

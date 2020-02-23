@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "skill.h"
 
 class equipment
 {
@@ -11,6 +12,8 @@ private:
 	tagButton _equipButton[6];  // Àå½Å±¸
 	tagButton _sealButton[9];
 	tagButton _treasureButton[15];
+
+	skill* _skill;
 
 	bool _isSkill;
 public:
@@ -24,5 +27,9 @@ public:
 	void render(HDC hdc);
 
 	void buttonSetting();
+	bool getSkill() { return _isSkill; }
+	void setSkill() { _isSkill = false; }
+	void setSkillPount(int* point) { _skill->setSkillPoint(point); }
+
 };
 

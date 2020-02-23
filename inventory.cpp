@@ -322,6 +322,67 @@ int inventory::invenNumber()
 	
 }
 
+int inventory::itemCount(const char* imageName)
+{
+	if (_mInven.size() <= 0) return 0;
+	if (_mInven.count(imageName) == 0) return 0;  // 없으면 
+	
+	return _mInven.count(imageName);
+}
+
+bool inventory::buildRecipes(BUILDING building)
+{
+	if (_mInven.size() <= 0) return false;
+
+	if (building == BUILDING::FURNACE)
+	{
+		if (_mInven.count("stoneDrop") == 0) return false;  // 없으면 
+		if (_mInven["stoneDrop"].count >= 10)
+		{
+			return true;
+		}
+		return false;
+	}
+	else if (building == BUILDING::FORGE)
+	{ 
+		if (_mInven.count("ironingotDrop") == 0 || _mInven.count("brickDrop") == 0) return false;  // 없으면 
+		if (_mInven["ironingotDrop"].count >= 4 && _mInven["brickDrop"].count >= 4)
+		{
+			return true;
+		}
+		return false;
+	}
+	else if (building == BUILDING::SEWING_STATION)
+	{
+		if (_mInven.count("woodDrop") == 0 || _mInven.count("brickDrop") == 0 || _mInven.count("fiberDrop") == 0) return false;  // 없으면 
+		if (_mInven["woodDrop"].count >= 4 && _mInven["brickDrop"].count >= 4 && _mInven["fiberDrop"].count >= 4)
+		{
+			return true;
+		}
+		return false;
+	}
+	else if (building == BUILDING::BRIDGE)
+	{
+		if (_mInven.count("woodDrop") == 0 ) return false;  // 없으면 
+		if (_mInven["woodDrop"].count >= 4 )
+		{
+			return true;
+		}
+		return false;
+	}
+	else if (building == BUILDING::FISHTRAP)
+	{
+		if (_mInven.count("woodDrop") == 0 || _mInven.count("berryDrop") == 0 ) return false;  // 없으면 
+		if (_mInven["woodDrop"].count >= 4  && _mInven["berryDrop"].count >= 4)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	return false;
+}
+
 bool inventory::foranceRecipes(FURNACERECIPE recipe, int count)
 {
 	if (_mInven.size() <= 0) return false;

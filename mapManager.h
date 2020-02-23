@@ -29,7 +29,7 @@ public:
 
 	void TerrainRender();
 	void LandRender();
-	void LadnObjectRender();
+	void LandObjectRender();
 	void ObejectRender();
 
 	void setPlayerAddress(tagPlayer* player);
@@ -48,5 +48,6 @@ public:
 	void setRemoveWater(int idx,int idy);
 	
 	POINT randomObjectTile();
+
 };
 

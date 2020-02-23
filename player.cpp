@@ -17,6 +17,8 @@ HRESULT player::init()
 	_player.weaponAni = KEYANIMANAGER->findAnimation("playerPick_R");
 	_player.playerAni->start();
 	_player.direc = DIRECTION::RIGHT;
+	_tempDirection = DIRECTION::RIGHT;
+	_player.angle = 0;
 	_player.idx = 22;
 	_player.idy = 18;
 	_player.x = _player.idx * 60 + 30;
@@ -33,12 +35,15 @@ HRESULT player::init()
 	_player.level = 1;
 	_player.expMax = 30;
 	_player.exp = 0;
+	_player.skillPount = 0;
+
+
 	_state = new playerState();
 	_state->init(&_player);
 
 	_playerMove = new playerMove(&_player);
 	_playerIdle = new playerIdle(&_player);
-
+	_player.isAttack = false;
 	_state = _playerIdle;
 	_stateChange = false;
 	_keyCount = 0;
@@ -60,15 +65,10 @@ void player::update()
 	_state->update();
 	KeyControl();
 	IndexUpdate();
+	//setDirection();
 	MAPMANAGER->setPlayerAddress(&_player);
 	MAPMANAGER->setPlayerTileColision(_player.idx, _player.idy);  // 충돌처리 
-	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON) && !UIMANAGER->getOption())
-	{
-		_player.weaponAni->start();
-		//ITEMMANAGER->Dropitem("woodDrop", _player.x, _player.y);
-		KEYMANAGER->setKeyDown(VK_LBUTTON, false);
-		cout << "player health: " << _player.health << endl;
-	}
+
 	_player.rc = RectMake(_player.x, _player.y, _player.playerImage->getFrameWidth(), _player.playerImage->getFrameHeight());
 }
 
@@ -89,10 +89,54 @@ void player::render()
 	TextOut(CAMERAMANAGER->getWorldDC(), _player.x+ 100, _player.y, strIdy, strlen(strIdy));
 }
 
+void player::setDirection()
+{
+	if (WINSIZEX / 2 < _ptMouse.x)
+	{
+		_tempDirection = DIRECTION::RIGHT;
+	}
+	else if (WINSIZEX / 2 >= _ptMouse.x)
+	{
+		_tempDirection = DIRECTION::LEFT;
+	}
+
+	if (_tempDirection != _player.direc)
+	{
+		if (_tempDirection == DIRECTION::LEFT)
+		{
+			_player.imageDirection = 0;
+			_player.direc = _tempDirection;
+			_state->changeImage(_player.imageDirection);
+			
+		}
+		else
+		{
+			_player.imageDirection = 1;
+			_player.direc = _tempDirection;
+			_state->changeImage(_player.imageDirection);
+		}
+	}
+}
+
 void player::KeyControl()
 {
+	if (_player.weaponAni->getNowPlayNum() == _player.weaponAni->getFrameMaxFrame()-1) _player.isAttack = false;
+	//공격키
+	if (!_player.isAttack)
+	{
+		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON) && !UIMANAGER->getOption())
+		{
+			_player.weaponAni->start();
+			//ITEMMANAGER->Dropitem("woodDrop", _player.x, _player.y);
+			KEYMANAGER->setKeyDown(VK_LBUTTON, false);
+			cout << "player health: " << _player.health << endl;
+
+		}
+	}
+
 	if (_keyCount > 2) return;
 	// UP
+
 
 	if (KEYMANAGER->isStayKeyDown('W'))
 	{
@@ -204,8 +248,6 @@ void player::setPlayerExpMax(int level)
 	_player.level++;
 	_player.exp = _player.exp - _player.expMax;
 	_player.expMax = _player.level * 30;
-
-	
 }
 
 void player::playerExp(int exp)
@@ -216,6 +258,7 @@ void player::playerExp(int exp)
 	if (_player.exp >= _player.expMax)
 	{
 		//레벨 증가 시킨다.
+		_player.skillPount++;
 		this->setPlayerExpMax(_player.level);
 	}
 }

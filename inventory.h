@@ -42,13 +42,14 @@ public:
 	void invenClick();
 	void invenItemCountRecder(HDC hdc);
 	int  invenNumber();							// 인벤토리의 숫자 반환 값 
+	int itemCount(const char* imageName);
 	map<const char*, tagInven> getInven() { return _mInven; }
 
 	//recipes 레시피 
+	bool buildRecipes(BUILDING building);
 	bool foranceRecipes(FURNACERECIPE recipe, int count);
 	bool forgeRecipes(FORGERECIPE recipe, int count);
 	bool sewingRecipes(SEWINGRECIPE recipe, int count);
-
 	//세팅
 	void setPlayer(tagPlayer* player) { _player = player; }
 

@@ -44,7 +44,7 @@ void mapManager::render()
 		//TERRAIN OBJECT
 		if ((*_viTiles)->landObject != LANDOBJECT::NONE)
 		{
-			LadnObjectRender();
+			LandObjectRender();
 		}
 
 		if ((*_viTiles)->isObject)
@@ -138,7 +138,7 @@ void mapManager::LandRender()
 	IMAGEMANAGER->findImage("grassTileLand")->frameRender(CAMERAMANAGER->getWorldDC(), (*_viTiles)->rc.left, (*_viTiles)->rc.top, (*_viTiles)->landFrameX, (*_viTiles)->landFrameY);
 }
 
-void mapManager::LadnObjectRender()
+void mapManager::LandObjectRender()
 {
 	if ((*_viTiles)->landObject == LANDOBJECT::GRASS)
 	{
