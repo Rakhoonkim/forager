@@ -11,7 +11,6 @@ playGround::~playGround()
 {
 }
 
-
 HRESULT playGround::init()
 {
 	gameNode::init(true);
@@ -46,8 +45,8 @@ void playGround::render()
 {
 	PatBlt(getMemDC(), 0, 0, WINSIZEX, WINSIZEY, BLACKNESS);
 	//===========================================================
-	SCENEMANAGER->render(); // MAIN
-
+	if(!UIMANAGER->getLand()->getLand()) 	SCENEMANAGER->render(); // MAIN
+	
 	UIMANAGER->render();	// UI
 
 	if (!CURSORMANAGER->getCursor()->getObjectPoint()) CURSORMANAGER->render();   //CURSOR

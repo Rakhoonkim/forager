@@ -30,7 +30,7 @@ void mapManager::render()
 	{
 		// 예외처리 
 		if ((*_viTiles)->type == TYPE::NONE) continue;
-	
+		if (!(*_viTiles)->isRender) continue;
 		//LAND
 		if ((*_viTiles)->land != LAND::NONE)
 		{
@@ -110,10 +110,12 @@ void mapManager::MapLoad(const char* fileName)
 		if (_tiles[i].type != TYPE::NONE)
 		{
 			_tiles[i].isObject = false;
+			_tiles[i].isRender = false;
 			_vTiles.push_back(&_tiles[i]);
 		}
 	}
 
+	this->setLandTile(1, 1);
 	CloseHandle(file);
 }
 
@@ -203,6 +205,28 @@ void mapManager::setPlayerTileColision(int idx, int idy)
 		if (_player->x +40 > _tiles[idy * TILEX + (idx + 1)].rc.left)
 		{
 			_player->x = _tiles[idy * TILEX + (idx + 1)].rc.left - 40;
+		}
+	}
+}
+
+void mapManager::setLandTile(int x,int y)
+{
+	int tilex = 15;
+	int tiley = 12;
+
+	int startX = x * 15;   // 0 , 15 , 30
+	int startY = y * 12;   // 0 , 12 , 24 
+
+	int endX = startX + tilex;
+	int endY = startY + tiley;
+
+	for (int i = startY;i < endY; i++)
+	{
+		for (int j= startX; j < endX; j++)
+		{
+
+			_tiles[i * TILEX + j].isRender = true;
+			//_vTiles.push_back(&_tiles[startY * TILEX + startX]);
 		}
 	}
 }

@@ -30,6 +30,20 @@ void enemyManager::update()
 	for (int i = 0;i < _vEnemy.size(); i++)
 	{
 		_vEnemy[i]->update();
+		if (_vEnemy[i]->getEnemy()->enemy != ENEMY::DEMON_BOSS)
+		{
+			if (_vEnemy[i]->getEnemy()->isPlayerAttack)
+			{
+				RECT temp;
+				if (IntersectRect(&temp, &_vEnemy[i]->getEnemy()->rc, &_player->get_PlayerAddress()->rc))
+				{
+					_player->playerHit();
+					_vEnemy[i]->getEnemy()->isPlayerAttack = false;
+					break;
+				}
+			}
+
+		}
 		if (_vEnemy[i]->getEnemy()->enemy == ENEMY::DEMON_BOSS)
 		{
 			if (_vEnemy[i]->getBossAttack())

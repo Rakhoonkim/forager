@@ -48,8 +48,6 @@ HRESULT uiManager::init()
 	_land = new land;
 	_land->init();
 	
-
-
 	_slushX = 0;
 	return S_OK;
 }
@@ -69,20 +67,24 @@ void uiManager::update()
 		//옵션 목록 
 		if (_currentOption == 0)
 		{
+			_land->setLand(false);
 			_equipment->update();
 		}
 		else if (_currentOption == 1)
 		{	
+			_land->setLand(false);
 			_inven->update();
 		}
 		else if (_currentOption == 2)
 		{
+			_land->setLand(false);
 			_build->update();
 		}
 		else if (_currentOption == 3)
 		{
 			_land->setPlayerCoin(_inven->getInven().count("coinDrop"));
 			_land->update();
+			_land->setLand(true);
 		}
 	}
 }
@@ -110,9 +112,6 @@ void uiManager::render()
 			IMAGEMANAGER->findImage("optionListIcon")->alphaFrameRender(_backBuffer->getMemDC(), _optionList[i].rc.left, _optionList[i].rc.top, _optionList[i].frameX, 0,_optionList[i].alpha);
 			//Rectangle(_backBuffer->getMemDC(), _optionList[i].rc);
 		}
-
-	
-
 
 
 		// 0장비창 : 1인벤토리 : 2건설창 

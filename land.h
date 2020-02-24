@@ -16,6 +16,7 @@ private:
 	RECT _cameraRect;
 	HDC _landDC;
 	image* _landImage;
+
 	float _cameraSpeed;
 	float _landX, _landY;
 	float _nextX, _nextY;
@@ -35,9 +36,11 @@ public:
 
 
 	void mapMove();
+	void mapBuy(int x, int y);
 	void landSetting(); // 초기 설정 
 
 	bool getLand() { return _isLand; }
+	void setLand(bool value) { _isLand = value; }
 	void setPlayerCoin(int coin) { _playerCoin = coin; }
 };
 

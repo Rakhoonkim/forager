@@ -35,6 +35,8 @@ public:
 	void itemCollisionPlayer();
 	void objectCollisionMouse();	  // 마우스 커서 보이기 
 
+	void bulletColision();
+
 	void optionControl();			  // 옵션 컨트롤
 
 	void objectAttack(int num);		  //작물 공격 

@@ -35,10 +35,13 @@ public:
 	void setPlayerAddress(tagPlayer* player);
 	void setPlayerTileColision(int idx, int idy);
 
+	void setLandTile(int x,int y); // 땅을 보이게 하기 위한 함수
+
 	vector<tagTile*> getVTiles()			{ return _vTiles; }
 	vector<tagTile*>::iterator getViTiles() { return _viTiles; }
 	
 	tagTile* getTiles(int idx, int idy) { return &_tiles[idy * TILEX + idx]; }
+
 	//건물 지을때 땅에 지정하기 위한 값
 	bool getBuildTiles(int idx, int idy);	// 4칸 건물 
 	void setBuildTiles(int idx, int idy);
@@ -48,6 +51,5 @@ public:
 	void setRemoveWater(int idx,int idy);
 	
 	POINT randomObjectTile();
-
 };
 

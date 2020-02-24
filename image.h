@@ -113,6 +113,11 @@ public:
 	*/
 	//알파 렌더 (뿌려질DC, 알파값(설정하고 싶은 투명도 0~255 만약 입력하지 않으면 이미지의 알파값이 적용됨))
 	void alphaRender(HDC hdc, int value = -1);
+	
+	//
+	void alphaRender(HDC hdc, int destX, int destY, int sourX, int sourY, int sourWidth, int sourHeight, int value = -1);
+
+	
 	//알파 렌더(뿌려질DC, left, top, 알파값(설정하고 싶은 투명도 0~255 만약 입력하지 않으면 이미지의 알파값이 적용됨))
 	void alphaRender(HDC hdc, int destX, int destY, int value = -1);
 
@@ -127,6 +132,7 @@ public:
 	void scaleRender(HDC hdc, int destX, int destY, int scaleX, int scaleY);
 
 	void aniRender(HDC hdc, int destX, int destY, animation* ani);
+	void aniAlphaRender(HDC hdc, int destX, int destY, animation* ani, int alpha);
 
 
 	inline HDC getMemDC() { return _imageInfo->hMemDC; }

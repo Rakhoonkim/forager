@@ -36,8 +36,9 @@ HRESULT player::init()
 	_player.expMax = 30;
 	_player.exp = 0;
 	_player.skillPount = 0;
-
-
+	_player.isHit = false;
+	_player.hitCount = 0;
+	_player.alpha = 0;
 	_state = new playerState();
 	_state->init(&_player);
 
@@ -66,6 +67,7 @@ void player::update()
 	KeyControl();
 	IndexUpdate();
 	//setDirection();
+	playerHitCount();
 	MAPMANAGER->setPlayerAddress(&_player);
 	MAPMANAGER->setPlayerTileColision(_player.idx, _player.idy);  // 충돌처리 
 
@@ -74,8 +76,22 @@ void player::update()
 
 void player::render()
 {
-	_player.playerImage->aniRender(CAMERAMANAGER->getWorldDC(), _player.x, _player.y, _player.playerAni);
-	_player.weaponImage->aniRender(CAMERAMANAGER->getWorldDC(), _player.weaponX, _player.weaponY, _player.weaponAni);
+
+	if (_player.alpha <= 0)
+	{
+		_player.playerImage->aniRender(CAMERAMANAGER->getWorldDC(), _player.x, _player.y, _player.playerAni);
+		_player.weaponImage->aniRender(CAMERAMANAGER->getWorldDC(), _player.weaponX, _player.weaponY, _player.weaponAni);
+	}
+	else
+	{
+		_player.playerImage->aniAlphaRender(CAMERAMANAGER->getWorldDC(), _player.x, _player.y, _player.playerAni, 100);
+		_player.weaponImage->aniAlphaRender(CAMERAMANAGER->getWorldDC(), _player.weaponX, _player.weaponY, _player.weaponAni, 100);
+	}
+	
+	//_player.playerImage->aniRender(CAMERAMANAGER->getWorldDC(), _player.x, _player.y, _player.playerAni);
+	//_player.weaponImage->aniRender(CAMERAMANAGER->getWorldDC(), _player.weaponX, _player.weaponY, _player.weaponAni);
+
+
 
 	//Rectangle(CAMERAMANAGER->getWorldDC(), _player.rc);
 	char str[100];
@@ -227,6 +243,11 @@ void player::KeyControl()
 		_state->changeImage(true);
 		_stateChange = false;
 	}
+
+	if (KEYMANAGER->isOnceKeyDown('H'))
+	{
+		this->playerHit();
+	}
 }
 
 void player::IndexUpdate()
@@ -272,6 +293,39 @@ void player::playerHealth(int health)
 	{
 		_player.health = 0;
 	}
+}
+
+void player::playerHitCount()
+{
+	if (!_player.isHit) return;
+
+	_player.hitCount++;
+	if (_player.hitCount % 5 == 0 )
+	{
+		if (_player.alpha > 0)
+		{
+			_player.alpha = 0;
+		}
+		else
+		{
+			_player.alpha = 100;
+		}
+	}
+
+	if (_player.hitCount >=50)
+	{
+		_player.isHit = false;
+		_player.hitCount = 0;
+	}
+}
+
+void player::playerHit()
+{
+	if (_player.isHit)	return;
+		
+	_player.isHit = true;		
+	_player.hp--;
+
 }
 
 

@@ -54,7 +54,9 @@ public:
 		else
 		{
 			_equipment->setSkill();
+			_land->setLand(false);
 			_isOption = false;
+			_currentOption = 1;
 		}
 	}		 // 옵션세팅
 
@@ -67,5 +69,7 @@ public:
 	inventory* getInven()		 { return _inven; }
 	equipment* getEquipment()	 { return _equipment; }
 	land* getLand()				 { return _land; }
+
+	void setOptionDirection(int num) { _currentOption = num; }
 };
 

@@ -11,7 +11,7 @@ land::~land()
 
 HRESULT land::init()
 {
-	_isLand = true;
+	_isLand = false;
 
 	_landImage = new image;
 	_landImage->init(1800, 1440);
@@ -24,6 +24,7 @@ HRESULT land::init()
 
 	MapLoad("inGameNumber1.map");		// 맵을 가져와서 
 	landSetting();						// 세팅을 다시한다
+	this->mapBuy(1, 1);
 	_direction = 4;
 	_playerCoin = 0;
 
@@ -54,7 +55,7 @@ void land::MapLoad(const char* fileName)
 		OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	//맵을 불로온 직후 타일의 속성을 매겨준다
 	ReadFile(file, _landTiles, sizeof(tagTile) * TILEX * TILEY, &read, NULL);
-
+	
 	CloseHandle(file);
 }
 
@@ -67,6 +68,7 @@ void land::render(HDC hdc)
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		if (_landTiles[i].type == TYPE::NONE) continue;
+		if (!_landTiles[i].isRender) continue;
 		RECT temp;
 		if (!IntersectRect(&temp, &_cameraRect, &_landTiles[i].rc)) continue;
 
@@ -196,18 +198,23 @@ void land::mapMove() // 카메라 셋팅 예정
 	// 구매 버튼식 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
-		for (int i = 0; i < MAXLAND; i++)
+		for (int i = 0; i < LANDY; i++)
 		{
-			if (_land[i].isClick) continue;
-			if (PtInRect(&_land[i].rc, PointMake(_landX + _ptMouse.x, _landY + _ptMouse.y)))
+			for (int j = 0; j < LANDX; j++)
 			{
-				if (_playerCoin >= _land[i].alpha)
+				if (_land[i * 3 + j].isClick) continue;
+				if (PtInRect(&_land[i * 3 + j].rc, PointMake(_landX + _ptMouse.x, _landY + _ptMouse.y)))
 				{
-					_playerCoin -= _land[i].alpha;
-					UIMANAGER->getInven()->removeInven("coinDrop", _land[i].alpha);
-					_land[i].isClick = true;
+					if (_playerCoin >= _land[i * 3 + j].alpha)
+					{
+						_playerCoin -= _land[i * 3 + j].alpha;				
+						this->mapBuy(j, i);
+						MAPMANAGER->setLandTile(j, i);
+						UIMANAGER->getInven()->removeInven("coinDrop", _land[i * 3 + j].alpha);
+						_land[i * 3 + j].isClick = true;
+					}
+					break;
 				}
-				break;
 			}
 		}
 	}
@@ -239,12 +246,34 @@ void land::mapMove() // 카메라 셋팅 예정
 	if (_landY + WINSIZEY > 1440) _landY = 1440 - WINSIZEY;
 
 
-	cout << "x : " << _ptMouse.x << "y : " << _ptMouse.y << endl;
-	cout << "_landX : " << _landX << "_landY : " << _landY << endl;
+	//cout << "x : " << _ptMouse.x << "y : " << _ptMouse.y << endl;
+	//cout << "_landX : " << _landX << "_landY : " << _landY << endl;
 
 	//_landY = _ptMouse.y - WINSIZEY / 2;
 
 
+}
+
+void land::mapBuy(int x, int y)
+{
+	int tilex = 15;
+	int tiley = 12;
+
+	int startX = x * 15;   // 0 , 15 , 30
+	int startY = y * 12;   // 0 , 12 , 24 
+
+	int endX = startX + tilex;
+	int endY = startY + tiley;
+
+	for (int i = startY;i < endY; i++)
+	{
+		for (int j = startX; j < endX; j++)
+		{
+
+			_landTiles[i * TILEX + j].isRender = true;
+			//_vTiles.push_back(&_tiles[startY * TILEX + startX]);
+		}
+	}
 }
 
 void land::landSetting()
@@ -287,7 +316,4 @@ void land::landSetting()
 	_land[6].alpha = 80;
 	_land[7].alpha = 50;
 	_land[8].alpha = 150;
-
-
-
 }

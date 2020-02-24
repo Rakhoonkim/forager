@@ -593,7 +593,6 @@ void image::loopRender(HDC hdc, const LPRECT drawArea, int offSetX, int offSetY)
 	}
 }
 
-
 void image::alphaRender(HDC hdc, int value)
 {
 	//알파블렌드가 적용되는 순서에 주의하면서 봅시다
@@ -639,82 +638,59 @@ void image::alphaRender(HDC hdc, int value)
 		render(hdc);
 }
 
-/*
-void image::alphaRender(HDC hdc, BYTE alpha)
+void image::alphaRender(HDC hdc, int destX, int destY, int sourX, int sourY, int sourWidth, int sourHeight, int value)
 {
-	//알파블렌드가 적용되는 순서에 주의하면서 봅시다
-	_blendFunc.SourceConstantAlpha = alpha;
-
-	if (_trans)
+	if (_imageInfo->isAlpha)
 	{
-		BitBlt(_blendImage->hMemDC, 0, 0, _imageInfo->width, _imageInfo->height,
-			hdc, 0, 0, SRCCOPY);
+		if (value != -1) 
+		{
+			if (value > 255) value = 255;
+			if (value < 0) value = 0;
+			_blendFunc.SourceConstantAlpha = value;
+		}
+		//알파블렌드가 적용되는 순서에 주의하면서 봅시다
+		else
+			_blendFunc.SourceConstantAlpha = _imageInfo->alphaValue;
 
-		GdiTransparentBlt(
-			_blendImage->hMemDC,
-			0, 0,
-			_imageInfo->width,
-			_imageInfo->height,
-			_imageInfo->hMemDC,
-			0, 0,
-			_imageInfo->width,
-			_imageInfo->height,
-			_transColor);
+		if (_trans)
+		{
+			BitBlt(_blendImage->hMemDC, 0, 0, sourWidth, sourHeight,
+				hdc, destX, destY, SRCCOPY);
 
-		AlphaBlend(hdc, _imageInfo->x, _imageInfo->y, _imageInfo->width,
-			_imageInfo->height, _blendImage->hMemDC, 0, 0, _imageInfo->width,
-			_imageInfo->height, _blendFunc);
+			GdiTransparentBlt(
+				_blendImage->hMemDC,
+				0, 0,
+				sourWidth,
+				sourHeight,
+				_imageInfo->hMemDC,
+				sourX, sourY,
+				sourWidth,
+				sourHeight,
+				_transColor);
+
+			AlphaBlend(hdc, destX, destY, sourWidth,
+				sourHeight, _blendImage->hMemDC, 0, 0, sourWidth,
+				sourHeight, _blendFunc);
+
+		}
+		else
+		{
+			AlphaBlend(hdc, destX, destY, sourWidth,
+				sourHeight, _imageInfo->hMemDC, sourX, sourY, sourWidth,
+				sourHeight, _blendFunc);
+		}
 
 	}
 	else
-	{
-		AlphaBlend(hdc, _imageInfo->x, _imageInfo->y, _imageInfo->width,
-			_imageInfo->height, _imageInfo->hMemDC, 0, 0, _imageInfo->width,
-			_imageInfo->height, _blendFunc);
-	}
+		render(hdc, destX, destY, sourX, sourY, sourWidth, sourHeight);
+
 }
-
-
-void image::alphaRender(HDC hdc, int destX, int destY, BYTE alpha)
-{
-	//알파블렌드가 적용되는 순서에 주의하면서 봅시다
-	_blendFunc.SourceConstantAlpha = alpha;
-
-	if (_trans)
-	{
-		BitBlt(_blendImage->hMemDC, 0, 0, _imageInfo->width, _imageInfo->height,
-			hdc, destX, destY, SRCCOPY);
-
-		GdiTransparentBlt(
-			_blendImage->hMemDC,
-			0, 0,
-			_imageInfo->width,
-			_imageInfo->height,
-			_imageInfo->hMemDC,
-			0, 0,
-			_imageInfo->width,
-			_imageInfo->height,
-			_transColor);
-
-		AlphaBlend(hdc, destX, destY, _imageInfo->width,
-			_imageInfo->height, _blendImage->hMemDC, 0, 0, _imageInfo->width,
-			_imageInfo->height, _blendFunc);
-
-	}
-	else
-	{
-		AlphaBlend(hdc,destX, destY, _imageInfo->width,
-			_imageInfo->height, _imageInfo->hMemDC, 0, 0, _imageInfo->width,
-			_imageInfo->height, _blendFunc);
-	}
-}
-
-*/
 
 
 void image::alphaRender(HDC hdc, int destX, int destY, int value)
 {
-	if (_imageInfo->isAlpha) {
+	if (_imageInfo->isAlpha) 
+	{
 		if (value != -1) {
 			if (value > 255) value = 255;
 			if (value < 0) value = 0;
@@ -755,6 +731,7 @@ void image::alphaRender(HDC hdc, int destX, int destY, int value)
 	else
 		render(hdc, destX, destY);
 }
+
 void image::alphaFrameRender(HDC hdc, int destX, int destY, int value)
 {
 	if (_imageInfo->isAlpha) {
@@ -911,4 +888,9 @@ void image::scaleRender(HDC hdc, int destX, int destY, int scaleX, int scaleY)
 void image::aniRender(HDC hdc, int destX, int destY, animation* ani)
 {
 	render(hdc, destX, destY, ani->getFramePos().x, ani->getFramePos().y, ani->getFrameWidth(), ani->getFrameHeight());
+}
+
+void image::aniAlphaRender(HDC hdc, int destX, int destY, animation* ani , int alpha)
+{
+	alphaRender(hdc, destX, destY, ani->getFramePos().x, ani->getFramePos().y, ani->getFrameWidth(), ani->getFrameHeight(), alpha);
 }

@@ -52,6 +52,7 @@ void playerManager::update()
 		cout << "´­·Ç³ª?" << endl;
 		_alphaEffect->play("expNum",15,_player->get_PlayerAddress()->x - 15, _player->get_PlayerAddress()->y - 15);
 	}
+	bulletColision();
 }
 
 void playerManager::render()
@@ -63,8 +64,8 @@ void playerManager::render()
 
 void playerManager::imageSetting()
 {
-	IMAGEMANAGER->addFrameImage("playerIdle", "./image/player/playerIdle.bmp", 198, 96, 6, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("playerWalk", "./image/player/playerWalk.bmp", 198, 108, 6, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("playerIdle", "./image/player/playerIdle.bmp", 198, 96, 6, 2, true, RGB(255, 0, 255),true);
+	IMAGEMANAGER->addFrameImage("playerWalk", "./image/player/playerWalk.bmp", 198, 108, 6, 2, true, RGB(255, 0, 255), true);
 
 	KEYANIMANAGER->addCoordinateFrameAnimation("playerIdle_R", "playerIdle", 0, 5, 15, false, true);
 	KEYANIMANAGER->addCoordinateFrameAnimation("playerIdle_L", "playerIdle", 6, 11, 15, false, true);
@@ -73,7 +74,7 @@ void playerManager::imageSetting()
 	KEYANIMANAGER->addCoordinateFrameAnimation("playerWalk_L", "playerWalk", 6, 11, 15, false, true);
 
 	//°î±ªÀÌ
-	IMAGEMANAGER->addFrameImage("playerPick", "./image/player/playerPickaxe.bmp", 532, 106, 7, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("playerPick", "./image/player/playerPickaxe.bmp", 532, 106, 7, 2, true, RGB(255, 0, 255), true);
 
 	KEYANIMANAGER->addCoordinateFrameAnimation("playerPick_R", "playerPick", 0, 7, 20, false, false);
 	KEYANIMANAGER->addCoordinateFrameAnimation("playerPick_L", "playerPick", 7, 14, 20, false, false);
@@ -203,6 +204,26 @@ void playerManager::objectCollisionMouse()
 	}
 	CURSORMANAGER->setCursor();
 	CURSORMANAGER->getCursor()->setCursorChange();
+}
+
+void playerManager::bulletColision()
+{
+	for (int i = 0;i < _enemyManager->getVEnemy().size(); i++)
+	{
+		if (_enemyManager->getVEnemy()[i]->getEnemy()->enemy != ENEMY::SKULL) continue;
+		
+		for (int j = 0;j < _enemyManager->getVEnemy()[i]->getBulletManager()->getBullet()->getVBullet().size(); j++)
+		{
+			RECT temp;
+			if (IntersectRect(&temp, &_player->get_PlayerAddress()->rc, &_enemyManager->getVEnemy()[i]->getBulletManager()->getBullet()->getVBullet()[j]->rc))
+			{
+				_player->playerHit();
+				if(_enemyManager->getVEnemy()[i]->getBulletManager()->getBullet()->getVBullet()[j]->isFire)EFFECTMANAGER->play("fireBall", _enemyManager->getVEnemy()[i]->getBulletManager()->getBullet()->getVBullet()[j]->x, _enemyManager->getVEnemy()[i]->getBulletManager()->getBullet()->getVBullet()[j]->y);
+				_enemyManager->getVEnemy()[i]->getBulletManager()->getBullet()->getVBullet()[j]->isFire = false;
+				break;
+			}
+		}
+	}
 }
 
 //¿É¼ÇÃ¢ ÄÁµå·Ñ 

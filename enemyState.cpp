@@ -18,6 +18,7 @@ HRESULT enemyState::init()
 HRESULT enemyState::init(tagObject* enemy)
 {
 	_enemy = enemy;
+
 	return S_OK;
 }
 
@@ -84,6 +85,7 @@ void enemyState::render()
 
 void enemyIdle::Enter()
 {
+	_enemy->isPlayerAttack = false;
 	_enemy->time = TIMEMANAGER->getWorldTime();
 	_enemy->angle = RND->getFromFloatTo(0, 6.28f);
 	_enemy->AttackTerm = true;
@@ -232,6 +234,7 @@ enemyMove::enemyMove(enemyStateManager* enemyStateManager, tagObject* enemy)
 
 void enemyMove::Enter()
 {
+	_enemy->isPlayerAttack = false;
 	//보어일때
 	if (_enemy->enemy == ENEMY::BOAR)
 	{
@@ -424,6 +427,7 @@ void enemyAttack::update()
 {
 	if (_enemy->enemy == ENEMY::SLIME)
 	{
+		_enemy->isPlayerAttack = true;
 		if (_enemy->ani->getNowPlayNum() == _enemy->ani->getFrameMaxFrame() - 1)
 		{
 			_enemyStateManager->chanageState("MOVE");
@@ -431,6 +435,7 @@ void enemyAttack::update()
 	}
 	else if (_enemy->enemy == ENEMY::BOAR)
 	{
+		_enemy->isPlayerAttack = true;
 		_enemy->x += cosf(_enemy->angle) * 20 * TIMEMANAGER->getElapsedTime() * _enemy->acel;
 		_enemy->y += -sinf(_enemy->angle) * 20 * TIMEMANAGER->getElapsedTime() * _enemy->acel;
 		if(_enemy->acel <= 8.0f ) _enemy->acel += 0.40f;
@@ -442,6 +447,7 @@ void enemyAttack::update()
 	}
 	else if (_enemy->enemy == ENEMY::DEMON)
 	{
+		_enemy->isPlayerAttack = true;
 		if (_enemy->ani->getNowPlayNum() == _enemy->ani->getFrameMaxFrame() - 1)
 		{
 			_enemyStateManager->chanageState("IDLE");  //ATTAC-> idle 넘어가는거 

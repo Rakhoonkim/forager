@@ -31,6 +31,7 @@ public:
 	virtual void IndexUpdate();
 
 	tagObject* getEnemy()					{ return &_enemy; }		 // enemy ÂüÁ¶ 
+
 	void Set_PlayerLink(tagPlayer* player)  { _player = player; }
 
 	void set_skullEnemyXY() { _enemy.x += 30;_enemy.y += 30;}
@@ -42,6 +43,7 @@ public:
 	
 	virtual bool getBossAttack() { return _enemy.isAttack; }
 	virtual void SetBossAttack(bool value) { _enemy.isAttack = value; }
+	bulletManager* getBulletManager() {	return _bulletManager;	}
 	
 };
 

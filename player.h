@@ -35,6 +35,9 @@ public:
 	void playerExp(int exp);
 	void playerHealth(int health);
 
+	void playerHitCount();
+	void playerHit();
+
 	tagPlayer get_PlayerAddressLinK() { return _player; }
 	tagPlayer* get_PlayerAddress() { return &_player; }
 	RECT get_playerRect() { return _player.rc; }

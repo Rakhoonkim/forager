@@ -190,6 +190,7 @@ void mapToolScene::MapToolSetup()
 			_tiles[i * TILEX + j].idy = i;
 			_tiles[i * TILEX + j].isClick = false;
 			_tiles[i * TILEX + j].isObject = false;
+			_tiles[i * TILEX + j].isRender = false;
 		}
 	}
 

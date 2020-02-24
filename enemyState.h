@@ -10,6 +10,7 @@ protected:
 	enemyStateManager* _enemyStateManager;
 	tagObject* _enemy;
 	tagPlayer* _player;
+
 public:
 	enemyState();
 	~enemyState();

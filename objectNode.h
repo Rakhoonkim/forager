@@ -32,8 +32,11 @@ struct tagPlayer
 	int health;
 	int imageDirection;
 	int skillPount;
+	int hitCount;
+	int alpha;
 	float angle;
 	bool isAttack;
+	bool isHit;
 };
 
 
@@ -73,6 +76,7 @@ struct tagObject
 	bool isEffect;			// ¿Ã∆Â∆Æ 
 	bool isHit;
 	bool AttackTerm;
+	bool isPlayerAttack;
 };
 
 
