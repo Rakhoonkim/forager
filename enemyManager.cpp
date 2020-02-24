@@ -16,6 +16,8 @@ HRESULT enemyManager::init()
 	_player = new player;
 	_player->init();
 
+	_bulletManager = new bulletManager;
+	_bulletManager->init();
 	//몬스터 init에서 해주면 안됨 
 
 	return S_OK;
@@ -69,6 +71,7 @@ void enemyManager::update()
 		CreateEnemy(ENEMY::DEMON_BOSS, 24, 21);
 	}
 	enemyRemove();
+	_bulletManager->update();
 }
 
 void enemyManager::render()
@@ -77,6 +80,7 @@ void enemyManager::render()
 	{
 		(*_viEnemy)->render();
 	}
+	_bulletManager->render();
 }
 
 void enemyManager::imageSetting()
@@ -215,6 +219,7 @@ void enemyManager::CreateEnemy(ENEMY enemyType, float x, float y)
 		temp->setAni("skullLeft");
 		temp->set_skullEnemyXY();
 		temp->Set_PlayerLink(_player->get_PlayerAddress());
+		temp->setEnemyBullet(_bulletManager);
 		_vEnemy.push_back(temp);
 	}
 	else if (enemyType == ENEMY::DEMON_BOSS)

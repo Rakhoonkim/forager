@@ -1,6 +1,7 @@
 #pragma once
 #include "gameNode.h"
 #include "enemy.h"
+#include "buildManager.h"
 
 class player;
 
@@ -11,6 +12,7 @@ private:
 	vector<enemy*>::iterator	_viEnemy;
 	
 	player* _player;
+	bulletManager* _bulletManager;
 
 	float _timer;   
 public:
@@ -32,5 +34,7 @@ public:
 
 	vector<enemy*> getVEnemy()			  { return _vEnemy;}     // ENEMY Vector
 	vector<enemy*>::iterator getViEnemy() { return _viEnemy;}	 // ENEMY Iterator
+
+	bulletManager* getBulletManager() { return _bulletManager; }
 };
 

@@ -48,5 +48,9 @@ void stageScene::render()
 	ITEMMANAGER->render();
 	_playerManager->render();  //PLAYER 
 	EFFECTMANAGER->render(CAMERAMANAGER->getWorldDC());
+
+
 	CAMERAMANAGER->getWorldImage()->render(getMemDC(), 0, 0, CAMERAMANAGER->getWorldCamera().cameraX, CAMERAMANAGER->getWorldCamera().cameraY, WINSIZEX, WINSIZEY);
+
+	UIMANAGER->render();	// UI
 }

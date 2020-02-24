@@ -44,6 +44,8 @@ public:
 	virtual bool getBossAttack() { return _enemy.isAttack; }
 	virtual void SetBossAttack(bool value) { _enemy.isAttack = value; }
 	bulletManager* getBulletManager() {	return _bulletManager;	}
+
+	virtual void setEnemyBullet(bulletManager* bulletManager) { _bulletManager = bulletManager; }
 	
 };
 

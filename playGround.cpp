@@ -18,7 +18,7 @@ HRESULT playGround::init()
 	SCENEMANAGER->addScene("STAGE", new stageScene);		// STAGE
 	SCENEMANAGER->addScene("MAPTOOL", new mapToolScene);	// MAPTOOL
 
-	SCENEMANAGER->changeScene("STAGE");
+	SCENEMANAGER->changeScene("MAPTOOL");
 
 	return S_OK;
 }
@@ -45,10 +45,8 @@ void playGround::render()
 {
 	PatBlt(getMemDC(), 0, 0, WINSIZEX, WINSIZEY, BLACKNESS);
 	//===========================================================
-	if(!UIMANAGER->getLand()->getLand()) 	SCENEMANAGER->render(); // MAIN
+	if(!UIMANAGER->getLand()->getLand()) SCENEMANAGER->render(); // MAIN
 	
-	UIMANAGER->render();	// UI
-
 	if (!CURSORMANAGER->getCursor()->getObjectPoint()) CURSORMANAGER->render();   //CURSOR
 	
 	TIMEMANAGER->render(getMemDC()); // юс╫ц 

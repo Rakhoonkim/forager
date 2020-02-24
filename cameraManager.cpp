@@ -27,6 +27,8 @@ cameraManager::cameraManager()
 
 	_worldCamera.cameraAngle = 0;
 
+	_worldRect = RectMake(_worldCamera.cameraX, _worldCamera.cameraY, WINSIZEX, WINSIZEY);
+
 	// 맵툴 카메라 
 	_mapToolCamera.cameraWorldSizeX = 2700;
 	_mapToolCamera.cameraWorldSizeY = 2160;
@@ -62,6 +64,9 @@ void cameraManager::release()
 void cameraManager::update()
 {
 	move();
+
+	//클리핑 틀에 벗어나지 않게 렌더하기 위한 RECT
+	_worldRect = RectMake(_worldCamera.cameraX, _worldCamera.cameraY, 900, WINSIZEY);
 }
 
 void cameraManager::render()

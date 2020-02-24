@@ -211,7 +211,6 @@ void uiManager::imageSetting()
 	IMAGEMANAGER->addFrameImage("landBuy", "./image/ui/landBuy.bmp", 800, 320, 2, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("landNum", "./image/ui/landNum.bmp",350, 40, 10, 1, true, RGB(255, 0, 255));
 
-	
 }
 
 

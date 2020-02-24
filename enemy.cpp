@@ -86,14 +86,12 @@ void enemy::release()
 void enemy::update()
 {
 	_enemyState->update();
-	_bulletManager->update();
 	IndexUpdate();
 }
 
 void enemy::render()
 {
 	_enemyState->render();
-	_bulletManager->render();
 }
 
 void enemy::IndexUpdate()
@@ -251,7 +249,6 @@ void skull::update()
 		_bulletManager->getBullet()->fire( _enemy.x + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth() / 2, _enemy.y + IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight() / 2, 4.71, 6);
 		firetime = TIMEMANAGER->getWorldTime();
 	}
-	_bulletManager->update();
 	IndexUpdate();
 	_enemyState->update();
 	_enemy.rc = RectMake(_enemy.x, _enemy.y, IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight());

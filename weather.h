@@ -6,6 +6,8 @@ class weather
 private:
 	float _time;
 	int _alpha;
+
+
 	bool _night;
 public:
 	weather();

@@ -28,7 +28,7 @@ HRESULT playerManager::init()
 
 	_alphaEffect = new alphaEffect;
 	_alphaEffect->init();
-	
+
 	return S_OK;
 }
 
@@ -42,7 +42,7 @@ void playerManager::update()
 {
 
 	_player->update();
-	if(!UIMANAGER->getOption()) objectCollisionMouse();   // 마우스 포인터를 보여주기 위한 
+	if (!UIMANAGER->getOption()) objectCollisionMouse();   // 마우스 포인터를 보여주기 위한 
 	itemCollisionPlayer();    // 아이템을 먹기 위한.
 	itemCollisionMouse();	  // 아이템을 먹기 위한.
 	optionControl();		  // 옵션창 컨트롤 
@@ -50,7 +50,7 @@ void playerManager::update()
 	if (KEYMANAGER->isOnceKeyDown('N'))
 	{
 		cout << "눌렷나?" << endl;
-		_alphaEffect->play("expNum",15,_player->get_PlayerAddress()->x - 15, _player->get_PlayerAddress()->y - 15);
+		_alphaEffect->play("expNum", 15, _player->get_PlayerAddress()->x - 15, _player->get_PlayerAddress()->y - 15);
 	}
 	bulletColision();
 }
@@ -58,13 +58,13 @@ void playerManager::update()
 void playerManager::render()
 {
 	// 건물사용중이면 렌드를 끈다
-	if(!_buildManager->usedCheck()) _player->render();  
+	if (!_buildManager->usedCheck()) _player->render();
 	_alphaEffect->render();
 }
 
 void playerManager::imageSetting()
 {
-	IMAGEMANAGER->addFrameImage("playerIdle", "./image/player/playerIdle.bmp", 198, 96, 6, 2, true, RGB(255, 0, 255),true);
+	IMAGEMANAGER->addFrameImage("playerIdle", "./image/player/playerIdle.bmp", 198, 96, 6, 2, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("playerWalk", "./image/player/playerWalk.bmp", 198, 108, 6, 2, true, RGB(255, 0, 255), true);
 
 	KEYANIMANAGER->addCoordinateFrameAnimation("playerIdle_R", "playerIdle", 0, 5, 15, false, true);
@@ -129,7 +129,7 @@ void playerManager::objectCollisionMouse()
 			CURSORMANAGER->setCropsPoint();
 			CURSORMANAGER->getCursor()->setCursorXY(_cropsManager->getVCrops()[i]->getCrops()->centerX - CAMERAMANAGER->getWorldCamera().cameraX, _cropsManager->getVCrops()[i]->getCrops()->centerY - CAMERAMANAGER->getWorldCamera().cameraY);
 
-			if(_player->get_PlayerAddress()->health > 0) objectAttack(i);
+			if (_player->get_PlayerAddress()->health > 0) objectAttack(i);
 			return;
 		}
 	}
@@ -169,7 +169,7 @@ void playerManager::objectCollisionMouse()
 			_buildManager->getVBuild()[i]->setUsed();
 		}
 	}
-	
+
 	//■■■■■■■■■■■■■■■■■■■■■■ EnemyCollision ■■■■■■■■■■■■■■■■■■■■■■
 	for (int i = 0; i < _enemyManager->getVEnemy().size(); ++i)
 	{
@@ -181,7 +181,7 @@ void playerManager::objectCollisionMouse()
 				CURSORMANAGER->setCropsPoint();
 				CURSORMANAGER->getCursor()->setCursorXY(_enemyManager->getVEnemy()[i]->getEnemy()->centerX - CAMERAMANAGER->getWorldCamera().cameraX, _enemyManager->getVEnemy()[i]->getEnemy()->centerY - CAMERAMANAGER->getWorldCamera().cameraY);
 			}
-			else if(_enemyManager->getVEnemy()[i]->getEnemy()->enemy == ENEMY::DEMON ||
+			else if (_enemyManager->getVEnemy()[i]->getEnemy()->enemy == ENEMY::DEMON ||
 				_enemyManager->getVEnemy()[i]->getEnemy()->enemy == ENEMY::BOAR)
 			{
 				CURSORMANAGER->setBridgePoint();
@@ -208,20 +208,15 @@ void playerManager::objectCollisionMouse()
 
 void playerManager::bulletColision()
 {
-	for (int i = 0;i < _enemyManager->getVEnemy().size(); i++)
+	for (int i = 0;i < _enemyManager->getBulletManager()->getBullet()->getVBullet().size(); i++)
 	{
-		if (_enemyManager->getVEnemy()[i]->getEnemy()->enemy != ENEMY::SKULL) continue;
-		
-		for (int j = 0;j < _enemyManager->getVEnemy()[i]->getBulletManager()->getBullet()->getVBullet().size(); j++)
+		RECT temp;
+		if (IntersectRect(&temp, &_player->get_PlayerAddress()->rc, &_enemyManager->getBulletManager()->getBullet()->getVBullet()[i]->rc))
 		{
-			RECT temp;
-			if (IntersectRect(&temp, &_player->get_PlayerAddress()->rc, &_enemyManager->getVEnemy()[i]->getBulletManager()->getBullet()->getVBullet()[j]->rc))
-			{
-				_player->playerHit();
-				if(_enemyManager->getVEnemy()[i]->getBulletManager()->getBullet()->getVBullet()[j]->isFire)EFFECTMANAGER->play("fireBall", _enemyManager->getVEnemy()[i]->getBulletManager()->getBullet()->getVBullet()[j]->x, _enemyManager->getVEnemy()[i]->getBulletManager()->getBullet()->getVBullet()[j]->y);
-				_enemyManager->getVEnemy()[i]->getBulletManager()->getBullet()->getVBullet()[j]->isFire = false;
-				break;
-			}
+			_player->playerHit();
+			if (_enemyManager->getBulletManager()->getBullet()->getVBullet()[i]->isFire) EFFECTMANAGER->play("fireBall", _enemyManager->getBulletManager()->getBullet()->getVBullet()[i]->x, _enemyManager->getBulletManager()->getBullet()->getVBullet()[i]->y);
+			_enemyManager->getBulletManager()->getBullet()->getVBullet()[i]->isFire = false;
+			break;
 		}
 	}
 }

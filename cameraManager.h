@@ -20,7 +20,7 @@ private:
 	tagCamera _worldCamera;
 	tagCamera _mapToolCamera;
 
-	
+	RECT _worldRect;
 	bool _cameraMove;
 
 public:
@@ -53,6 +53,8 @@ public:
 
 	image* getMapToolImage() { return _mapToolCamera.image; }
 	image* getWorldImage() { return _worldCamera.image; }
+
+	RECT getWorldRect() { return _worldRect; }
 
 };
 
