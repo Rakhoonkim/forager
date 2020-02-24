@@ -32,6 +32,7 @@ void mapToolScene::update()
 void mapToolScene::render()
 {
 	MapToolRender();		// 렌더
+	CAMERAMANAGER->MapToolCameraRectUpdate();
 }
 
 void mapToolScene::save()
@@ -67,32 +68,10 @@ void mapToolScene::SaveAndLoad()
 		//버튼 
 		for (int i = 0; i < 5; i++)
 		{
-			_saveSlot[i].isClick = false;
 			if (PtInRect(&_saveSlot[i].rc, _ptMouse))
 			{
-				switch (i)
-				{
-				case 0:
-					_saveName = "inGameNumber1.map";
-					_saveSlot[i].isClick = true;
-					break;
-				case 1:
-					_saveName = "inGameNumber2.map";
-					_saveSlot[i].isClick = true;
-					break;
-				case 2:
-					_saveName = "inGameNumber3.map";
-					_saveSlot[i].isClick = true;
-					break;
-				case 3:
-					_saveName = "inGameNumber4.map";
-					_saveSlot[i].isClick = true;
-					break;
-				case 4:
-					_saveName = "inGameNumber5.map";
-					_saveSlot[i].isClick = true;
-					break;
-				}
+				_saveSlotDirection = i;
+				break;
 			}
 		}
 
@@ -104,8 +83,41 @@ void mapToolScene::SaveAndLoad()
 		{
 			this->load();
 		}
+		if (PtInRect(&_exitButton.rc, _ptMouse))
+		{
+			SCENEMANAGER->changeScene("MAINMENU");
+		}
+
 	}
 
+	for (int i = 0; i < 5; i++)
+	{
+		_saveSlot[i].isClick = false;	
+	}
+
+	switch (_saveSlotDirection)
+	{
+	case 0:
+		_saveName = "inGameNumber1.map";
+		_saveSlot[_saveSlotDirection].isClick = true;
+		break;
+	case 1:
+		_saveName = "inGameNumber2.map";
+		_saveSlot[_saveSlotDirection].isClick = true;
+		break;
+	case 2:
+		_saveName = "inGameNumber3.map";
+		_saveSlot[_saveSlotDirection].isClick = true;
+		break;
+	case 3:
+		_saveName = "inGameNumber4.map";
+		_saveSlot[_saveSlotDirection].isClick = true;
+		break;
+	case 4:
+		_saveName = "inGameNumber5.map";
+		_saveSlot[_saveSlotDirection].isClick = true;
+		break;
+	}
 
 }
 
@@ -145,8 +157,12 @@ void mapToolScene::MapToolImage()
 	IMAGEMANAGER->addImage("rect2", "./image/mapTool/rect2.bmp", 60, 60, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("typeButton", "./image/mapTool/typeButton.bmp", 280, 40, 7, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("styleButton", "./image/mapTool/styleButton.bmp", 180, 60, 2, 3, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("saveSlot", "./image/mapTool/saveSlot.bmp", 280, 60, 1, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("saveSlotButton", "./image/mapTool/saveSlotButton.bmp", 280, 60, 1, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("redButtonRect", "./image/mapTool/redButtonRect.bmp", 45, 45, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("minimapBackground", "./image/mapTool/minimapBackground.bmp", 135, 135, false, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addFrameImage("saveLoad", "./image/mapTool/saveLoad.bmp", 100, 80, 1, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("exit", "./image/mapTool/exit.bmp", 60, 40, true, RGB(255, 0, 255));
 }
 
 void mapToolScene::MapToolSetup()
@@ -164,7 +180,7 @@ void mapToolScene::MapToolSetup()
 
 	_saveSlotSizeWidth = 280;	// SAVE 가로 
 	_saveSlotSizeHeight = 30;	// SAVE 세로 
-
+	_saveSlotDirection = 0;
 	// 이미지이름
 	_saveName = "inGameNumber1.map";
 
@@ -292,9 +308,9 @@ void mapToolScene::MapToolSetup()
 		_saveSlot[i].isClick = false;
 	}
 
-	SetRect(&_saveButton.rc, 920, 670, 1020, 710);
+	SetRect(&_saveButton.rc, 920, 670, 1020, 710);    // 100 X 40
 	SetRect(&_loadButton.rc, 1020, 670, 1120, 710);
-	SetRect(&_exitButton.rc, 1130, 670, 1190, 710);
+	SetRect(&_exitButton.rc, 1130, 670, 1190, 710);     // 60 X 40 
 	_saveButton.isClick = false;
 	_loadButton.isClick = false;
 	_exitButton.isClick = false;
@@ -554,14 +570,14 @@ void mapToolScene::MapToolRender()
 		//sprintf_s(str, "%d",i);
 		//Rectangle(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc);
 		//TextOut(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
+		RECT temp;
+		if (!IntersectRect(&temp, &CAMERAMANAGER->getWorldRect(), &_tiles[i].rc)) continue;
 
 		//타입이 NONE이면 다음으로
 		if (_tiles[i].type == TYPE::NONE) continue;
 
 		//만약 화면 렉트와 충돌되지 않으면 그리지 않는다.
-		RECT temp;
-		if (!IntersectRect(&temp, &CAMERAMANAGER->getWorldRect(), &_tiles[i].rc)) continue;
-
+		
 		//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■TERRAIN  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 		if (_tiles[i].terrain != TERRAIN::NONE)
 		{
@@ -768,100 +784,103 @@ void mapToolScene::MapToolRender()
 	sprintf_s(str, "클릭");
 	SetTextColor(getMemDC(), RGB(255, 0, 0));
 
-	//스타일 
-	for (int i = 0; i < 3;i++)
-	{
-		if (_style[i].isClick)
-		{
-			IMAGEMANAGER->findImage("styleButton")->frameRender(getMemDC(), _style[i].rc.left, _style[i].rc.top, 1, i);
-		}
-		else
-		{
-			IMAGEMANAGER->findImage("styleButton")->frameRender(getMemDC(), _style[i].rc.left, _style[i].rc.top, 0, i);
-		}
-		//Rectangle(getMemDC(), _style[i].rc);
 
-	}
-	// TYPE
-	for (int i = 0;i < 7;i++)
-	{
-		IMAGEMANAGER->findImage("typeButton")->frameRender(getMemDC(), _type[i].rc.left, _type[i].rc.top, i, 0);
-		//Rectangle(getMemDC(), _type[i].rc);
-
-	}
 
 	// 임시 텍스트 
-	char tempStr1[100];
-	char tempStr2[100];
-	char tempStr3[100];
-	char tempStr4[100];
-	char tempStr5[100];
-	char tempStr6[100];
-	char tempStr7[100];
-	sprintf_s(tempStr1, "표면");
-	sprintf_s(tempStr2, "땅");
-	sprintf_s(tempStr3, "데코");
-	sprintf_s(tempStr4, "오브");
-	sprintf_s(tempStr5, "나무");
-	sprintf_s(tempStr6, "예비1");
-	sprintf_s(tempStr7, "예비2");
-	TextOut(getMemDC(), _type[0].rc.left, _type[0].rc.top, tempStr1, strlen(tempStr1));
-	TextOut(getMemDC(), _type[1].rc.left, _type[1].rc.top, tempStr2, strlen(tempStr2));
-	TextOut(getMemDC(), _type[2].rc.left, _type[2].rc.top, tempStr3, strlen(tempStr3));
-	TextOut(getMemDC(), _type[3].rc.left, _type[3].rc.top, tempStr4, strlen(tempStr4));
-	TextOut(getMemDC(), _type[4].rc.left, _type[4].rc.top, tempStr5, strlen(tempStr5));
-	TextOut(getMemDC(), _type[5].rc.left, _type[5].rc.top, tempStr6, strlen(tempStr6));
-	TextOut(getMemDC(), _type[6].rc.left, _type[6].rc.top, tempStr7, strlen(tempStr7));
+	//char tempStr1[100];
+	//char tempStr2[100];
+	//char tempStr3[100];
+	//char tempStr4[100];
+	//char tempStr5[100];
+	//char tempStr6[100];
+	//char tempStr7[100];
+	//sprintf_s(tempStr1, "표면");
+	//sprintf_s(tempStr2, "땅");
+	//sprintf_s(tempStr3, "데코");
+	//sprintf_s(tempStr4, "오브");
+	//sprintf_s(tempStr5, "나무");
+	//sprintf_s(tempStr6, "예비1");
+	//sprintf_s(tempStr7, "예비2");
+	//TextOut(getMemDC(), _type[0].rc.left, _type[0].rc.top, tempStr1, strlen(tempStr1));
+	//TextOut(getMemDC(), _type[1].rc.left, _type[1].rc.top, tempStr2, strlen(tempStr2));
+	//TextOut(getMemDC(), _type[2].rc.left, _type[2].rc.top, tempStr3, strlen(tempStr3));
+	//TextOut(getMemDC(), _type[3].rc.left, _type[3].rc.top, tempStr4, strlen(tempStr4));
+	//TextOut(getMemDC(), _type[4].rc.left, _type[4].rc.top, tempStr5, strlen(tempStr5));
+	//TextOut(getMemDC(), _type[5].rc.left, _type[5].rc.top, tempStr6, strlen(tempStr6));
+	//TextOut(getMemDC(), _type[6].rc.left, _type[6].rc.top, tempStr7, strlen(tempStr7));
 
-	char str2[128];
-	sprintf_s(str2, "클릭");
-	SetTextColor(getMemDC(), RGB(255, 0, 0));
-	// 위치 타일 
-	for (int i = 0; i < 9; ++i)
+	//char str2[128];
+	//sprintf_s(str2, "클릭");
+	//SetTextColor(getMemDC(), RGB(255, 0, 0));
+
+
+
+
+	
+	for (int i = 0; i < 9; i++)
 	{
-		Rectangle(getMemDC(), _mapButton[i].rc);
-		if (_mapButton[i].isClick)
+		//스타일 
+		if (i < 3)
 		{
-			IMAGEMANAGER->findImage("redButton")->render(getMemDC(), _mapButton[i].rc.left, _mapButton[i].rc.top);
+			if (_style[i].isClick)
+			{
+				IMAGEMANAGER->findImage("styleButton")->frameRender(getMemDC(), _style[i].rc.left, _style[i].rc.top, 1, i);
+			}
+			else
+			{
+				IMAGEMANAGER->findImage("styleButton")->frameRender(getMemDC(), _style[i].rc.left, _style[i].rc.top, 0, i);
+			}
+			//Rectangle(getMemDC(), _style[i].rc);   임시렉트 
+		}
+		if (i < 5)
+		{
+			if (_saveSlot[i].isClick)
+			{
+				IMAGEMANAGER->findImage("saveSlotButton")->frameRender(getMemDC(), _saveSlot[i].rc.left, _saveSlot[i].rc.top, 0, 0);
+			}
+			else
+			{
+				IMAGEMANAGER->findImage("saveSlotButton")->frameRender(getMemDC(), _saveSlot[i].rc.left, _saveSlot[i].rc.top, 0, 1);
+			}
+			//Rectangle(getMemDC(), _saveSlot[i].rc);
+		}
+
+		// TYPE
+		if (i < 7)
+		{
+			IMAGEMANAGER->findImage("typeButton")->frameRender(getMemDC(), _type[i].rc.left, _type[i].rc.top, i, 0);
+			//Rectangle(getMemDC(), _type[i].rc);
+		}
+
+		// 위치 타일 
+		if (i < 9)
+		{
+			IMAGEMANAGER->findImage("redButtonRect")->render(getMemDC(), _mapButton[i].rc.left, _mapButton[i].rc.top);
+			if (_mapButton[i].isClick)
+			{
+				IMAGEMANAGER->findImage("redButton")->render(getMemDC(), _mapButton[i].rc.left, _mapButton[i].rc.top);
+			}
+			//Rectangle(getMemDC(), _mapButton[i].rc);
 		}
 	}
 
-	// 미니맵 
 
+	// 미니맵 
+	IMAGEMANAGER->findImage("minimapBackground")->render(getMemDC(), _miniMap[0].rc.left, _miniMap[0].rc.top);
 	for (int i = 0;i < TILEX * TILEY; i++)
 	{
 		//Rectangle(getMemDC(), _miniMap[i].rc);
 		if (_tiles[i].isClick) IMAGEMANAGER->findImage("minimap")->render(getMemDC(), _miniMap[i].rc.left, _miniMap[i].rc.top);
 	}
 
-	// 세이브 슬롯 
-	for (int i = 0;i < 5; i++)
-	{
-		if (_saveSlot[i].isClick)
-		{
-			IMAGEMANAGER->findImage("saveSlot")->frameRender(getMemDC(), _saveSlot[i].rc.left, _saveSlot[i].rc.top, 0, 0);
-		}
-		else
-		{
-			IMAGEMANAGER->findImage("saveSlot")->frameRender(getMemDC(), _saveSlot[i].rc.left, _saveSlot[i].rc.top, 0, 1);
-		}
-		//Rectangle(getMemDC(), _saveSlot[i].rc);
-	}
 
-	Rectangle(getMemDC(), _saveButton.rc);
-	Rectangle(getMemDC(), _loadButton.rc);
-	Rectangle(getMemDC(), _exitButton.rc);
+	IMAGEMANAGER->findImage("saveLoad")->frameRender(getMemDC(), _saveButton.rc.left, _saveButton.rc.top, 0, 0);
+	IMAGEMANAGER->findImage("saveLoad")->frameRender(getMemDC(), _loadButton.rc.left, _loadButton.rc.top, 0, 1);
+	IMAGEMANAGER->findImage("exit")->render(getMemDC(), _exitButton.rc.left, _exitButton.rc.top);
+	/*Rectangle(getMemDC(), _saveButton.rc);
+	Rectangle(getMemDC(), _loadButton.rc);*/
+	//Rectangle(getMemDC(), _exitButton.rc);
 
-
-
-
-	if (_currentTile.type == TYPE::CHARACTER)
-	{
-		for (int i = 0;i < 25; i++)
-		{
-			//IMAGEMANAGER->findImage("grassTileCharacterPalette")->frameRender(CAMERAMANAGER->getMapToolDC(), _terrainPalette[i].rc.left, _terrainPalette[i].rc.top, _terrainPalette[i].frameX, _terrainPalette[i].frameY);
-		}
-	}
 }
 
 TERRAIN mapToolScene::MapToolTerrainSelect(int frameX, int frameY)

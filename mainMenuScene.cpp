@@ -42,7 +42,7 @@ void mainMenuScene::render()
 	IMAGEMANAGER->findImage("mainMenuBackground")->loopRender(getMemDC(), &RectMake(0, 0, WINSIZEX, WINSIZEY), _offsetX, _offsetY);
 
 	//버튼 렌더
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < MAXBUTTON; i++)
 	{
 		// 버튼 이펙트가 아니면
 		if (!_button[i].isEffect)
@@ -56,6 +56,8 @@ void mainMenuScene::render()
 	}
 	//중앙 로고
 	IMAGEMANAGER->findImage("foragerLogo")->render(getMemDC(), WINSIZEX / 2 - (IMAGEMANAGER->findImage("foragerLogo")->getWidth() / 2), 30);
+
+	//Rectangle(getMemDC(), _mapToolButton.rc);
 
 	//세이브 관련 이미지 추후 예정 
 	//IMAGEMANAGER->findImage("startBackground")->alphaRender(getMemDC(), 0, 0,100);
@@ -86,6 +88,9 @@ void mainMenuScene::imageSetting()
 	IMAGEMANAGER->addImage("startBackground", "./image/ui/startBackground.bmp", 1200, 720, false, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addImage("saveSlot", "./image/ui/saveSlot.bmp", 900, 64, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("saveSlotBackground", "./image/ui/saveSlotBackground.bmp", 930, 400, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("maptoolButton", "./image/ui/mainMenu/maptoolButton.bmp", 302, 80, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("maptoolButton2", "./image/ui/mainMenu/maptoolButton2.bmp", 302, 80, true, RGB(255, 0, 255),true);
 }
 // 위치잡기 ! 
 void mainMenuScene::buttonSetting()
@@ -97,6 +102,7 @@ void mainMenuScene::buttonSetting()
 	_button[4].rc = RectMake(_buttonX + 40, 480 + _distance, IMAGEMANAGER->findImage("creditsButton")->getWidth(), IMAGEMANAGER->findImage("creditsButton")->getHeight());;
 	_button[5].rc = RectMake(_buttonX - 40, 585 + _distance, IMAGEMANAGER->findImage("optionsButton")->getWidth() - 30, IMAGEMANAGER->findImage("optionsButton")->getHeight());;
 	_button[6].rc = RectMake(_buttonX + 230, 585 + _distance, IMAGEMANAGER->findImage("exitButton")->getWidth(), IMAGEMANAGER->findImage("exitButton")->getHeight());;
+	_button[7].rc = RectMake(WINSIZEX / 2 + 220, WINSIZEY - 220, 267, 78);
 	_button[0].imageName = "playButton";
 	_button[1].imageName = "extraButton";
 	_button[2].imageName = "roadButton";
@@ -104,37 +110,46 @@ void mainMenuScene::buttonSetting()
 	_button[4].imageName = "creditsButton";
 	_button[5].imageName = "optionsButton";
 	_button[6].imageName = "exitButton";
-
+	_button[7].imageName = "maptoolButton2";
 	//버튼 7개 초기화 
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < MAXBUTTON; i++)
 	{
 		_button[i].isClick = false;
 		_button[i].isEffect = false;
 		_button[i].alpha = 0;
 	}
+
+	//_mapToolButton.rc = RectMake(WINSIZEX/2 +220, WINSIZEY - 220,  267, 78);
 }
 
 void mainMenuScene::buttonClick()
 {
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
-		for (int i = 0; i < 7; i++)
+		for (int i = 0; i < MAXBUTTON; i++)
 		{
 			if(PtInRect(&_button[i].rc,_ptMouse)) _button[i].isClick = true;
 			break;
 		}
 	}
+
 	//시작 버튼을 누르면 스테이지로 
 	if (_button[0].isClick)
 	{
 		SCENEMANAGER->changeScene("STAGE");
+	}
+
+	//맵툴 버튼을 누르면 맵툴로 이동
+	if (_button[7].isClick)
+	{
+		SCENEMANAGER->changeScene("MAPTOOL");
 	}
 }
 
 void mainMenuScene::buttonEffect()
 {
 	//버튼 이펙트 판정
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < MAXBUTTON; i++)
 	{
 		if (_button[i].isEffect) continue;
 
@@ -147,7 +162,7 @@ void mainMenuScene::buttonEffect()
 	}
 
 	//버튼 이펙트이면 
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < MAXBUTTON; i++)
 	{
 		if (!_button[i].isEffect) continue;
 		//알파값 증가

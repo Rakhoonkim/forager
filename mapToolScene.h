@@ -3,25 +3,27 @@
 
 class mapToolScene : public gameNode
 {
-	tagTile			   _tiles[TILEX * TILEY];			// 그려지는 타일 
+	tagTile			   _tiles[TILEX * TILEY];					// 그려지는 타일 
 	
-	tagPalette _terrainPalette[PALETTEX * PALETTEY];			// 지형 타일  7 X 7
-	tagPalette _landPalette[PALETTEX * PALETTEY];				// 땅 타일  7 X 7
-	tagPalette _landObjectPalette[LANDOBJECTX * LANDOBJECTY];	// 타일 오브젝트 5 X 5
-	tagPalette _objectPalette[OBJECTX * OBJECTY];				// 오브젝트 타일
-	tagPalette _treePalette[TREETILEX * TREETILEY];				// 나무 타일
+	tagPalette _terrainPalette[PALETTEX * PALETTEY];			// 지형     7 X 7
+	tagPalette _landPalette[PALETTEX * PALETTEY];				// 땅       7 X 7
+	tagPalette _landObjectPalette[LANDOBJECTX * LANDOBJECTY];	// 오브젝트  5 X 5
+	tagPalette _objectPalette[OBJECTX * OBJECTY];				// 작물 타일 7 X 4
+	tagPalette _treePalette[TREETILEX * TREETILEY];				// 나무 타일 7 X 2
 
 
-	//버튼 RECT
-	//X는 920 기준으로
-	tagButton _mapButton[9];	//MAP 위치 
+	tagButton _mapButton[9];				//MAP 위치를 나타내는 RECT 
 	int _mapButtonSize;
 
-	tagButton _miniMap[TILEX * TILEY * 9];  // MINIMAP
+
+	//추후 수정 예정 
+	tagButton _miniMap[TILEX * TILEY];  // MINIMAP
 	int		 _miniMapSizeWidth;			    // 가로 
 	float	_miniMapSizeHeight;				// 세로
 
+
 	tagButton	   _saveSlot[5];			// SLOT
+	int _saveSlotDirection;
 	const char* _saveName;
 
 	int		 _saveSlotSizeWidth;			// 가로 

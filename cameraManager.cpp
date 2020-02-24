@@ -64,9 +64,6 @@ void cameraManager::release()
 void cameraManager::update()
 {
 	move();
-
-	//클리핑 틀에 벗어나지 않게 렌더하기 위한 RECT
-	_worldRect = RectMake(_worldCamera.cameraX, _worldCamera.cameraY, 900, WINSIZEY);
 }
 
 void cameraManager::render()
@@ -161,5 +158,11 @@ void cameraManager::setMapToolCameraXY(float x, float y)
 {
 	_mapToolCamera.cameraX = x;
 	_mapToolCamera.cameraY = y;
+}
+
+void cameraManager::MapToolCameraRectUpdate()
+{
+	//클리핑 틀에 벗어나지 않게 렌더하기 위한 RECT
+	_worldRect = RectMake(_mapToolCamera.cameraX, _mapToolCamera.cameraY, 900, WINSIZEY);
 }
 

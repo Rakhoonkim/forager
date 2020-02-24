@@ -56,5 +56,7 @@ public:
 
 	RECT getWorldRect() { return _worldRect; }
 
+	void MapToolCameraRectUpdate();
+
 };
 

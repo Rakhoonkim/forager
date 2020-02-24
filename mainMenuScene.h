@@ -1,11 +1,12 @@
 #pragma once
 #include "gameNode.h"
 
+#define MAXBUTTON 8
 class mainMenuScene : public gameNode
 {
 private:
-	tagButton _button[7];	//버튼 7개 
-
+	tagButton _button[MAXBUTTON];	//버튼 7개 
+	//tagButton _mapToolButton;
 	//tagButton _play;
 	//tagButton _extra;
 	//tagButton _roadMap;

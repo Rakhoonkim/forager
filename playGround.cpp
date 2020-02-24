@@ -18,7 +18,7 @@ HRESULT playGround::init()
 	SCENEMANAGER->addScene("STAGE", new stageScene);		// STAGE
 	SCENEMANAGER->addScene("MAPTOOL", new mapToolScene);	// MAPTOOL
 
-	SCENEMANAGER->changeScene("MAPTOOL");
+	SCENEMANAGER->changeScene("MAINMENU");
 
 	return S_OK;
 }
