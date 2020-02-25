@@ -848,7 +848,7 @@ void mapToolScene::MapToolRender()
 			{
 				IMAGEMANAGER->findImage("saveSlotButton")->frameRender(getMemDC(), _saveSlot[i].rc.left, _saveSlot[i].rc.top, 0, 1);
 			}
-			Rectangle(getMemDC(), _saveSlot[i].rc);
+			//Rectangle(getMemDC(), _saveSlot[i].rc);
 		}
 
 		// TYPE
