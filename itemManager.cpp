@@ -103,6 +103,9 @@ void itemManager::imageSetting()
 	IMAGEMANAGER->addFrameImage("pickaxeDrop", "./image/item/buildItem/forge/pickaxeDrop.bmp",680, 34, 20, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("shovleDrop", "./image/item/buildItem/forge/shovleDrop.bmp", 720, 36, 20, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("swordDrop", "./image/item/buildItem/forge/swordDrop.bmp", 640, 32, 20, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("keyDrop", "./image/item/buildItem/forge/keyDrop.bmp", 440, 36, 20, 1, true, RGB(255, 0, 255));
+
+
 	//sewing
 	IMAGEMANAGER->addFrameImage("mediumBackpackDrop", "./image/item/buildItem/sweing/mediumBackpackDrop.bmp", 640, 34, 20, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("slimeWalletDrop", "./image/item/buildItem/sweing/slimeWalletDrop.bmp", 640, 32, 20, 1, true, RGB(255, 0, 255));
@@ -125,7 +128,7 @@ void itemManager::imageSetting()
 	KEYANIMANAGER->addDefaultFrameAnimation("pickaxeDrop", "pickaxeDrop", 30, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("shovleDrop", "shovleDrop", 30, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("swordDrop", "swordDrop", 30, false, true);
-
+	KEYANIMANAGER->addDefaultFrameAnimation("keyDrop", "keyDrop", 30, false, true);
 	//sewing
 	KEYANIMANAGER->addDefaultFrameAnimation("mediumBackpackDrop", "mediumBackpackDrop", 30, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("slimeWalletDrop", "slimeWalletDrop", 30, false, true);
@@ -531,10 +534,18 @@ void itemManager::DropForgeItem(FORGERECIPE recipe, float x, float y, int num)
 		{
 			item* tempItem;
 			tempItem = new item;
-			tempItem->init("coinDrop", x, y);		//수정
-			tempItem->setIvenFrame(0, 3);			//수정 예정 
+			tempItem->init("coinDrop", x, y);		
+			tempItem->setIvenFrame(0, 3);			
 			_vItem.push_back(tempItem);
 		}
+	}
+	else if (recipe == FORGERECIPE::KEY)
+	{
+		item* tempItem;
+		tempItem = new item;
+		tempItem->init("keyDrop", x, y);
+		tempItem->setIvenFrame(8, 2);
+		_vItem.push_back(tempItem);
 	}
 	else if (recipe == FORGERECIPE::SHOVEL)
 	{
@@ -542,8 +553,8 @@ void itemManager::DropForgeItem(FORGERECIPE recipe, float x, float y, int num)
 		{
 			item* tempItem;
 			tempItem = new item;
-			tempItem->init("shovleDrop", x, y);		//수정
-			tempItem->setIvenFrame(1, 3);			//수정 예정 
+			tempItem->init("shovleDrop", x, y);		
+			tempItem->setIvenFrame(1, 3);			 
 			_vItem.push_back(tempItem);
 		}
 	}
@@ -553,8 +564,8 @@ void itemManager::DropForgeItem(FORGERECIPE recipe, float x, float y, int num)
 		{
 			item* tempItem;
 			tempItem = new item;
-			tempItem->init("swordDrop", x, y);		//수정
-			tempItem->setIvenFrame(2, 3);			//수정 예정 
+			tempItem->init("swordDrop", x, y);		
+			tempItem->setIvenFrame(2, 3);			 
 			_vItem.push_back(tempItem);
 		}
 	}
@@ -564,8 +575,8 @@ void itemManager::DropForgeItem(FORGERECIPE recipe, float x, float y, int num)
 		{
 			item* tempItem;
 			tempItem = new item;
-			tempItem->init("pickaxeDrop", x, y);		//수정
-			tempItem->setIvenFrame(3, 3);			//수정 예정 
+			tempItem->init("pickaxeDrop", x, y);	
+			tempItem->setIvenFrame(3, 3);			
 			_vItem.push_back(tempItem);
 		}
 	}
@@ -575,8 +586,8 @@ void itemManager::DropForgeItem(FORGERECIPE recipe, float x, float y, int num)
 		{
 			item* tempItem;
 			tempItem = new item;
-			tempItem->init("bottleDrop", x, y);		//수정
-			tempItem->setIvenFrame(4, 3);			//수정 예정 
+			tempItem->init("bottleDrop", x, y);		
+			tempItem->setIvenFrame(4, 3);			
 			_vItem.push_back(tempItem);
 		}
 	}

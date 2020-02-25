@@ -15,6 +15,8 @@ private:
 	vector<tagTile*>::iterator _viObjectTiles;
 
 	tagPlayer* _player;		// 플레이어의 주소값을 담는 
+
+	int _MapCount;
 public:
 	mapManager();
 	~mapManager();
@@ -29,20 +31,22 @@ public:
 	void MapImage();
 	void MapLoad(const char* fileName);
 
-
-
-
 	void TerrainRender();
 	void LandRender();
 	void LandObjectRender();
-	void ObejectRender();
 
+	int getMapCount() { return _MapCount; } // 전체 맵을 몇개 갖고 있는지 확인하기 위한 
 
 	void setPlayerAddress(tagPlayer* player);
+	void setEnemyAddress(tagObject* enemy, int idx, int idy);			// 몬스터 섬 충돌을 막기 위한 
+
 	void setPlayerTileColision(int idx, int idy);
+
+	void ObejectRender();
 
 	void setLandTile(int x,int y); // 땅을 보이게 하기 위한 함수
 	void setRemoveObject(int idx, int idy);
+
 	vector<tagTile*> getVTiles()			{ return _vTiles; }
 	vector<tagTile*>::iterator getViTiles() { return _viTiles; }
 	

@@ -12,6 +12,7 @@ mapManager::~mapManager()
 HRESULT mapManager::init()
 {
 	MapImage();
+	_MapCount = 0;
 	return S_OK;
 }
 
@@ -63,15 +64,15 @@ void mapManager::render()
 
 void mapManager::playerXYrender()
 {
-	int startX = _player->idx - 13;
-	int startY = _player->idy - 9;
+	int startX = _player->idx - 14;
+	int startY = _player->idy - 10;
 
-	if (_player->idx - 12 < 0) startX = 0;
-	if (_player->idy - 8 < 0) startY = 0;
+	if (_player->idx - 14 < 0) startX = 0;
+	if (_player->idy - 10 < 0) startY = 0;
 
 
-	int endX = 26;
-	int endY = 18;
+	int endX = 28;
+	int endY = 20;
 
 	int maxX = startX + endX;
 	int maxY = startY + endY;
@@ -190,11 +191,17 @@ void mapManager::MapLoad(const char* fileName)
 		}
 	}
 
-	this->setLandTile(1, 1);
-	this->setLandTile(1, 0);
+	this->setLandTile(2, 0);
 	this->setLandTile(2, 1);
-	this->setLandTile(0, 1);
+	this->setLandTile(2, 2);
 
+	this->setLandTile(1, 0);
+	this->setLandTile(1, 1);
+	this->setLandTile(1, 2);
+
+	this->setLandTile(0, 0);
+	this->setLandTile(0, 1);
+	this->setLandTile(0, 2);
 	CloseHandle(file);
 }
 
@@ -244,6 +251,49 @@ void mapManager::setPlayerAddress(tagPlayer* player)
 	_player = player;
 }
 
+void mapManager::setEnemyAddress(tagObject* enemy, int idx, int idy)
+{
+	//위 
+	//멈춤상태로 하고 싶음 
+	if (_tiles[(idy - 1) * TILEX + idx].land == LAND::WATER && _tiles[(idy - 1) * TILEX + idx].type == TYPE::LAND
+		|| _tiles[(idy - 1) * TILEX + idx].type == TYPE::LAND && _tiles[(idy - 1) * TILEX + idx].land == LAND::GRASS)
+	{
+		if (enemy->y < _tiles[(idy - 1) * TILEX + idx].rc.bottom)
+		{
+			enemy->y = _tiles[(idy - 1) * TILEX + idx].rc.bottom;
+		}
+	}//아래
+	if (_tiles[(idy + 1) * TILEX + idx].land == LAND::WATER && _tiles[(idy + 1) * TILEX + idx].type == TYPE::LAND
+		|| _tiles[(idy + 1) * TILEX + idx].type == TYPE::LAND && _tiles[(idy + 1) * TILEX + idx].land == LAND::GRASS)
+	{
+		cout << "Water다 이말이다" << endl;
+		if (enemy->y + 60 > _tiles[(idy + 1) * TILEX + idx].rc.top)
+		{
+			enemy->y = _tiles[(idy + 1) * TILEX + idx].rc.top - 60;
+
+		}
+	}//좌
+	if (_tiles[idy * TILEX + (idx - 1)].land == LAND::WATER && _tiles[idy * TILEX + (idx - 1)].type == TYPE::LAND
+		|| _tiles[idy * TILEX + (idx - 1)].type == TYPE::LAND && _tiles[idy * TILEX + (idx - 1)].land == LAND::GRASS)
+	{
+		cout << "Water다 이말이다" << endl;
+		if (enemy->x < _tiles[idy * TILEX + (idx - 1)].rc.right)
+		{
+			enemy->x = _tiles[idy * TILEX + (idx - 1)].rc.right;
+
+		}
+	}// 우 
+	if (_tiles[idy * TILEX + (idx + 1)].land == LAND::WATER && _tiles[idy * TILEX + (idx + 1)].type == TYPE::LAND
+		|| _tiles[idy * TILEX + (idx + 1)].type == TYPE::LAND && _tiles[idy * TILEX + (idx + 1)].land == LAND::GRASS)
+	{
+		cout << "Water다 이말이다" << endl;
+		if (enemy->x + 60 > _tiles[idy * TILEX + (idx + 1)].rc.left)
+		{
+			enemy->x = _tiles[idy * TILEX + (idx + 1)].rc.left - 60;
+		}
+	}
+}
+
 void mapManager::setPlayerTileColision(int idx, int idy)
 {
 	//위 
@@ -255,6 +305,7 @@ void mapManager::setPlayerTileColision(int idx, int idy)
 		if (_player->y < _tiles[(idy - 1) * TILEX + idx].rc.bottom)
 		{
 			_player->y = _tiles[(idy - 1) * TILEX + idx].rc.bottom;
+			_player->weaponY = _tiles[(idy - 1) * TILEX + idx].rc.bottom;
 		}
 	}//아래
 	if (_tiles[(idy + 1) * TILEX + idx].land == LAND::WATER && _tiles[(idy + 1) * TILEX + idx].type == TYPE::LAND
@@ -264,7 +315,7 @@ void mapManager::setPlayerTileColision(int idx, int idy)
 		if (_player->y + 60 > _tiles[(idy + 1) * TILEX + idx].rc.top)
 		{
 			_player->y = _tiles[(idy + 1) * TILEX + idx].rc.top - 60;
-
+			_player->weaponY = _tiles[(idy + 1) * TILEX + idx].rc.top  -60;
 		}
 	}//좌
 	if (_tiles[idy * TILEX + (idx - 1)].land == LAND::WATER && _tiles[idy * TILEX + (idx - 1)].type == TYPE::LAND
@@ -274,22 +325,24 @@ void mapManager::setPlayerTileColision(int idx, int idy)
 		if (_player->x < _tiles[idy * TILEX + (idx - 1)].rc.right)
 		{
 			_player->x = _tiles[idy * TILEX + (idx - 1)].rc.right;
-
+			_player->weaponX = _tiles[idy * TILEX + (idx - 1)].rc.right - 15;
 		}
 	}// 우 
 	if (_tiles[idy * TILEX + (idx + 1)].land == LAND::WATER && _tiles[idy * TILEX + (idx + 1)].type == TYPE::LAND
 		|| _tiles[idy * TILEX + (idx + 1)].type == TYPE::LAND && _tiles[idy * TILEX + (idx + 1)].land == LAND::GRASS)
 	{
 		cout << "Water다 이말이다" << endl;
-		if (_player->x + 40 > _tiles[idy * TILEX + (idx + 1)].rc.left)
+		if (_player->x + 60 > _tiles[idy * TILEX + (idx + 1)].rc.left)
 		{
-			_player->x = _tiles[idy * TILEX + (idx + 1)].rc.left - 40;
+			_player->x = _tiles[idy * TILEX + (idx + 1)].rc.left - 60;
+			_player->weaponX = _tiles[idy * TILEX + (idx + 1)].rc.left - 75;
 		}
 	}
 }
 
 void mapManager::setLandTile(int x, int y)
 {
+	_MapCount++;
 	int tilex = 15;
 	int tiley = 12;
 
@@ -303,11 +356,11 @@ void mapManager::setLandTile(int x, int y)
 	{
 		for (int j = startX; j < endX; j++)
 		{
-
 			_tiles[i * TILEX + j].isRender = true;
 			_vTiles.push_back(&_tiles[i * TILEX + j]);
 		}
 	}
+
 }
 
 void mapManager::setRemoveObject(int idx, int idy)

@@ -272,6 +272,8 @@ void enemyMove::update()
 {
 	if (_enemy->enemy == ENEMY::SLIME)
 	{
+		MAPMANAGER->setEnemyAddress(_enemy, _enemy->idx, _enemy->idy);
+
 		if (_enemy->isJump)
 		{
 			if (_enemy->time +1 < TIMEMANAGER->getWorldTime()) _enemy->isJump = false;
@@ -285,16 +287,18 @@ void enemyMove::update()
 		{
 			_enemyStateManager->chanageState("IDLE");
 		}
+		MAPMANAGER->setEnemyAddress(_enemy, _enemy->idx, _enemy->idy); // 面倒 贸府 
 	}
 	else if (_enemy->enemy == ENEMY::BOAR)
 	{
 		_enemy->x += cosf(_enemy->angle) * 10 * TIMEMANAGER->getElapsedTime();
 		_enemy->y += -sinf(_enemy->angle) * 10 * TIMEMANAGER->getElapsedTime();
-
+		cout << "idx : " << _enemy->idx << " idy :" << _enemy->idy << endl;
 		if (_enemy->time + RND->getFromIntTo(3,10) <= TIMEMANAGER->getWorldTime())
 		{
 			_enemyStateManager->chanageState("IDLE");
 		}
+		MAPMANAGER->setEnemyAddress(_enemy, _enemy->idx, _enemy->idy); // 面倒 贸府 
 	}
 	else if (_enemy->enemy == ENEMY::DEMON)
 	{
@@ -305,6 +309,7 @@ void enemyMove::update()
 		{
 			_enemyStateManager->chanageState("IDLE");
 		}
+		MAPMANAGER->setEnemyAddress(_enemy, _enemy->idx, _enemy->idy); // 面倒 贸府 
 	}
 	else if (_enemy->enemy == ENEMY::SKULL)
 	{
@@ -332,6 +337,7 @@ void enemyMove::update()
 			}
 			_isAttackTime = TIMEMANAGER->getWorldTime();
 		}
+		MAPMANAGER->setEnemyAddress(_enemy, _enemy->idx, _enemy->idy); // 面倒 贸府 
 	}
 }
 
@@ -444,6 +450,7 @@ void enemyAttack::update()
 		{
 			_enemyStateManager->chanageState("MOVE");
 		}
+		MAPMANAGER->setEnemyAddress(_enemy, _enemy->idx, _enemy->idy); // 面倒 贸府 
 	}
 	else if (_enemy->enemy == ENEMY::DEMON)
 	{

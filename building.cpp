@@ -602,6 +602,9 @@ void forge::isWorking()
 		case FORGERECIPE::COIN:
 			ITEMMANAGER->DropForgeItem(FORGERECIPE::COIN, _building.x, _building.y, _itemCount);
 			break;
+		case FORGERECIPE::KEY:
+			ITEMMANAGER->DropForgeItem(FORGERECIPE::KEY, _building.x, _building.y, _itemCount);
+			break;
 		case FORGERECIPE::SHOVEL:
 			ITEMMANAGER->DropForgeItem(FORGERECIPE::SHOVEL, _building.x, _building.y, _itemCount);
 			break;
@@ -638,6 +641,17 @@ void forge::craftButton()
 	}
 	if (_forgeButton[1].isClick)
 	{
+		if (ITEMMANAGER->getInventory()->forgeRecipes(FORGERECIPE::KEY, _itemCount))
+		{
+			ITEMMANAGER->getInventory()->removeInven("ironingotDrop", 4);
+			ITEMMANAGER->getInventory()->removeInven("goldingotDrop", 2);
+			_timer = TIMEMANAGER->getWorldTime(); //현재시간등록 
+			_forge = FORGERECIPE::KEY;
+			buttonInit();
+		}
+	}
+	if (_forgeButton[2].isClick)
+	{
 		if (ITEMMANAGER->getInventory()->forgeRecipes(FORGERECIPE::SHOVEL, _itemCount))
 		{
 			ITEMMANAGER->getInventory()->removeInven("ironingotDrop", 20);
@@ -647,7 +661,7 @@ void forge::craftButton()
 			buttonInit();
 		}
 	}
-	if (_forgeButton[2].isClick)
+	if (_forgeButton[3].isClick)
 	{
 		if (ITEMMANAGER->getInventory()->forgeRecipes(FORGERECIPE::SWORD, _itemCount))
 		{
@@ -658,7 +672,7 @@ void forge::craftButton()
 			buttonInit();
 		}
 	}
-	if (_forgeButton[3].isClick)
+	if (_forgeButton[4].isClick)
 	{
 		if (ITEMMANAGER->getInventory()->forgeRecipes(FORGERECIPE::PICKAXE, _itemCount))
 		{
@@ -670,7 +684,7 @@ void forge::craftButton()
 			buttonInit();
 		}
 	}
-	if (_forgeButton[4].isClick)
+	if (_forgeButton[5].isClick)
 	{
 		if (ITEMMANAGER->getInventory()->forgeRecipes(FORGERECIPE::BOTTLE, _itemCount))
 		{

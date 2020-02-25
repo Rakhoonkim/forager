@@ -417,7 +417,7 @@ void cropsManager::craateTreeCrops(TREE tree, int idx, int idy)
 
 void cropsManager::CropsMakeUpdate()
 {
-	if (_maxCrops >= 20)
+	if (_maxCrops >= (15 * MAPMANAGER->getMapCount()))  // 가지고 있는 맵의 개수 
 	{
 		//작물이 바로 나타나지 않도록 
 		_cropsTimer = TIMEMANAGER->getWorldTime();

@@ -6,6 +6,7 @@
 class cropsManager;
 class buildManager;
 class enemyManager;
+class puzzleManager;
 
 class playerManager: public gameNode
 {
@@ -14,8 +15,7 @@ private:
 	cropsManager* _cropsManager;	// CROPS
 	buildManager* _buildManager;	// BUILD
 	enemyManager* _enemyManager;	// ENEMY
-
-
+	puzzleManager* _puzzleManager;
 
 	bool _isOption;					// ¿É¼ÇÃ¢
 
@@ -47,6 +47,7 @@ public:
 	void set_CropsManager(cropsManager* cropsManager) { _cropsManager = cropsManager; }
 	void set_BuildManager(buildManager* buildManager) { _buildManager = buildManager; }
 	void set_EnemyManager(enemyManager* enemyManager) { _enemyManager = enemyManager; }
+	void set_puzzleManager(puzzleManager* puzzleManager) { _puzzleManager = puzzleManager; }
 
 	player* get_player() { return _player; }
 };

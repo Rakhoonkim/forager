@@ -14,8 +14,8 @@ HRESULT buildManager::init()
 	imageSetting();
 
 	//ºôµù ¼ÂÆÃ
-	//createImageBuilding(BUILDING::FURNACE, 17, 14);
-	//createImageBuilding(BUILDING::FORGE, 20, 14);
+	createImageBuilding(BUILDING::FURNACE, 17, 14);
+	createImageBuilding(BUILDING::FORGE, 20, 14);
 	//createImageBuilding(BUILDING::SEWING_STATION, 23, 14);
 	//createImageBuilding(BUILDING::FISHTRAP, 28, 20);
 
@@ -72,8 +72,8 @@ void buildManager::imageSetting()
 	IMAGEMANAGER->addImage("furnaceBackground", "./image/ui/build/furnaceBackground.bmp", 250, 512, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("furnaceList", "./image/ui/build/furnaceList.bmp", 220, 405,1,9, true, RGB(255, 0, 255), true);
 
-	IMAGEMANAGER->addImage("forgeBackground", "./image/ui/build/forgeBackground.bmp", 250, 337, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("forgeList", "./image/ui/build/forgeList.bmp", 220, 225, 1, 5, true, RGB(255, 0, 255), true);
+	IMAGEMANAGER->addImage("forgeBackground", "./image/ui/build/forgeBackground.bmp", 250, 380, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("forgeList", "./image/ui/build/forgeList.bmp", 220, 270, 1, 6, true, RGB(255, 0, 255), true);
 
 	IMAGEMANAGER->addImage("sewingBackground", "./image/ui/build/sewingBackground.bmp", 250, 225, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("sewingList", "./image/ui/build/sewingList.bmp", 220,225, 1, 5, true, RGB(255, 0, 255),true);

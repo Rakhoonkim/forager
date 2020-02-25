@@ -20,6 +20,10 @@ HRESULT enemyManager::init()
 	_bulletManager->init();
 	//몬스터 init에서 해주면 안됨 
 
+	_slimeTimer = TIMEMANAGER->getWorldTime();
+	_boarTimer = TIMEMANAGER->getWorldTime();
+	_maxEnemy = 0;
+
 	return S_OK;
 }
 
@@ -70,8 +74,13 @@ void enemyManager::update()
 		CreateEnemy(ENEMY::SKULL, 24, 21);
 		CreateEnemy(ENEMY::DEMON_BOSS, 24, 21);
 	}
-	enemyRemove();
+	
+	
+	
+	CropsMakeUpdate();
+
 	_bulletManager->update();
+	enemyRemove();
 }
 
 void enemyManager::render()
@@ -181,13 +190,13 @@ void enemyManager::enemyRemove()
 	}
 }
 
-void enemyManager::CreateEnemy(ENEMY enemyType, float x, float y)
+void enemyManager::CreateEnemy(ENEMY enemyType, int idx, int idy)
 {
 	if (enemyType == ENEMY::SLIME)
 	{
 		enemy* temp;
 		temp = new slime;
-		temp->init(enemyType, "slime", x, y);
+		temp->init(enemyType, "slime", idx, idy);
 		temp->setAni("slimeIdleLeft");
 		temp->setHp(5, 5);
 		temp->Set_PlayerLink(_player->get_PlayerAddress());
@@ -197,7 +206,7 @@ void enemyManager::CreateEnemy(ENEMY enemyType, float x, float y)
 	{
 		enemy* temp;
 		temp = new boar;
-		temp->init(enemyType, "boarIdle", x, y);
+		temp->init(enemyType, "boarIdle", idx, idy);
 		temp->setAni("boarIdleLeft");
 		temp->Set_PlayerLink(_player->get_PlayerAddress());
 		_vEnemy.push_back(temp);
@@ -206,7 +215,7 @@ void enemyManager::CreateEnemy(ENEMY enemyType, float x, float y)
 	{
 		enemy* temp;
 		temp = new demon;
-		temp->init(enemyType, "demonWalk", x, y);
+		temp->init(enemyType, "demonWalk", idx, idy);
 		temp->setAni("demonIdleLeft");
 		temp->Set_PlayerLink(_player->get_PlayerAddress());
 		_vEnemy.push_back(temp);
@@ -215,7 +224,7 @@ void enemyManager::CreateEnemy(ENEMY enemyType, float x, float y)
 	{
 		enemy* temp;
 		temp = new skull;
-		temp->init(enemyType, "skull", x, y);
+		temp->init(enemyType, "skull", idx, idy);
 		temp->setAni("skullLeft");
 		temp->set_skullEnemyXY();
 		temp->Set_PlayerLink(_player->get_PlayerAddress());
@@ -226,7 +235,7 @@ void enemyManager::CreateEnemy(ENEMY enemyType, float x, float y)
 	{
 		enemy* temp;
 		temp = new demonBoss;
-		temp->init(enemyType, "bossWalk", x, y);
+		temp->init(enemyType, "bossWalk", idx, idy);
 		temp->setAni("bossIdleLeft");
 		temp->Set_PlayerLink(_player->get_PlayerAddress());
 		_vEnemy.push_back(temp);
@@ -248,4 +257,37 @@ void enemyManager::bossAttack()
 			}
 		}
 	}
+}
+
+void enemyManager::CropsMakeUpdate()
+{
+	if(_maxEnemy > (2 * MAPMANAGER->getMapCount())) return;
+
+	if (_slimeTimer + RND->getFromIntTo(10, 20) <= TIMEMANAGER->getWorldTime())
+	{
+	
+		POINT rnd;
+		rnd = MAPMANAGER->randomObjectTile();
+
+		if (rnd.x != 0 && rnd.y != 0)
+		{
+			_maxEnemy++;
+			_slimeTimer = TIMEMANAGER->getWorldTime();
+			this->CreateEnemy(ENEMY::SLIME, rnd.x, rnd.y);
+		}
+	}
+
+	if (_boarTimer + RND->getFromIntTo(20, 30) <= TIMEMANAGER->getWorldTime())
+	{
+		POINT rnd2;
+		rnd2 = MAPMANAGER->randomObjectTile();
+
+		if (rnd2.x != 0 && rnd2.y != 0)
+		{
+			_maxEnemy++;
+			_boarTimer = TIMEMANAGER->getWorldTime();
+			this->CreateEnemy(ENEMY::BOAR, rnd2.x, rnd2.y);
+		}
+	}
+
 }

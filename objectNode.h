@@ -149,8 +149,16 @@ struct tagBullet
 	int count;
 };
 
+enum class PUZZLE
+{
+	RAINBOW,
+	DRUIDTREE,
+	TREASURECHEST,
+};
+
 struct tagPuzzle
 {
+	PUZZLE puzzle;
 	const char* imageName;
 	RECT rc;
 	float x, y;
@@ -159,6 +167,7 @@ struct tagPuzzle
 	int width;
 	int height;
 	bool remove;
+	bool isClick;
 };
 
 
@@ -180,6 +189,7 @@ enum class FURNACERECIPE
 enum class FORGERECIPE
 {
 	COIN,
+	KEY,
 	SHOVEL,
 	SWORD,
 	PICKAXE,
@@ -198,9 +208,3 @@ enum class SEWINGRECIPE
 };
 
 
-enum class PUZZLE
-{
-	RAINBOW,
-	DRUIDTREE,
-	TREASURECHEST,
-};

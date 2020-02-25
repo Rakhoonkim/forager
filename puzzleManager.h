@@ -21,5 +21,8 @@ public:
 
 	void puzzleRemove();
 	void createPuzzle(PUZZLE puz, int idx, int idy);
+
+	vector<puzzle*> getVPuzzle()			{ return _vPuzzle ;}
+	vector<puzzle*>::iterator getViPuzzle() { return _viPuzzle; }
 };
 

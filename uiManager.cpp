@@ -59,6 +59,7 @@ void uiManager::release()
 void uiManager::update()
 {
 	_weather->update();
+	
 	if (_isOption)
 	{
 		//스킬창을 안킨 상태에서만 
@@ -82,7 +83,7 @@ void uiManager::update()
 		}
 		else if (_currentOption == 3)
 		{
-			_land->setPlayerCoin(_inven->getInven().count("coinDrop"));
+			_land->setPlayerCoin(_inven->getInven()["coinDrop"].count);
 			_land->update();
 			_land->setLand(true);
 		}
@@ -219,7 +220,7 @@ void uiManager::PlayerUIRender()
 
 	// 코인수 출력하기 
 	IMAGEMANAGER->findImage("invenItem")->frameRender(_backBuffer->getMemDC(), 20, WINSIZEY - 100, 0, 3);
-	int coin = _inven->getInven().count("coinDrop");
+	int coin = _inven->getInven()["coinDrop"].count;
 	//코인의 갯수를 출력 	
 	if (coin < 10)	
 	{

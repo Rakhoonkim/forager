@@ -3,6 +3,7 @@
 #include "cropsManager.h"
 #include "buildManager.h"
 #include "enemyManager.h"
+#include "puzzleManager.h"
 
 HRESULT playerManager::init()
 {
@@ -19,6 +20,8 @@ HRESULT playerManager::init()
 	_enemyManager = new enemyManager;
 	_enemyManager->init();
 
+	_puzzleManager = new puzzleManager;
+	_puzzleManager->init();
 	//¿É¼Ç
 	_isOption = false;
 
@@ -200,6 +203,29 @@ void playerManager::objectCollisionMouse()
 			}
 			if (_player->get_PlayerAddress()->health > 0) enemyAttack(i);
 			return;
+		}
+	}
+
+
+	//¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á PuzzleCollision ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á
+
+	for (int i = 0; i < _puzzleManager->getVPuzzle().size(); ++i)
+	{
+		if (_puzzleManager->getVPuzzle()[i]->getPuzzle()->puzzle == PUZZLE::TREASURECHEST)
+		{
+			if (180 >= getDistance(_puzzleManager->getVPuzzle()[i]->getPuzzle()->centerX, _puzzleManager->getVPuzzle()[i]->getPuzzle()->centerY, _player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y))
+			{
+				if (PtInRect(&_puzzleManager->getVPuzzle()[i]->getPuzzle()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
+				{
+					CURSORMANAGER->setBuildPoint();
+					CURSORMANAGER->getCursor()->setCursorXY(_puzzleManager->getVPuzzle()[i]->getPuzzle()->x - CAMERAMANAGER->getWorldCamera().cameraX + 49, _puzzleManager->getVPuzzle()[i]->getPuzzle()->y - CAMERAMANAGER->getWorldCamera().cameraY + 75);
+					_puzzleManager->getVPuzzle()[i]->getPuzzle()->isClick = true;
+
+					return;
+				}
+				else _puzzleManager->getVPuzzle()[i]->getPuzzle()->isClick = false;
+			}
+			else _puzzleManager->getVPuzzle()[i]->getPuzzle()->isClick = false;
 		}
 	}
 	CURSORMANAGER->setCursor();

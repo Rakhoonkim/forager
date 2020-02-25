@@ -64,6 +64,8 @@ void puzzleManager::imageSetting()
 
 	IMAGEMANAGER->addFrameImage("treasureChest", "./image/puzzle/treasureChest.bmp", 768, 126, 8, 1, true, RGB(255, 0, 255));
 	KEYANIMANAGER->addDefaultFrameAnimation("treasureChest", "treasureChest", 10, false, false);
+	IMAGEMANAGER->addImage("treasureChestKey", "./image/puzzle/treasureChestKey.bmp",54, 54,true, RGB(255, 0, 255));
+
 }
 
 void puzzleManager::puzzleRemove()
@@ -87,18 +89,21 @@ void puzzleManager::createPuzzle(PUZZLE puz, int idx, int idy)
 	{
 		tempPuzzle = new puzzle;
 		tempPuzzle->init("rainBow", idx, idy);
+		tempPuzzle->setPuzzle(puz);
 		tempPuzzle->setPuzzleMoveX(+10);
 	}
 	else if (puz == PUZZLE::DRUIDTREE)
 	{
 		tempPuzzle = new puzzle;
 		tempPuzzle->init("druidTree", idx, idy);
+		tempPuzzle->setPuzzle(puz);
 		tempPuzzle->setPuzzleMoveX(+10);
 	}
 	else if (puz == PUZZLE::TREASURECHEST)
 	{
 		tempPuzzle = new framePuzzle;
 		tempPuzzle->init("treasureChest", idx, idy);
+		tempPuzzle->setPuzzle(puz);
 	}
 
 	_vPuzzle.push_back(tempPuzzle);

@@ -164,6 +164,7 @@ void slime::update()
 		}
 	}
 	IndexUpdate();
+
 	_enemyState->update();
 	_enemy.rc = RectMake(_enemy.x, _enemy.y, IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight());
 }

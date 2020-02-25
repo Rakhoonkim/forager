@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 #define MAXFURNACELIST 9 
-#define MAXFORGELIST 5
+#define MAXFORGELIST 6
 #define MAXSEWINGLIST 3
 
 class building 

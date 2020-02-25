@@ -6,7 +6,7 @@ cameraManager::cameraManager()
 	_cameraMove = false;
 
 	//인게임 카메라 
-	_worldCamera.cameraWorldSizeX = 3600;
+	_worldCamera.cameraWorldSizeX = 2700;
 	_worldCamera.cameraWorldSizeY = 2160;
 
 	_worldCamera.cameraSizeX = WINSIZEX;
@@ -143,8 +143,8 @@ void cameraManager::ColiisionWorldCamera()
 {
 	if (_worldCamera.cameraX <= 0) _worldCamera.cameraX = 0;
 	if (_worldCamera.cameraY <= 0) _worldCamera.cameraY = 0;
-	if (_worldCamera.cameraX + WINSIZEX >= _worldCamera.cameraWorldSizeX) _worldCamera.cameraX = _worldCamera.cameraX + WINSIZEX;
-	if (_worldCamera.cameraY + WINSIZEY >= _worldCamera.cameraWorldSizeY) _worldCamera.cameraY = _worldCamera.cameraY + WINSIZEY;
+	if (_worldCamera.cameraX + WINSIZEX >= _worldCamera.cameraWorldSizeX) _worldCamera.cameraX = _worldCamera.cameraWorldSizeX - WINSIZEX;
+	if (_worldCamera.cameraY + WINSIZEY >= _worldCamera.cameraWorldSizeY) _worldCamera.cameraY = _worldCamera.cameraWorldSizeY - WINSIZEY;
 }
 
 

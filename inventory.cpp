@@ -494,6 +494,18 @@ bool inventory::forgeRecipes(FORGERECIPE recipe, int count)
 		}
 		return false;
 	}
+	else if (recipe == FORGERECIPE::KEY)
+	{
+		//key 값을 찾아내는 방법 
+		// count 함수  -> 0이면 
+		// find 함수 있는지 확인  find == m.end() 없는것
+		if (_mInven.count("goldingotDrop") == 0 || _mInven.count("ironingotDrop") == 0) return false;  // 없으면 
+		if (_mInven["goldingotDrop"].count >= 2 && _mInven["ironingotDrop"].count >= 4)
+		{
+			return true;
+		}
+		return false;
+	}
 	else if (recipe == FORGERECIPE::SHOVEL)
 	{
 		if (_mInven.count("ironingotDrop") == 0 || _mInven.count("woodDrop") == 0) return false;  // 없으면 
@@ -505,8 +517,8 @@ bool inventory::forgeRecipes(FORGERECIPE recipe, int count)
 	}
 	else if (recipe == FORGERECIPE::SWORD)
 	{
-		if (_mInven.count("ironingotDrop") == 0) return false;  // 젤리 추가 예정  
-		if (_mInven["ironingotDrop"].count >= 20)
+		if (_mInven.count("ironingotDrop") == 0 || _mInven.count("jellyDrop") == 0) return false;  // 젤리 추가 예정  
+		if (_mInven["ironingotDrop"].count >= 20 && _mInven.count("jellyDrop") >= 20)
 		{
 			return true;
 		}
