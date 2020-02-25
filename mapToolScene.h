@@ -1,6 +1,8 @@
 #pragma once
 #include "gameNode.h"
 
+#define SAVESLOT 4
+#define MAXSTYLE 6
 class mapToolScene : public gameNode
 {
 	tagTile			   _tiles[TILEX * TILEY];					// 그려지는 타일 
@@ -22,14 +24,14 @@ class mapToolScene : public gameNode
 	float	_miniMapSizeHeight;				// 세로
 
 
-	tagButton	   _saveSlot[5];			// SLOT
+	tagButton	   _saveSlot[SAVESLOT];			// SLOT
 	int _saveSlotDirection;
 	const char* _saveName;
 
 	int		 _saveSlotSizeWidth;			// 가로 
 	int		_saveSlotSizeHeight;			// 세로 
 
-	tagButton _style[3];	// 0,1,2	
+	tagButton _style[MAXSTYLE];	// 0,1,2	
 	tagButton _type[7];     // 0,1,2,3,4
 	tagButton _saveButton;	// SAVE 
 	tagButton _loadButton;	// LOAD  

@@ -66,7 +66,7 @@ void mapToolScene::SaveAndLoad()
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
 		//버튼 
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 4; i++)
 		{
 			if (PtInRect(&_saveSlot[i].rc, _ptMouse))
 			{
@@ -111,10 +111,6 @@ void mapToolScene::SaveAndLoad()
 		break;
 	case 3:
 		_saveName = "inGameNumber4.map";
-		_saveSlot[_saveSlotDirection].isClick = true;
-		break;
-	case 4:
-		_saveName = "inGameNumber5.map";
 		_saveSlot[_saveSlotDirection].isClick = true;
 		break;
 	}
@@ -267,19 +263,29 @@ void mapToolScene::MapToolSetup()
 		}
 	}
 	//스타일 (90X20)
-	for (int i = 0; i < 3; ++i)
+
+	for (int i = 0; i < 2; ++i)
+	{
+		for (int j = 0;j < 3; ++j)
+		{
+			SetRect(&_style[i * 3 + j].rc, 920 + j * 95, 280 + (30 * i), 920 + j * 95 + 90, 310 + (30 * i));
+			_style[i * 3 + j].isClick = false;
+		}
+	}
+	_style[0].isClick = true;
+	/*for (int i = 0; i < 3; ++i)
 	{
 		SetRect(&_style[i].rc, 920 + i * 95, 285, 920 + i * 95 + 90, 305);
 		_style[i].isClick = false;
 	}
-	_style[0].isClick = true;
+	_style[0].isClick = true;*/
 
 	// 그림 TYPE     (40X40)
 	//  0 지형 1 랜드 2 오프젝트 
 	// 
 	for (int i = 0;i < 7;i++)
 	{
-		SetRect(&_type[i].rc, 920 + i * 40, 310, 920 + i * 40 + 40, 350);
+		SetRect(&_type[i].rc, 920 + i * 40, 340, 920 + i * 40 + 40, 380);
 	}
 
 	// 위치를 나타내는 버튼 
@@ -287,7 +293,7 @@ void mapToolScene::MapToolSetup()
 	{
 		for (int j = 0; j < 3; j++)
 		{
-			SetRect(&_mapButton[i * 3 + j].rc, 920 + j * _mapButtonSize, 360 + i * _mapButtonSize, 920 + j * _mapButtonSize + _mapButtonSize, 360 + i * _mapButtonSize + _mapButtonSize);
+			SetRect(&_mapButton[i * 3 + j].rc, 920 + j * _mapButtonSize, 390 + i * _mapButtonSize, 920 + j * _mapButtonSize + _mapButtonSize, 390 + i * _mapButtonSize + _mapButtonSize);
 			_mapButton[i * 3 + j].isClick = false;
 		}
 	}
@@ -297,14 +303,14 @@ void mapToolScene::MapToolSetup()
 	{
 		for (int j = 0; j < TILEX; j++)
 		{
-			SetRect(&_miniMap[i * (TILEX)+j].rc, WINSIZEX - 140 + j * _miniMapSizeWidth, 360 + (i * _miniMapSizeHeight), WINSIZEX - 140 + (j * _miniMapSizeWidth) + _miniMapSizeWidth, 360 + (i * _miniMapSizeHeight) + _miniMapSizeHeight);
+			SetRect(&_miniMap[i * (TILEX)+j].rc, WINSIZEX - 140 + j * _miniMapSizeWidth, 390 + (i * _miniMapSizeHeight), WINSIZEX - 140 + (j * _miniMapSizeWidth) + _miniMapSizeWidth, 390 + (i * _miniMapSizeHeight) + _miniMapSizeHeight);
 		}
 	}
 
 	// SAVESLOT
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < SAVESLOT; i++)
 	{
-		SetRect(&_saveSlot[i].rc, 920, WINSIZEY - 210 + i * _saveSlotSizeHeight, 920 + _saveSlotSizeWidth, WINSIZEY - 210 + i * _saveSlotSizeHeight + _saveSlotSizeHeight);
+		SetRect(&_saveSlot[i].rc, 920, WINSIZEY - 180 + i * _saveSlotSizeHeight, 920 + _saveSlotSizeWidth, WINSIZEY - 180 + i * _saveSlotSizeHeight + _saveSlotSizeHeight);
 		_saveSlot[i].isClick = false;
 	}
 
@@ -343,11 +349,11 @@ void mapToolScene::MapToolCollision()
 		}
 
 		// 스타일 클릭 
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < MAXSTYLE; i++)
 		{
 			if (PtInRect(&_style[i].rc, _ptMouse))
 			{
-				for (int i = 0;i < 3;i++)
+				for (int i = 0;i < MAXSTYLE;i++)
 				{
 					_style[i].isClick = false;
 				}
@@ -820,19 +826,19 @@ void mapToolScene::MapToolRender()
 	for (int i = 0; i < 9; i++)
 	{
 		//스타일 
-		if (i < 3)
+		if (i < MAXSTYLE)
 		{
-			if (_style[i].isClick)
+		/*	if (_style[i].isClick)
 			{
 				IMAGEMANAGER->findImage("styleButton")->frameRender(getMemDC(), _style[i].rc.left, _style[i].rc.top, 1, i);
 			}
 			else
 			{
 				IMAGEMANAGER->findImage("styleButton")->frameRender(getMemDC(), _style[i].rc.left, _style[i].rc.top, 0, i);
-			}
-			//Rectangle(getMemDC(), _style[i].rc);   임시렉트 
+			}*/
+			Rectangle(getMemDC(), _style[i].rc); //  임시렉트 
 		}
-		if (i < 5)
+		if (i < SAVESLOT)
 		{
 			if (_saveSlot[i].isClick)
 			{
@@ -842,7 +848,7 @@ void mapToolScene::MapToolRender()
 			{
 				IMAGEMANAGER->findImage("saveSlotButton")->frameRender(getMemDC(), _saveSlot[i].rc.left, _saveSlot[i].rc.top, 0, 1);
 			}
-			//Rectangle(getMemDC(), _saveSlot[i].rc);
+			Rectangle(getMemDC(), _saveSlot[i].rc);
 		}
 
 		// TYPE
