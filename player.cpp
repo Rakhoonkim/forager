@@ -54,6 +54,8 @@ HRESULT player::init()
 
 	CAMERAMANAGER->setCameraInit(_player.x, _player.y);
 
+
+	MAPMANAGER->setPlayerAddress(&_player);
 	return S_OK;
 }
 

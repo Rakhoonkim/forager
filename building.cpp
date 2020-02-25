@@ -17,6 +17,7 @@ HRESULT building::init(BUILDING building, const char* imageName, int idx, int id
 	_building.building = building;
 	_building.idx = idx;
 	_building.idy = idy;
+
 	if (Farming)
 	{
 		_building.x = idx * 60 + 30;
@@ -27,6 +28,7 @@ HRESULT building::init(BUILDING building, const char* imageName, int idx, int id
 		_building.x = idx * 60 + 60;
 		_building.y = idy * 60 + 60;
 	}
+
 	_building.frameX = 0;
 	_building.frameY = 0;
 

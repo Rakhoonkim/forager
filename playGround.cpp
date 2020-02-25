@@ -45,7 +45,7 @@ void playGround::render()
 {
 	PatBlt(getMemDC(), 0, 0, WINSIZEX, WINSIZEY, BLACKNESS);
 	//===========================================================
-	if(!UIMANAGER->getLand()->getLand()) SCENEMANAGER->render(); // MAIN
+	SCENEMANAGER->render(); // MAIN
 	
 	if (!CURSORMANAGER->getCursor()->getObjectPoint()) CURSORMANAGER->render();   //CURSOR
 	

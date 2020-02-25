@@ -12,10 +12,13 @@ buildManager::~buildManager()
 HRESULT buildManager::init()
 {
 	imageSetting();
-	createImageBuilding(BUILDING::FURNACE, 17, 14);
-	createImageBuilding(BUILDING::FORGE, 20, 14);
-	createImageBuilding(BUILDING::SEWING_STATION, 23, 14);
-	createImageBuilding(BUILDING::FISHTRAP, 28, 20);
+
+	//ºôµù ¼ÂÆÃ
+	//createImageBuilding(BUILDING::FURNACE, 17, 14);
+	//createImageBuilding(BUILDING::FORGE, 20, 14);
+	//createImageBuilding(BUILDING::SEWING_STATION, 23, 14);
+	//createImageBuilding(BUILDING::FISHTRAP, 28, 20);
+
 	_isUsed = false;
 	return S_OK;
 }

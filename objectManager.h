@@ -3,6 +3,8 @@
 #include "cropsManager.h"
 #include "buildManager.h"
 #include "enemyManager.h"
+#include "puzzleManager.h" 
+
 
 class playerManager;
 
@@ -13,6 +15,7 @@ private:
 	cropsManager* _cropsManager;  //cropsManager   
 	buildManager* _buildManager;  //buildManager
 	enemyManager* _enemyManager;  //enemyManager
+	puzzleManager* _puzzleManager;  // puzzleManager
 
 public:
 	objectManager();

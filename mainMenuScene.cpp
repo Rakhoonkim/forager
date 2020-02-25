@@ -57,8 +57,6 @@ void mainMenuScene::render()
 	//중앙 로고
 	IMAGEMANAGER->findImage("foragerLogo")->render(getMemDC(), WINSIZEX / 2 - (IMAGEMANAGER->findImage("foragerLogo")->getWidth() / 2), 30);
 
-	//Rectangle(getMemDC(), _mapToolButton.rc);
-
 	//세이브 관련 이미지 추후 예정 
 	//IMAGEMANAGER->findImage("startBackground")->alphaRender(getMemDC(), 0, 0,100);
 	//IMAGEMANAGER->findImage("saveSlot")->render(getMemDC(), (WINSIZEX / 2) - 450, WINSIZEY /5);
@@ -102,7 +100,7 @@ void mainMenuScene::buttonSetting()
 	_button[4].rc = RectMake(_buttonX + 40, 480 + _distance, IMAGEMANAGER->findImage("creditsButton")->getWidth(), IMAGEMANAGER->findImage("creditsButton")->getHeight());;
 	_button[5].rc = RectMake(_buttonX - 40, 585 + _distance, IMAGEMANAGER->findImage("optionsButton")->getWidth() - 30, IMAGEMANAGER->findImage("optionsButton")->getHeight());;
 	_button[6].rc = RectMake(_buttonX + 230, 585 + _distance, IMAGEMANAGER->findImage("exitButton")->getWidth(), IMAGEMANAGER->findImage("exitButton")->getHeight());;
-	_button[7].rc = RectMake(WINSIZEX / 2 + 220, WINSIZEY - 220, 267, 78);
+	_button[7].rc = RectMake(WINSIZEX / 2 + 220, WINSIZEY - 220, 302, 80);
 	_button[0].imageName = "playButton";
 	_button[1].imageName = "extraButton";
 	_button[2].imageName = "roadButton";
@@ -128,8 +126,12 @@ void mainMenuScene::buttonClick()
 	{
 		for (int i = 0; i < MAXBUTTON; i++)
 		{
-			if(PtInRect(&_button[i].rc,_ptMouse)) _button[i].isClick = true;
-			break;
+			if (PtInRect(&_button[i].rc, _ptMouse))
+			{
+				_button[i].isClick = true;
+				break;
+			}
+			
 		}
 	}
 

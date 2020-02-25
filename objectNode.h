@@ -133,6 +133,8 @@ struct tagSkill
 	bool isUse;                                     // 스킬적용 여부
 };
 
+// bullet
+
 struct tagBullet
 {
 	animation* ani;
@@ -146,6 +148,19 @@ struct tagBullet
 	float time;
 	int count;
 };
+
+struct tagPuzzle
+{
+	const char* imageName;
+	RECT rc;
+	float x, y;
+	float centerX, centerY;
+	int idx, idy;
+	int width;
+	int height;
+	bool remove;
+};
+
 
 // recipe 
 enum class FURNACERECIPE
@@ -182,3 +197,10 @@ enum class SEWINGRECIPE
 	NONE,
 };
 
+
+enum class PUZZLE
+{
+	RAINBOW,
+	DRUIDTREE,
+	TREASURECHEST,
+};

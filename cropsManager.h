@@ -13,6 +13,12 @@ private:
 
 	alphaEffect* _effect;
 	player* _player;
+
+
+	float _cropsTimer;
+	float _rockTimer;
+	float _treeTimer;
+	int _maxCrops;
 public:
 	cropsManager();
 	~cropsManager();
@@ -24,14 +30,15 @@ public:
 
 	void imageSetting();
 	
-	//맞을때
-	void imageIsHit();
-
 	void createImageCrops(OBJECT object,int idx,int idy);
 	void createFrameCrops(OBJECT object,int idx, int idy);
 	void createimageFrameCrops(OBJECT object, int idx, int idy);
 	void craateTreeCrops(TREE tree, int idx, int idy);
 	
+
+	void CropsMakeUpdate();   // 작물을 만드는 
+
+
 	vector<crops*>				getVCrops()	 { return _vCrops; }
 	vector<crops*>::iterator	getViCrops() { return _viCrops; }
 

@@ -23,7 +23,7 @@ cameraManager::cameraManager()
 
 	_worldCamera.hdc = _worldCamera.image->getMemDC();
 
-	_worldCamera.cameraSpeed = 10;
+	_worldCamera.cameraSpeed = 12;
 
 	_worldCamera.cameraAngle = 0;
 

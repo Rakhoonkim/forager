@@ -276,6 +276,12 @@
     <ClInclude Include="land.h">
       <Filter>playGround\ui</Filter>
     </ClInclude>
+    <ClInclude Include="puzzleManager.h">
+      <Filter>playGround\objectManager</Filter>
+    </ClInclude>
+    <ClInclude Include="puzzle.h">
+      <Filter>playGround\objectManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -439,6 +445,12 @@
     </ClCompile>
     <ClCompile Include="land.cpp">
       <Filter>playGround\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="puzzleManager.cpp">
+      <Filter>playGround\objectManager</Filter>
+    </ClCompile>
+    <ClCompile Include="puzzle.cpp">
+      <Filter>playGround\objectManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

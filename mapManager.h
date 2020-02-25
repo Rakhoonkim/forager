@@ -24,19 +24,25 @@ public:
 	void update();
 	void render();
 
+	void playerXYrender();
+
 	void MapImage();
 	void MapLoad(const char* fileName);
+
+
+
 
 	void TerrainRender();
 	void LandRender();
 	void LandObjectRender();
 	void ObejectRender();
 
+
 	void setPlayerAddress(tagPlayer* player);
 	void setPlayerTileColision(int idx, int idy);
 
 	void setLandTile(int x,int y); // 땅을 보이게 하기 위한 함수
-
+	void setRemoveObject(int idx, int idy);
 	vector<tagTile*> getVTiles()			{ return _vTiles; }
 	vector<tagTile*>::iterator getViTiles() { return _viTiles; }
 	
