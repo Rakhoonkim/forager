@@ -1,18 +1,19 @@
 #pragma once
 #include "singletonBase.h"
+
+class objectManager;
+
 class mapManager : public singletonBase<mapManager>
 {
 
 private:
 	tagTile _tiles[TILEX * TILEY];
 
+	objectManager* _objectManager;
+
 	//전체 맵 타일 
 	vector<tagTile*>			_vTiles;
 	vector<tagTile*>::iterator _viTiles;
-
-	//오브젝트 타일 ?    //오브젝트를 가져오기 
-	vector<tagTile*>			_vObjectTiles;
-	vector<tagTile*>::iterator _viObjectTiles;
 
 	tagPlayer* _player;		// 플레이어의 주소값을 담는 
 
@@ -30,6 +31,8 @@ public:
 
 	void MapImage();
 	void MapLoad(const char* fileName);
+
+	void setObjectManager(objectManager* objectManager) { _objectManager = objectManager; }
 
 	void TerrainRender();
 	void LandRender();
@@ -61,5 +64,7 @@ public:
 	void setRemoveWater(int idx,int idy);
 	
 	POINT randomObjectTile();
+
+	void setPuzzleObject();
 };
 

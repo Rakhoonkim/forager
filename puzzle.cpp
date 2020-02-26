@@ -11,6 +11,8 @@ puzzle::~puzzle()
 
 HRESULT puzzle::init(const char* imageName, int idx, int idy)
 {
+	_puzzle.temple = TEMPLEOBJECT::NONE;
+	_puzzle.puzzle = PUZZLE::NONE;
 	_puzzle.imageName = imageName;
 	_puzzle.width = IMAGEMANAGER->findImage(imageName)->getWidth();
 	_puzzle.height = IMAGEMANAGER->findImage(imageName)->getHeight();
@@ -21,10 +23,10 @@ HRESULT puzzle::init(const char* imageName, int idx, int idy)
 	_puzzle.centerX = _puzzle.x +(_puzzle.width / 2);
 	_puzzle.centerY = _puzzle.y + (_puzzle.height / 2);
 	_puzzle.remove = false;
-	_puzzle.rc = RectMake(_puzzle.x, _puzzle.y, _puzzle.width, _puzzle.height);
+	_puzzle.rc = RectMakeCenter(_puzzle.x, _puzzle.y, _puzzle.width, _puzzle.height);
 
 	_puzzle.isClick = false;
-
+	_puzzle.isRender = false;
 	MAPMANAGER->setBuildTilesFarming(idx, idy);  // 오프젝트타일로 
 	return S_OK;
 }
@@ -35,13 +37,13 @@ void puzzle::release()
 
 void puzzle::update()
 {
-	_puzzle.rc = RectMake(_puzzle.x, _puzzle.y, _puzzle.width, _puzzle.height);
+	_puzzle.rc = RectMakeCenter(_puzzle.x, _puzzle.y, _puzzle.width, _puzzle.height);
 }
 
 void puzzle::render()
 {
 	IMAGEMANAGER->findImage(_puzzle.imageName)->render(CAMERAMANAGER->getWorldDC(), _puzzle.rc.left, _puzzle.rc.top);
-	Rectangle(CAMERAMANAGER->getWorldDC(), _puzzle.rc);
+	//Rectangle(CAMERAMANAGER->getWorldDC(), _puzzle.rc);
 }
 
 //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -56,19 +58,22 @@ framePuzzle::~framePuzzle()
 
 HRESULT framePuzzle::init(const char* imageName, int idx, int idy)
 {
+	_puzzle.temple = TEMPLEOBJECT::NONE;
+	_puzzle.puzzle = PUZZLE::NONE;
 	_puzzle.imageName = imageName;
 	_puzzle.width = IMAGEMANAGER->findImage(imageName)->getFrameWidth();
 	_puzzle.height = IMAGEMANAGER->findImage(imageName)->getFrameHeight();
 	_puzzle.idx = idx;
 	_puzzle.idy = idy;
 	_puzzle.x = _puzzle.idx * 60;
-	_puzzle.y = _puzzle.idy * 60;
+	_puzzle.y = (_puzzle.idy - 1) * 60;
 	_puzzle.centerX = _puzzle.x + (_puzzle.width / 2);
 	_puzzle.centerY = _puzzle.y + (_puzzle.height / 2);
 	_puzzle.remove = false;
 	_puzzle.rc = RectMake(_puzzle.x, _puzzle.y, _puzzle.width, _puzzle.height);
 
 	_isOpen = false;
+	_puzzle.isRender = false;
 	_puzzle.isClick = false;
 	MAPMANAGER->setBuildTilesFarming(idx, idy);  // 오프젝트타일로 
 	return S_OK;
@@ -89,10 +94,8 @@ void framePuzzle::update()
 				KEYANIMANAGER->findAnimation(_puzzle.imageName)->start();
 				MAPMANAGER->setRemoveObject(_puzzle.idx, _puzzle.idy);  // 오프젝트타일 해제  
 				_isOpen = true;
-
 			}
 		}
-
 	}
 	if (KEYANIMANAGER->findAnimation(_puzzle.imageName)->getFrameMaxFrame()-1 == KEYANIMANAGER->findAnimation(_puzzle.imageName)->getNowPlayNum())
 	{

@@ -21,8 +21,14 @@ public:
 
 	void puzzleRemove();
 	void createPuzzle(PUZZLE puz, int idx, int idy);
+	void createTemple(TEMPLEOBJECT temple, int idx, int idy);
+
 
 	vector<puzzle*> getVPuzzle()			{ return _vPuzzle ;}
 	vector<puzzle*>::iterator getViPuzzle() { return _viPuzzle; }
+
+
+	void setRender(PUZZLE puzzle);
+	void setTempleRender(TEMPLEOBJECT temple);
 };
 

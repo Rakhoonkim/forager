@@ -19,7 +19,12 @@ HRESULT stageScene::init()
 	_objectManager->get_enemyManager()->setPlayer(_playerManager->get_player());  // 플레이어 링크 
 	_objectManager->get_CropsManager()->setPlayer(_playerManager->get_player());
 	// 맵 
+
+
+	MAPMANAGER->setObjectManager(_objectManager);
 	MAPMANAGER->MapLoad("inGameNumber2.map");
+	
+
 	UIMANAGER->getEquipment()->setSkillPount(&_playerManager->get_player()->get_PlayerAddress()->skillPount);
 	
 	return S_OK;

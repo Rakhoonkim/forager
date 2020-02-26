@@ -3,6 +3,7 @@
 
 #define SAVESLOT 4
 #define MAXSTYLE 6
+
 class mapToolScene : public gameNode
 {
 	tagTile			   _tiles[TILEX * TILEY];					// 그려지는 타일 
@@ -12,6 +13,9 @@ class mapToolScene : public gameNode
 	tagPalette _landObjectPalette[LANDOBJECTX * LANDOBJECTY];	// 오브젝트  5 X 5
 	tagPalette _objectPalette[OBJECTX * OBJECTY];				// 작물 타일 7 X 4
 	tagPalette _treePalette[TREETILEX * TREETILEY];				// 나무 타일 7 X 2
+	tagPalette _characterPalette[CHARACTERX];
+	tagPalette _templeObjectPalette[PALETTEX * PALETTEY];
+
 
 
 	tagButton _mapButton[9];				//MAP 위치를 나타내는 RECT 
@@ -67,6 +71,6 @@ public:
 	LANDOBJECT MapToolLandObjectSelect(int frameX, int frameY);
 	OBJECT MapToolObjectSelect(int frameX, int frameY);
 	TREE MapToolTreeSelect(int frameX, int frameY);
-	//예정
 	CHARACTER MapToolCharacterSelect(int frameX, int frameY);
+	TEMPLEOBJECT MapToolTempleObjectSelect(int frameX, int frameY);
 };

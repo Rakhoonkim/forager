@@ -154,10 +154,12 @@ enum class PUZZLE
 	RAINBOW,
 	DRUIDTREE,
 	TREASURECHEST,
+	NONE,
 };
 
 struct tagPuzzle
 {
+	TEMPLEOBJECT temple;
 	PUZZLE puzzle;
 	const char* imageName;
 	RECT rc;
@@ -168,6 +170,7 @@ struct tagPuzzle
 	int height;
 	bool remove;
 	bool isClick;
+	bool isRender;
 };
 
 

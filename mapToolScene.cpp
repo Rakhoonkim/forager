@@ -66,7 +66,7 @@ void mapToolScene::SaveAndLoad()
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
 		//버튼 
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < SAVESLOT; i++)
 		{
 			if (PtInRect(&_saveSlot[i].rc, _ptMouse))
 			{
@@ -90,9 +90,9 @@ void mapToolScene::SaveAndLoad()
 
 	}
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < SAVESLOT; i++)
 	{
-		_saveSlot[i].isClick = false;	
+		_saveSlot[i].isClick = false;
 	}
 
 	switch (_saveSlotDirection)
@@ -152,13 +152,43 @@ void mapToolScene::MapToolImage()
 	IMAGEMANAGER->addImage("rect", "./image/mapTool/rect.bmp", 60, 60, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("rect2", "./image/mapTool/rect2.bmp", 60, 60, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("typeButton", "./image/mapTool/typeButton.bmp", 280, 40, 7, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("styleButton", "./image/mapTool/styleButton.bmp", 180, 60, 2, 3, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("styleButton", "./image/mapTool/styleButton.bmp", 180, 180, 2, 6, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("saveSlotButton", "./image/mapTool/saveSlotButton.bmp", 280, 60, 1, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("redButtonRect", "./image/mapTool/redButtonRect.bmp", 45, 45, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("minimapBackground", "./image/mapTool/minimapBackground.bmp", 135, 135, false, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addFrameImage("saveLoad", "./image/mapTool/saveLoad.bmp", 100, 80, 1, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("exit", "./image/mapTool/exit.bmp", 60, 40, true, RGB(255, 0, 255));
+
+	//추가 
+
+
+	//타일
+	IMAGEMANAGER->addFrameImage("graveTile", "./image/mapTool/graveTile.bmp", 420, 420, 7, 7, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("graveTilePalette", "./image/mapTool/graveTilePalette.bmp", 280, 280, 7, 7, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addFrameImage("volcanoTile", "./image/mapTool/volcanoTile.bmp", 420, 420, 7, 7, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("volcanoTilePalette", "./image/mapTool/volcanoTilePalette.bmp", 280, 280, 7, 7, true, RGB(255, 0, 255));
+	//랜드 오브젝트
+	IMAGEMANAGER->addFrameImage("graveTileObject", "./image/mapTool/graveTile.bmp", 300, 300, 5, 5, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("graveTileObjectPalette", "./image/mapTool/graveTileObjectPalette.bmp", 200, 200, 5, 5, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addFrameImage("volcanoTileObject", "./image/mapTool/volcanoTile.bmp", 300, 300, 5, 5, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("volcanoTileObjectPalette", "./image/mapTool/volcanoTileObjectPalette.bmp", 200, 200, 5, 5, true, RGB(255, 0, 255));
+	//랜드
+	IMAGEMANAGER->addFrameImage("graveTileLand", "./image/mapTool/graveTileLand.bmp", 420, 420, 7, 7, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("graveTileLandPalette", "./image/mapTool/graveTileLandPalette.bmp", 280, 280, 7, 7, true, RGB(255, 0, 255));
+	
+	IMAGEMANAGER->addFrameImage("characterTile", "./image/mapTool/characterTile.bmp", 420, 60, 7, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("characterTilePalette", "./image/mapTool/characterTilePalette.bmp", 280, 40, 7, 1, true, RGB(255, 0, 255));
+
+	//던전
+	IMAGEMANAGER->addFrameImage("fireTempleTile", "./image/mapTool/fireTempleTile.bmp", 420, 420, 7, 7, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("fireTempleTilePalette", "./image/mapTool/fireTempleTilePalette.bmp", 280, 280, 7, 7, true, RGB(255, 0, 255));
+
+
+	IMAGEMANAGER->addFrameImage("templeObject", "./image/mapTool/templeObject.bmp", 420, 420, 7, 7, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("templeObjectPalette", "./image/mapTool/templeObjectPalette.bmp", 280, 280, 7, 7, true, RGB(255, 0, 255));
 }
 
 void mapToolScene::MapToolSetup()
@@ -194,6 +224,7 @@ void mapToolScene::MapToolSetup()
 			_tiles[i * TILEX + j].object = OBJECT::NONE;
 			_tiles[i * TILEX + j].tree = TREE::NONE;
 			_tiles[i * TILEX + j].character = CHARACTER::NONE;
+			_tiles[i * TILEX + j].templeObject = TEMPLEOBJECT::NONE;
 			_tiles[i * TILEX + j].building = BUILDING::NONE;
 			_tiles[i * TILEX + j].terrainFrameX = 0;
 			_tiles[i * TILEX + j].terrainFrameY = 0;
@@ -205,6 +236,8 @@ void mapToolScene::MapToolSetup()
 			_tiles[i * TILEX + j].landObjectFrameY = 0;
 			_tiles[i * TILEX + j].treeFrameX = 0;
 			_tiles[i * TILEX + j].treeFrameY = 0;
+			_tiles[i * TILEX + j].templeObjectFrameX = 0;
+			_tiles[i * TILEX + j].templeObjectFrameY = 0;
 			_tiles[i * TILEX + j].idx = j;
 			_tiles[i * TILEX + j].idy = i;
 			_tiles[i * TILEX + j].isClick = false;
@@ -262,8 +295,28 @@ void mapToolScene::MapToolSetup()
 			_treePalette[i * TREETILEX + j].frameY = i;
 		}
 	}
-	//스타일 (90X20)
+	
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 케릭터 및 애너미  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+	for (int i = 0; i < CHARACTERX; i++)
+	{
+		SetRect(&_characterPalette[i].rc, WINSIZEX - IMAGEMANAGER->findImage("characterTilePalette")->getWidth() + (i * PALETTESIZE),
+			0, WINSIZEX - IMAGEMANAGER->findImage("characterTilePalette")->getWidth() + (i * PALETTESIZE) + PALETTESIZE, PALETTESIZE);
+		_characterPalette[i].frameX = i;
+		_characterPalette[i].frameY = 0;
+	}
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ templeObject  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 
+	for (int i = 0; i < PALETTEY; i++)
+	{
+		for (int j = 0;j < PALETTEX; j++)
+		{
+			SetRect(&_templeObjectPalette[i * PALETTEX + j].rc, WINSIZEX - IMAGEMANAGER->findImage("templeObjectPalette")->getWidth() + (j * PALETTESIZE),
+				i * PALETTESIZE, WINSIZEX - IMAGEMANAGER->findImage("templeObjectPalette")->getWidth() + j * PALETTESIZE + PALETTESIZE, i * PALETTESIZE + PALETTESIZE);
+			_templeObjectPalette[i * PALETTEX + j].frameX =  j;
+			_templeObjectPalette[i * PALETTEX + j].frameY =  i;
+		}
+	}
+	//스타일 (90X20)
 	for (int i = 0; i < 2; ++i)
 	{
 		for (int j = 0;j < 3; ++j)
@@ -386,10 +439,10 @@ void mapToolScene::MapToolCollision()
 					_currentTile.type = TYPE::TREE;				// 나무 
 					break;
 				case 5:
-					// 빌딩 
+					_currentTile.type = TYPE::CHARACTER;		// 케릭터 및 애너미 
 					break;
 				case 6:
-
+					_currentTile.type = TYPE::TEMPLEOBJECT;
 					break;
 				default:
 					break;
@@ -405,7 +458,7 @@ void mapToolScene::MapToolUpdate()
 {
 	cout << "X :" << _currentTile.frameX << "Y : " << _currentTile.frameY << endl;
 	//오른쪽 클릭할 때 
-	if (_currentTile.type == TYPE::TERRAIN || _currentTile.type == TYPE::LAND)
+	if (_currentTile.type == TYPE::TERRAIN || _currentTile.type == TYPE::LAND || _currentTile.type == TYPE::TEMPLEOBJECT)
 	{
 		for (int i = 0; i < PALETTEY; ++i)
 		{
@@ -466,6 +519,19 @@ void mapToolScene::MapToolUpdate()
 			}
 		}
 	}
+	else if (_currentTile.type == TYPE::CHARACTER)
+	{
+		for (int i = 0; i < CHARACTERX; i++)
+		{
+			if (PtInRect(&_characterPalette[i].rc, PointMake(CAMERAMANAGER->getMapToolCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getMapToolCamera().cameraY + _ptMouse.y)))
+			{
+				_currentTile.frameX = i;
+				_currentTile.frameY = 0;
+				break;
+			}
+		}
+	}
+
 
 	//왼쪽 클릭할 때 
 	for (int i = 0;i < TILEY;i++)
@@ -512,6 +578,20 @@ void mapToolScene::MapToolUpdate()
 					_tiles[i * TILEX + j].treeFrameY = _currentTile.frameY;
 					_tiles[i * TILEX + j].tree = MapToolTreeSelect(_tiles[i * TILEX + j].treeFrameX, _tiles[i * TILEX + j].treeFrameY);
 				}
+				else if (_currentTile.type == TYPE::CHARACTER)
+				{
+					_tiles[i * TILEX + j].type = TYPE::CHARACTER;
+					_tiles[i * TILEX + j].characterFrameX = _currentTile.frameX;
+					_tiles[i * TILEX + j].characterFrameY = _currentTile.frameY;
+					_tiles[i * TILEX + j].character = MapToolCharacterSelect(_tiles[i * TILEX + j].characterFrameX, _tiles[i * TILEX + j].characterFrameY);
+				}
+				else if (_currentTile.type == TYPE::TEMPLEOBJECT)
+				{
+					_tiles[i * TILEX + j].type = TYPE::TEMPLEOBJECT;
+					_tiles[i * TILEX + j].templeObjectFrameX = _currentTile.frameX;
+					_tiles[i * TILEX + j].templeObjectFrameY = _currentTile.frameY;
+					_tiles[i * TILEX + j].templeObject = MapToolTempleObjectSelect(_tiles[i * TILEX + j].templeObjectFrameX, _tiles[i * TILEX + j].templeObjectFrameY);
+				}
 				break;
 			}
 		}
@@ -537,6 +617,7 @@ void mapToolScene::MapToolEraser()
 					_tiles[i * TILEX + j].tree = TREE::NONE;
 					_tiles[i * TILEX + j].character = CHARACTER::NONE;
 					_tiles[i * TILEX + j].building = BUILDING::NONE;	//빌딩 추가 
+					_tiles[i * TILEX + j].templeObject = TEMPLEOBJECT::NONE;
 					_tiles[i * TILEX + j].terrainFrameX = 0;
 					_tiles[i * TILEX + j].terrainFrameY = 0;
 					_tiles[i * TILEX + j].objectFrameX = 0;
@@ -549,7 +630,10 @@ void mapToolScene::MapToolEraser()
 					_tiles[i * TILEX + j].treeFrameY = 0;
 					_tiles[i * TILEX + j].landFrameX = 0;
 					_tiles[i * TILEX + j].landFrameY = 0;
+					_tiles[i * TILEX + j].templeObjectFrameX = 0;
+					_tiles[i * TILEX + j].templeObjectFrameY = 0;
 					_tiles[i * TILEX + j].isRender = false;
+					_tiles[i * TILEX + j].isObject = false;
 					cout << "타입:" << (int)_tiles[i * TILEX + j].type << endl;
 					cout << "지형:" << (int)_tiles[i * TILEX + j].terrain << endl;
 
@@ -569,13 +653,16 @@ void mapToolScene::MapToolRender()
 
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
-		//배경 렉트 그리기 
-		IMAGEMANAGER->findImage("rect2")->render(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top);
 		//인덱스 디버깅용
 		//char str[100];
 		//sprintf_s(str, "%d",i);
 		//Rectangle(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc);
 		//TextOut(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
+
+
+		//배경 렉트 그리기 
+		IMAGEMANAGER->findImage("rect2")->render(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top);
+
 		RECT temp;
 		if (!IntersectRect(&temp, &CAMERAMANAGER->getWorldRect(), &_tiles[i].rc)) continue;
 
@@ -583,7 +670,7 @@ void mapToolScene::MapToolRender()
 		if (_tiles[i].type == TYPE::NONE) continue;
 
 		//만약 화면 렉트와 충돌되지 않으면 그리지 않는다.
-		
+
 		//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■TERRAIN  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 		if (_tiles[i].terrain != TERRAIN::NONE)
 		{
@@ -599,13 +686,32 @@ void mapToolScene::MapToolRender()
 			{
 				IMAGEMANAGER->findImage("snowTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
 			}
+			else if (_tiles[i].terrain == TERRAIN::GRAVE)
+			{
+				IMAGEMANAGER->findImage("graveTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
+			}
+			else if (_tiles[i].terrain == TERRAIN::VOLCANO)
+			{
+				IMAGEMANAGER->findImage("volcanoTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
+			}
+			else if (_tiles[i].terrain == TERRAIN::FIRETEMPLE)
+			{
+				IMAGEMANAGER->findImage("fireTempleTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
+			}
 		}
 
 		//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ LAND ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 		if (_tiles[i].land != LAND::NONE)
 		{
+			if (_tiles[i].land == LAND::GRASS || _tiles[i].land == LAND::DESERT || _tiles[i].land == LAND::SNOW)
+			{
+				IMAGEMANAGER->findImage("grassTileLand")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landFrameX, _tiles[i].landFrameY);
+			}
+			else if (_tiles[i].land == LAND::GRAVE || _tiles[i].land == LAND::VOLCANO)
+			{
+				IMAGEMANAGER->findImage("graveTileLand")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landFrameX, _tiles[i].landFrameY);
+			}
 			//Rectangle(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc);
-			IMAGEMANAGER->findImage("grassTileLand")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landFrameX, _tiles[i].landFrameY);
 		}
 
 		//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ LAND OBJECT ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -623,6 +729,14 @@ void mapToolScene::MapToolRender()
 			{
 				IMAGEMANAGER->findImage("snowTileObject")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landObjectFrameX, _tiles[i].landObjectFrameY);
 			}
+			else if (_tiles[i].landObject == LANDOBJECT::GRAVE)
+			{
+				IMAGEMANAGER->findImage("graveTileObject")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landObjectFrameX, _tiles[i].landObjectFrameY);
+			}
+			else if (_tiles[i].landObject == LANDOBJECT::VOLCANO)
+			{
+				IMAGEMANAGER->findImage("volcanoTileObject")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landObjectFrameX, _tiles[i].landObjectFrameY);
+			}
 		}
 
 		//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ OBJECT  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -638,6 +752,14 @@ void mapToolScene::MapToolRender()
 		if (_tiles[i].tree != TREE::NONE)
 		{
 			IMAGEMANAGER->findImage("treeTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].treeFrameX, _tiles[i].treeFrameY);
+		}
+		if (_tiles[i].character != CHARACTER::NONE)
+		{
+			IMAGEMANAGER->findImage("characterTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].characterFrameX, _tiles[i].characterFrameY);
+		}
+		if (_tiles[i].templeObject != TEMPLEOBJECT::NONE)
+		{
+			IMAGEMANAGER->findImage("templeObject")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].templeObjectFrameX, _tiles[i].templeObjectFrameY);
 		}
 	}
 	////■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ LAND ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -690,100 +812,106 @@ void mapToolScene::MapToolRender()
 	}
 
 	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■팔레트 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-	if (_style[0].isClick)
+
+	int palletteWidth = IMAGEMANAGER->findImage("grassTilePalette")->getWidth();
+	int palletteObjectWidth = IMAGEMANAGER->findImage("grassTileObjectPalette")->getWidth();
+	if (_style[0].isClick) // grass
 	{
-	
 		//// 오른쪽 
 		if (_currentTile.type == TYPE::TERRAIN)
 		{
-			IMAGEMANAGER->findImage("grassTilePalette")->render(getMemDC(), WINSIZEX - IMAGEMANAGER->findImage("grassTilePalette")->getWidth(), 0);
-
-		/*	for (int i = 0;i < PALETTEX * PALETTEY; i++)
-			{
-				IMAGEMANAGER->findImage("grassTilePalette")->frameRender(getMemDC(), _terrainPalette[i].rc.left, _terrainPalette[i].rc.top, _terrainPalette[i].frameX, _terrainPalette[i].frameY);
-			}*/
+			IMAGEMANAGER->findImage("grassTilePalette")->render(getMemDC(), WINSIZEX - palletteWidth, 0);
 		}
 		else if (_currentTile.type == TYPE::LANDOBJECT)
 		{
-			IMAGEMANAGER->findImage("grassTileObjectPalette")->render(getMemDC(), WINSIZEX - IMAGEMANAGER->findImage("grassTileObjectPalette")->getWidth(), 0);
-
-		/*	for (int i = 0;i < LANDOBJECTX * LANDOBJECTY; i++)
-			{
-				IMAGEMANAGER->findImage("grassTileObjectPalette")->frameRender(getMemDC(), _landObjectPalette[i].rc.left, _landObjectPalette[i].rc.top, _landObjectPalette[i].frameX, _landObjectPalette[i].frameY);
-			}*/
+			IMAGEMANAGER->findImage("grassTileObjectPalette")->render(getMemDC(), WINSIZEX - palletteObjectWidth, 0);
 		}
 	}
-	else if (_style[1].isClick)
+	else if (_style[1].isClick) // desert
 	{
 		// 오른쪽 
 		if (_currentTile.type == TYPE::TERRAIN)
 		{
-			IMAGEMANAGER->findImage("desertTilePalette")->render(getMemDC(), WINSIZEX - IMAGEMANAGER->findImage("desertTilePalette")->getWidth(), 0);
-
-		/*	for (int i = 0;i < PALETTEX * PALETTEY; i++)
-			{
-				IMAGEMANAGER->findImage("desertTilePalette")->frameRender(getMemDC(), _terrainPalette[i].rc.left, _terrainPalette[i].rc.top, _terrainPalette[i].frameX, _terrainPalette[i].frameY);
-			}*/
+			IMAGEMANAGER->findImage("desertTilePalette")->render(getMemDC(), WINSIZEX - palletteWidth, 0);
 		}
 		else if (_currentTile.type == TYPE::LANDOBJECT)
 		{
-			IMAGEMANAGER->findImage("desertTileObjectPalette")->render(getMemDC(), WINSIZEX - IMAGEMANAGER->findImage("desertTileObjectPalette")->getWidth(), 0);
-
-		/*	for (int i = 0;i < LANDOBJECTX * LANDOBJECTY; i++)
-			{
-				IMAGEMANAGER->findImage("desertTileObjectPalette")->frameRender(getMemDC(), _landObjectPalette[i].rc.left, _landObjectPalette[i].rc.top, _landObjectPalette[i].frameX, _landObjectPalette[i].frameY);
-			}*/
+			IMAGEMANAGER->findImage("desertTileObjectPalette")->render(getMemDC(), WINSIZEX - palletteObjectWidth, 0);
 		}
 	}
-	else if (_style[2].isClick)
+	else if (_style[2].isClick) // winter
 	{
 		// 오른쪽 
 		if (_currentTile.type == TYPE::TERRAIN)
 		{
-			IMAGEMANAGER->findImage("snowTilePalette")->render(getMemDC(), WINSIZEX - IMAGEMANAGER->findImage("snowTilePalette")->getWidth(), 0);
-
-		/*	for (int i = 0;i < PALETTEX * PALETTEY; i++)
-			{
-				IMAGEMANAGER->findImage("snowTilePalette")->frameRender(getMemDC(), _terrainPalette[i].rc.left, _terrainPalette[i].rc.top, _terrainPalette[i].frameX, _terrainPalette[i].frameY);
-			}*/
+			IMAGEMANAGER->findImage("snowTilePalette")->render(getMemDC(), WINSIZEX - palletteWidth, 0);
 		}
 		else if (_currentTile.type == TYPE::LANDOBJECT)
 		{
-			IMAGEMANAGER->findImage("snowTileObjectPalette")->render(getMemDC(), WINSIZEX - IMAGEMANAGER->findImage("snowTileObjectPalette")->getWidth(), 0);
-
-			/*for (int i = 0;i < LANDOBJECTX * LANDOBJECTY; i++)
-			{
-				IMAGEMANAGER->findImage("snowTileObjectPalette")->frameRender(getMemDC(), _landObjectPalette[i].rc.left, _landObjectPalette[i].rc.top, _landObjectPalette[i].frameX, _landObjectPalette[i].frameY);
-			}*/
+			IMAGEMANAGER->findImage("snowTileObjectPalette")->render(getMemDC(), WINSIZEX - palletteObjectWidth, 0);
 		}
 	}
+	else if (_style[3].isClick) // grave
+	{
+		if (_currentTile.type == TYPE::TERRAIN)
+		{
+			IMAGEMANAGER->findImage("graveTilePalette")->render(getMemDC(), WINSIZEX - palletteWidth, 0);
+		}
+		else if (_currentTile.type == TYPE::LANDOBJECT)
+		{
+			IMAGEMANAGER->findImage("graveTileObjectPalette")->render(getMemDC(), WINSIZEX - palletteObjectWidth, 0);
+		}
+	}
+	else if (_style[4].isClick) // volcano
+	{
+		if (_currentTile.type == TYPE::TERRAIN)
+		{
+			IMAGEMANAGER->findImage("volcanoTilePalette")->render(getMemDC(), WINSIZEX - palletteWidth, 0);
+		}
+		else if (_currentTile.type == TYPE::LANDOBJECT)
+		{
+			IMAGEMANAGER->findImage("volcanoTileObjectPalette")->render(getMemDC(), WINSIZEX - palletteObjectWidth, 0);
+		}
+	}
+	else if (_style[5].isClick) // volcano
+	{
+		if (_currentTile.type == TYPE::TERRAIN)
+		{
+			IMAGEMANAGER->findImage("fireTempleTilePalette")->render(getMemDC(), WINSIZEX - palletteWidth, 0);
+		}
+		else if (_currentTile.type == TYPE::LANDOBJECT)
+		{
+			//IMAGEMANAGER->findImage("volcanoTileObjectPalette")->render(getMemDC(), WINSIZEX - palletteObjectWidth, 0);
+		}
+	}
+
 	// 랜드는 다 합쳐져 있음 
 	if (_currentTile.type == TYPE::LAND)
 	{
-		IMAGEMANAGER->findImage("grassTileLandPalette")->render(getMemDC(), WINSIZEX - IMAGEMANAGER->findImage("grassTileLandPalette")->getWidth(), 0);
-
-	/*	for (int i = 0;i < PALETTEX * PALETTEY; i++)
+		if (_style[0].isClick || _style[1].isClick || _style[2].isClick)  // gress, desert, winter
 		{
-			IMAGEMANAGER->findImage("grassTileLandPalette")->frameRender(getMemDC(), _landPalette[i].rc.left, _landPalette[i].rc.top, _landPalette[i].frameX, _landPalette[i].frameY);
-		}*/
+			IMAGEMANAGER->findImage("grassTileLandPalette")->render(getMemDC(), WINSIZEX - IMAGEMANAGER->findImage("grassTileLandPalette")->getWidth(), 0);
+		}
+		else if (_style[3].isClick || _style[4].isClick)  // grave, volcano
+		{
+			IMAGEMANAGER->findImage("graveTileLandPalette")->render(getMemDC(), WINSIZEX - IMAGEMANAGER->findImage("grassTileLandPalette")->getWidth(), 0);
+		}
 	}
 	else if (_currentTile.type == TYPE::OBJECT)
 	{
 		IMAGEMANAGER->findImage("objectTilePalette")->render(getMemDC(), WINSIZEX - IMAGEMANAGER->findImage("objectTilePalette")->getWidth(), 0);
-
-		//for (int i = 0;i < OBJECTX * OBJECTY; i++)
-		//{
-		//	IMAGEMANAGER->findImage("objectTilePalette")->frameRender(getMemDC(), _objectPalette[i].rc.left, _objectPalette[i].rc.top, _objectPalette[i].frameX, _objectPalette[i].frameY);
-		//}
 	}
 	else if (_currentTile.type == TYPE::TREE)
 	{
 		IMAGEMANAGER->findImage("treeTilePalette")->render(getMemDC(), WINSIZEX - IMAGEMANAGER->findImage("treeTilePalette")->getWidth(), 0);
-
-		//for (int i = 0;i < TREETILEX * TREETILEY; i++)
-		//{
-		//	IMAGEMANAGER->findImage("treeTilePalette")->frameRender(getMemDC(), _treePalette[i].rc.left, _treePalette[i].rc.top, _treePalette[i].frameX, _treePalette[i].frameY);
-		//}
+	}
+	else if (_currentTile.type == TYPE::CHARACTER)
+	{
+		IMAGEMANAGER->findImage("characterTilePalette")->render(getMemDC(), WINSIZEX - IMAGEMANAGER->findImage("characterTilePalette")->getWidth(), 0);
+	}
+	else if (_currentTile.type == TYPE::TEMPLEOBJECT)
+	{
+		IMAGEMANAGER->findImage("templeObjectPalette")->render(getMemDC(), WINSIZEX - IMAGEMANAGER->findImage("templeObjectPalette")->getWidth(), 0);
 	}
 
 	char str[128];
@@ -822,22 +950,23 @@ void mapToolScene::MapToolRender()
 
 
 
-	
+
 	for (int i = 0; i < 9; i++)
 	{
 		//스타일 
 		if (i < MAXSTYLE)
 		{
-		/*	if (_style[i].isClick)
+			if (_style[i].isClick)
 			{
 				IMAGEMANAGER->findImage("styleButton")->frameRender(getMemDC(), _style[i].rc.left, _style[i].rc.top, 1, i);
 			}
 			else
 			{
 				IMAGEMANAGER->findImage("styleButton")->frameRender(getMemDC(), _style[i].rc.left, _style[i].rc.top, 0, i);
-			}*/
-			Rectangle(getMemDC(), _style[i].rc); //  임시렉트 
+			}
+			//Rectangle(getMemDC(), _style[i].rc); //  임시렉트 
 		}
+		//세이브 슬롯 
 		if (i < SAVESLOT)
 		{
 			if (_saveSlot[i].isClick)
@@ -905,6 +1034,18 @@ TERRAIN mapToolScene::MapToolTerrainSelect(int frameX, int frameY)
 	{
 		return TERRAIN::SNOW;
 	}
+	else if (_style[3].isClick)
+	{
+		return TERRAIN::GRAVE;
+	}
+	else if (_style[4].isClick)
+	{
+		return TERRAIN::VOLCANO;
+	}
+	else if (_style[5].isClick)
+	{
+		return TERRAIN::FIRETEMPLE;
+	}
 
 	return TERRAIN::GRASS;
 }
@@ -923,6 +1064,14 @@ LAND mapToolScene::MapToolLandSelect(int frameX, int frameY)
 	else if (_style[2].isClick)
 	{
 		if (frameY == 4 || frameY == 5) return LAND::SNOW;
+	}
+	else if (_style[3].isClick)
+	{
+		if (frameY == 0 || frameY == 1) return LAND::GRAVE;
+	}
+	else if (_style[4].isClick)
+	{
+		if (frameY == 2 || frameY == 3) return LAND::VOLCANO;
 	}
 
 	return LAND::NONE;
@@ -946,6 +1095,14 @@ LANDOBJECT mapToolScene::MapToolLandObjectSelect(int frameX, int frameY)
 	else if (_style[2].isClick)
 	{
 		return LANDOBJECT::SNOW;
+	}
+	else if (_style[3].isClick)
+	{
+		return LANDOBJECT::GRAVE;
+	}
+	else if (_style[4].isClick)
+	{
+		return LANDOBJECT::VOLCANO;
 	}
 
 	return LANDOBJECT::GRASS;
@@ -975,6 +1132,43 @@ TREE mapToolScene::MapToolTreeSelect(int frameX, int frameY)
 
 CHARACTER mapToolScene::MapToolCharacterSelect(int frameX, int frameY)
 {
+	if (frameX == 0 && frameY == 0) return CHARACTER::PLAYER;
+	if (frameX == 1 && frameY == 0) return CHARACTER::SLIME;
+	if (frameX == 2 && frameY == 0) return CHARACTER::BOAR;
+	if (frameX == 3 && frameY == 0) return CHARACTER::DEMON;
+	if (frameX == 4 && frameY == 0) return CHARACTER::SKULL;
+	if (frameX == 5 && frameY == 0) return CHARACTER::DEMON_BOSS;
 
 	return CHARACTER::NONE;
+}
+
+TEMPLEOBJECT mapToolScene::MapToolTempleObjectSelect(int frameX, int frameY)
+{
+	//0 building 
+	if (frameX == 0 && frameY == 0) return TEMPLEOBJECT::FURNACE;
+	if (frameX == 1 && frameY == 0) return TEMPLEOBJECT::FORGE;
+	if (frameX == 2 && frameY == 0) return TEMPLEOBJECT::FURNACE;
+	if (frameX == 3 && frameY == 0) return TEMPLEOBJECT::BRIDGE;
+	if (frameX == 4 && frameY == 0) return TEMPLEOBJECT::FISHTRAP;
+
+	if (frameX == 0 && frameY == 1) return TEMPLEOBJECT::DRUIDTREE;
+	if (frameX == 1 && frameY == 1) return TEMPLEOBJECT::RAINBOW;
+	if (frameX == 2 && frameY == 1) return TEMPLEOBJECT::TREASURECHEST;
+
+	if (frameX == 0 && frameY == 2) return TEMPLEOBJECT::TEMPLE_ENTRANCE;
+	if (frameX == 1 && frameY == 2) return TEMPLEOBJECT::TEMPLE_LANTERN;
+	if (frameX == 2 && frameY == 2) return TEMPLEOBJECT::TEMPLE_DOOR_BOSS;
+
+	for (int i = 3; i < 7;i++)  // y 
+	{
+		if(frameX == 0 && frameY == i) return TEMPLEOBJECT::TEMPLE_CANNON;
+		if (frameX == 1 && frameY == i) return TEMPLEOBJECT::TEMPLE_DOOR;
+		if (frameX == 2 && frameY == i) return TEMPLEOBJECT::TEMPLE_DOOR_BLUE;
+		if (frameX == 3 && frameY == i) return TEMPLEOBJECT::TEMPLE_DOOR_GREEN;
+		if (frameX == 4 && frameY == i) return TEMPLEOBJECT::TEMPLE_DOOR_RED;
+	}
+	
+
+
+	return TEMPLEOBJECT::NONE;
 }

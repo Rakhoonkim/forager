@@ -35,12 +35,19 @@
 #define TREETILEY 2
 #define TREEHEIGHT 120
 
+//character
+
+#define CHARACTERX 6
+
 //지형
 enum class TERRAIN
 {
 	GRASS,		// 잔디형식 
 	DESERT,
 	SNOW,
+	GRAVE,
+	VOLCANO,
+	FIRETEMPLE,
 	NONE,
 };
 
@@ -50,6 +57,8 @@ enum class LAND
 	DESERT,
 	SNOW,
 	WATER,		// 바다타입 
+	GRAVE,
+	VOLCANO,
 	NONE,
 };
 
@@ -58,6 +67,8 @@ enum class LANDOBJECT
 	GRASS,		// 잔디형식 
 	DESERT,
 	SNOW,
+	GRAVE,
+	VOLCANO,
 	NONE,
 };
 
@@ -80,8 +91,11 @@ enum class TREE
 enum class CHARACTER
 {
 	PLAYER,	  // PLAYER
-	ENEMY,	  // ENEMY
-	BOSS,	  // BOSS
+	SLIME,
+	BOAR,
+	DEMON,
+	SKULL,
+	DEMON_BOSS,
 	NONE,
 };
 
@@ -102,6 +116,28 @@ enum class ENEMY
 	DEMON,
 	SKULL,
 	DEMON_BOSS,
+	NONE,
+};
+
+enum class TEMPLEOBJECT
+{
+	FURNACE,
+	FORGE,
+	SEWING_STATION,
+	BRIDGE,
+	FISHTRAP,
+	RAINBOW,
+	DRUIDTREE,
+	TREASURECHEST,
+	TEMPLE_ENTRANCE,
+	TEMPLE_LANTERN,
+	TEMPLE_CANNON,
+	TEMPLE_DOOR,
+	TEMPLE_DOOR_RED,
+	TEMPLE_DOOR_BLUE,
+	TEMPLE_DOOR_GREEN,
+	TEMPLE_DOOR_BOSS,
+	NONE,
 };
 
 
@@ -111,9 +147,10 @@ enum class TYPE
 	LAND,			// 땅
 	LANDOBJECT,     // 땅위 오브젝트 
 	OBJECT,			// 식물 
-	TREE, 
+	TREE,			// 나무
 	CHARACTER,		// PLAYER
-	BUILDING,
+	BUILDING,		// 건물 
+	TEMPLEOBJECT,	// 건물 및 던전 오브젝트 
 	NONE			// NONE
 };
 
@@ -128,6 +165,7 @@ struct tagTile
 	TREE tree;				//나무 
 	OBJECT object;			//배경 
 	CHARACTER character;	//PLAYER
+	TEMPLEOBJECT templeObject;
 	BUILDING building;
 	RECT rc;				//렉트
 	int terrainFrameX;		//지형 번호
@@ -142,6 +180,8 @@ struct tagTile
 	int objectFrameY;		//바닥 데코 
 	int characterFrameX;	//케릭터 번호 
 	int characterFrameY;	//케릭터 번호 
+	int templeObjectFrameX; // 건물 오브젝트
+	int templeObjectFrameY; // 건물 오브젝트
 	int idx, idy;
 	bool isClick;
 	bool isObject;			// 식물이 있는지 없는지 

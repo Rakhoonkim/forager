@@ -23,9 +23,9 @@ HRESULT puzzleManager::init()
 	//_treasureChest.idx = 22;
 	//_treasureChest.idy = 6;
 
-	createPuzzle(PUZZLE::RAINBOW, 36, 16);
-	createPuzzle(PUZZLE::DRUIDTREE, 4, 10);
-	createPuzzle(PUZZLE::TREASURECHEST, 22, 5);
+	//createPuzzle(PUZZLE::RAINBOW, 36, 16);
+	//createPuzzle(PUZZLE::DRUIDTREE, 4, 10);
+	//createPuzzle(PUZZLE::TREASURECHEST, 22, 5);
 
 	return S_OK;
 }
@@ -47,6 +47,7 @@ void puzzleManager::render()
 {
 	for (_viPuzzle = _vPuzzle.begin(); _viPuzzle != _vPuzzle.end(); ++_viPuzzle)
 	{
+		if (!(*_viPuzzle)->getPuzzle()->isRender) continue;
 		(*_viPuzzle)->render();
 	}
 
@@ -66,6 +67,7 @@ void puzzleManager::imageSetting()
 	KEYANIMANAGER->addDefaultFrameAnimation("treasureChest", "treasureChest", 10, false, false);
 	IMAGEMANAGER->addImage("treasureChestKey", "./image/puzzle/treasureChestKey.bmp",54, 54,true, RGB(255, 0, 255));
 
+	IMAGEMANAGER->addImage("fireTempleEntrance", "./image/puzzle/fireTempleEntrance.bmp", 288, 336, true, RGB(255, 0, 255));
 }
 
 void puzzleManager::puzzleRemove()
@@ -90,14 +92,13 @@ void puzzleManager::createPuzzle(PUZZLE puz, int idx, int idy)
 		tempPuzzle = new puzzle;
 		tempPuzzle->init("rainBow", idx, idy);
 		tempPuzzle->setPuzzle(puz);
-		tempPuzzle->setPuzzleMoveX(+10);
+		tempPuzzle->setPuzzleMoveX(-5);
 	}
 	else if (puz == PUZZLE::DRUIDTREE)
 	{
 		tempPuzzle = new puzzle;
 		tempPuzzle->init("druidTree", idx, idy);
 		tempPuzzle->setPuzzle(puz);
-		tempPuzzle->setPuzzleMoveX(+10);
 	}
 	else if (puz == PUZZLE::TREASURECHEST)
 	{
@@ -107,5 +108,43 @@ void puzzleManager::createPuzzle(PUZZLE puz, int idx, int idy)
 	}
 
 	_vPuzzle.push_back(tempPuzzle);
+}
+
+void puzzleManager::createTemple(TEMPLEOBJECT temple, int idx, int idy)
+{
+	puzzle* tempPuzzle;
+
+
+	if (temple == TEMPLEOBJECT::TEMPLE_ENTRANCE)
+	{
+		tempPuzzle = new puzzle;
+		tempPuzzle->init("fireTempleEntrance", idx, idy);
+		tempPuzzle->setTemple(TEMPLEOBJECT::TEMPLE_ENTRANCE);
+	}
+	_vPuzzle.push_back(tempPuzzle);
+}
+
+void puzzleManager::setRender(PUZZLE puzzle)
+{
+	for (int i = 0;i < _vPuzzle.size(); i++)
+	{
+		if (_vPuzzle[i]->getPuzzle()->puzzle == puzzle)
+		{
+			_vPuzzle[i]->getPuzzle()->isRender = true;
+			break;
+		}
+	}
+}
+
+void puzzleManager::setTempleRender(TEMPLEOBJECT temple)
+{
+	for (int i = 0;i < _vPuzzle.size(); i++)
+	{
+		if (_vPuzzle[i]->getPuzzle()->temple == temple)
+		{
+			_vPuzzle[i]->getPuzzle()->isRender = true;
+			break;
+		}
+	}
 }
 
