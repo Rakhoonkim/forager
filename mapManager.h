@@ -65,6 +65,6 @@ public:
 	
 	POINT randomObjectTile();
 
-	void setPuzzleObject();
+	void removeTiles();
 };
 

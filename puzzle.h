@@ -5,7 +5,6 @@ class puzzle
 {
 protected: 
 	tagPuzzle _puzzle;
-
 public:
 	puzzle();
 	~puzzle();
@@ -18,14 +17,14 @@ public:
 
 	virtual void setPuzzleXY(int x, int y)		 { _puzzle.x = x;_puzzle.y = y; }
 	virtual void setPuzzleIdex(int idx, int idy) { _puzzle.idx = idx; _puzzle.idy = idy; }
-	virtual void setPuzzle(PUZZLE puzzle) { _puzzle.puzzle = puzzle; }
+	virtual void setPuzzle(PUZZLE puzzle)		{ _puzzle.puzzle = puzzle; }
 	virtual void setTemple(TEMPLEOBJECT temple) { _puzzle.temple = temple; }
-
+	virtual void setRender()					{ _puzzle.isRender = true; }
 	virtual tagPuzzle* getPuzzle() { return &_puzzle;}
 	virtual void setPuzzleMoveX(int x) { _puzzle.x += x; }   //x 만큼 이동
 	virtual void setPuzzleMoveY(int y) { _puzzle.y += y; }   //x 만큼 이동
 	virtual bool getRemove()		   { return  _puzzle.remove; }
-
+	virtual RECT getRect() { return _puzzle.rc; }
 };
 
 class framePuzzle : public puzzle
@@ -40,4 +39,16 @@ public:
 	void update();
 	void render();
 	
+};
+
+class templeEntrance : public puzzle
+{
+private:
+	RECT _nextStage;
+public:
+	templeEntrance();
+	~templeEntrance();
+	void update();
+	void render();
+	virtual RECT getRect() { return _nextStage; }
 };

@@ -24,7 +24,17 @@ HRESULT land::init()
 
 	MapLoad("inGameNumber1.map");		// 맵을 가져와서 
 	landSetting();						// 세팅을 다시한다
+	//this->mapBuy(0, 0);
+	//this->mapBuy(0, 1);
+	//this->mapBuy(0, 2);
+
+	//this->mapBuy(1, 0);
 	this->mapBuy(1, 1);
+	//this->mapBuy(1, 2);
+
+	//this->mapBuy(2, 0);
+	//this->mapBuy(2, 1);
+	//this->mapBuy(2, 2);
 	_direction = 4;
 	_playerCoin = 0;
 
@@ -74,7 +84,14 @@ void land::render(HDC hdc)
 
 		if (_landTiles[i].land != LAND::NONE)
 		{
-			IMAGEMANAGER->findImage("grassTileLandPalette")->frameRender(_landImage->getMemDC(), _landTiles[i].rc.left, _landTiles[i].rc.top, _landTiles[i].landFrameX, _landTiles[i].landFrameY);
+			if (_landTiles[i].land == LAND::GRASS || _landTiles[i].land == LAND::DESERT || _landTiles[i].land == LAND::SNOW)
+			{
+				IMAGEMANAGER->findImage("grassTileLandPalette")->frameRender(_landImage->getMemDC(), _landTiles[i].rc.left, _landTiles[i].rc.top, _landTiles[i].landFrameX, _landTiles[i].landFrameY);
+			}
+			else if (_landTiles[i].land == LAND::GRAVE || _landTiles[i].land == LAND::VOLCANO)
+			{
+				IMAGEMANAGER->findImage("graveTileLandPalette")->frameRender(_landImage->getMemDC(), _landTiles[i].rc.left, _landTiles[i].rc.top, _landTiles[i].landFrameX, _landTiles[i].landFrameY);
+			}
 		}
 		if (_landTiles[i].terrain != TERRAIN::NONE)
 		{
@@ -90,6 +107,14 @@ void land::render(HDC hdc)
 			{
 				IMAGEMANAGER->findImage("snowTilePalette")->frameRender(_landImage->getMemDC(), _landTiles[i].rc.left, _landTiles[i].rc.top, _landTiles[i].terrainFrameX, _landTiles[i].terrainFrameY);
 			}
+			else if (_landTiles[i].terrain == TERRAIN::GRAVE)
+			{
+				IMAGEMANAGER->findImage("graveTilePalette")->frameRender(_landImage->getMemDC(), _landTiles[i].rc.left, _landTiles[i].rc.top, _landTiles[i].terrainFrameX, _landTiles[i].terrainFrameY);
+			}
+			else if (_landTiles[i].terrain == TERRAIN::VOLCANO)
+			{
+				IMAGEMANAGER->findImage("volcanoTilePalette")->frameRender(_landImage->getMemDC(), _landTiles[i].rc.left, _landTiles[i].rc.top, _landTiles[i].terrainFrameX, _landTiles[i].terrainFrameY);
+			}
 		}
 		if (_landTiles[i].landObject != LANDOBJECT::NONE)
 		{
@@ -104,6 +129,14 @@ void land::render(HDC hdc)
 			else if (_landTiles[i].landObject == LANDOBJECT::SNOW)
 			{
 				IMAGEMANAGER->findImage("snowTileObjectPalette")->frameRender(_landImage->getMemDC(), _landTiles[i].rc.left, _landTiles[i].rc.top, _landTiles[i].landObjectFrameX, _landTiles[i].landObjectFrameY);
+			}
+			else if (_landTiles[i].landObject == LANDOBJECT::GRAVE)
+			{
+				IMAGEMANAGER->findImage("graveTilePalette")->frameRender(_landImage->getMemDC(), _landTiles[i].rc.left, _landTiles[i].rc.top, _landTiles[i].landObjectFrameX, _landTiles[i].landObjectFrameY);
+			}
+			else if (_landTiles[i].landObject == LANDOBJECT::VOLCANO)
+			{
+				IMAGEMANAGER->findImage("volcanoTilePalette")->frameRender(_landImage->getMemDC(), _landTiles[i].rc.left, _landTiles[i].rc.top, _landTiles[i].landObjectFrameX, _landTiles[i].landObjectFrameY);
 			}
 		}
 		//Rectangle(_landImage->getMemDC(), _landTiles[i].rc);

@@ -37,6 +37,8 @@ void puzzle::release()
 
 void puzzle::update()
 {
+	_puzzle.x = _puzzle.idx * 60;
+	_puzzle.y = _puzzle.idy * 60;
 	_puzzle.rc = RectMakeCenter(_puzzle.x, _puzzle.y, _puzzle.width, _puzzle.height);
 }
 
@@ -81,6 +83,7 @@ HRESULT framePuzzle::init(const char* imageName, int idx, int idy)
 
 void framePuzzle::update()
 {
+
 	if (_puzzle.isClick && !_isOpen)
 	{
 		if (KEYMANAGER->isOnceKeyDown('E'))
@@ -102,7 +105,11 @@ void framePuzzle::update()
 		_puzzle.remove = true;
 	}
 
-	cout << _puzzle.isClick << endl;
+	_puzzle.x = _puzzle.idx * 60;
+	_puzzle.y = (_puzzle.idy - 1) * 60;
+	_puzzle.centerX = _puzzle.x + (_puzzle.width / 2);
+	_puzzle.centerY = _puzzle.y + (_puzzle.height / 2);
+	_puzzle.rc = RectMake(_puzzle.x, _puzzle.y, _puzzle.width, _puzzle.height);
 }
 
 void framePuzzle::render()
@@ -116,4 +123,24 @@ void framePuzzle::render()
 	}
 }
 
+templeEntrance::templeEntrance()
+{
+}
 
+templeEntrance::~templeEntrance()
+{
+}
+
+void templeEntrance::update()
+{
+	_puzzle.x = _puzzle.idx * 60;
+	_puzzle.y = _puzzle.idy * 60;
+	_puzzle.rc = RectMakeCenter(_puzzle.x, _puzzle.y, _puzzle.width, _puzzle.height);
+	_nextStage = RectMake(_puzzle.x - 50, _puzzle.y, 100, 100);
+}
+
+void templeEntrance::render()
+{
+	IMAGEMANAGER->findImage(_puzzle.imageName)->render(CAMERAMANAGER->getWorldDC(), _puzzle.rc.left, _puzzle.rc.top);
+	Rectangle(CAMERAMANAGER->getWorldDC(), _nextStage);
+}

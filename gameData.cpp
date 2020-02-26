@@ -11,7 +11,7 @@ gameData::~gameData()
 
 HRESULT gameData::init()
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 void gameData::release()

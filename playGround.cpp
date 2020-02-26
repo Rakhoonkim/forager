@@ -17,6 +17,7 @@ HRESULT playGround::init()
 	SCENEMANAGER->addScene("MAINMENU", new mainMenuScene);	// MAIN
 	SCENEMANAGER->addScene("STAGE", new stageScene);		// STAGE
 	SCENEMANAGER->addScene("MAPTOOL", new mapToolScene);	// MAPTOOL
+	SCENEMANAGER->addScene("BOSS", new bossScene);
 
 	SCENEMANAGER->changeScene("MAINMENU");
 

@@ -151,6 +151,7 @@
     <ClInclude Include="action.h" />
     <ClInclude Include="alphaEffect.h" />
     <ClInclude Include="animation.h" />
+    <ClInclude Include="bossScene.h" />
     <ClInclude Include="build.h" />
     <ClInclude Include="building.h" />
     <ClInclude Include="buildManager.h" />
@@ -218,6 +219,7 @@
     <ClCompile Include="action.cpp" />
     <ClCompile Include="alphaEffect.cpp" />
     <ClCompile Include="animation.cpp" />
+    <ClCompile Include="bossScene.cpp" />
     <ClCompile Include="build.cpp" />
     <ClCompile Include="building.cpp" />
     <ClCompile Include="buildManager.cpp" />

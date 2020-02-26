@@ -12,21 +12,33 @@ puzzleManager::~puzzleManager()
 HRESULT puzzleManager::init()
 {
 	imageSetting();
+	//puzzle* _druidTree;			// 드루이드의 집
+	//puzzle* _rainbow;
+	//framePuzzle* _treasureChest;
+	//templeEntrance* _fireTempleEntrance;
+
+	_rainbow = new puzzle;
+	_rainbow->init("rainBow", 0, 0);
+	_rainbow->setPuzzle(PUZZLE::RAINBOW);
+	_rainbow->setPuzzleMoveX(-5);
+
+	_druidTree = new puzzle;
+	_druidTree->init("druidTree", 0, 0);
+	_druidTree->setPuzzle(PUZZLE::DRUIDTREE);
+
+	_treasureChest = new framePuzzle;
+	_treasureChest->init("treasureChest", 0, 0);
+	_treasureChest->setPuzzle(PUZZLE::TREASURECHEST);
+
+	_fireTempleEntrance = new templeEntrance;
+	_fireTempleEntrance->init("fireTempleEntrance", 0, 0);
+	_fireTempleEntrance->setTemple(TEMPLEOBJECT::TEMPLE_ENTRANCE);
 
 
-
-
-	//_treasureChest.imageName = "treasureChest";
-	//_treasureChest.width = IMAGEMANAGER->findImage("treasureChest")->getWidth();
-	//_treasureChest.height = IMAGEMANAGER->findImage("treasureChest")->getHeight();
-	//_treasureChest.width = IMAGEMANAGER->findImage("treasureChest")->getWidth();
-	//_treasureChest.idx = 22;
-	//_treasureChest.idy = 6;
-
-	//createPuzzle(PUZZLE::RAINBOW, 36, 16);
-	//createPuzzle(PUZZLE::DRUIDTREE, 4, 10);
-	//createPuzzle(PUZZLE::TREASURECHEST, 22, 5);
-
+	_vPuzzle.push_back(_rainbow);
+	_vPuzzle.push_back(_druidTree);
+	_vPuzzle.push_back(_treasureChest);
+	_vPuzzle.push_back(_fireTempleEntrance);
 	return S_OK;
 }
 
@@ -36,21 +48,25 @@ void puzzleManager::release()
 
 void puzzleManager::update()
 {
-	for (_viPuzzle = _vPuzzle.begin(); _viPuzzle != _vPuzzle.end(); ++_viPuzzle)
+	vector<puzzle*>::iterator iter;
+	iter = _vPuzzle.begin();
+	for (; iter != _vPuzzle.end(); iter++)
 	{
-		(*_viPuzzle)->update();
+		if (!(*iter)->getPuzzle()->isRender) continue;
+		(*iter)->update();
 	}
 	puzzleRemove();
 }
 
 void puzzleManager::render()
 {
-	for (_viPuzzle = _vPuzzle.begin(); _viPuzzle != _vPuzzle.end(); ++_viPuzzle)
+	vector<puzzle*>::iterator iter;
+	iter = _vPuzzle.begin();
+	for (; iter != _vPuzzle.end(); iter++)
 	{
-		if (!(*_viPuzzle)->getPuzzle()->isRender) continue;
-		(*_viPuzzle)->render();
+		if (!(*iter)->getPuzzle()->isRender) continue;
+		(*iter)->render();
 	}
-
 
 	/*IMAGEMANAGER->findImage("rainBow")->render(CAMERAMANAGER->getWorldDC(), _rainBow.x, _rainBow.y);
 	IMAGEMANAGER->findImage("druidTree")->render(CAMERAMANAGER->getWorldDC(), _druidTree.rc.left, _druidTree.rc.top);
@@ -72,79 +88,54 @@ void puzzleManager::imageSetting()
 
 void puzzleManager::puzzleRemove()
 {
-	for (int i = 0;i < _vPuzzle.size(); i++)
-	{
-		if (_vPuzzle[i]->getRemove())
-		{
-			_vPuzzle.erase(_vPuzzle.begin() + i);
-			break;
-		}
-	}
+
 }
 
-void puzzleManager::createPuzzle(PUZZLE puz, int idx, int idy)
+void puzzleManager::setPuzzleIndex(PUZZLE puz, int idx, int idy)
 {
-	puzzle* tempPuzzle;
-	
-
 	if (puz == PUZZLE::RAINBOW)
 	{
-		tempPuzzle = new puzzle;
-		tempPuzzle->init("rainBow", idx, idy);
-		tempPuzzle->setPuzzle(puz);
-		tempPuzzle->setPuzzleMoveX(-5);
+		_rainbow->setPuzzleIdex(idx,idy);
 	}
 	else if (puz == PUZZLE::DRUIDTREE)
 	{
-		tempPuzzle = new puzzle;
-		tempPuzzle->init("druidTree", idx, idy);
-		tempPuzzle->setPuzzle(puz);
+		_druidTree->setPuzzleIdex(idx, idy);
 	}
 	else if (puz == PUZZLE::TREASURECHEST)
 	{
-		tempPuzzle = new framePuzzle;
-		tempPuzzle->init("treasureChest", idx, idy);
-		tempPuzzle->setPuzzle(puz);
+		_treasureChest->setPuzzleIdex(idx, idy);
 	}
 
-	_vPuzzle.push_back(tempPuzzle);
 }
 
-void puzzleManager::createTemple(TEMPLEOBJECT temple, int idx, int idy)
+void puzzleManager::setPuzzleRender(PUZZLE puz)
 {
-	puzzle* tempPuzzle;
+	if (puz == PUZZLE::RAINBOW)
+	{
+		_rainbow->setRender();
+	}
+	else if (puz == PUZZLE::DRUIDTREE)
+	{
+		_druidTree->setRender();
+	}
+	else if (puz == PUZZLE::TREASURECHEST)
+	{
+		_treasureChest->setRender();
+	}
+}
 
-
+void puzzleManager::setTempleIndex(TEMPLEOBJECT temple, int idx, int idy)
+{
 	if (temple == TEMPLEOBJECT::TEMPLE_ENTRANCE)
 	{
-		tempPuzzle = new puzzle;
-		tempPuzzle->init("fireTempleEntrance", idx, idy);
-		tempPuzzle->setTemple(TEMPLEOBJECT::TEMPLE_ENTRANCE);
-	}
-	_vPuzzle.push_back(tempPuzzle);
-}
-
-void puzzleManager::setRender(PUZZLE puzzle)
-{
-	for (int i = 0;i < _vPuzzle.size(); i++)
-	{
-		if (_vPuzzle[i]->getPuzzle()->puzzle == puzzle)
-		{
-			_vPuzzle[i]->getPuzzle()->isRender = true;
-			break;
-		}
+		_fireTempleEntrance->setPuzzleIdex(idx, idy);
 	}
 }
 
 void puzzleManager::setTempleRender(TEMPLEOBJECT temple)
 {
-	for (int i = 0;i < _vPuzzle.size(); i++)
-	{
-		if (_vPuzzle[i]->getPuzzle()->temple == temple)
-		{
-			_vPuzzle[i]->getPuzzle()->isRender = true;
-			break;
-		}
-	}
+	_fireTempleEntrance->setRender();
 }
+
+
 

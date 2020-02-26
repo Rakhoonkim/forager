@@ -79,7 +79,7 @@ using namespace SEVENTEEN_UTIL;
 #define ITEMMANAGER itemManager::getSingleton()
 #define UIMANAGER uiManager::getSingleton()
 #define OBJECTPOOL ObjectPool<tagBullet>::getSingleton()
-#define GAMEDATA gameData::getSingleton();
+#define GAMEDATA gameData::getSingleton()
 #define SAFE_DELETE(p) {if(p) {delete(p); (p)=NULL;}}
 #define SAFE_RELEASE(p) {if(p) {(p)->release(); (p) = NULL;}}
 #define SAFE_DELETE_ARRAY(p) {if(p) { delete[](p); (p) = NULL;}}

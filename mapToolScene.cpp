@@ -510,7 +510,7 @@ void mapToolScene::MapToolUpdate()
 		{
 			for (int j = 0; j < TREETILEX; j++)
 			{
-				if (PtInRect(&_treePalette[i * TREETILEX + j].rc, PointMake(CAMERAMANAGER->getMapToolCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getMapToolCamera().cameraY + _ptMouse.y)))
+				if (PtInRect(&_treePalette[i * TREETILEX + j].rc, _ptMouse))
 				{
 					_currentTile.frameX = j;
 					_currentTile.frameY = i;
@@ -523,7 +523,7 @@ void mapToolScene::MapToolUpdate()
 	{
 		for (int i = 0; i < CHARACTERX; i++)
 		{
-			if (PtInRect(&_characterPalette[i].rc, PointMake(CAMERAMANAGER->getMapToolCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getMapToolCamera().cameraY + _ptMouse.y)))
+			if (PtInRect(&_characterPalette[i].rc, _ptMouse))
 			{
 				_currentTile.frameX = i;
 				_currentTile.frameY = 0;
@@ -753,13 +753,14 @@ void mapToolScene::MapToolRender()
 		{
 			IMAGEMANAGER->findImage("treeTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].treeFrameX, _tiles[i].treeFrameY);
 		}
-		if (_tiles[i].character != CHARACTER::NONE)
-		{
-			IMAGEMANAGER->findImage("characterTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].characterFrameX, _tiles[i].characterFrameY);
-		}
+	
 		if (_tiles[i].templeObject != TEMPLEOBJECT::NONE)
 		{
 			IMAGEMANAGER->findImage("templeObject")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].templeObjectFrameX, _tiles[i].templeObjectFrameY);
+		}
+		if (_tiles[i].character != CHARACTER::NONE)
+		{
+			IMAGEMANAGER->findImage("characterTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].characterFrameX, _tiles[i].characterFrameY);
 		}
 	}
 	////°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°· LAND °·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·
@@ -806,10 +807,15 @@ void mapToolScene::MapToolRender()
 	CAMERAMANAGER->getMapToolImage()->render(getMemDC(), 0, 0, CAMERAMANAGER->getMapToolCamera().cameraX, CAMERAMANAGER->getMapToolCamera().cameraY, CAMERAMANAGER->getMapToolCamera().cameraSizeX, CAMERAMANAGER->getMapToolCamera().cameraSizeY);
 
 	//∆»∑π∆Æ ≈∏¿œ 
-	for (int i = 0;i < PALETTEX * PALETTEY; i++)
+	/*for (int i = 0;i < PALETTEX * PALETTEY; i++)
 	{
 		Rectangle(getMemDC(), _terrainPalette[i].rc);
-	}
+	}*/
+	//for (int i = 0; i < CHARACTERX; i++)
+	//{
+	//	Rectangle(getMemDC(), _characterPalette[i].rc);
+	//}
+
 
 	//°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·∆»∑π∆Æ °·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·°·
 

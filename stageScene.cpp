@@ -27,6 +27,8 @@ HRESULT stageScene::init()
 
 	UIMANAGER->getEquipment()->setSkillPount(&_playerManager->get_player()->get_PlayerAddress()->skillPount);
 	
+	GAMEDATA->setPlayerManager(_playerManager);
+	GAMEDATA->setObjectManager(_objectManager);
 	return S_OK;
 }
 

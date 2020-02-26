@@ -2,10 +2,14 @@
 #include "stdafx.h"
 #include "singletonBase.h"
 
+class playerManager;
+class objectManager;
+
 class gameData : public singletonBase<gameData>
 {
 private:
-	tagPlayer _player;
+	playerManager* _playerManager;
+	objectManager* _objectManager;
 
 public:
 	gameData();
@@ -16,7 +20,10 @@ public:
 	void update();
 	void render();
 
-	tagPlayer getPlayer()			 { return _player; }
-	void setPlayer(tagPlayer player) { _player = player; }
+	void setPlayerManager(playerManager* playerManager) { _playerManager = playerManager; }
+	playerManager* getPlayerManager() { return _playerManager; }
+
+	void setObjectManager(objectManager* objectManager) { _objectManager = objectManager; }
+	objectManager* getObjectManager() { return _objectManager; }
 };
 

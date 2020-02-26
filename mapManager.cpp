@@ -19,6 +19,7 @@ HRESULT mapManager::init()
 
 void mapManager::release()
 {
+	delete[] _tiles;
 }
 
 void mapManager::update()
@@ -129,10 +130,11 @@ void mapManager::playerXYrender()
 				}
 				else if (_tiles[i * TILEX + j].terrain == TERRAIN::FIRETEMPLE)
 				{
-					IMAGEMANAGER->findImage("templeObject")->frameRender(CAMERAMANAGER->getWorldDC(), _tiles[i * TILEX + j].rc.left, _tiles[i * TILEX + j].rc.top, _tiles[i * TILEX + j].terrainFrameX, _tiles[i * TILEX + j].terrainFrameY);
+					IMAGEMANAGER->findImage("fireTempleTile")->frameRender(CAMERAMANAGER->getWorldDC(), _tiles[i * TILEX + j].rc.left, _tiles[i * TILEX + j].rc.top, _tiles[i * TILEX + j].terrainFrameX, _tiles[i * TILEX + j].terrainFrameY);
 				}
 			}
 
+		
 
 			if (_tiles[i * TILEX + j].landObject != LANDOBJECT::NONE)
 			{
@@ -157,6 +159,7 @@ void mapManager::playerXYrender()
 					IMAGEMANAGER->findImage("volcanoTileObject")->frameRender(CAMERAMANAGER->getWorldDC(), _tiles[i * TILEX + j].rc.left, _tiles[i * TILEX + j].rc.top, _tiles[i * TILEX + j].landObjectFrameX, _tiles[i * TILEX + j].landObjectFrameY);
 				}
 			}
+
 
 			char str[100];
 			sprintf_s(str, "%d:%d", _tiles[i * TILEX + j].idx, _tiles[i * TILEX + j].idy);
@@ -245,19 +248,19 @@ void mapManager::MapLoad(const char* fileName)
 		//TEMPLEOBJECT
 		if (_tiles[i].templeObject== TEMPLEOBJECT::RAINBOW)
 		{
-			_objectManager->get_puzzleManager()->createPuzzle(PUZZLE::RAINBOW, _tiles[i].idx, _tiles[i].idy);
+			_objectManager->get_puzzleManager()->setPuzzleIndex(PUZZLE::RAINBOW, _tiles[i].idx, _tiles[i].idy);
 		}
 		else if (_tiles[i].templeObject == TEMPLEOBJECT::DRUIDTREE)
 		{
-			_objectManager->get_puzzleManager()->createPuzzle(PUZZLE::DRUIDTREE, _tiles[i].idx, _tiles[i].idy);
+			_objectManager->get_puzzleManager()->setPuzzleIndex(PUZZLE::DRUIDTREE, _tiles[i].idx, _tiles[i].idy);
 		}
 		else if (_tiles[i].templeObject == TEMPLEOBJECT::TREASURECHEST)
 		{
-			_objectManager->get_puzzleManager()->createPuzzle(PUZZLE::TREASURECHEST, _tiles[i].idx, _tiles[i].idy);
+			_objectManager->get_puzzleManager()->setPuzzleIndex(PUZZLE::TREASURECHEST, _tiles[i].idx, _tiles[i].idy);
 		}
 		else if (_tiles[i].templeObject == TEMPLEOBJECT::TEMPLE_ENTRANCE)
 		{
-			_objectManager->get_puzzleManager()->createTemple(TEMPLEOBJECT::TEMPLE_ENTRANCE, _tiles[i].idx, _tiles[i].idy);
+			_objectManager->get_puzzleManager()->setTempleIndex(TEMPLEOBJECT::TEMPLE_ENTRANCE, _tiles[i].idx, _tiles[i].idy);
 		}
 
 
@@ -266,6 +269,7 @@ void mapManager::MapLoad(const char* fileName)
 		_vTiles.push_back(&_tiles[i]);
 
 	}
+
 
 	this->setLandTile(2, 0);
 	this->setLandTile(2, 1);
@@ -278,6 +282,22 @@ void mapManager::MapLoad(const char* fileName)
 	this->setLandTile(0, 0);
 	this->setLandTile(0, 1);
 	this->setLandTile(0, 2);
+	/*if (fileName == "inGameNumber2.map")
+	{
+		this->setLandTile(2, 0);
+		this->setLandTile(2, 1);
+		this->setLandTile(2, 2);
+
+		this->setLandTile(1, 0);
+		this->setLandTile(1, 1);
+		this->setLandTile(1, 2);
+
+		this->setLandTile(0, 0);
+		this->setLandTile(0, 1);
+		this->setLandTile(0, 2);
+	}
+	else this->setLandTile(1, 1);*/
+
 	CloseHandle(file);
 }
 
@@ -438,9 +458,9 @@ void mapManager::setLandTile(int x, int y)
 	}
 
 	// 맵에 있는 오브젝트 렌더링 값 변환
-	if (x == 1 && y == 0)  _objectManager->get_puzzleManager()->setRender(PUZZLE::TREASURECHEST);
-	if (x == 2 && y == 1)  _objectManager->get_puzzleManager()->setRender(PUZZLE::RAINBOW);
-	if (x == 0 && y == 1)  _objectManager->get_puzzleManager()->setRender(PUZZLE::DRUIDTREE);
+	if (x == 1 && y == 0)  _objectManager->get_puzzleManager()->setPuzzleRender(PUZZLE::TREASURECHEST);
+	if (x == 2 && y == 1)  _objectManager->get_puzzleManager()->setPuzzleRender(PUZZLE::RAINBOW);
+	if (x == 0 && y == 1)  _objectManager->get_puzzleManager()->setPuzzleRender(PUZZLE::DRUIDTREE);
 	if (x == 2 && y == 2)  _objectManager->get_puzzleManager()->setTempleRender(TEMPLEOBJECT::TEMPLE_ENTRANCE);
 
 }
@@ -542,4 +562,42 @@ POINT mapManager::randomObjectTile()
 	//{
 	//	return PointMake(0, 0);
 	//}
+}
+
+void mapManager::removeTiles()
+{
+	for (int i = 0; i < TILEY; i++)
+	{
+		for (int j = 0; j < TILEX; j++)
+		{
+			SetRect(&_tiles[i * TILEX + j].rc, j * TILESIZE, i * TILESIZE,
+				j * TILESIZE + TILESIZE, i * TILESIZE + TILESIZE);
+			_tiles[i * TILEX + j].type = TYPE::NONE;
+			_tiles[i * TILEX + j].terrain = TERRAIN::NONE;
+			_tiles[i * TILEX + j].land = LAND::NONE;
+			_tiles[i * TILEX + j].landObject = LANDOBJECT::NONE;
+			_tiles[i * TILEX + j].object = OBJECT::NONE;
+			_tiles[i * TILEX + j].tree = TREE::NONE;
+			_tiles[i * TILEX + j].character = CHARACTER::NONE;
+			_tiles[i * TILEX + j].templeObject = TEMPLEOBJECT::NONE;
+			_tiles[i * TILEX + j].building = BUILDING::NONE;
+			_tiles[i * TILEX + j].terrainFrameX = 0;
+			_tiles[i * TILEX + j].terrainFrameY = 0;
+			_tiles[i * TILEX + j].objectFrameX = 0;
+			_tiles[i * TILEX + j].objectFrameY = 0;
+			_tiles[i * TILEX + j].characterFrameX = 0;
+			_tiles[i * TILEX + j].characterFrameY = 0;
+			_tiles[i * TILEX + j].landObjectFrameX = 0;
+			_tiles[i * TILEX + j].landObjectFrameY = 0;
+			_tiles[i * TILEX + j].treeFrameX = 0;
+			_tiles[i * TILEX + j].treeFrameY = 0;
+			_tiles[i * TILEX + j].templeObjectFrameX = 0;
+			_tiles[i * TILEX + j].templeObjectFrameY = 0;
+			_tiles[i * TILEX + j].idx = j;
+			_tiles[i * TILEX + j].idy = i;
+			_tiles[i * TILEX + j].isClick = false;
+			_tiles[i * TILEX + j].isObject = false;
+			_tiles[i * TILEX + j].isRender = false;
+		}
+	}
 }
