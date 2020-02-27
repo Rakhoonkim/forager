@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "bossScene.h"
+#include "stageScene.h"
 
 bossScene::bossScene()
 {
@@ -29,13 +30,15 @@ HRESULT bossScene::init()
 	_enemyManager->setPlayer(_playerManager->get_player());
 
 	GAMEDATA->setTempleManager(_templeManager);
-	GAMEDATA->setEenemyManager(_enemyManager);
+	GAMEDATA->setEnemyManager(_enemyManager);
+	GAMEDATA->setObjectManager(GAMEDATA->getObjectManager());
 
 	MAPMANAGER->removeTiles();  // ¸Ê ÃÊ±âÈ­ 
 	MAPMANAGER->BossMapLoad("inGameNumber3.map");
 
-	temp = false;
 
+
+	_exitScene = RectMake(1340, 2100, 100, 60);
 	return S_OK;
 }
 
@@ -51,11 +54,9 @@ void bossScene::update()
 	_templeManager->update();
 	_playerManager->update();
 	_enemyManager->update();
-	if (KEYMANAGER->isOnceKeyDown('N'))
-	{
-		temp = true;
-	}
-	if (temp) { _enemyManager->BossAttack(); }
+	
+	if (_templeManager->getBossAttack()) { _enemyManager->BossAttack(); }
+	exitTemple();
 }
 
 void bossScene::render()
@@ -68,7 +69,21 @@ void bossScene::render()
 	_playerManager->render();  //PLAYER 
 	EFFECTMANAGER->render(CAMERAMANAGER->getWorldDC());
 	_templeManager->render(); 
-
+	
 	if (!UIMANAGER->getLand()->getLand()) CAMERAMANAGER->getWorldImage()->render(getMemDC(), 0, 0, CAMERAMANAGER->getWorldCamera().cameraX, CAMERAMANAGER->getWorldCamera().cameraY, WINSIZEX, WINSIZEY);
 	UIMANAGER->render();	// UIs
+
+}
+
+void bossScene::exitTemple()
+{
+	RECT temp;
+	if (IntersectRect(&temp, &_exitScene, &_playerManager->get_player()->get_playerRect()))
+	{
+		_objectManager = GAMEDATA->getObjectManager();
+		SCENEMANAGER->changeScene("STAGE");
+		GAMEDATA->setPlayerManager(_playerManager);
+		GAMEDATA->setObjectManager(_objectManager);
+		SCENEMANAGER->getCurrentScene()->nextScene();
+	}
 }

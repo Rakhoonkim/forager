@@ -79,8 +79,8 @@ void playerManager::imageSetting()
 	//곡괭이
 	IMAGEMANAGER->addFrameImage("playerPick", "./image/player/playerPickaxe.bmp", 532, 106, 7, 2, true, RGB(255, 0, 255), true);
 
-	KEYANIMANAGER->addCoordinateFrameAnimation("playerPick_R", "playerPick", 0, 7, 20, false, false);
-	KEYANIMANAGER->addCoordinateFrameAnimation("playerPick_L", "playerPick", 7, 14, 20, false, false);
+	KEYANIMANAGER->addCoordinateFrameAnimation("playerPick_R", "playerPick", 0, 7, 15, false, false);
+	KEYANIMANAGER->addCoordinateFrameAnimation("playerPick_L", "playerPick", 7, 14, 15, false, false);
 
 	// image
 	IMAGEMANAGER->addFrameImage("shadow", "./image/player/shadow.bmp", 80, 16, 5, 1, true, RGB(255, 0, 255));
@@ -126,7 +126,7 @@ void playerManager::objectCollisionMouse()
 	for (int i = 0; i < _cropsManager->getVCrops().size(); ++i)
 	{
 		//플레이어 공격중일 떄 
-		if (!_player->get_PlayerAddress()->isAttack && _cropsManager->getVCrops()[i]->getCrops()->isClick && PtInRect(&_cropsManager->getVCrops()[i]->getCrops()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
+		if (_player->get_PlayerAddress()->isAttack && _cropsManager->getVCrops()[i]->getCrops()->isClick && PtInRect(&_cropsManager->getVCrops()[i]->getCrops()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
 		{
 			//커서 매니져 세팅
 			CURSORMANAGER->setCropsPoint();
@@ -177,7 +177,7 @@ void playerManager::objectCollisionMouse()
 	for (int i = 0; i < _enemyManager->getVEnemy().size(); ++i)
 	{
 		//플레이어 공격중일 떄 
-		if (!_player->get_PlayerAddress()->isAttack && PtInRect(&_enemyManager->getVEnemy()[i]->getEnemy()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
+		if (!_enemyManager->getVEnemy()[i]->getEnemy()->isHit && PtInRect(&_enemyManager->getVEnemy()[i]->getEnemy()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
 		{
 			if (_enemyManager->getVEnemy()[i]->getEnemy()->enemy == ENEMY::SLIME)
 			{
@@ -256,7 +256,6 @@ void playerManager::objectAttack(int num)
 	//TYPE마다 데미지 입히기 추가할 예정 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
-		_player->get_PlayerAddress()->isAttack = true;
 		//거리가 좁혀지면 데미지를 입힌다.
 		if (getDistance(_player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y, _cropsManager->getVCrops()[num]->getCrops()->centerX, _cropsManager->getVCrops()[num]->getCrops()->centerY) <= 120)
 		{
@@ -273,7 +272,6 @@ void playerManager::enemyAttack(int num)
 {
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
-		_player->get_PlayerAddress()->isAttack = true;
 		//거리가 좁혀지면 데미지를 입힌다.
 		if (getDistance(_player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y, _enemyManager->getVEnemy()[num]->getEnemy()->centerX, _enemyManager->getVEnemy()[num]->getEnemy()->centerY) <= 80)
 		{

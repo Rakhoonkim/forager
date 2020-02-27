@@ -146,6 +146,12 @@ void mainMenuScene::buttonClick()
 	{
 		SCENEMANAGER->changeScene("MAPTOOL");
 	}
+
+	if (_button[6].isClick)
+	{
+		PostQuitMessage(0);
+	}
+
 }
 
 void mainMenuScene::buttonEffect()

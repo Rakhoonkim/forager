@@ -91,3 +91,4 @@ void objectManager::AutoEnemyCreate()
 		}
 	}
 }
+

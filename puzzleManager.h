@@ -32,6 +32,7 @@ public:
 	
 	puzzle* getTreasureChest() { return _treasureChest; }
 	puzzle* getFireTempleEntrance() { return _fireTempleEntrance;}
+	puzzle* getDruidTree() { return _druidTree; }
 
 };
 

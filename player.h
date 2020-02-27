@@ -15,6 +15,7 @@ private:
 
 
 	DIRECTION _tempDirection;		// 이전 방향을 확인 
+	float _healthTime;
 	int		_keyCount;  // KEY 2개 눌리지않기
 	bool _stateChange;	// 상태변경 BOOL값
 public:
@@ -40,7 +41,7 @@ public:
 
 	void playerHitCount();
 	void playerHit();
-
+	void playerHealth();
 	tagPlayer get_PlayerAddressLinK() { return _player; }
 	tagPlayer* get_PlayerAddress() { return &_player; }
 	RECT get_playerRect() { return _player.rc; }

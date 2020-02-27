@@ -18,6 +18,7 @@ public:
 
 	virtual void setFrameX(int frameX) { _temp.frameX = frameX; }
 	virtual void setBulletManager(bulletManager* bullet) { _bulletManager = bullet; }
+	virtual RECT getRect() { return _temp.rc; }
 };
 
 
@@ -48,5 +49,6 @@ class door : public temple
 public:
 	door() {}
 	~door() {}
+	HRESULT init(const char* imageName, int idx, int idy);
 	void render();
 };

@@ -46,6 +46,8 @@ HRESULT uiManager::init()
 	_land->init();
 	
 	_slushX = 0;
+
+	_exit = RectMake(WINSIZEX / 2 - 73, WINSIZEY / 2 - 30, 156, 48);
 	return S_OK;
 }
 
@@ -81,6 +83,19 @@ void uiManager::update()
 			_land->setPlayerCoin(_inven->getInven()["coinDrop"].count);
 			_land->update();
 			_land->setLand(true);
+		}
+		else if (_currentOption == 4)
+		{
+			_land->setLand(false);
+			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+			{
+				if (PtInRect(&_exit,_ptMouse)) //PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
+				{
+					SCENEMANAGER->changeScene("MAINMENU");
+					_isOption = false;
+				}
+
+			}
 		}
 	}
 }
@@ -121,7 +136,12 @@ void uiManager::render()
 		{
 			_build->render(_backBuffer->getMemDC());
 		}
-
+		else if (_currentOption == 4)
+		{
+			IMAGEMANAGER->findImage("saveSlotBackground")->render(_backBuffer->getMemDC(), WINSIZEX / 2 - (IMAGEMANAGER->findImage("saveSlotBackground")->getWidth() / 2), 150);
+			IMAGEMANAGER->findImage("bigExit")->render(_backBuffer->getMemDC(), _exit.left, _exit.top);
+			Rectangle(_backBuffer->getMemDC(), _exit);
+		}
 	}
 }
 
@@ -205,6 +225,8 @@ void uiManager::imageSetting()
 	IMAGEMANAGER->addFrameImage("landBuy", "./image/ui/landBuy.bmp", 800, 320, 2, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("landNum", "./image/ui/landNum.bmp",350, 40, 10, 1, true, RGB(255, 0, 255));
 
+	//exit
+	IMAGEMANAGER->addImage("bigExit", "./image/ui/exit.bmp", 156, 48, true, RGB(255, 0, 255));
 }
 
 

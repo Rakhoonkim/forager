@@ -64,6 +64,8 @@ void cameraManager::release()
 void cameraManager::update()
 {
 	move();
+	_worldRect = RectMake(_worldCamera.cameraX, _worldCamera.cameraY, WINSIZEX, WINSIZEY);
+
 }
 
 void cameraManager::render()
@@ -101,6 +103,9 @@ void cameraManager::move()
 	{
 		_worldCamera.cameraY = _worldCamera.cameraCenterY - _worldCamera.cameraSizeY / 2;
 	}
+
+
+
 }
 
 void cameraManager::setCameraSizeXY(float x, float y)

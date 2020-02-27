@@ -43,7 +43,36 @@ void enemyManager::update()
 					break;
 				}
 			}
+
+
+			//깜박거리는 효과 
+			if (!_vEnemy[i]->getEnemy()->isHit)
+			{
+				_vEnemy[i]->getEnemy()->hitTime = TIMEMANAGER->getWorldTime();
+			}
+			else
+			{
+				// 깜박거리는 카운터 
+				_vEnemy[i]->getEnemy()->hitCount++;
+				if (_vEnemy[i]->getEnemy()->hitCount % 5 == 0)
+				{
+					if (_vEnemy[i]->getEnemy()->alpha == 0)
+					{
+						_vEnemy[i]->getEnemy()->alpha = 150;
+					}
+					else _vEnemy[i]->getEnemy()->alpha = 0;
+				}
+				// 0.7초가 지나면 되돌린다.
+				if (_vEnemy[i]->getEnemy()->hitTime + 0.7 <= TIMEMANAGER->getWorldTime())
+				{
+					_vEnemy[i]->getEnemy()->isHit = false;
+					_vEnemy[i]->getEnemy()->hitCount = 0;
+				}
+			}
 		}
+
+
+
 	}
 	//for (_viEnemy = _vEnemy.begin(); _viEnemy != _vEnemy.end(); _viEnemy++)
 	//{
@@ -75,7 +104,7 @@ void enemyManager::render()
 
 void enemyManager::imageSetting()
 {
-	IMAGEMANAGER->addFrameImage("slime", "./image/enemy/slime.bmp", 240, 90, 5, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("slime", "./image/enemy/slime.bmp", 240, 90, 5, 2, true, RGB(255, 0, 255), true);
 
 	int IdleLeft[] = {0, 1};
 	KEYANIMANAGER->addArrayFrameAnimation("slimeIdleLeft", "slime", IdleLeft, 2, 1, true);
@@ -95,9 +124,9 @@ void enemyManager::imageSetting()
 
 	//BOAR
 
-	IMAGEMANAGER->addFrameImage("boarIdle", "./image/enemy/boarIdle.bmp", 405, 126, 5, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boarWalk", "./image/enemy/boarWalk.bmp", 567, 126, 7, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boarCharge", "./image/enemy/boarCharge.bmp", 405, 138, 5, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boarIdle", "./image/enemy/boarIdle.bmp", 405, 126, 5, 2, true, RGB(255, 0, 255),true);
+	IMAGEMANAGER->addFrameImage("boarWalk", "./image/enemy/boarWalk.bmp", 567, 126, 7, 2, true, RGB(255, 0, 255), true);
+	IMAGEMANAGER->addFrameImage("boarCharge", "./image/enemy/boarCharge.bmp", 405, 138, 5, 2, true, RGB(255, 0, 255), true);
 	
 	KEYANIMANAGER->addCoordinateFrameAnimation("boarIdleRight", "boarIdle", 0, 5, 5, false, true);
 	KEYANIMANAGER->addCoordinateFrameAnimation("boarIdleLeft", "boarIdle", 6, 10, 5, false, true);
@@ -110,8 +139,8 @@ void enemyManager::imageSetting()
 
 
 	// demon
-	IMAGEMANAGER->addFrameImage("demonWalk", "./image/enemy/demonWalk.bmp", 378, 96, 6, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("demonAttack", "./image/enemy/demonAttack.bmp", 759, 132, 11, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("demonWalk", "./image/enemy/demonWalk.bmp", 378, 96, 6, 2, true, RGB(255, 0, 255), true);
+	IMAGEMANAGER->addFrameImage("demonAttack", "./image/enemy/demonAttack.bmp", 759, 132, 11, 2, true, RGB(255, 0, 255), true);
 
 	int demonIdleRight[] = { 5 };
 	KEYANIMANAGER->addArrayFrameAnimation("demonIdleRight", "demonWalk", demonIdleRight, 1, 10, true);

@@ -27,6 +27,9 @@ private:
 	float _healthBar;   // 체력바 가로 
 	float _expBar;		// 경험치바 가로 
 	float _slushX;
+
+	// exit
+	RECT _exit;
 public:
 	uiManager();
 	~uiManager();

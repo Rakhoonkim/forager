@@ -21,6 +21,8 @@ public:
 	void render();
 
 	void BossEntranceMouseCllision();
-	void nextBossScene();
+
+	void nextScene();
+	void AlphaImage();
 };
 

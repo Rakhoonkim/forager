@@ -39,6 +39,7 @@ HRESULT gameNode::init(bool managerInit)
 		CURSORMANAGER->init();
 		UIMANAGER->init();
 		ITEMMANAGER->init();
+		GAMEDATA->init();
 	}
 
 	return S_OK;
@@ -137,6 +138,10 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 	}
 
 	return (DefWindowProc(hWnd, iMessage, wParam, lParam));
+}
+
+void gameNode::nextScene()
+{
 }
 
 

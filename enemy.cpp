@@ -51,6 +51,9 @@ HRESULT enemy::init(ENEMY enemy,const char* imageName,int idx,int idy)
 	_enemy.AttackTerm = false;
 	_enemy.isJump = false;
 	_enemy.isAttack = false;
+	_enemy.isHit = false;
+	_enemy.hitCount = 0;
+	_enemy.hitTime = 0;
 	//새로 세팅해야 하는 값		
 	_enemy.maxHp = 3;			// 최대 HP
 	_enemy.hp = 3;				// HP

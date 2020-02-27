@@ -23,8 +23,12 @@ public:
 	void update();
 	void render();
 	void D2Drender();
+
 	gameNode* addScene(string sceneName, gameNode* scene);
 
 	HRESULT changeScene(string sceneName);
+
+	gameNode* getCurrentScene() { return _currentScene; }
+
 };
 

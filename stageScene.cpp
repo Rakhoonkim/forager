@@ -21,7 +21,7 @@ HRESULT stageScene::init()
 	_objectManager->get_enemyManager()->setPlayer(_playerManager->get_player());  // 플레이어 링크 
 	_objectManager->get_CropsManager()->setPlayer(_playerManager->get_player());
 	// 맵 
-
+	MAPMANAGER->release();
 	MAPMANAGER->setObjectManager(_objectManager);
 	MAPMANAGER->MapLoad("inGameNumber2.map");
 
@@ -30,6 +30,7 @@ HRESULT stageScene::init()
 	//게임 데이터 저장
 	GAMEDATA->setPlayerManager(_playerManager);
 	GAMEDATA->setObjectManager(_objectManager);
+	GAMEDATA->save();
 	return S_OK;
 }
 
@@ -45,6 +46,7 @@ void stageScene::update()
 	_objectManager->update();
 	_weather->update(); // 날씨
 	BossEntranceMouseCllision();  // 보스씬 마우스
+	AlphaImage();
 }
 
 void stageScene::render()
@@ -73,12 +75,35 @@ void stageScene::BossEntranceMouseCllision()
 		{
 			CURSORMANAGER->setBuildPoint();
 			CURSORMANAGER->getCursor()->setCursorXY(_objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->x - CAMERAMANAGER->getWorldCamera().cameraX + 49, _objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->y - CAMERAMANAGER->getWorldCamera().cameraY + 75);
-
 			_objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->isClick = true;
 		}
 		else _objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->isClick = false;
 	}
 	else _objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->isClick = false;
+}
+
+void stageScene::nextScene()
+{
+	_playerManager = GAMEDATA->getPlayerManager();
+	_objectManager = GAMEDATA->getObjectManager();
+	_playerManager->get_player()->setPlayerXY(36, 29);
+}
+
+void stageScene::AlphaImage()
+{
+	RECT temp;
+	if (IntersectRect(&temp, &_objectManager->get_puzzleManager()->getDruidTree()->getRect(), &_playerManager->get_player()->get_playerRect()))
+	{
+		_objectManager->get_puzzleManager()->getDruidTree()->setAlpha(150);
+	}
+	else _objectManager->get_puzzleManager()->getDruidTree()->setAlpha(0);
+
+	RECT temp2;
+	if (IntersectRect(&temp2, &_objectManager->get_puzzleManager()->getFireTempleEntrance()->getRect(), &_playerManager->get_player()->get_playerRect()))
+	{
+		_objectManager->get_puzzleManager()->getFireTempleEntrance()->setAlpha(150);
+	}
+	else _objectManager->get_puzzleManager()->getFireTempleEntrance()->setAlpha(0);
 }
 
 

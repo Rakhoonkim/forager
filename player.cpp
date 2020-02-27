@@ -48,13 +48,11 @@ HRESULT player::init()
 	_state = _playerIdle;
 	_stateChange = false;
 	_keyCount = 0;
-
 	_player.rc = RectMake(_player.x, _player.y, _player.playerImage->getFrameWidth(), _player.playerImage->getFrameHeight());
 
 
 	CAMERAMANAGER->setCameraInit(_player.x, _player.y);
-
-
+	_healthTime = TIMEMANAGER->getWorldTime();
 	MAPMANAGER->setPlayerAddress(&_player);
 	return S_OK;
 }
@@ -138,24 +136,26 @@ void player::setDirection()
 
 void player::KeyControl()
 {
-	if (_player.weaponAni->getNowPlayNum() == _player.weaponAni->getFrameMaxFrame()-1) _player.isAttack = false;
+	if (_player.weaponAni->getNowPlayNum() == _player.weaponAni->getFrameMaxFrame() - 1)
+	{
+		_player.isAttack = false;
+	}
 	//°ø°ÝÅ°
 	if (!_player.isAttack)
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON) && !UIMANAGER->getOption())
 		{
+			_player.isAttack = true;
 			_player.weaponAni->start();
-	/*		ITEMMANAGER->Dropitem(OBJECT::IRON, _player.x, _player.y);
-			ITEMMANAGER->DropForgeItem(FORGERECIPE::KEY, _player.x, _player.y,1);*/
-			ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::GOLD, _player.x, _player.y, 1);
-			ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::IRON, _player.x, _player.y, 1);
-
+			//ITEMMANAGER->Dropitem(OBJECT::IRON, _player.x, _player.y);
+			//ITEMMANAGER->DropForgeItem(FORGERECIPE::KEY, _player.x, _player.y,1);
+			//ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::GOLD, _player.x, _player.y, 1);
+			//ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::IRON, _player.x, _player.y, 1);
 			KEYMANAGER->setKeyDown(VK_LBUTTON, false);
 			cout << "player health: " << _player.health << endl;
-		
-
 		}
 	}
+
 
 	if (_keyCount > 2) return;
 	// UP
@@ -345,6 +345,18 @@ void player::playerHit()
 	_player.isHit = true;		
 	_player.hp--;
 
+}
+
+void player::playerHealth()
+{
+	if (_healthTime + 10 <= TIMEMANAGER->getWorldTime())
+	{
+		_healthTime = TIMEMANAGER->getWorldTime();
+		if (_player.health <= 50)
+		{
+			_player.health += 10;
+		}
+	}
 }
 
 

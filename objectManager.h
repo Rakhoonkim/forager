@@ -36,7 +36,7 @@ public:
 	enemyManager* get_enemyManager() { return _enemyManager; }
 	puzzleManager* get_puzzleManager() { return _puzzleManager; }
 
-
 	void AutoEnemyCreate();
+
 };
 

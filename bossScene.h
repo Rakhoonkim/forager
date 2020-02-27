@@ -4,6 +4,7 @@
 #include "playerManager.h"
 #include "enemyManager.h"
 #include "templeManager.h"
+#include "objectManager.h"
 
 class bossScene : public gameNode
 {
@@ -11,10 +12,11 @@ private:
 	playerManager* _playerManager;
 	enemyManager* _enemyManager;
 	templeManager* _templeManager;
-
+	objectManager* _objectManager;
 	tagBlind _room1;
+	bool _bossAttack;
 
-	bool temp;
+	RECT _exitScene;
 public:
 	bossScene();
 	~bossScene();
@@ -24,5 +26,6 @@ public:
 	void update();
 	void render();
 
+	void exitTemple();
 };
 

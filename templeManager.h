@@ -6,10 +6,9 @@
 struct tagBlind
 {
 	RECT rc;
+	float width, height;
 	bool isOpen;
 };
-
-
 
 class templeManager
 {
@@ -24,6 +23,7 @@ private:
 
 	tagBlind _room[8];
 	tagPlayer* _player;
+
 public:
 	templeManager();
 	~templeManager();
@@ -41,8 +41,10 @@ public:
 	void CreateCannon(int idx, int idy, int frameX);
 	void CreateLantern(int idx, int idy);
 	void CreateDoor(int idx, int idy, int frameX);
-	void setBulletManager(bulletManager* bullet) { _bulletManager = bullet; }
 
-	void setPlayer(tagPlayer* player) { _player = player; }
+	void setBulletManager(bulletManager* bullet)		{ _bulletManager = bullet; }
+	void setPlayer(tagPlayer* player)					 { _player = player; }
+
+	bool getBossAttack() { return _room[0].isOpen; }
 };
 

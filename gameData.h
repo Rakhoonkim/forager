@@ -23,13 +23,16 @@ public:
 	void update();
 	void render();
 
+	void save();
+	void load();
+
 	void setPlayerManager(playerManager* playerManager) { _playerManager = playerManager; }
 	playerManager* getPlayerManager() { return _playerManager; }
 
 	void setObjectManager(objectManager* objectManager) { _objectManager = objectManager; }
 	objectManager* getObjectManager() { return _objectManager; }
 
-	void setEenemyManager(enemyManager* enemyManager) { _enemyManager = enemyManager; }
+	void setEnemyManager(enemyManager* enemyManager) { _enemyManager = enemyManager; }
 	enemyManager* getEnemyManager() { return _enemyManager; }
 
 	void setTempleManager(templeManager* templeManager) { _templeManager = templeManager; }

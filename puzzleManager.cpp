@@ -83,7 +83,7 @@ void puzzleManager::imageSetting()
 	KEYANIMANAGER->addDefaultFrameAnimation("treasureChest", "treasureChest", 10, false, false);
 	IMAGEMANAGER->addImage("treasureChestKey", "./image/puzzle/treasureChestKey.bmp",54, 54,true, RGB(255, 0, 255));
 
-	IMAGEMANAGER->addImage("fireTempleEntrance", "./image/puzzle/fireTempleEntrance.bmp", 288, 336, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("fireTempleEntrance", "./image/puzzle/fireTempleEntrance.bmp", 288, 336, true, RGB(255, 0, 255),true);
 }
 
 void puzzleManager::puzzleRemove()

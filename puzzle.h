@@ -23,6 +23,7 @@ public:
 	virtual tagPuzzle* getPuzzle() { return &_puzzle;}
 	virtual void setPuzzleMoveX(int x) { _puzzle.x += x; }   //x 만큼 이동
 	virtual void setPuzzleMoveY(int y) { _puzzle.y += y; }   //x 만큼 이동
+	virtual void setAlpha(int alpha) { _puzzle.alpha = alpha; }
 	virtual bool getRemove()		   { return  _puzzle.remove; }
 	virtual RECT getRect() { return _puzzle.rc; }
 };
@@ -43,12 +44,9 @@ public:
 
 class templeEntrance : public puzzle
 {
-private:
-	RECT _nextStage;
 public:
 	templeEntrance();
 	~templeEntrance();
 	void update();
 	void render();
-	virtual RECT getRect() { return _nextStage; }
 };

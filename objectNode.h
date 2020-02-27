@@ -170,6 +170,7 @@ struct tagPuzzle
 	int idx, idy;
 	int width;
 	int height;
+	int alpha;
 	bool remove;
 	bool isClick;
 	bool isRender;

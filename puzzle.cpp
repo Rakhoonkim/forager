@@ -23,6 +23,7 @@ HRESULT puzzle::init(const char* imageName, int idx, int idy)
 	_puzzle.centerX = _puzzle.x +(_puzzle.width / 2);
 	_puzzle.centerY = _puzzle.y + (_puzzle.height / 2);
 	_puzzle.remove = false;
+	_puzzle.alpha = 0;
 	_puzzle.rc = RectMakeCenter(_puzzle.x, _puzzle.y, _puzzle.width, _puzzle.height);
 
 	_puzzle.isClick = false;
@@ -44,7 +45,14 @@ void puzzle::update()
 
 void puzzle::render()
 {
-	IMAGEMANAGER->findImage(_puzzle.imageName)->render(CAMERAMANAGER->getWorldDC(), _puzzle.rc.left, _puzzle.rc.top);
+	if (_puzzle.alpha > 0)
+	{
+		IMAGEMANAGER->findImage(_puzzle.imageName)->alphaRender(CAMERAMANAGER->getWorldDC(), _puzzle.rc.left, _puzzle.rc.top,_puzzle.alpha);
+	}
+	else
+	{
+		IMAGEMANAGER->findImage(_puzzle.imageName)->render(CAMERAMANAGER->getWorldDC(), _puzzle.rc.left, _puzzle.rc.top);
+	}
 	//Rectangle(CAMERAMANAGER->getWorldDC(), _puzzle.rc);
 }
 
@@ -73,7 +81,7 @@ HRESULT framePuzzle::init(const char* imageName, int idx, int idy)
 	_puzzle.centerY = _puzzle.y + (_puzzle.height / 2);
 	_puzzle.remove = false;
 	_puzzle.rc = RectMake(_puzzle.x, _puzzle.y, _puzzle.width, _puzzle.height);
-
+	_puzzle.alpha = 0;
 	_isOpen = false;
 	_puzzle.isRender = false;
 	_puzzle.isClick = false;
@@ -138,8 +146,7 @@ void templeEntrance::update()
 	_puzzle.centerX = _puzzle.x + (_puzzle.width / 2);
 	_puzzle.centerY = _puzzle.y + (_puzzle.height / 2);
 	_puzzle.rc = RectMakeCenter(_puzzle.x, _puzzle.y, _puzzle.width, _puzzle.height);
-	_nextStage = RectMake(_puzzle.x - 50, _puzzle.y, 100, 100);
-
+	
 
 	if (_puzzle.isClick)
 	{
@@ -152,7 +159,14 @@ void templeEntrance::update()
 
 void templeEntrance::render()
 {
-	IMAGEMANAGER->findImage(_puzzle.imageName)->render(CAMERAMANAGER->getWorldDC(), _puzzle.rc.left, _puzzle.rc.top);
-	//Rectangle(CAMERAMANAGER->getWorldDC(), _nextStage);
+	if (_puzzle.alpha > 0)
+	{
+		IMAGEMANAGER->findImage(_puzzle.imageName)->alphaRender(CAMERAMANAGER->getWorldDC(), _puzzle.rc.left, _puzzle.rc.top,_puzzle.alpha);
+	}
+	else
+	{
+		IMAGEMANAGER->findImage(_puzzle.imageName)->render(CAMERAMANAGER->getWorldDC(), _puzzle.rc.left, _puzzle.rc.top);
+	}
+	//Rectangle(CAMERAMANAGER->getWorldDC(), 	_puzzle.rc);
 	if(_puzzle.isClick) IMAGEMANAGER->findImage("Ebutton")->render(CAMERAMANAGER->getWorldDC(), _puzzle.x- (IMAGEMANAGER->findImage("Ebutton")->getWidth() / 2), _puzzle.y);
 }

@@ -25,6 +25,8 @@ HRESULT temple::init(const char* imageName, int idx, int idy)
 
 	_temp.time = TIMEMANAGER->getWorldTime();
 
+	_temp.rc = RectMake(_temp.x, _temp.y, IMAGEMANAGER->findImage(imageName)->getFrameWidth(), IMAGEMANAGER->findImage(imageName)->getFrameHeight());
+
 
 	return S_OK;
 }
@@ -60,7 +62,8 @@ HRESULT lantern::init(const char* imageName, int idx, int idy)
 
 	_temp.time = TIMEMANAGER->getWorldTime();
 
-	_temp.rc = RectMake(_temp.x, _temp.y, IMAGEMANAGER->findImage(imageName)->getFrameWidth(), IMAGEMANAGER->findImage(imageName)->getFrameWidth());
+	_temp.rc = RectMake(_temp.x, _temp.y, IMAGEMANAGER->findImage(imageName)->getFrameWidth(), IMAGEMANAGER->findImage(imageName)->getFrameHeight());
+
 	return S_OK;
 }
 
@@ -137,7 +140,30 @@ void cannon::render()
 //¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á door ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á
 
 
+HRESULT door::init(const char* imageName, int idx, int idy)
+{
+	_temp.imageName = imageName;
+
+	_temp.idx = idx;
+	_temp.idy = idy;
+
+
+	_temp.x = idx * 60;
+	_temp.y = idy * 60;
+
+	_temp.frameX = 0; // ÃÊ±âÈ­ 
+	_temp.anlge = 0;
+
+	_temp.time = TIMEMANAGER->getWorldTime();
+
+	_temp.rc = RectMake(_temp.x, _temp.y, IMAGEMANAGER->findImage(imageName)->getFrameWidth(), IMAGEMANAGER->findImage(imageName)->getFrameHeight());
+
+
+	return S_OK;
+}
+
 void door::render()
 {
 	IMAGEMANAGER->findImage(_temp.imageName)->frameRender(CAMERAMANAGER->getWorldDC(), _temp.x, _temp.y, _temp.frameX, 0);
+	//Rectangle(CAMERAMANAGER->getWorldDC(), _temp.rc);
 }
