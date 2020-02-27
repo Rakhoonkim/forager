@@ -72,12 +72,18 @@ void bullet::move()
 
 		(*iter)->rc = RectMake((*iter)->x, (*iter)->y, IMAGEMANAGER->findImage(_imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_imageName)->getFrameHeight());
 
+		//INDEX 업데이트
+		(*iter)->idx = (*iter)->x / 60;		 // idx 
+		(*iter)->idy = (*iter)->y / 60;		 // idy
+
+		
 		//총알이 사라지는 구간 
-		if (getDistance((*iter)->startX, (*iter)->startY, (*iter)->x, (*iter)->y) >= 500)
+		if ((MAPMANAGER->setBulletBossTileCollision((*iter)->idx, (*iter)->idy) && (getDistance((*iter)->startX, (*iter)->startY, (*iter)->x, (*iter)->y) >= 50)) || (getDistance((*iter)->startX, (*iter)->startY, (*iter)->x, (*iter)->y) >= (*iter)->distance))
 		{
 			EFFECTMANAGER->play("fireBall", (*iter)->x, (*iter)->y);
 			(*iter)->isFire = false;
 		}
+
 	}
 }
 
@@ -105,10 +111,30 @@ void bullet::fire(float x, float y, float angle, float speed)
 	tempBullet->ani->start();
 	tempBullet->x = tempBullet->startX = x;
 	tempBullet->y = tempBullet->startY = y;
+	tempBullet->idx = tempBullet->x / 60;
+	tempBullet->idy = tempBullet->y / 60;
 	tempBullet->angle = tempBullet->startAngle = angle;
 	tempBullet->speed = speed;
 	tempBullet->count = 0;
 	tempBullet->isFire = true;
+	tempBullet->distance = 500;
+	tempBullet->time = TIMEMANAGER->getWorldTime();
+	_vBullet.push_back(tempBullet);
+}
+
+void bullet::fire(float x, float y, float angle, float speed, float distance)
+{
+	tagBullet* tempBullet = OBJECTPOOL->getObject();
+	//tempBullet = new tagBullet;
+	tempBullet->ani = KEYANIMANAGER->findAnimation(_imageName);
+	tempBullet->ani->start();
+	tempBullet->x = tempBullet->startX = x;
+	tempBullet->y = tempBullet->startY = y;
+	tempBullet->angle = tempBullet->startAngle = angle;
+	tempBullet->speed = speed;
+	tempBullet->count = 0;
+	tempBullet->isFire = true;
+	tempBullet->distance = distance;
 	tempBullet->time = TIMEMANAGER->getWorldTime();
 	_vBullet.push_back(tempBullet);
 }

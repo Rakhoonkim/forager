@@ -42,9 +42,6 @@ HRESULT uiManager::init()
 	_player = new tagPlayer; // 플레이어 
 	_healthBar = 0;			 // 플레이어의 체력 
 
-	_weather = new weather;
-	_weather->init();
-
 	_land = new land;
 	_land->init();
 	
@@ -58,8 +55,6 @@ void uiManager::release()
 
 void uiManager::update()
 {
-	_weather->update();
-	
 	if (_isOption)
 	{
 		//스킬창을 안킨 상태에서만 
@@ -92,8 +87,6 @@ void uiManager::update()
 
 void uiManager::render()
 {
-	_weather->render(_backBuffer->getMemDC());
-	
 	PlayerUIRender();
 	if (_isOption)
 	{

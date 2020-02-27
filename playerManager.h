@@ -36,7 +36,6 @@ public:
 	void itemCollisionMouse();
 	void itemCollisionPlayer();
 	void objectCollisionMouse();	  // 마우스 커서 보이기 
-	void PlayerNextCollision();
 	void bulletColision();
 
 	void optionControl();			  // 옵션 컨트롤

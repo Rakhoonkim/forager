@@ -178,7 +178,7 @@ void mapToolScene::MapToolImage()
 	//랜드
 	IMAGEMANAGER->addFrameImage("graveTileLand", "./image/mapTool/graveTileLand.bmp", 420, 420, 7, 7, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("graveTileLandPalette", "./image/mapTool/graveTileLandPalette.bmp", 280, 280, 7, 7, true, RGB(255, 0, 255));
-	
+
 	IMAGEMANAGER->addFrameImage("characterTile", "./image/mapTool/characterTile.bmp", 420, 60, 7, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("characterTilePalette", "./image/mapTool/characterTilePalette.bmp", 280, 40, 7, 1, true, RGB(255, 0, 255));
 
@@ -295,7 +295,7 @@ void mapToolScene::MapToolSetup()
 			_treePalette[i * TREETILEX + j].frameY = i;
 		}
 	}
-	
+
 	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 케릭터 및 애너미  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 	for (int i = 0; i < CHARACTERX; i++)
 	{
@@ -312,8 +312,8 @@ void mapToolScene::MapToolSetup()
 		{
 			SetRect(&_templeObjectPalette[i * PALETTEX + j].rc, WINSIZEX - IMAGEMANAGER->findImage("templeObjectPalette")->getWidth() + (j * PALETTESIZE),
 				i * PALETTESIZE, WINSIZEX - IMAGEMANAGER->findImage("templeObjectPalette")->getWidth() + j * PALETTESIZE + PALETTESIZE, i * PALETTESIZE + PALETTESIZE);
-			_templeObjectPalette[i * PALETTEX + j].frameX =  j;
-			_templeObjectPalette[i * PALETTEX + j].frameY =  i;
+			_templeObjectPalette[i * PALETTEX + j].frameX = j;
+			_templeObjectPalette[i * PALETTEX + j].frameY = i;
 		}
 	}
 	//스타일 (90X20)
@@ -653,15 +653,18 @@ void mapToolScene::MapToolRender()
 
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
-		//인덱스 디버깅용
-		//char str[100];
-		//sprintf_s(str, "%d",i);
-		//Rectangle(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc);
-		//TextOut(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
-
-
 		//배경 렉트 그리기 
 		IMAGEMANAGER->findImage("rect2")->render(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top);
+
+		//인덱스 디버깅용
+	/*	char str[100];
+		sprintf_s(str, "%d",i);
+		Rectangle(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc);
+		TextOut(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));*/
+
+
+
+
 
 		RECT temp;
 		if (!IntersectRect(&temp, &CAMERAMANAGER->getWorldRect(), &_tiles[i].rc)) continue;
@@ -670,6 +673,20 @@ void mapToolScene::MapToolRender()
 		if (_tiles[i].type == TYPE::NONE) continue;
 
 		//만약 화면 렉트와 충돌되지 않으면 그리지 않는다.
+
+		//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ LAND ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+		if (_tiles[i].land != LAND::NONE)
+		{
+			if (_tiles[i].land == LAND::GRASS || _tiles[i].land == LAND::DESERT || _tiles[i].land == LAND::SNOW)
+			{
+				IMAGEMANAGER->findImage("grassTileLand")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landFrameX, _tiles[i].landFrameY);
+			}
+			else if (_tiles[i].land == LAND::GRAVE || _tiles[i].land == LAND::VOLCANO || _tiles[i].land == LAND::WATER)
+			{
+				IMAGEMANAGER->findImage("graveTileLand")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landFrameX, _tiles[i].landFrameY);
+			}
+			//Rectangle(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc);
+		}
 
 		//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■TERRAIN  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 		if (_tiles[i].terrain != TERRAIN::NONE)
@@ -698,20 +715,15 @@ void mapToolScene::MapToolRender()
 			{
 				IMAGEMANAGER->findImage("fireTempleTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
 			}
-		}
 
-		//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ LAND ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-		if (_tiles[i].land != LAND::NONE)
-		{
-			if (_tiles[i].land == LAND::GRASS || _tiles[i].land == LAND::DESERT || _tiles[i].land == LAND::SNOW)
+			if (KEYMANAGER->isToggleKey(VK_F3))
 			{
-				IMAGEMANAGER->findImage("grassTileLand")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landFrameX, _tiles[i].landFrameY);
+				if (_tiles[i].land == LAND::WATER)
+				{
+					IMAGEMANAGER->findImage("graveTileLand")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landFrameX, _tiles[i].landFrameY);
+				}
 			}
-			else if (_tiles[i].land == LAND::GRAVE || _tiles[i].land == LAND::VOLCANO)
-			{
-				IMAGEMANAGER->findImage("graveTileLand")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landFrameX, _tiles[i].landFrameY);
-			}
-			//Rectangle(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc);
+
 		}
 
 		//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ LAND OBJECT ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -737,6 +749,7 @@ void mapToolScene::MapToolRender()
 			{
 				IMAGEMANAGER->findImage("volcanoTileObject")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landObjectFrameX, _tiles[i].landObjectFrameY);
 			}
+
 		}
 
 		//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ OBJECT  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -753,7 +766,7 @@ void mapToolScene::MapToolRender()
 		{
 			IMAGEMANAGER->findImage("treeTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].treeFrameX, _tiles[i].treeFrameY);
 		}
-	
+
 		if (_tiles[i].templeObject != TEMPLEOBJECT::NONE)
 		{
 			IMAGEMANAGER->findImage("templeObject")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].templeObjectFrameX, _tiles[i].templeObjectFrameY);
@@ -1167,13 +1180,13 @@ TEMPLEOBJECT mapToolScene::MapToolTempleObjectSelect(int frameX, int frameY)
 
 	for (int i = 3; i < 7;i++)  // y 
 	{
-		if(frameX == 0 && frameY == i) return TEMPLEOBJECT::TEMPLE_CANNON;
+		if (frameX == 0 && frameY == i) return TEMPLEOBJECT::TEMPLE_CANNON;
 		if (frameX == 1 && frameY == i) return TEMPLEOBJECT::TEMPLE_DOOR;
 		if (frameX == 2 && frameY == i) return TEMPLEOBJECT::TEMPLE_DOOR_BLUE;
 		if (frameX == 3 && frameY == i) return TEMPLEOBJECT::TEMPLE_DOOR_GREEN;
 		if (frameX == 4 && frameY == i) return TEMPLEOBJECT::TEMPLE_DOOR_RED;
 	}
-	
+
 
 
 	return TEMPLEOBJECT::NONE;

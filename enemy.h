@@ -41,9 +41,9 @@ public:
 	virtual void setAni(const char* imageName)		 { _enemy.ani = KEYANIMANAGER->findAnimation(imageName); _enemy.ani->start(); }
 	virtual void enemyHit(int damege)				 { _enemy.hp -= damege; }
 	
-	virtual bool getBossAttack() { return _enemy.isAttack; }
-	virtual void SetBossAttack(bool value) { _enemy.isAttack = value; }
-	bulletManager* getBulletManager() {	return _bulletManager;	}
+	virtual bool getBossAttack()				{ return _enemy.isAttack; }
+	virtual void SetBossAttack(bool value)		{ _enemy.isAttack = value; }
+	bulletManager* getBulletManager()			{	return _bulletManager;	}
 
 	virtual void setEnemyBullet(bulletManager* bulletManager) { _bulletManager = bulletManager; }
 	

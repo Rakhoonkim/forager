@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "mapManager.h"
 #include "objectManager.h"
+#include "templeManager.h"
 
 mapManager::mapManager()
 {
@@ -19,7 +20,7 @@ HRESULT mapManager::init()
 
 void mapManager::release()
 {
-	delete[] _tiles;
+	//delete[] _tiles;
 }
 
 void mapManager::update()
@@ -62,6 +63,15 @@ void mapManager::render()
 	//	sprintf_s(str, "%d:%d", (*_viTiles)->idx, (*_viTiles)->idy);
 	//	TextOut(CAMERAMANAGER->getWorldDC(), (*_viTiles)->rc.left, (*_viTiles)->rc.top, str, strlen(str));
 	//}
+}
+
+void mapManager::stageRender()
+{
+	playerXYrender();
+}
+
+void mapManager::bossRender()
+{
 }
 
 void mapManager::playerXYrender()
@@ -263,13 +273,11 @@ void mapManager::MapLoad(const char* fileName)
 			_objectManager->get_puzzleManager()->setTempleIndex(TEMPLEOBJECT::TEMPLE_ENTRANCE, _tiles[i].idx, _tiles[i].idy);
 		}
 
-
 		_tiles[i].isObject = false;
 		_tiles[i].isRender = false;
 		_vTiles.push_back(&_tiles[i]);
 
 	}
-
 
 	this->setLandTile(2, 0);
 	this->setLandTile(2, 1);
@@ -297,6 +305,68 @@ void mapManager::MapLoad(const char* fileName)
 		this->setLandTile(0, 2);
 	}
 	else this->setLandTile(1, 1);*/
+
+	CloseHandle(file);
+}
+
+void mapManager::BossMapLoad(const char* fileName)
+{
+	HANDLE file;
+	DWORD read;
+
+	file = CreateFile(fileName, GENERIC_READ, 0, NULL,
+		OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	//맵을 불로온 직후 타일의 속성을 매겨준다
+	ReadFile(file, _tiles, sizeof(tagTile) * TILEX * TILEY, &read, NULL);
+
+	for (int i = 0; i < TILEX * TILEY; ++i)
+	{
+		if (_tiles[i].type == TYPE::NONE) continue;
+
+		if (_tiles[i].character == CHARACTER::DEMON)
+		{
+			GAMEDATA->getEnemyManager()->CreateEnemy(ENEMY::DEMON, _tiles[i].idx, _tiles[i].idy);
+		}
+		else if (_tiles[i].character == CHARACTER::SKULL)
+		{
+			GAMEDATA->getEnemyManager()->CreateEnemy(ENEMY::SKULL, _tiles[i].idx, _tiles[i].idy);
+		}
+		else if (_tiles[i].character == CHARACTER::DEMON_BOSS)
+		{
+			GAMEDATA->getEnemyManager()->CreateEnemy(ENEMY::DEMON_BOSS, _tiles[i].idx, _tiles[i].idy);
+		}
+
+
+		if (_tiles[i].templeObject == TEMPLEOBJECT::TEMPLE_LANTERN)
+		{
+			GAMEDATA->getTempleManager()->CreateLantern(_tiles[i].idx, _tiles[i].idy);
+		}
+		else if (_tiles[i].templeObject == TEMPLEOBJECT::TEMPLE_CANNON)
+		{
+			GAMEDATA->getTempleManager()->CreateCannon(_tiles[i].idx, _tiles[i].idy, _tiles[i].templeObjectFrameY - 3);
+		}
+		else if (_tiles[i].templeObject == TEMPLEOBJECT::TEMPLE_DOOR)
+		{
+			GAMEDATA->getTempleManager()->CreateDoor(_tiles[i].idx, _tiles[i].idy, _tiles[i].templeObjectFrameY - 3);
+		}
+
+		_tiles[i].isObject = false;
+		_tiles[i].isRender = false;
+		_vTiles.push_back(&_tiles[i]);
+	}
+
+
+	this->setLandTile(2, 0);
+	this->setLandTile(2, 1);
+	this->setLandTile(2, 2);
+
+	this->setLandTile(1, 0);
+	this->setLandTile(1, 1);
+	this->setLandTile(1, 2);
+
+	this->setLandTile(0, 0);
+	this->setLandTile(0, 1);
+	this->setLandTile(0, 2);
 
 	CloseHandle(file);
 }
@@ -390,7 +460,7 @@ void mapManager::setEnemyAddress(tagObject* enemy, int idx, int idy)
 	}
 }
 
-void mapManager::setPlayerTileColision(int idx, int idy)
+void mapManager::setPlayerStageTileColision(int idx, int idy)
 {
 	//위 
 	//멈춤상태로 하고 싶음 
@@ -434,6 +504,13 @@ void mapManager::setPlayerTileColision(int idx, int idy)
 			_player->weaponX = _tiles[idy * TILEX + (idx + 1)].rc.left - 75;
 		}
 	}
+}
+
+bool mapManager::setBulletBossTileCollision(int idx, int idy)
+{
+	if (_tiles[idy * TILEX + idx].land == LAND::WATER) return true;
+
+	return false;
 }
 
 void mapManager::setLandTile(int x, int y)
@@ -566,12 +643,13 @@ POINT mapManager::randomObjectTile()
 
 void mapManager::removeTiles()
 {
+	_vTiles.clear();
 	for (int i = 0; i < TILEY; i++)
 	{
 		for (int j = 0; j < TILEX; j++)
 		{
-			SetRect(&_tiles[i * TILEX + j].rc, j * TILESIZE, i * TILESIZE,
-				j * TILESIZE + TILESIZE, i * TILESIZE + TILESIZE);
+			/*SetRect(&_tiles[i * TILEX + j].rc, j * TILESIZE, i * TILESIZE,
+				j * TILESIZE + TILESIZE, i * TILESIZE + TILESIZE);*/
 			_tiles[i * TILEX + j].type = TYPE::NONE;
 			_tiles[i * TILEX + j].terrain = TERRAIN::NONE;
 			_tiles[i * TILEX + j].land = LAND::NONE;

@@ -135,12 +135,24 @@ void templeEntrance::update()
 {
 	_puzzle.x = _puzzle.idx * 60;
 	_puzzle.y = _puzzle.idy * 60;
+	_puzzle.centerX = _puzzle.x + (_puzzle.width / 2);
+	_puzzle.centerY = _puzzle.y + (_puzzle.height / 2);
 	_puzzle.rc = RectMakeCenter(_puzzle.x, _puzzle.y, _puzzle.width, _puzzle.height);
 	_nextStage = RectMake(_puzzle.x - 50, _puzzle.y, 100, 100);
+
+
+	if (_puzzle.isClick)
+	{
+		if (KEYMANAGER->isOnceKeyDown('E'))
+		{
+			SCENEMANAGER->changeScene("BOSS");
+		}
+	}
 }
 
 void templeEntrance::render()
 {
 	IMAGEMANAGER->findImage(_puzzle.imageName)->render(CAMERAMANAGER->getWorldDC(), _puzzle.rc.left, _puzzle.rc.top);
-	Rectangle(CAMERAMANAGER->getWorldDC(), _nextStage);
+	//Rectangle(CAMERAMANAGER->getWorldDC(), _nextStage);
+	if(_puzzle.isClick) IMAGEMANAGER->findImage("Ebutton")->render(CAMERAMANAGER->getWorldDC(), _puzzle.x- (IMAGEMANAGER->findImage("Ebutton")->getWidth() / 2), _puzzle.y);
 }

@@ -13,11 +13,6 @@ private:
 	
 	player* _player;
 	bulletManager* _bulletManager;
-
-	float _slimeTimer;   
-	float _boarTimer;
-	int _maxEnemy;
-
 public:
 	enemyManager();
 	~enemyManager();
@@ -30,10 +25,6 @@ public:
 
 	void enemyRemove();			 // 몬스터 삭제
 
-	void bossAttack();			 //보스 공격 판정 사용안할예정 
-
-	void CropsMakeUpdate(); // 적을 생성하는 
-
 	void setPlayer(player* player)	{ _player = player;}		 // SET PLAYER 
 	void CreateEnemy(ENEMY enemyType, int idx, int idy);		 // CREATE ENEMY 
 
@@ -41,5 +32,8 @@ public:
 	vector<enemy*>::iterator getViEnemy() { return _viEnemy;}	 // ENEMY Iterator
 
 	bulletManager* getBulletManager() { return _bulletManager; }
+
+
+	void BossAttack();
 };
 

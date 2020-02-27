@@ -56,7 +56,6 @@ void playerManager::update()
 		_alphaEffect->play("expNum", 15, _player->get_PlayerAddress()->x - 15, _player->get_PlayerAddress()->y - 15);
 	}
 	bulletColision();
-	PlayerNextCollision();
 }
 
 void playerManager::render()
@@ -216,44 +215,15 @@ void playerManager::objectCollisionMouse()
 			CURSORMANAGER->setBuildPoint();
 			CURSORMANAGER->getCursor()->setCursorXY(_puzzleManager->getTreasureChest()->getPuzzle()->x - CAMERAMANAGER->getWorldCamera().cameraX + 49, _puzzleManager->getTreasureChest()->getPuzzle()->y - CAMERAMANAGER->getWorldCamera().cameraY + 75);
 			_puzzleManager->getTreasureChest()->getPuzzle()->isClick = true;
-
 			return;
 		}
-		else _puzzleManager->getTreasureChest()->getPuzzle()->isClick - false;
+		else _puzzleManager->getTreasureChest()->getPuzzle()->isClick = false;
 
 	}
-	else _puzzleManager->getTreasureChest()->getPuzzle()->isClick - false;
+	else _puzzleManager->getTreasureChest()->getPuzzle()->isClick = false;
 
-	//for (int i = 0; i < _puzzleManager->getVPuzzle().size(); ++i)
-	//{
-	//	if (_puzzleManager->getVPuzzle()[i]->getPuzzle()->puzzle == PUZZLE::TREASURECHEST)
-	//	{
-	//		if (180 >= getDistance(_puzzleManager->getVPuzzle()[i]->getPuzzle()->centerX, _puzzleManager->getVPuzzle()[i]->getPuzzle()->centerY, _player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y))
-	//		{
-	//			if (PtInRect(&_puzzleManager->getVPuzzle()[i]->getPuzzle()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
-	//			{
-	//				CURSORMANAGER->setBuildPoint();
-	//				CURSORMANAGER->getCursor()->setCursorXY(_puzzleManager->getVPuzzle()[i]->getPuzzle()->x - CAMERAMANAGER->getWorldCamera().cameraX + 49, _puzzleManager->getVPuzzle()[i]->getPuzzle()->y - CAMERAMANAGER->getWorldCamera().cameraY + 75);
-	//				_puzzleManager->getVPuzzle()[i]->getPuzzle()->isClick = true;
-
-	//				return;
-	//			}
-	//			else _puzzleManager->getVPuzzle()[i]->getPuzzle()->isClick = false;
-	//		}
-	//		else _puzzleManager->getVPuzzle()[i]->getPuzzle()->isClick = false;
-	//	}
-	//}
 	CURSORMANAGER->setCursor();
 	CURSORMANAGER->getCursor()->setCursorChange();
-}
-
-void playerManager::PlayerNextCollision()
-{
-	RECT temp;
-	if (IntersectRect(&temp, &_puzzleManager->getFireTempleEntrance()->getRect(), &_player->get_PlayerAddress()->rc))
-	{
-		SCENEMANAGER->changeScene("BOSS");
-	}
 }
 
 void playerManager::bulletColision()

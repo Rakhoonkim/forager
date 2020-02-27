@@ -141,11 +141,13 @@ struct tagBullet
 	RECT rc;
 	float startX, startY;
 	float x, y;
+	float distance;
 	bool isFire;
 	float startAngle;
 	float angle;
 	float speed;
 	float time;
+	int idx, idy;
 	int count;
 };
 
@@ -211,3 +213,14 @@ enum class SEWINGRECIPE
 };
 
 
+struct tagTempleObject
+{
+	RECT rc;
+	animation* ani;
+	const char* imageName;
+	float idx, idy;
+	float x, y;
+	float anlge;
+	int frameX;
+	float time;
+};

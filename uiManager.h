@@ -4,7 +4,7 @@
 #include "build.h"
 #include "equipment.h"
 #include "land.h"
-#include "weather.h"
+
 
 class gameNode;
 
@@ -18,7 +18,6 @@ private:
 	inventory* _inven;
 	build* _build;
 	land* _land;
-	weather* _weather;
 
 	int _currentOption;
 	bool _isOption;

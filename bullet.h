@@ -21,6 +21,7 @@ public:
 	void move();
 	void remove();
 	void fire(float x, float y, float angle, float speed);
+	void fire(float x, float y, float angle, float speed ,float distance);
 
 	vector<tagBullet*> getVBullet()				{ return _vBullet; }
 	vector<tagBullet*>::iterator getViBullet() { return _viBullet; }

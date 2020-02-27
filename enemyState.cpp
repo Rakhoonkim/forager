@@ -320,6 +320,7 @@ void enemyMove::update()
 		{
 			_enemyStateManager->chanageState("IDLE");  // 이동상태로 전환 
 		}
+		MAPMANAGER->setEnemyAddress(_enemy, _enemy->idx, _enemy->idy);
 	}
 	else if (_enemy->enemy == ENEMY::DEMON_BOSS)
 	{
@@ -620,7 +621,7 @@ void enemyJump::update()
 			_enemy->x += cosf(_enemy->angle) * moveSpeed;
 			_enemy->y += -sinf(_enemy->angle) * moveSpeed;
 		}
-		if (_enemy->time + 1 <= TIMEMANAGER->getWorldTime())
+		if (_enemy->time + 0.8 <= TIMEMANAGER->getWorldTime())
 		{
 			_enemy->centerX = _enemy->x;
 			_enemy->centerY = _enemy->y;
@@ -661,6 +662,7 @@ void enemyJump::direction()
 	else if (_enemy->angle <= 5.522 && _enemy->angle > 3.952) // 아래 방향 
 	{
 		_direction = DIRECTION::DOWN;
+		_jumpPower = 12;
 	}
 	else if ((_enemy->angle <= 6.28 && _enemy->angle > 5.522) || (_enemy->angle < 0.758 && _enemy->angle >= 0))
 	{

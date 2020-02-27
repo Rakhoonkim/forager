@@ -18,11 +18,6 @@ HRESULT enemyManager::init()
 
 	_bulletManager = new bulletManager;
 	_bulletManager->init();
-	//몬스터 init에서 해주면 안됨 
-
-	_slimeTimer = TIMEMANAGER->getWorldTime();
-	_boarTimer = TIMEMANAGER->getWorldTime();
-	_maxEnemy = 0;
 
 	return S_OK;
 }
@@ -48,17 +43,6 @@ void enemyManager::update()
 					break;
 				}
 			}
-
-		}
-		if (_vEnemy[i]->getEnemy()->enemy == ENEMY::DEMON_BOSS)
-		{
-			if (_vEnemy[i]->getBossAttack())
-			{
-				this->CreateEnemy(ENEMY::SKULL, _vEnemy[i]->getEnemy()->idx + 1, _vEnemy[i]->getEnemy()->idy);
-				this->CreateEnemy(ENEMY::SKULL, _vEnemy[i]->getEnemy()->idx + 1, _vEnemy[i]->getEnemy()->idy);
-				this->CreateEnemy(ENEMY::SKULL, _vEnemy[i]->getEnemy()->idx + 1, _vEnemy[i]->getEnemy()->idy);
-				_vEnemy[i]->SetBossAttack(false);
-			}
 		}
 	}
 	//for (_viEnemy = _vEnemy.begin(); _viEnemy != _vEnemy.end(); _viEnemy++)
@@ -75,9 +59,6 @@ void enemyManager::update()
 		CreateEnemy(ENEMY::DEMON_BOSS, 24, 21);
 	}
 	
-	
-	
-	CropsMakeUpdate();
 
 	_bulletManager->update();
 	enemyRemove();
@@ -102,14 +83,14 @@ void enemyManager::imageSetting()
 	KEYANIMANAGER->addArrayFrameAnimation("slimeIdleRight", "slime", IdleRight, 2, 1, true);
 
 	int JumpLeft[] = { 2 };
-	KEYANIMANAGER->addArrayFrameAnimation("slimeJumpLeft", "slime", JumpLeft, 1, 5, true);
+	KEYANIMANAGER->addArrayFrameAnimation("slimeJumpLeft", "slime", JumpLeft, 1, 10, true);
 	int JumpRight[] = { 7 };
-	KEYANIMANAGER->addArrayFrameAnimation("slimeJumpRight", "slime", JumpRight, 1, 5, true);
+	KEYANIMANAGER->addArrayFrameAnimation("slimeJumpRight", "slime", JumpRight, 1, 10, true);
 
 	int AttackLeft[] = { 3,4 };
-	KEYANIMANAGER->addArrayFrameAnimation("slimeAttackLeft", "slime", AttackLeft, 2, 2, true);
+	KEYANIMANAGER->addArrayFrameAnimation("slimeAttackLeft", "slime", AttackLeft, 2, 5, true);
 	int AttackRight[] = { 5,6 };
-	KEYANIMANAGER->addArrayFrameAnimation("slimeAttackRight", "slime", AttackRight, 2, 2, true);
+	KEYANIMANAGER->addArrayFrameAnimation("slimeAttackRight", "slime", AttackRight, 2, 5, true);
 
 
 	//BOAR
@@ -243,51 +224,20 @@ void enemyManager::CreateEnemy(ENEMY enemyType, int idx, int idy)
 
 }
 
-void enemyManager::bossAttack()
+void enemyManager::BossAttack()
 {
 	for (int i = 0;i < _vEnemy.size(); i++)
 	{
+	
 		if (_vEnemy[i]->getEnemy()->enemy == ENEMY::DEMON_BOSS)
 		{
 			if (_vEnemy[i]->getBossAttack())
 			{
-				this->CreateEnemy(ENEMY::SKULL, _vEnemy[i]->getEnemy()->idx, _vEnemy[i]->getEnemy()->idy);
+				this->CreateEnemy(ENEMY::SKULL, _vEnemy[i]->getEnemy()->idx + 1, _vEnemy[i]->getEnemy()->idy);
+				this->CreateEnemy(ENEMY::SKULL, _vEnemy[i]->getEnemy()->idx + 1, _vEnemy[i]->getEnemy()->idy);
+				this->CreateEnemy(ENEMY::SKULL, _vEnemy[i]->getEnemy()->idx + 1, _vEnemy[i]->getEnemy()->idy);
 				_vEnemy[i]->SetBossAttack(false);
-				break;
 			}
 		}
 	}
-}
-
-void enemyManager::CropsMakeUpdate()
-{
-	if(_maxEnemy > (2 * MAPMANAGER->getMapCount())) return;
-
-	if (_slimeTimer + RND->getFromIntTo(10, 20) <= TIMEMANAGER->getWorldTime())
-	{
-	
-		POINT rnd;
-		rnd = MAPMANAGER->randomObjectTile();
-
-		if (rnd.x != 0 && rnd.y != 0)
-		{
-			_maxEnemy++;
-			_slimeTimer = TIMEMANAGER->getWorldTime();
-			this->CreateEnemy(ENEMY::SLIME, rnd.x, rnd.y);
-		}
-	}
-
-	if (_boarTimer + RND->getFromIntTo(20, 30) <= TIMEMANAGER->getWorldTime())
-	{
-		POINT rnd2;
-		rnd2 = MAPMANAGER->randomObjectTile();
-
-		if (rnd2.x != 0 && rnd2.y != 0)
-		{
-			_maxEnemy++;
-			_boarTimer = TIMEMANAGER->getWorldTime();
-			this->CreateEnemy(ENEMY::BOAR, rnd2.x, rnd2.y);
-		}
-	}
-
 }

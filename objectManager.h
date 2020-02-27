@@ -17,6 +17,11 @@ private:
 	enemyManager* _enemyManager;  //enemyManager
 	puzzleManager* _puzzleManager;  // puzzleManager
 
+	//ActoEnemy
+	float _slimeTimer;
+	float _boarTimer;
+	int _maxEnemy;
+
 public:
 	objectManager();
 	~objectManager();
@@ -30,5 +35,8 @@ public:
 	buildManager* get_buildManager() { return _buildManager; }
 	enemyManager* get_enemyManager() { return _enemyManager; }
 	puzzleManager* get_puzzleManager() { return _puzzleManager; }
+
+
+	void AutoEnemyCreate();
 };
 

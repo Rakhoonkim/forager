@@ -71,7 +71,7 @@ void player::update()
 	//setDirection();
 	playerHitCount();
 	MAPMANAGER->setPlayerAddress(&_player);
-	MAPMANAGER->setPlayerTileColision(_player.idx, _player.idy);  // 面倒贸府 
+	MAPMANAGER->setPlayerStageTileColision(_player.idx, _player.idy);  // 面倒贸府 
 
 	_player.rc = RectMake(_player.x, _player.y, _player.playerImage->getFrameWidth(), _player.playerImage->getFrameHeight());
 }
@@ -269,6 +269,18 @@ void player::acelPlus()
 	//啊加档
 	if (_player.acel >= 2) return;
 	_player.acel += 0.05;
+}
+
+void player::setPlayerXY(int idx, int idy)
+{
+	_player.x = idx * 60 + 30;
+	_player.y = idy * 60 + 30;
+	_player.weaponX = _player.x - 15;
+	_player.weaponY = _player.y - 5;
+	CAMERAMANAGER->setCameraInit(_player.x, _player.y);
+	_player.rc = RectMake(_player.x, _player.y, _player.playerImage->getFrameWidth(), _player.playerImage->getFrameHeight());
+
+
 }
 
 void player::setPlayerExpMax(int level)

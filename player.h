@@ -31,6 +31,9 @@ public:
 	void KeyControl();		// KEY
 	void IndexUpdate();		// PLAYER INDEX 업데이트
 	void acelPlus();
+
+	void setPlayerXY(int idx, int idy);		// 보스씬 들어갈때
+
 	void setPlayerExpMax(int expMax);
 	void playerExp(int exp);
 	void playerHealth(int health);

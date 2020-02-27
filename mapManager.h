@@ -9,7 +9,7 @@ class mapManager : public singletonBase<mapManager>
 private:
 	tagTile _tiles[TILEX * TILEY];
 
-	objectManager* _objectManager;
+	objectManager* _objectManager;			// stageScene일때 
 
 	//전체 맵 타일 
 	vector<tagTile*>			_vTiles;
@@ -26,14 +26,17 @@ public:
 	void release();
 	void update();
 	void render();
+	void stageRender();		// 스테이지 렌더
+	void bossRender();		// 보스렌더 
 
-	void playerXYrender();
-
-	void MapImage();
+	void MapImage();		// 이미지 셋팅
 	void MapLoad(const char* fileName);
+	void BossMapLoad(const char* fileName);
+	void playerXYrender();	// 플레이어 xy를 기준으로 출력 
 
 	void setObjectManager(objectManager* objectManager) { _objectManager = objectManager; }
-
+	
+	// == 백터일 때
 	void TerrainRender();
 	void LandRender();
 	void LandObjectRender();
@@ -42,9 +45,9 @@ public:
 
 	void setPlayerAddress(tagPlayer* player);
 	void setEnemyAddress(tagObject* enemy, int idx, int idy);			// 몬스터 섬 충돌을 막기 위한 
-
-	void setPlayerTileColision(int idx, int idy);
-
+	
+	void setPlayerStageTileColision(int idx, int idy);
+	bool setBulletBossTileCollision(int idx, int idy);
 	void ObejectRender();
 
 	void setLandTile(int x,int y); // 땅을 보이게 하기 위한 함수
