@@ -146,10 +146,11 @@ void player::KeyControl()
 		{
 			_player.isAttack = true;
 			_player.weaponAni->start();
-			//ITEMMANAGER->Dropitem(OBJECT::IRON, _player.x, _player.y);
+			//ITEMMANAGER->Dropitem(OBJECT::COAL, _player.x, _player.y);
 			//ITEMMANAGER->DropForgeItem(FORGERECIPE::KEY, _player.x, _player.y,1);
-			//ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::GOLD, _player.x, _player.y, 1);
-			//ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::IRON, _player.x, _player.y, 1);
+			ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::COAL, _player.x, _player.y, 1);
+			ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::GOLD, _player.x, _player.y, 1);
+			ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::IRON, _player.x, _player.y, 1);
 			KEYMANAGER->setKeyDown(VK_LBUTTON, false);
 			cout << "player health: " << _player.health << endl;
 		}

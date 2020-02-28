@@ -193,6 +193,13 @@ void furnace::render()
 
 void furnace::EffectRender()
 {
+	if (_isWork)
+	{
+		float timeWorking = ((float)(TIMEMANAGER->getWorldTime() - _timer) / (float)(5))  * 100;
+		IMAGEMANAGER->findImage("workingBar")->alphaRender(CAMERAMANAGER->getWorldDC(), _building.centerX - (IMAGEMANAGER->findImage("workingBar")->getFrameWidth() / 2), _building.centerY - (IMAGEMANAGER->findImage("workingBar")->getFrameHeight() / 2), 0, 0, 100, 20,150);
+		IMAGEMANAGER->findImage("workingBar")->alphaRender(CAMERAMANAGER->getWorldDC(), _building.centerX - (IMAGEMANAGER->findImage("workingBar")->getFrameWidth() / 2), _building.centerY - (IMAGEMANAGER->findImage("workingBar")->getFrameHeight() / 2), 0, 24, timeWorking, 20);
+		IMAGEMANAGER->findImage("craftItem")->frameRender(CAMERAMANAGER->getWorldDC(), _building.centerX - (IMAGEMANAGER->findImage("craftItem")->getFrameWidth() /2) , _building.centerY - (IMAGEMANAGER->findImage("craftItem")->getFrameHeight() / 2), _direction, 0);
+	}
 	if (_isUse)
 	{
 		IMAGEMANAGER->findImage("furnaceBackground")->render(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2 - IMAGEMANAGER->findImage("furnaceBackground")->getWidth() / 2, CAMERAMANAGER->getWorldCamera().cameraY + 75);

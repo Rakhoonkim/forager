@@ -34,9 +34,9 @@ public:
 
 	void setPlayerXY(int idx, int idy);		// 보스씬 들어갈때
 
-	void setPlayerExpMax(int expMax);
 	void playerExp(int exp);
 	void playerHealth(int health);
+	void setPlayerExpMax(int expMax);
 
 	void playerHitCount();
 	void playerHit();
