@@ -294,6 +294,9 @@
     <ClInclude Include="templeManager.h">
       <Filter>playGround\object\temple</Filter>
     </ClInclude>
+    <ClInclude Include="Zorder.h">
+      <Filter>playGround\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -472,6 +475,9 @@
     </ClCompile>
     <ClCompile Include="templeManager.cpp">
       <Filter>playGround\object\temple</Filter>
+    </ClCompile>
+    <ClCompile Include="Zorder.cpp">
+      <Filter>playGround\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

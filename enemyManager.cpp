@@ -13,8 +13,6 @@ enemyManager::~enemyManager()
 HRESULT enemyManager::init()
 {
 	imageSetting();
-	_player = new player;
-	_player->init();
 
 	_bulletManager = new bulletManager;
 	_bulletManager->init();
@@ -95,10 +93,10 @@ void enemyManager::update()
 
 void enemyManager::render()
 {
-	for (_viEnemy = _vEnemy.begin(); _viEnemy != _vEnemy.end(); _viEnemy++)
-	{
-		(*_viEnemy)->render();
-	}
+	//for (_viEnemy = _vEnemy.begin(); _viEnemy != _vEnemy.end(); _viEnemy++)
+	//{
+	//	(*_viEnemy)->render();
+	//}
 	_bulletManager->render();
 }
 
@@ -202,9 +200,9 @@ void enemyManager::enemyRemove()
 
 void enemyManager::CreateEnemy(ENEMY enemyType, int idx, int idy)
 {
+	enemy* temp;
 	if (enemyType == ENEMY::SLIME)
 	{
-		enemy* temp;
 		temp = new slime;
 		temp->init(enemyType, "slime", idx, idy);
 		temp->setAni("slimeIdleLeft");
@@ -214,7 +212,6 @@ void enemyManager::CreateEnemy(ENEMY enemyType, int idx, int idy)
 	}
 	else if (enemyType == ENEMY::BOAR)
 	{
-		enemy* temp;
 		temp = new boar;
 		temp->init(enemyType, "boarIdle", idx, idy);
 		temp->setAni("boarIdleLeft");
@@ -223,7 +220,6 @@ void enemyManager::CreateEnemy(ENEMY enemyType, int idx, int idy)
 	}
 	else if (enemyType == ENEMY::DEMON)
 	{
-		enemy* temp;
 		temp = new demon;
 		temp->init(enemyType, "demonWalk", idx, idy);
 		temp->setAni("demonIdleLeft");
@@ -232,7 +228,6 @@ void enemyManager::CreateEnemy(ENEMY enemyType, int idx, int idy)
 	}
 	else if (enemyType == ENEMY::SKULL)
 	{
-		enemy* temp;
 		temp = new skull;
 		temp->init(enemyType, "skull", idx, idy);
 		temp->setAni("skullLeft");
@@ -243,7 +238,6 @@ void enemyManager::CreateEnemy(ENEMY enemyType, int idx, int idy)
 	}
 	else if (enemyType == ENEMY::DEMON_BOSS)
 	{
-		enemy* temp;
 		temp = new demonBoss;
 		temp->init(enemyType, "bossWalk", idx, idy);
 		temp->setAni("bossIdleLeft");
@@ -251,6 +245,8 @@ void enemyManager::CreateEnemy(ENEMY enemyType, int idx, int idy)
 		_vEnemy.push_back(temp);
 	}
 
+	//제트오더 추가 
+	ZORDER->addZorder(STAGEOBJECT::ENEMY, NULL, NULL, NULL, temp, NULL);
 }
 
 void enemyManager::BossAttack()

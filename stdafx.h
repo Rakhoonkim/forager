@@ -36,6 +36,7 @@ using namespace std;
 #include "uiManager.h"              //UI
 #include "ObjectPool.h"
 #include "gameData.h"
+#include "Zorder.h"
 using namespace SEVENTEEN_UTIL;
 #include <list>
 
@@ -80,6 +81,7 @@ using namespace SEVENTEEN_UTIL;
 #define UIMANAGER uiManager::getSingleton()
 #define OBJECTPOOL ObjectPool<tagBullet>::getSingleton()
 #define GAMEDATA gameData::getSingleton()
+#define ZORDER Zorder::getSingleton()
 #define SAFE_DELETE(p) {if(p) {delete(p); (p)=NULL;}}
 #define SAFE_RELEASE(p) {if(p) {(p)->release(); (p) = NULL;}}
 #define SAFE_DELETE_ARRAY(p) {if(p) { delete[](p); (p) = NULL;}}

@@ -215,6 +215,7 @@
     <ClInclude Include="utils.h" />
     <ClInclude Include="weather.h" />
     <ClInclude Include="windowAPI.h" />
+    <ClInclude Include="Zorder.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="action.cpp" />
@@ -281,6 +282,7 @@
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="weather.cpp" />
     <ClCompile Include="windowAPI.cpp" />
+    <ClCompile Include="Zorder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />

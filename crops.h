@@ -28,6 +28,7 @@ public:
 	virtual void setCropsEffect(bool value)		{ _crops.isEffect = value; }
 	virtual void setCropsIsHit(bool value) { _crops.isHit = value; }
 	virtual bool getCropsIsHit() { return _crops.isHit; }
+	virtual float getCropsY()			{ return _crops.y; }
 	virtual tagObject* getCrops()		{ return &_crops; }
 };
 

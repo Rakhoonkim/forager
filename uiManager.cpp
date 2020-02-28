@@ -30,8 +30,8 @@ HRESULT uiManager::init()
 	_optionList[_currentOption].isClick = true;
 
 
-	_inven = new inventory;  // _currentOption = 1  일때
-	_inven->init();
+	//_inven = new inventory;  // _currentOption = 1  일때
+	//_inven->init();
 
 	_build = new build;	//건설 창
 	_build->init();
@@ -91,6 +91,7 @@ void uiManager::update()
 			{
 				if (PtInRect(&_exit,_ptMouse)) //PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
 				{
+					ZORDER->release();
 					SCENEMANAGER->changeScene("MAINMENU");
 					_isOption = false;
 				}
@@ -140,7 +141,7 @@ void uiManager::render()
 		{
 			IMAGEMANAGER->findImage("saveSlotBackground")->render(_backBuffer->getMemDC(), WINSIZEX / 2 - (IMAGEMANAGER->findImage("saveSlotBackground")->getWidth() / 2), 150);
 			IMAGEMANAGER->findImage("bigExit")->render(_backBuffer->getMemDC(), _exit.left, _exit.top);
-			Rectangle(_backBuffer->getMemDC(), _exit);
+			//Rectangle(_backBuffer->getMemDC(), _exit);
 		}
 	}
 }

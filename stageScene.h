@@ -4,6 +4,7 @@
 #include "gameNode.h"
 #include "weather.h"
 
+
 class stageScene : public gameNode
 {
 private:
@@ -11,6 +12,7 @@ private:
 	objectManager* _objectManager;		//OBJECT
 	//ENEMYMANAGER ¿¹Á¤
 	weather* _weather;
+
 public:
 	stageScene() {}
 	~stageScene() {}
@@ -24,5 +26,7 @@ public:
 
 	void nextScene();
 	void AlphaImage();
+
+	void ZorderSetting();
 };
 

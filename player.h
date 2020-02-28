@@ -10,7 +10,6 @@ private:
 	playerState* _state;
 	playerIdle* _playerIdle;
 	playerMove* _playerMove;
-
 	tagPlayer _player;
 
 
@@ -42,6 +41,7 @@ public:
 	void playerHitCount();
 	void playerHit();
 	void playerHealth();
+
 	tagPlayer get_PlayerAddressLinK() { return _player; }
 	tagPlayer* get_PlayerAddress() { return &_player; }
 	RECT get_playerRect() { return _player.rc; }

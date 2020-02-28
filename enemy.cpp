@@ -44,8 +44,8 @@ HRESULT enemy::init(ENEMY enemy,const char* imageName,int idx,int idy)
 	_enemy.width = IMAGEMANAGER->findImage(_enemy.imageName)->getFrameWidth();
 	_enemy.height = IMAGEMANAGER->findImage(_enemy.imageName)->getFrameHeight();
 
-	_enemy.centerX = _enemy.x + 30;
-	_enemy.centerY = _enemy.y + 30;
+	_enemy.centerX = _enemy.x + _enemy.width/2;
+	_enemy.centerY = _enemy.y + _enemy.height/2;
 
 	_enemy.isEffect = false;
 	_enemy.AttackTerm = false;

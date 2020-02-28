@@ -15,7 +15,7 @@ HRESULT bossScene::init()
 	// ÇÃ·¹ÀÌ¾î 
 	_playerManager = new playerManager;
 	_playerManager = GAMEDATA->getPlayerManager();
-
+	ZORDER->addZorder(STAGEOBJECT::PLAYER, _playerManager->get_player(), NULL, NULL, NULL, NULL);
 	_enemyManager = new enemyManager;
 	_enemyManager->init();
 	_playerManager->get_player()->setPlayerXY(22, 33);
@@ -31,7 +31,6 @@ HRESULT bossScene::init()
 
 	GAMEDATA->setTempleManager(_templeManager);
 	GAMEDATA->setEnemyManager(_enemyManager);
-	GAMEDATA->setObjectManager(GAMEDATA->getObjectManager());
 
 	MAPMANAGER->removeTiles();  // ¸Ê ÃÊ±âÈ­ 
 	MAPMANAGER->BossMapLoad("inGameNumber3.map");
@@ -39,6 +38,9 @@ HRESULT bossScene::init()
 
 
 	_exitScene = RectMake(1340, 2100, 100, 60);
+
+
+
 	return S_OK;
 }
 
@@ -54,7 +56,7 @@ void bossScene::update()
 	_templeManager->update();
 	_playerManager->update();
 	_enemyManager->update();
-	
+	ZORDER->update();
 	if (_templeManager->getBossAttack()) { _enemyManager->BossAttack(); }
 	exitTemple();
 }
@@ -64,12 +66,12 @@ void bossScene::render()
 	PatBlt(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX, CAMERAMANAGER->getWorldCamera().cameraY, WINSIZEX, WINSIZEY, BLACKNESS);
 	MAPMANAGER->stageRender();      //MAP
 	if (CURSORMANAGER->getCursor()->getObjectPoint()) CURSORMANAGER->render(); // CURSOR
+	_enemyManager->render();   // ÃÑ¾Ë ·»´õ
+	//_playerManager->render();  //PLAYER 
 	ITEMMANAGER->render();
-	_enemyManager->render();
-	_playerManager->render();  //PLAYER 
 	EFFECTMANAGER->render(CAMERAMANAGER->getWorldDC());
+	ZORDER->render();
 	_templeManager->render(); 
-	
 	if (!UIMANAGER->getLand()->getLand()) CAMERAMANAGER->getWorldImage()->render(getMemDC(), 0, 0, CAMERAMANAGER->getWorldCamera().cameraX, CAMERAMANAGER->getWorldCamera().cameraY, WINSIZEX, WINSIZEY);
 	UIMANAGER->render();	// UIs
 
@@ -81,7 +83,11 @@ void bossScene::exitTemple()
 	if (IntersectRect(&temp, &_exitScene, &_playerManager->get_player()->get_playerRect()))
 	{
 		_objectManager = GAMEDATA->getObjectManager();
+		_playerManager->set_EnemyManager(GAMEDATA->getObjectManager()->get_enemyManager());
+		GAMEDATA->setPlayerManager(_playerManager);
+		//_playerManager = GAMEDATA->getPlayerManager();
 		SCENEMANAGER->changeScene("STAGE");
+		ZORDER->setZorder(GAMEDATA->getZorder());
 		GAMEDATA->setPlayerManager(_playerManager);
 		GAMEDATA->setObjectManager(_objectManager);
 		SCENEMANAGER->getCurrentScene()->nextScene();

@@ -1,8 +1,9 @@
 #pragma once
 #include "stdafx.h"
 #include "puzzle.h"
+#include "gameNode.h"
 
-class puzzleManager
+class puzzleManager : public gameNode
 {
 private:
 	vector<puzzle*>			   _vPuzzle;

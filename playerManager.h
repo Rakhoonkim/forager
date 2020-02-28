@@ -16,7 +16,6 @@ private:
 	buildManager* _buildManager;	// BUILD
 	enemyManager* _enemyManager;	// ENEMY
 	puzzleManager* _puzzleManager;
-
 	bool _isOption;					// 옵션창
 
 	//경험치 

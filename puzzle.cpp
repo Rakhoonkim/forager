@@ -40,6 +40,8 @@ void puzzle::update()
 {
 	_puzzle.x = _puzzle.idx * 60;
 	_puzzle.y = _puzzle.idy * 60;
+	_puzzle.centerX = _puzzle.x + 30;
+	_puzzle.centerY = _puzzle.y +30;
 	_puzzle.rc = RectMakeCenter(_puzzle.x, _puzzle.y, _puzzle.width, _puzzle.height);
 }
 
@@ -143,8 +145,8 @@ void templeEntrance::update()
 {
 	_puzzle.x = _puzzle.idx * 60;
 	_puzzle.y = _puzzle.idy * 60;
-	_puzzle.centerX = _puzzle.x + (_puzzle.width / 2);
-	_puzzle.centerY = _puzzle.y + (_puzzle.height / 2);
+	_puzzle.centerX = _puzzle.x + 30;
+	_puzzle.centerY = _puzzle.y + 30;
 	_puzzle.rc = RectMakeCenter(_puzzle.x, _puzzle.y, _puzzle.width, _puzzle.height);
 	
 
@@ -152,6 +154,8 @@ void templeEntrance::update()
 	{
 		if (KEYMANAGER->isOnceKeyDown('E'))
 		{
+			GAMEDATA->setZorder(ZORDER->getZorder());
+			ZORDER->release();
 			SCENEMANAGER->changeScene("BOSS");
 		}
 	}

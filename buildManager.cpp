@@ -43,10 +43,10 @@ void buildManager::render()
 		//cout << " 눌리냐?? " << endl;
 		KEYMANAGER->setKeyDown(VK_LBUTTON, false);
 	}
-	for (_viBuilding = _vBuilding.begin(); _viBuilding != _vBuilding.end(); _viBuilding++)
-	{
-		(*_viBuilding)->render();
-	}
+	//for (_viBuilding = _vBuilding.begin(); _viBuilding != _vBuilding.end(); _viBuilding++)
+	//{
+	//	(*_viBuilding)->render();
+	//}
 	for (_viBuilding = _vBuilding.begin(); _viBuilding != _vBuilding.end(); _viBuilding++)
 	{
 		(*_viBuilding)->EffectRender();
@@ -93,9 +93,10 @@ void buildManager::imageSetting()
 
 void buildManager::createImageBuilding(BUILDING build, int idx, int idy)
 {
+	//인덱스 워터 속성 바꾸기 
+	building* construction;
 	if (build == BUILDING::FORGE)
 	{
-		building* construction;
 		construction = new forge;
 		construction->init(build, "forge", idx, idy);
 		construction->setHp(20, 20);
@@ -103,7 +104,6 @@ void buildManager::createImageBuilding(BUILDING build, int idx, int idy)
 	}
 	else if (build == BUILDING::SEWING_STATION)
 	{
-		building* construction;
 		construction = new sewingStation;
 		construction->init(build, "sewingStation", idx, idy);
 		construction->setHp(20, 20);
@@ -111,7 +111,6 @@ void buildManager::createImageBuilding(BUILDING build, int idx, int idy)
 	}
 	else if (build == BUILDING::FURNACE)
 	{
-		building* construction;
 		construction = new furnace;
 		construction->init(build, "furnace", idx, idy);
 		construction->setHp(20, 20);
@@ -120,7 +119,6 @@ void buildManager::createImageBuilding(BUILDING build, int idx, int idy)
 	}
 	else if (build == BUILDING::FISHTRAP)
 	{
-		building* construction;
 		construction = new fishTrap;
 		construction->init(build, "fishTrap", idx, idy,true);
 		construction->setHp(20, 20);
@@ -128,8 +126,6 @@ void buildManager::createImageBuilding(BUILDING build, int idx, int idy)
 	}
 	else if (build == BUILDING::BRIDGE)
 	{
-		//인덱스 워터 속성 바꾸기 
-		building* construction;
 		construction = new bridge;
 		construction->init(build, "bridge", idx, idy, true);
 		construction->setHp(20, 20);
@@ -137,6 +133,7 @@ void buildManager::createImageBuilding(BUILDING build, int idx, int idy)
 
 		MAPMANAGER->setRemoveWater(idx, idy); // 맵을 이동할 수 있게 정의 
 	}
+	ZORDER->addZorder(STAGEOBJECT::BUILDING, NULL, NULL, construction, NULL, NULL);
 }
 
 void buildManager::createFrameBuilding(BUILDING build, int x, int y)

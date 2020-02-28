@@ -1,11 +1,12 @@
 #pragma once
 #include "stdafx.h"
 #include "singletonBase.h"
-
+#include "Zorder.h"
 class playerManager;
 class objectManager;
 class enemyManager;
 class templeManager;
+class Zoder;
 
 class gameData : public singletonBase<gameData>
 {
@@ -14,6 +15,7 @@ private:
 	objectManager* _objectManager;
 	templeManager* _templeManager;
 	enemyManager* _enemyManager; //  보스 씬에 있는 
+	vector<ZorderObject*> _vZOrder;
 public:
 	gameData();
 	~gameData();
@@ -37,5 +39,8 @@ public:
 
 	void setTempleManager(templeManager* templeManager) { _templeManager = templeManager; }
 	templeManager* getTempleManager() { return _templeManager; }
+
+	void setZorder(vector<ZorderObject*> vZorder) { _vZOrder = vZorder; }
+	vector<ZorderObject*> getZorder() { return _vZOrder; }
 };
 

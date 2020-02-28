@@ -18,6 +18,7 @@ HRESULT stageScene::init()
 	_playerManager->set_EnemyManager(_objectManager->get_enemyManager());
 	_playerManager->set_puzzleManager(_objectManager->get_puzzleManager());
 
+
 	_objectManager->get_enemyManager()->setPlayer(_playerManager->get_player());  // ÇÃ·¹ÀÌ¾î ¸µÅ© 
 	_objectManager->get_CropsManager()->setPlayer(_playerManager->get_player());
 	// ¸Ê 
@@ -31,6 +32,7 @@ HRESULT stageScene::init()
 	GAMEDATA->setPlayerManager(_playerManager);
 	GAMEDATA->setObjectManager(_objectManager);
 	GAMEDATA->save();
+
 	return S_OK;
 }
 
@@ -45,6 +47,7 @@ void stageScene::update()
 	_playerManager->update();
 	_objectManager->update();
 	_weather->update(); // ³¯¾¾
+	ZORDER->update();
 	BossEntranceMouseCllision();  // º¸½º¾À ¸¶¿ì½º
 	AlphaImage();
 }
@@ -57,11 +60,11 @@ void stageScene::render()
 	// ÀÌÆåÆ®?
 	EFFECTMANAGER->EffectRender(CAMERAMANAGER->getWorldDC());		 // ÀÌÆåÆ®
 	if (CURSORMANAGER->getCursor()->getObjectPoint()) CURSORMANAGER->render(); // CURSOR
-	_objectManager->render();  //OBJECT
+	//_playerManager->render();  //PLAYER 
+	ZORDER->render();
 	ITEMMANAGER->render();
-	_playerManager->render();  //PLAYER 
 	EFFECTMANAGER->render(CAMERAMANAGER->getWorldDC());
-
+	_objectManager->render();  //OBJECT¿¡¼­ ºôµù¸¸ 
 	if (!UIMANAGER->getLand()->getLand()) CAMERAMANAGER->getWorldImage()->render(getMemDC(), 0, 0, CAMERAMANAGER->getWorldCamera().cameraX, CAMERAMANAGER->getWorldCamera().cameraY, WINSIZEX, WINSIZEY);
 	_weather->render(getMemDC());
 	UIMANAGER->render();	// UI
@@ -73,8 +76,8 @@ void stageScene::BossEntranceMouseCllision()
 	{
 		if (PtInRect(&_objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
 		{
-			CURSORMANAGER->setBuildPoint();
-			CURSORMANAGER->getCursor()->setCursorXY(_objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->x - CAMERAMANAGER->getWorldCamera().cameraX + 49, _objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->y - CAMERAMANAGER->getWorldCamera().cameraY + 75);
+			//CURSORMANAGER->setBuildPoint();
+			//CURSORMANAGER->getCursor()->setCursorXY(_objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->x - CAMERAMANAGER->getWorldCamera().cameraX + 49, _objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->y - CAMERAMANAGER->getWorldCamera().cameraY + 75);
 			_objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->isClick = true;
 		}
 		else _objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->isClick = false;
@@ -86,24 +89,32 @@ void stageScene::nextScene()
 {
 	_playerManager = GAMEDATA->getPlayerManager();
 	_objectManager = GAMEDATA->getObjectManager();
+	//_playerManager->set_CropsManager(_objectManager->get_CropsManager());
+	//_playerManager->set_BuildManager(_objectManager->get_buildManager());
+	//_playerManager->set_EnemyManager(_objectManager->get_enemyManager());
+	//_playerManager->set_puzzleManager(_objectManager->get_puzzleManager());
+	//_objectManager->get_enemyManager()->setPlayer(_playerManager->get_player());  // ÇÃ·¹ÀÌ¾î ¸µÅ© 
+	//_objectManager->get_CropsManager()->setPlayer(_playerManager->get_player());
+	MAPMANAGER->setObjectManager(_objectManager);
+	UIMANAGER->getEquipment()->setSkillPount(&_playerManager->get_player()->get_PlayerAddress()->skillPount);
+	UIMANAGER->playerAdressLink(_playerManager->get_player()->get_PlayerAddress());
 	_playerManager->get_player()->setPlayerXY(36, 29);
 }
 
 void stageScene::AlphaImage()
 {
 	RECT temp;
-	if (IntersectRect(&temp, &_objectManager->get_puzzleManager()->getDruidTree()->getRect(), &_playerManager->get_player()->get_playerRect()))
+	if (_playerManager->get_player()->get_PlayerAddress()->y - 30 <= _objectManager->get_puzzleManager()->getDruidTree()->getPuzzle()->y  && IntersectRect(&temp, &_objectManager->get_puzzleManager()->getDruidTree()->getRect(), &_playerManager->get_player()->get_playerRect()))
 	{
 		_objectManager->get_puzzleManager()->getDruidTree()->setAlpha(150);
 	}
 	else _objectManager->get_puzzleManager()->getDruidTree()->setAlpha(0);
 
 	RECT temp2;
-	if (IntersectRect(&temp2, &_objectManager->get_puzzleManager()->getFireTempleEntrance()->getRect(), &_playerManager->get_player()->get_playerRect()))
+	if (_playerManager->get_player()->get_PlayerAddress()->y - 30<= _objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->y  && IntersectRect(&temp2, &_objectManager->get_puzzleManager()->getFireTempleEntrance()->getRect(), &_playerManager->get_player()->get_playerRect()))
 	{
 		_objectManager->get_puzzleManager()->getFireTempleEntrance()->setAlpha(150);
 	}
 	else _objectManager->get_puzzleManager()->getFireTempleEntrance()->setAlpha(0);
 }
-
 

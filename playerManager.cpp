@@ -10,18 +10,7 @@ HRESULT playerManager::init()
 	imageSetting();
 	_player = new player();
 	_player->init();
-
-	_cropsManager = new cropsManager;		//CROPS
-	_cropsManager->init();
-
-	_buildManager = new buildManager;		//BUILD
-	_buildManager->init();
-
-	_enemyManager = new enemyManager;
-	_enemyManager->init();
-
-	_puzzleManager = new puzzleManager;
-	_puzzleManager->init();
+	ZORDER->addZorder(STAGEOBJECT::PLAYER, _player, NULL, NULL, NULL, NULL);
 	//옵션
 	_isOption = false;
 
@@ -126,7 +115,7 @@ void playerManager::objectCollisionMouse()
 	for (int i = 0; i < _cropsManager->getVCrops().size(); ++i)
 	{
 		//플레이어 공격중일 떄 
-		if (_player->get_PlayerAddress()->isAttack && _cropsManager->getVCrops()[i]->getCrops()->isClick && PtInRect(&_cropsManager->getVCrops()[i]->getCrops()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
+		if (_cropsManager->getVCrops()[i]->getCrops()->isClick && PtInRect(&_cropsManager->getVCrops()[i]->getCrops()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
 		{
 			//커서 매니져 세팅
 			CURSORMANAGER->setCropsPoint();

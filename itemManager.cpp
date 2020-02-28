@@ -15,6 +15,7 @@ HRESULT itemManager::init()
 
 	_inven = new inventory;
 	_inven->init();
+
 	UIMANAGER->setInven(_inven);
 	
 	return S_OK;

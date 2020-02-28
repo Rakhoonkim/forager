@@ -45,9 +45,6 @@ HRESULT cropsManager::init()
 	//craateTreeCrops(TREE::CACTUS, 19, 20);
 	//craateTreeCrops(TREE::SNOW, 20, 20);
 
-	_player = new player;
-	_player->init();
-
 	_effect = new alphaEffect;
 	_effect->init();
 
@@ -119,10 +116,10 @@ void cropsManager::update()
 
 void cropsManager::render()
 {
-	for (_viCrops = _vCrops.begin(); _viCrops != _vCrops.end(); ++_viCrops)
-	{
-		(*_viCrops)->render();
-	}
+	//for (_viCrops = _vCrops.begin(); _viCrops != _vCrops.end(); ++_viCrops)
+	//{
+	//	(*_viCrops)->render();
+	//}
 	_effect->render();
 }
 
@@ -161,10 +158,12 @@ void cropsManager::imageSetting()
 void cropsManager::createImageCrops(OBJECT object, int idx, int idy)
 {
 	_maxCrops++;  //곡물 수 증가
+
+	crops* crops;
+	crops = new imageCrops;
+
 	if (object == OBJECT::CINDERBLOOM)
 	{
-		crops* crops;
-		crops = new imageCrops;
 		crops->init(object, "cinderBloom", idx, idy);
 		crops->setHp(1, 1);
 		crops->setIsClick();
@@ -173,8 +172,6 @@ void cropsManager::createImageCrops(OBJECT object, int idx, int idy)
 	}
 	else if (object == OBJECT::NIGHTSHADE)
 	{
-		crops* crops;
-		crops = new imageCrops;
 		crops->init(object, "nightShade", idx, idy);
 		crops->setHp(1, 1);
 		crops->setIsClick();
@@ -183,8 +180,6 @@ void cropsManager::createImageCrops(OBJECT object, int idx, int idy)
 	}
 	else if (object == OBJECT::LAVENDER)
 	{
-		crops* crops;
-		crops = new imageCrops;
 		crops->init(object, "lavender", idx, idy);
 		crops->setHp(1, 1);
 		crops->setIsClick();
@@ -195,101 +190,103 @@ void cropsManager::createImageCrops(OBJECT object, int idx, int idy)
 	{
 		return;
 	}
+
+	//제트오더 추가 
+	ZORDER->addZorder(STAGEOBJECT::CROPS, NULL, crops, NULL, NULL, NULL);
 }
 
 void cropsManager::createFrameCrops(OBJECT object, int idx, int idy)
 {
 	_maxCrops++; //곡물 수 증가
+	crops* tempCrops;
+	tempCrops = new frameCrops;
 	if (object == OBJECT::BEET)
 	{
-		crops* crops;
-		crops = new frameCrops;
-		crops->init(object, "beet", idx, idy);
-		crops->setHp(1, 1);
-		crops->setSpeed(10);
-		crops->setExpCrops(5);
-		crops->setTime();
-		_vCrops.push_back(crops);
+		tempCrops->init(object, "beet", idx, idy);
+		tempCrops->setHp(1, 1);
+		tempCrops->setSpeed(10);
+		tempCrops->setExpCrops(5);
+		tempCrops->setTime();
+		_vCrops.push_back(tempCrops);
 	}
 	else if (object == OBJECT::HOT_PEPPER)
 	{
-		crops* crops;
-		crops = new frameCrops;
-		crops->init(object, "hotPepper", idx, idy);
-		crops->setHp(1, 1);
-		crops->setSpeed(12);
-		crops->setExpCrops(15);
-		crops->setTime();
-		_vCrops.push_back(crops);
+		tempCrops->init(object, "hotPepper", idx, idy);
+		tempCrops->setHp(1, 1);
+		tempCrops->setSpeed(12);
+		tempCrops->setExpCrops(15);
+		tempCrops->setTime();
+		_vCrops.push_back(tempCrops);
 	}
 	else if (object == OBJECT::WHEAT)
 	{
-		crops* crops;
-		crops = new frameCrops;
-		crops->init(object, "wheat", idx, idy);
-		crops->setHp(1, 1);
-		crops->setSpeed(10);
-		crops->setExpCrops(5);
-		crops->setTime();
-		_vCrops.push_back(crops);
+		tempCrops->init(object, "wheat", idx, idy);
+		tempCrops->setHp(1, 1);
+		tempCrops->setSpeed(10);
+		tempCrops->setExpCrops(5);
+		tempCrops->setTime();
+		_vCrops.push_back(tempCrops);
 	}
 	else if (object == OBJECT::PUMPKIN)
 	{
-		crops* crops;
-		crops = new frameCrops;
-		crops->init(object, "pumpkin", idx, idy);
-		crops->setHp(1, 1);
-		crops->setSpeed(14);
-		crops->setExpCrops(15);
-		crops->setTime();
-		_vCrops.push_back(crops);
+		tempCrops->init(object, "pumpkin", idx, idy);
+		tempCrops->setHp(1, 1);
+		tempCrops->setSpeed(14);
+		tempCrops->setExpCrops(15);
+		tempCrops->setTime();
+		_vCrops.push_back(tempCrops);
 	}
 	else if (object == OBJECT::COTTON)
 	{
-		crops* crops;
-		crops = new frameCrops;
-		crops->init(object, "cotton", idx, idy);
-		crops->setHp(1, 1);
-		crops->setSpeed(12);
-		crops->setExpCrops(10);
-		crops->setTime();
-		_vCrops.push_back(crops);
+		tempCrops->init(object, "cotton", idx, idy);
+		tempCrops->setHp(1, 1);
+		tempCrops->setSpeed(12);
+		tempCrops->setExpCrops(10);
+		tempCrops->setTime();
+		_vCrops.push_back(tempCrops);
 	}
 	else if (object == OBJECT::FLOWER_1 || object == OBJECT::FLOWER_2 || object == OBJECT::FLOWER_3)
 	{
-		crops* crops;
-		crops = new multiImageCrops;
-		crops->init(object, "flower", idx, idy);
-		crops->setHp(1, 1);
-		crops->setSpeed(12);
-		crops->setExpCrops(10);
-		crops->setTime();
-		_vCrops.push_back(crops);
+		crops* flower;
+		flower = new multiImageCrops;
+
+		flower->init(object, "flower", idx, idy);
+		flower->setHp(1, 1);
+		flower->setSpeed(12);
+		flower->setExpCrops(10);
+		flower->setTime();
+		_vCrops.push_back(flower);
+		ZORDER->addZorder(STAGEOBJECT::CROPS, NULL, flower, NULL, NULL, NULL);
+		return;
 	}
 	else if (object == OBJECT::BUSH)
 	{
-		crops* crops;
-		crops = new multiImageCrops;
-		crops->init(object, "bush", idx, idy);
-		crops->setHp(3, 3);
-		crops->setSpeed(12);
-		crops->setExpCrops(7);
-		crops->setTime();
-		_vCrops.push_back(crops);
+		crops* bush;
+		bush = new multiImageCrops;
+		bush->init(object, "bush", idx, idy);
+		bush->setHp(3, 3);
+		bush->setSpeed(12);
+		bush->setExpCrops(7);
+		bush->setTime();
+		_vCrops.push_back(bush);
+		ZORDER->addZorder(STAGEOBJECT::CROPS, NULL, bush, NULL, NULL, NULL);
+		return;
 	}
 	else
 	{
 		return;
 	}
+	////제트오더 추가 
+	ZORDER->addZorder(STAGEOBJECT::CROPS, NULL, tempCrops, NULL, NULL, NULL);
 }
 
 void cropsManager::createimageFrameCrops(OBJECT object, int idx, int idy)
 {
 	_maxCrops++; //곡물 수 증가
+	crops* crops;
+	crops = new imageFrameCrops;
 	if (object == OBJECT::ROCK)
 	{
-		crops* crops;
-		crops = new imageFrameCrops;
 		crops->init(object, "rock", idx, idy);
 		crops->setHp(3, 3);
 		crops->setIsClick();
@@ -299,8 +296,6 @@ void cropsManager::createimageFrameCrops(OBJECT object, int idx, int idy)
 	}
 	else if (object == OBJECT::COAL)
 	{
-		crops* crops;
-		crops = new imageFrameCrops;
 		crops->init(object, "rock", idx, idy);
 		crops->setHp(4, 4);
 		crops->setIsClick();
@@ -310,8 +305,6 @@ void cropsManager::createimageFrameCrops(OBJECT object, int idx, int idy)
 	}
 	else if (object == OBJECT::GOLD)
 	{
-		crops* crops;
-		crops = new imageFrameCrops;
 		crops->init(object, "rock", idx, idy);
 		crops->setHp(5, 5);
 		crops->setIsClick();
@@ -321,8 +314,6 @@ void cropsManager::createimageFrameCrops(OBJECT object, int idx, int idy)
 	}
 	else if (object == OBJECT::IRON)
 	{
-		crops* crops;
-		crops = new imageFrameCrops;
 		crops->init(object, "rock", idx, idy);
 		crops->setHp(4, 4);
 		crops->setIsClick();
@@ -332,8 +323,6 @@ void cropsManager::createimageFrameCrops(OBJECT object, int idx, int idy)
 	}
 	else if (object == OBJECT::VOLCANIC_IRON)
 	{
-		crops* crops;
-		crops = new imageFrameCrops;
 		crops->init(object, "volcano", idx, idy);
 		crops->setHp(10, 10);
 		crops->setIsClick();
@@ -343,8 +332,6 @@ void cropsManager::createimageFrameCrops(OBJECT object, int idx, int idy)
 	}
 	else if (object == OBJECT::VOLCANIC_COAL)
 	{
-		crops* crops;
-		crops = new imageFrameCrops;
 		crops->init(object, "volcano", idx, idy);
 		crops->setHp(10, 10);
 		crops->setIsClick();
@@ -354,8 +341,6 @@ void cropsManager::createimageFrameCrops(OBJECT object, int idx, int idy)
 	}
 	else if (object == OBJECT::VOLCANIC_GOLD)
 	{
-		crops* crops;
-		crops = new imageFrameCrops;
 		crops->init(object, "volcano", idx, idy);
 		crops->setHp(10, 10);
 		crops->setIsClick();
@@ -364,15 +349,17 @@ void cropsManager::createimageFrameCrops(OBJECT object, int idx, int idy)
 		_vCrops.push_back(crops);
 	}
 
+	////제트오더 추가 
+	ZORDER->addZorder(STAGEOBJECT::CROPS, NULL, crops, NULL, NULL, NULL);
 }
 
 void cropsManager::craateTreeCrops(TREE tree, int idx, int idy)
 {
 	_maxCrops++; //곡물 수 증가
+	crops* crops;
+	crops = new treeCrops;
 	if (tree == TREE::BASIC)
 	{
-		crops* crops;
-		crops = new treeCrops;
 		crops->init(tree, "tree", idx, idy);
 		crops->setHp(5, 5);
 		crops->setIsClick();
@@ -382,8 +369,6 @@ void cropsManager::craateTreeCrops(TREE tree, int idx, int idy)
 	}
 	else if (tree == TREE::RED)
 	{
-		crops* crops;
-		crops = new treeCrops;
 		crops->init(tree, "tree", idx, idy);
 		crops->setHp(5, 5);
 		crops->setIsClick();
@@ -393,8 +378,6 @@ void cropsManager::craateTreeCrops(TREE tree, int idx, int idy)
 	}
 	else if (tree == TREE::SNOW)
 	{
-		crops* crops;
-		crops = new treeCrops;
 		crops->init(tree, "tree", idx, idy);
 		crops->setHp(5, 5);
 		crops->setIsClick();
@@ -404,8 +387,6 @@ void cropsManager::craateTreeCrops(TREE tree, int idx, int idy)
 	}
 	else if (tree == TREE::CACTUS)
 	{
-		crops* crops;
-		crops = new treeCrops;
 		crops->init(tree, "cactus", idx, idy);
 		crops->setHp(5, 5);
 		crops->setIsClick();
@@ -413,6 +394,9 @@ void cropsManager::craateTreeCrops(TREE tree, int idx, int idy)
 		crops->setExpCrops(10);
 		_vCrops.push_back(crops);
 	}
+
+	////제트오더 추가 
+	ZORDER->addZorder(STAGEOBJECT::CROPS, NULL, crops, NULL, NULL, NULL);
 }
 
 void cropsManager::CropsMakeUpdate()

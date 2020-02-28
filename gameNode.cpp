@@ -73,6 +73,8 @@ void gameNode::release()
 		CURSORMANAGER->releaseSingleton();
 		ITEMMANAGER->release();
 		ITEMMANAGER->releaseSingleton();
+		MAPMANAGER->release();
+		MAPMANAGER->releaseSingleton();
 	}
 	ReleaseDC(_hWnd, _hdc);
 }

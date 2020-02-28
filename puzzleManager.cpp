@@ -35,6 +35,13 @@ HRESULT puzzleManager::init()
 	_fireTempleEntrance->setTemple(TEMPLEOBJECT::TEMPLE_ENTRANCE);
 
 
+
+	ZORDER->addZorder(STAGEOBJECT::PUZZLE, NULL, NULL, NULL, NULL, _rainbow);
+	ZORDER->addZorder(STAGEOBJECT::PUZZLE, NULL, NULL, NULL, NULL, _druidTree);
+	ZORDER->addZorder(STAGEOBJECT::PUZZLE, NULL, NULL, NULL, NULL, _treasureChest);
+	ZORDER->addZorder(STAGEOBJECT::PUZZLE, NULL, NULL, NULL, NULL, _fireTempleEntrance);
+
+
 	_vPuzzle.push_back(_rainbow);
 	_vPuzzle.push_back(_druidTree);
 	_vPuzzle.push_back(_treasureChest);

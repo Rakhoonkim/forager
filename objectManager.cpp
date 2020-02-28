@@ -54,10 +54,10 @@ void objectManager::update()
 
 void objectManager::render()
 {
-	_cropsManager->render();
-	_enemyManager->render();
+	//_cropsManager->render();
+	//_enemyManager->render();
 	_buildManager->render();
-	_puzzleManager->render();
+	//_puzzleManager->render();
 }
 
 void objectManager::AutoEnemyCreate()

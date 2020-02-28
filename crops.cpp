@@ -30,8 +30,8 @@ HRESULT crops::init(OBJECT object, const char* imageName, int idx, int idy)
 	_crops.y = idy * 60 + 30 - IMAGEMANAGER->findImage(_crops.imageName)->getHeight() / 2;
 	_crops.centerX = idx * 60 + 30;
 	_crops.centerY = idy * 60 + 30;
-	_crops.hp = 0;
-	_crops.maxHp = 0;
+	_crops.hp = 1;
+	_crops.maxHp = 1;
 	_crops.isClick = false;
 	_crops.isEffect = false;
 	_crops.isHit = false;

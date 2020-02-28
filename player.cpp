@@ -21,8 +21,8 @@ HRESULT player::init()
 	_player.angle = 0;
 	_player.idx = 22;
 	_player.idy = 18;
-	_player.x = _player.idx * 60 + 30;
-	_player.y = _player.idy * 60 + 30;
+	_player.x = _player.idx * 60 + (_player.playerImage->getFrameWidth() / 2);
+	_player.y = _player.idy * 60 + (_player.playerImage->getFrameHeight() / 2);
 	_player.weaponX = _player.x -15;
 	_player.weaponY = _player.y -5;
 	_player.imageDirection = 0;     // 0 ¿ÞÂÊ 1 ¿À¸¥ÂÊ 
@@ -49,7 +49,6 @@ HRESULT player::init()
 	_stateChange = false;
 	_keyCount = 0;
 	_player.rc = RectMake(_player.x, _player.y, _player.playerImage->getFrameWidth(), _player.playerImage->getFrameHeight());
-
 
 	CAMERAMANAGER->setCameraInit(_player.x, _player.y);
 	_healthTime = TIMEMANAGER->getWorldTime();
@@ -261,7 +260,7 @@ void player::IndexUpdate()
 {
 	CAMERAMANAGER->setCameraXY(_player.x, _player.y);
 	_player.idx = (int)(_player.x + 30) / 60;
-	_player.idy = (int)(_player.y + 30) / 60;
+	_player.idy = (int)(_player.y + 30) / 60;	
 }
 
 void player::acelPlus()
@@ -273,8 +272,8 @@ void player::acelPlus()
 
 void player::setPlayerXY(int idx, int idy)
 {
-	_player.x = idx * 60 + 30;
-	_player.y = idy * 60 + 30;
+	_player.x = idx * 60 + _player.playerImage->getFrameWidth() / 2;
+	_player.y = idy * 60 + _player.playerImage->getFrameHeight() / 2;
 	_player.weaponX = _player.x - 15;
 	_player.weaponY = _player.y - 5;
 	CAMERAMANAGER->setCameraInit(_player.x, _player.y);
