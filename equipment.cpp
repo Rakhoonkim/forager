@@ -33,6 +33,7 @@ void equipment::update()
 		{
 				_isSkill = true;
 		}
+		KEYMANAGER->setKeyDown(VK_LBUTTON, false);
 	}
 
 	if (_isSkill)

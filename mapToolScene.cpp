@@ -667,7 +667,7 @@ void mapToolScene::MapToolRender()
 
 
 		RECT temp;
-		if (!IntersectRect(&temp, &CAMERAMANAGER->getWorldRect(), &_tiles[i].rc)) continue;
+		if (!IntersectRect(&temp, &CAMERAMANAGER->getMapToolRect(), &_tiles[i].rc)) continue;
 
 		//타입이 NONE이면 다음으로
 		if (_tiles[i].type == TYPE::NONE) continue;

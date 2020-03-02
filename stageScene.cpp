@@ -17,7 +17,7 @@ HRESULT stageScene::init()
 	_playerManager->set_BuildManager(_objectManager->get_buildManager());
 	_playerManager->set_EnemyManager(_objectManager->get_enemyManager());
 	_playerManager->set_puzzleManager(_objectManager->get_puzzleManager());
-
+	
 
 	_objectManager->get_enemyManager()->setPlayer(_playerManager->get_player());  // ÇÃ·¹ÀÌ¾î ¸µÅ© 
 	_objectManager->get_CropsManager()->setPlayer(_playerManager->get_player());
@@ -46,7 +46,7 @@ void stageScene::update()
 {
 	_playerManager->update();
 	_objectManager->update();
-	_weather->update(); // ³¯¾¾
+	//_weather->update(); // ³¯¾¾
 	ZORDER->update();
 	BossEntranceMouseCllision();  // º¸½º¾À ¸¶¿ì½º
 	AlphaImage();
@@ -57,16 +57,16 @@ void stageScene::render()
 	//PatBlt(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX, CAMERAMANAGER->getWorldCamera().cameraY, WINSIZEX, WINSIZEY,WHITENESS);
 	IMAGEMANAGER->findImage("background")->render(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX, CAMERAMANAGER->getWorldCamera().cameraY);
 	MAPMANAGER->stageRender();      //MAP
-	// ÀÌÆåÆ®?
+
 	EFFECTMANAGER->EffectRender(CAMERAMANAGER->getWorldDC());		 // ÀÌÆåÆ®
 	if (CURSORMANAGER->getCursor()->getObjectPoint()) CURSORMANAGER->render(); // CURSOR
-	//_playerManager->render();  //PLAYER 
 	ZORDER->render();
+	_playerManager->render();  //PLAYER 
 	ITEMMANAGER->render();
 	EFFECTMANAGER->render(CAMERAMANAGER->getWorldDC());
 	_objectManager->render();  //OBJECT¿¡¼­ ºôµù¸¸ 
 	if (!UIMANAGER->getLand()->getLand()) CAMERAMANAGER->getWorldImage()->render(getMemDC(), 0, 0, CAMERAMANAGER->getWorldCamera().cameraX, CAMERAMANAGER->getWorldCamera().cameraY, WINSIZEX, WINSIZEY);
-	_weather->render(getMemDC());
+	//_weather->render(getMemDC());
 	UIMANAGER->render();	// UI
 }
 
@@ -89,6 +89,7 @@ void stageScene::nextScene()
 {
 	_playerManager = GAMEDATA->getPlayerManager();
 	_objectManager = GAMEDATA->getObjectManager();
+	_objectManager->get_enemyManager()->AutoEnemySet(true);
 	//_playerManager->set_CropsManager(_objectManager->get_CropsManager());
 	//_playerManager->set_BuildManager(_objectManager->get_buildManager());
 	//_playerManager->set_EnemyManager(_objectManager->get_enemyManager());

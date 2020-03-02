@@ -13,6 +13,7 @@ bossScene::~bossScene()
 HRESULT bossScene::init()
 {
 	// ÇÃ·¹ÀÌ¾î 
+	ZORDER->release();
 	_playerManager = new playerManager;
 	_playerManager = GAMEDATA->getPlayerManager();
 	ZORDER->addZorder(STAGEOBJECT::PLAYER, _playerManager->get_player(), NULL, NULL, NULL, NULL);
@@ -24,11 +25,10 @@ HRESULT bossScene::init()
 	_templeManager->setBulletManager(_enemyManager->getBulletManager());
 	_templeManager->setPlayer(_playerManager->get_player()->get_PlayerAddress());
 	_templeManager->init();
-
-
+	
+	_enemyManager->AutoEnemySet(true);
 	_playerManager->set_EnemyManager(_enemyManager);
 	_enemyManager->setPlayer(_playerManager->get_player());
-
 	GAMEDATA->setTempleManager(_templeManager);
 	GAMEDATA->setEnemyManager(_enemyManager);
 
@@ -67,10 +67,10 @@ void bossScene::render()
 	MAPMANAGER->stageRender();      //MAP
 	if (CURSORMANAGER->getCursor()->getObjectPoint()) CURSORMANAGER->render(); // CURSOR
 	_enemyManager->render();   // ÃÑ¾Ë ·»´õ
-	//_playerManager->render();  //PLAYER 
 	ITEMMANAGER->render();
 	EFFECTMANAGER->render(CAMERAMANAGER->getWorldDC());
 	ZORDER->render();
+	_playerManager->render();  //PLAYER 
 	_templeManager->render(); 
 	if (!UIMANAGER->getLand()->getLand()) CAMERAMANAGER->getWorldImage()->render(getMemDC(), 0, 0, CAMERAMANAGER->getWorldCamera().cameraX, CAMERAMANAGER->getWorldCamera().cameraY, WINSIZEX, WINSIZEY);
 	UIMANAGER->render();	// UIs

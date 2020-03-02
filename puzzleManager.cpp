@@ -69,11 +69,11 @@ void puzzleManager::render()
 {
 	vector<puzzle*>::iterator iter;
 	iter = _vPuzzle.begin();
-	for (; iter != _vPuzzle.end(); iter++)
-	{
-		if (!(*iter)->getPuzzle()->isRender) continue;
-		(*iter)->render();
-	}
+	//for (; iter != _vPuzzle.end(); iter++)
+	//{
+	//	if (!(*iter)->getPuzzle()->isRender) continue;
+	//	(*iter)->render();
+	//}
 
 	/*IMAGEMANAGER->findImage("rainBow")->render(CAMERAMANAGER->getWorldDC(), _rainBow.x, _rainBow.y);
 	IMAGEMANAGER->findImage("druidTree")->render(CAMERAMANAGER->getWorldDC(), _druidTree.rc.left, _druidTree.rc.top);

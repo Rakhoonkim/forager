@@ -43,6 +43,9 @@ cameraManager::cameraManager()
 	_mapToolCamera.image = IMAGEMANAGER->addImage("mapToolDC", _mapToolCamera.cameraWorldSizeX, _mapToolCamera.cameraWorldSizeY);
 
 	_mapToolCamera.hdc = _mapToolCamera.image->getMemDC();
+
+	_mapToolRect = RectMake(_mapToolCamera.cameraX, _mapToolCamera.cameraY, 900, 720);
+
 }
 
 cameraManager::~cameraManager()
@@ -65,7 +68,7 @@ void cameraManager::update()
 {
 	move();
 	_worldRect = RectMake(_worldCamera.cameraX, _worldCamera.cameraY, WINSIZEX, WINSIZEY);
-
+	_mapToolRect = RectMake(_mapToolCamera.cameraX, _mapToolCamera.cameraY, 900, 720);
 }
 
 void cameraManager::render()

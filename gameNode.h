@@ -30,6 +30,6 @@ public:
 
 	LRESULT MainProc(HWND, UINT, WPARAM, LPARAM);
 	virtual void nextScene();
-	//D2D
+
 };
 

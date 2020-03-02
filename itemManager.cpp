@@ -341,6 +341,15 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			tempItem->setObject(object);
 			_vItem.push_back(tempItem);
 		}
+		for (int i = 0; i < RND->getInt(2) + 1; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("stoneDrop", x, y);
+			tempItem->setIvenFrame(0, 0);
+			tempItem->setObject(object);
+			_vItem.push_back(tempItem);
+		}
 		return;
 	}
 	else if (object == OBJECT::GOLD ||
@@ -355,6 +364,15 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			tempItem->setObject(object);
 			_vItem.push_back(tempItem);
 		}
+		for (int i = 0; i < RND->getInt(2) + 1; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("stoneDrop", x, y);
+			tempItem->setIvenFrame(0, 0);
+			tempItem->setObject(object);
+			_vItem.push_back(tempItem);
+		}
 		return;
 	}
 	else if (object == OBJECT::IRON || object == OBJECT::VOLCANIC_IRON)
@@ -365,6 +383,15 @@ void itemManager::Dropitem(OBJECT object, float x, float y)
 			tempItem = new item;
 			tempItem->init("ironOreDrop", x, y);
 			tempItem->setIvenFrame(3, 0);
+			tempItem->setObject(object);
+			_vItem.push_back(tempItem);
+		}
+		for (int i = 0; i < RND->getInt(2) + 1; i++)
+		{
+			item* tempItem;
+			tempItem = new item;
+			tempItem->init("stoneDrop", x, y);
+			tempItem->setIvenFrame(0, 0);
 			tempItem->setObject(object);
 			_vItem.push_back(tempItem);
 		}

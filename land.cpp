@@ -145,7 +145,6 @@ void land::render(HDC hdc)
 	for (int i = 0; i < MAXLAND;i++)
 	{
 		if (_land[i].isClick) continue;
-
 		if (_playerCoin >= _land[i].alpha)
 		{
 			//구매가능
@@ -183,7 +182,7 @@ void land::render(HDC hdc)
 
 
 		// 포인터 출력 
-
+		//Rectangle(_landImage->getMemDC(), _land[i].rc);
 		IMAGEMANAGER->findImage("landCursor")->aniRender(_landImage->getMemDC(), _land[_direction].centerX - IMAGEMANAGER->findImage("landCursor")->getFrameWidth() / 2, _land[_direction].centerY - IMAGEMANAGER->findImage("landCursor")->getFrameHeight() / 2, KEYANIMANAGER->findAnimation("landCursor"));
 	}
 
@@ -217,6 +216,7 @@ void land::render(HDC hdc)
 
 void land::mapMove() // 카메라 셋팅 예정
 {
+	if (!_isLand) return;
 	for (int i = 0; i < MAXLAND; i++)
 	{
 		if (PtInRect(&_land[i].rc, PointMake(_landX + _ptMouse.x, _landY + _ptMouse.y)))
@@ -330,23 +330,24 @@ void land::landSetting()
 	{
 		for (int j = 0;j < LANDX; j++)
 		{
-			SetRect(&_land[i * 3 + j].rc, 0 + 600 * j, 0 + 480 * i, 0 + 600 * j + 600, 0 + 480 * i + 480);
+			_land[i * 3 + j].rc = RectMakeCenter(300 + j * 600, 240 + i * 480, 390, 330);
+			//SetRect(&_land[i * 3 + j].rc, 0 + 600 * j, 0 + 480 * i, 0 + 600 * j + 600, 0 + 480 * i + 480);
 			_land[i * 3 + j].isClick = false;
 			_land[i * 3 + j].isEffect = false;
-			_land[i * 3 + j].centerX = (_land[i * 3 + j].rc.left + _land[i * 3 + j].rc.right) / 2;
-			_land[i * 3 + j].centerY = (_land[i * 3 + j].rc.top + _land[i * 3 + j].rc.bottom) / 2;
+			_land[i * 3 + j].centerX = 300 + j * 600;  //(_land[i * 3 + j].rc.left + _land[i * 3 + j].rc.right) / 2;
+			_land[i * 3 + j].centerY = 240 + i * 480;//(_land[i * 3 + j].rc.top + _land[i * 3 + j].rc.bottom) / 2;
 		}
 	}
 	_land[4].isClick = true;
 
 	//coin 가격을 alpha 값으로 대체 
-	_land[0].alpha = 100;
-	_land[1].alpha = 30;
-	_land[2].alpha = 80;
-	_land[3].alpha = 50;
+	_land[0].alpha = 7;
+	_land[1].alpha = 5;
+	_land[2].alpha = 7;
+	_land[3].alpha = 5;
 	// 4는 기본 
-	_land[5].alpha = 30;
-	_land[6].alpha = 80;
-	_land[7].alpha = 50;
-	_land[8].alpha = 150;
+	_land[5].alpha = 3;
+	_land[6].alpha = 8;
+	_land[7].alpha = 5;
+	_land[8].alpha = 8;
 }

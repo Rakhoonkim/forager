@@ -69,13 +69,12 @@ void player::update()
 	playerHitCount();
 	MAPMANAGER->setPlayerAddress(&_player);
 	MAPMANAGER->setPlayerStageTileColision(_player.idx, _player.idy);  // 충돌처리 
-
+	playerHealth();
 	_player.rc = RectMake(_player.x, _player.y, _player.playerImage->getFrameWidth(), _player.playerImage->getFrameHeight());
 }
 
 void player::render()
 {
-
 	if (_player.alpha <= 0)
 	{
 		_player.playerImage->aniRender(CAMERAMANAGER->getWorldDC(), _player.x, _player.y, _player.playerAni);
@@ -93,15 +92,16 @@ void player::render()
 
 
 	//Rectangle(CAMERAMANAGER->getWorldDC(), _player.rc);
-	char str[100];
-	sprintf_s(str, "%f", _state->getAngle());
-	TextOut(CAMERAMANAGER->getWorldDC(), _player.x, _player.y+50, str, strlen(str));
-	char strIdx[100];
-	sprintf_s(strIdx, "idx : %d", _player.idx);
-	TextOut(CAMERAMANAGER->getWorldDC(), _player.x, _player.y, strIdx, strlen(strIdx));
-	char strIdy[100];
-	sprintf_s(strIdy, "idy : %d", _player.idy);
-	TextOut(CAMERAMANAGER->getWorldDC(), _player.x+ 100, _player.y, strIdy, strlen(strIdy));
+	//각도 인덱스
+	//char str[100];
+	//sprintf_s(str, "%f", _state->getAngle());
+	//TextOut(CAMERAMANAGER->getWorldDC(), _player.x, _player.y+50, str, strlen(str));
+	//char strIdx[100];
+	//sprintf_s(strIdx, "idx : %d", _player.idx);
+	//TextOut(CAMERAMANAGER->getWorldDC(), _player.x, _player.y, strIdx, strlen(strIdx));
+	//char strIdy[100];
+	//sprintf_s(strIdy, "idy : %d", _player.idy);
+	//TextOut(CAMERAMANAGER->getWorldDC(), _player.x+ 100, _player.y, strIdy, strlen(strIdy));
 }
 
 void player::setDirection()
@@ -148,12 +148,44 @@ void player::KeyControl()
 			_player.weaponAni->start();
 			//ITEMMANAGER->Dropitem(OBJECT::COAL, _player.x, _player.y);
 			//ITEMMANAGER->DropForgeItem(FORGERECIPE::KEY, _player.x, _player.y,1);
-			ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::COAL, _player.x, _player.y, 1);
-			ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::GOLD, _player.x, _player.y, 1);
-			ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::IRON, _player.x, _player.y, 1);
+	
 			KEYMANAGER->setKeyDown(VK_LBUTTON, false);
-			cout << "player health: " << _player.health << endl;
+			//cout << "player health: " << _player.health << endl;
 		}
+	}
+
+	if (KEYMANAGER->isOnceKeyDown('I'))
+	{
+		/*ITEMMANAGER->Dropitem(OBJECT::GOLD, _player.x, _player.y);
+		ITEMMANAGER->Dropitem(OBJECT::COAL, _player.x, _player.y);
+		ITEMMANAGER->Dropitem(OBJECT::IRON, _player.x, _player.y);
+		ITEMMANAGER->Dropitem(OBJECT::ROCK, _player.x, _player.y);
+		ITEMMANAGER->Dropitem(OBJECT::ROCK, _player.x, _player.y);
+		ITEMMANAGER->Dropitem(OBJECT::COTTON, _player.x, _player.y);
+		ITEMMANAGER->Dropitem(OBJECT::COTTON, _player.x, _player.y);
+		ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::BRICK, _player.x, _player.y,1);
+		ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::GOLD, _player.x, _player.y, 1);
+		ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::BRICK, _player.x, _player.y, 1);
+		ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::BRICK, _player.x, _player.y, 1);
+		ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::IRON, _player.x, _player.y, 1);
+		ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::BRICK, _player.x, _player.y, 1);
+		ITEMMANAGER->Dropitem(OBJECT::ROCK, _player.x, _player.y);
+		ITEMMANAGER->Dropitem(TREE::BASIC, _player.x, _player.y);
+		ITEMMANAGER->Dropitem(TREE::BASIC, _player.x, _player.y);
+		ITEMMANAGER->Dropitem(TREE::BASIC, _player.x, _player.y);
+		ITEMMANAGER->Dropitem(OBJECT::BUSH, _player.x, _player.y);*/
+		ITEMMANAGER->DropForgeItem(FORGERECIPE::COIN, _player.x, _player.y,1);
+		ITEMMANAGER->DropForgeItem(FORGERECIPE::COIN, _player.x, _player.y, 1);
+		ITEMMANAGER->DropForgeItem(FORGERECIPE::COIN, _player.x, _player.y, 1);
+		ITEMMANAGER->DropForgeItem(FORGERECIPE::COIN, _player.x, _player.y, 1);
+		ITEMMANAGER->DropForgeItem(FORGERECIPE::COIN, _player.x, _player.y, 1);
+		ITEMMANAGER->DropForgeItem(FORGERECIPE::COIN, _player.x, _player.y, 1);
+		ITEMMANAGER->DropForgeItem(FORGERECIPE::COIN, _player.x, _player.y, 1);
+	/*	ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::COAL, _player.x, _player.y, 1);
+		ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::GOLD, _player.x, _player.y, 1);
+		ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::IRON, _player.x, _player.y, 1);
+		ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::IRON, _player.x, _player.y, 1);
+		ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::IRON, _player.x, _player.y, 1);*/
 	}
 
 
@@ -306,7 +338,7 @@ void player::playerExp(int exp)
 void player::playerHealth(int health)
 {
 	//체력을 감소시킨다.
-	_player.health -= health;
+	_player.health -= health;  // 임시
 	// 체력은 0보다 작으면 0으로 고정 
 	if (_player.health <= 0)
 	{

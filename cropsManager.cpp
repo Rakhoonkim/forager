@@ -15,35 +15,36 @@ HRESULT cropsManager::init()
 	imageSetting();
 
 	//====================== TEST 오프젝트==================================
-	//createImageCrops(OBJECT::CINDERBLOOM, 17, 16);
-	//createImageCrops(OBJECT::NIGHTSHADE, 18, 16);
+	/*createImageCrops(OBJECT::CINDERBLOOM, 17, 14);
+	createImageCrops(OBJECT::NIGHTSHADE, 18, 14);
+	createImageCrops(OBJECT::LAVENDER, 19, 14);
 
-	//createFrameCrops(OBJECT::BEET, 19, 16);
-	//createFrameCrops(OBJECT::HOT_PEPPER, 20, 16);
-	//createFrameCrops(OBJECT::COTTON, 21, 16);
-	//createFrameCrops(OBJECT::WHEAT, 22, 16);
-	//createFrameCrops(OBJECT::PUMPKIN, 23, 16);
+	createFrameCrops(OBJECT::BEET, 17, 15);
+	createFrameCrops(OBJECT::HOT_PEPPER, 18, 15);
+	createFrameCrops(OBJECT::COTTON, 19, 15);
+	createFrameCrops(OBJECT::WHEAT, 20, 15);
+	createFrameCrops(OBJECT::PUMPKIN, 21, 15);
 
-	//createimageFrameCrops(OBJECT::ROCK, 24, 16);
-	//createimageFrameCrops(OBJECT::COAL, 25, 16);
-	//createimageFrameCrops(OBJECT::GOLD, 26, 16);
-	//createimageFrameCrops(OBJECT::IRON, 27, 16);
-	//createimageFrameCrops(OBJECT::VOLCANIC_COAL, 17, 17);
-	//createimageFrameCrops(OBJECT::VOLCANIC_GOLD, 18, 17);
-	//createimageFrameCrops(OBJECT::VOLCANIC_IRON, 19, 17);
+	createimageFrameCrops(OBJECT::ROCK, 17, 16);
+	createimageFrameCrops(OBJECT::COAL, 18, 16);
+	createimageFrameCrops(OBJECT::GOLD, 19, 16);
+	createimageFrameCrops(OBJECT::IRON, 20, 16);
+	createimageFrameCrops(OBJECT::VOLCANIC_COAL, 21, 16);
+	createimageFrameCrops(OBJECT::VOLCANIC_GOLD, 22, 16);
+	createimageFrameCrops(OBJECT::VOLCANIC_IRON, 23, 16);
 
-	//createFrameCrops(OBJECT::FLOWER_1, 20, 17);
-	//createFrameCrops(OBJECT::FLOWER_1, 21, 17);
-	//createFrameCrops(OBJECT::FLOWER_1, 22, 17);
-	//createFrameCrops(OBJECT::BUSH, 23, 17);
-	//createFrameCrops(OBJECT::BUSH, 24, 17);
-	//createFrameCrops(OBJECT::BUSH, 25, 17);
+	createFrameCrops(OBJECT::FLOWER_1, 17, 17);
+	createFrameCrops(OBJECT::FLOWER_1, 18, 17);
+	createFrameCrops(OBJECT::FLOWER_1, 19, 17);
+	createFrameCrops(OBJECT::BUSH, 20, 17);
+	createFrameCrops(OBJECT::BUSH, 21, 17);
+	createFrameCrops(OBJECT::BUSH, 22, 17);
 
 
-	//craateTreeCrops(TREE::BASIC, 17, 20);
-	//craateTreeCrops(TREE::RED, 18, 20);
-	//craateTreeCrops(TREE::CACTUS, 19, 20);
-	//craateTreeCrops(TREE::SNOW, 20, 20);
+	craateTreeCrops(TREE::BASIC, 17, 19);
+	craateTreeCrops(TREE::RED, 18, 19);
+	craateTreeCrops(TREE::CACTUS, 19, 19);
+	craateTreeCrops(TREE::SNOW, 20, 19);*/
 
 	_effect = new alphaEffect;
 	_effect->init();
@@ -51,6 +52,7 @@ HRESULT cropsManager::init()
 
 	//작물을 만들기 위한 
 	_cropsTimer = TIMEMANAGER->getWorldTime();
+	_cropsTimer2 = TIMEMANAGER->getWorldTime();
 	_rockTimer = TIMEMANAGER->getWorldTime();
 	_treeTimer = TIMEMANAGER->getWorldTime();
 	_maxCrops = 0;
@@ -405,6 +407,7 @@ void cropsManager::CropsMakeUpdate()
 	{
 		//작물이 바로 나타나지 않도록 
 		_cropsTimer = TIMEMANAGER->getWorldTime();
+		_cropsTimer2 = TIMEMANAGER->getWorldTime();
 		_rockTimer = TIMEMANAGER->getWorldTime();
 		_treeTimer = TIMEMANAGER->getWorldTime();
 		return;
@@ -438,6 +441,31 @@ void cropsManager::CropsMakeUpdate()
 		{
 			createFrameCrops(OBJECT::COTTON, rnd.x, rnd.y);
 		}
+	}
+
+
+	if (_cropsTimer2 + RND->getFromIntTo(10, 20) <= TIMEMANAGER->getWorldTime())
+	{
+		_cropsTimer2 = TIMEMANAGER->getWorldTime();
+
+		POINT rnd;
+		rnd = MAPMANAGER->randomObjectTile();
+
+		int tempRndNum = RND->getInt(100);
+
+		if (tempRndNum <= 55)   //55% 확률 
+		{
+			createFrameCrops(OBJECT::BUSH, rnd.x, rnd.y);
+		}
+		else if (tempRndNum <= 100)
+		{
+			createimageFrameCrops(OBJECT::ROCK, rnd.x, rnd.y);
+		}
+		else
+		{
+			createimageFrameCrops(OBJECT::ROCK, rnd.x, rnd.y);
+		}
+
 	}
 
 

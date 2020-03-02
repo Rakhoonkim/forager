@@ -26,6 +26,17 @@ void Zorder::release()
 
 void Zorder::update()
 {
+	//for (int i = 0; i < _vZOrder.size(); i++)
+	//{
+	//	RECT temp;
+	//	if (_vZOrder[i]->zOrder->puzzle != nullptr)
+	//	{
+	//		if (IntersectRect(&temp, &CAMERAMANAGER->getWorldRect(), &_vZOrder[i]->zOrder->puzzle->getPuzzle()->rc))
+	//		{
+	//			_vZOrder[i]->zOrder->puzzle->update();
+	//		}
+	//	}
+	//}
 	_vZOrder = ZOrderUpdate(_vZOrder);
 	removeObject();
 }

@@ -171,9 +171,16 @@ void mapManager::playerXYrender()
 			}
 
 
-			char str[100];
-			sprintf_s(str, "%d:%d", _tiles[i * TILEX + j].idx, _tiles[i * TILEX + j].idy);
-			TextOut(CAMERAMANAGER->getWorldDC(), _tiles[i * TILEX + j].rc.left, _tiles[i * TILEX + j].rc.top, str, strlen(str));
+		/*	if (_tiles[i * TILEX + j].isObject)
+			{
+				char strObj[100];
+				sprintf_s(strObj, "오브젝트생성");
+				TextOut(CAMERAMANAGER->getWorldDC(), _tiles[i * TILEX + j].rc.left, _tiles[i * TILEX + j].rc.top - 30, strObj, strlen(strObj));
+			}*/
+			// 인덱스 디버깅
+			//char str[100];
+			//sprintf_s(str, "%d:%d", _tiles[i * TILEX + j].idx, _tiles[i * TILEX + j].idy);
+			//TextOut(CAMERAMANAGER->getWorldDC(), _tiles[i * TILEX + j].rc.left, _tiles[i * TILEX + j].rc.top, str, strlen(str));
 		}
 	}
 }
@@ -279,17 +286,17 @@ void mapManager::MapLoad(const char* fileName)
 
 	}
 
-	this->setLandTile(2, 0);
-	this->setLandTile(2, 1);
-	this->setLandTile(2, 2);
+	//this->setLandTile(2, 0);
+	//this->setLandTile(2, 1);
+	//this->setLandTile(2, 2);
 
-	this->setLandTile(1, 0);
+	//this->setLandTile(1, 0);
 	this->setLandTile(1, 1);
-	this->setLandTile(1, 2);
+	//this->setLandTile(1, 2);
 
-	this->setLandTile(0, 0);
-	this->setLandTile(0, 1);
-	this->setLandTile(0, 2);
+	//this->setLandTile(0, 0);
+	//this->setLandTile(0, 1);
+	//this->setLandTile(0, 2);
 	/*if (fileName == "inGameNumber2.map")
 	{
 		this->setLandTile(2, 0);
@@ -419,6 +426,10 @@ void mapManager::setPlayerAddress(tagPlayer* player)
 
 void mapManager::setEnemyAddress(tagObject* enemy, int idx, int idy)
 {
+	if (idy - 1 < 0 || idx - 1 < 0) return;
+	if (idy + 1 > TILEY || idx + 1 > TILEX) return;
+
+
 	//위 
 	//멈춤상태로 하고 싶음 
 	if (_tiles[(idy - 1) * TILEX + idx].land == LAND::WATER && _tiles[(idy - 1) * TILEX + idx].type == TYPE::LAND

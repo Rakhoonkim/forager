@@ -12,33 +12,35 @@
 #include <memory.h>
 #include <tchar.h>
 #include <iostream>
+#include <list>
 
-using namespace std;
-
-#include "commonMacroFunction.h"
-#include "randomFunction.h"
-#include "keyManager.h"
 #include "utils.h"
-#include "imageManager.h"
+#include "keyManager.h"
+#include "keyAniManager.h"
 #include "timeManager.h"
-#include "effectManager.h"
-#include "txtData.h"
 #include "soundManager.h"
 #include "sceneManager.h"
-#include "keyAniManager.h"
+#include "imageManager.h"
+#include "effectManager.h"
+#include "randomFunction.h"
 #include "iniDataManager.h"
 #include "cameraManager.h"
+#include "commonMacroFunction.h"
+#include "txtData.h"
+
 #include "tileNode.h"				//TILE
 #include "objectNode.h"				//OBJECT
 #include "mapManager.h"				//MAP
-#include "cursorManager.h"			//CURSOR
 #include "itemManager.h"			//ITEM
 #include "uiManager.h"              //UI
-#include "ObjectPool.h"
-#include "gameData.h"
-#include "Zorder.h"
+#include "cursorManager.h"			//CURSOR
+#include "ObjectPool.h"				//OBJECT
+#include "gameData.h"				//GAMEDATA
+#include "Zorder.h"					//ZORDER
+
+using namespace std;
 using namespace SEVENTEEN_UTIL;
-#include <list>
+
 
 //========================================
 // ## D2D관련

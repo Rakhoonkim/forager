@@ -26,6 +26,7 @@ public:
 	virtual void setAlpha(int alpha) { _puzzle.alpha = alpha; }
 	virtual bool getRemove()		   { return  _puzzle.remove; }
 	virtual RECT getRect() { return _puzzle.rc; }
+	virtual bool getIsOpen() { return false; }
 };
 
 class framePuzzle : public puzzle
@@ -39,7 +40,7 @@ public:
 	HRESULT init(const char* imageName, int idx, int idy);
 	void update();
 	void render();
-	
+	bool getIsOpen() { return _isOpen; }
 };
 
 class templeEntrance : public puzzle

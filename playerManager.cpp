@@ -39,18 +39,18 @@ void playerManager::update()
 	itemCollisionMouse();	  // 아이템을 먹기 위한.
 	optionControl();		  // 옵션창 컨트롤 
 	_alphaEffect->update();	  // UI 경험치 
-	if (KEYMANAGER->isOnceKeyDown('N'))
-	{
-		cout << "눌렷나?" << endl;
-		_alphaEffect->play("expNum", 15, _player->get_PlayerAddress()->x - 15, _player->get_PlayerAddress()->y - 15);
-	}
+	//if (KEYMANAGER->isOnceKeyDown('N'))
+	//{
+	//	cout << "눌렷나?" << endl;
+	//	_alphaEffect->play("expNum", 15, _player->get_PlayerAddress()->x - 15, _player->get_PlayerAddress()->y - 15);
+	//}
 	bulletColision();
 }
 
 void playerManager::render()
 {
 	// 건물사용중이면 렌드를 끈다
-	if (!_buildManager->usedCheck()) _player->render();
+	//if (!_buildManager->usedCheck()) _player->render();
 	_alphaEffect->render();
 }
 
@@ -74,6 +74,8 @@ void playerManager::imageSetting()
 	// image
 	IMAGEMANAGER->addFrameImage("shadow", "./image/player/shadow.bmp", 80, 16, 5, 1, true, RGB(255, 0, 255));
 	EFFECTMANAGER->addEffect("shadow", "shadow", 80, 16, 16, 16, 1, 0.3f, 20);
+
+	IMAGEMANAGER->addFrameImage("playerWeapon", "./image/player/playerWeapon.bmp",162, 108,3,2, true, RGB(255, 0, 255), true);
 
 }
 
@@ -197,7 +199,7 @@ void playerManager::objectCollisionMouse()
 
 
 	//■■■■■■■■■■■■■■■■■■■■■■ PuzzleCollision ■■■■■■■■■■■■■■■■■■■■■■
-	if (180 >= getDistance(_puzzleManager->getTreasureChest()->getPuzzle()->centerX, _puzzleManager->getTreasureChest()->getPuzzle()->centerY, _player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y))
+	if (!_puzzleManager->getTreasureChest()->getIsOpen() && 180 >= getDistance(_puzzleManager->getTreasureChest()->getPuzzle()->centerX, _puzzleManager->getTreasureChest()->getPuzzle()->centerY, _player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y))
 	{
 		if (PtInRect(&_puzzleManager->getTreasureChest()->getPuzzle()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
 		{
@@ -264,6 +266,7 @@ void playerManager::enemyAttack(int num)
 		//거리가 좁혀지면 데미지를 입힌다.
 		if (getDistance(_player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y, _enemyManager->getVEnemy()[num]->getEnemy()->centerX, _enemyManager->getVEnemy()[num]->getEnemy()->centerY) <= 80)
 		{
+			_player->playerHealth(3);
 			_enemyManager->getVEnemy()[num]->enemyHit(_player->get_PlayerAddress()->damage);
 		}
 		//KEYMANAGER->setKeyDown(VK_LBUTTON, false);

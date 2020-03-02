@@ -126,7 +126,7 @@ void framePuzzle::render()
 {
 	IMAGEMANAGER->findImage(_puzzle.imageName)->aniRender(CAMERAMANAGER->getWorldDC(), _puzzle.rc.left, _puzzle.rc.top,KEYANIMANAGER->findAnimation(_puzzle.imageName));
 
-	if (_puzzle.isClick)
+	if (_puzzle.isClick && !_isOpen)
 	{
 		IMAGEMANAGER->findImage("Ebutton")->render(CAMERAMANAGER->getWorldDC(), _puzzle.centerX - (IMAGEMANAGER->findImage("Ebutton")->getWidth() / 2), _puzzle.centerY);
 		IMAGEMANAGER->findImage("treasureChestKey")->render(CAMERAMANAGER->getWorldDC(), _puzzle.centerX - (IMAGEMANAGER->findImage("treasureChestKey")->getWidth() / 2), _puzzle.centerY -50);

@@ -2,6 +2,7 @@
 #include "gameNode.h"
 #include "enemy.h"
 #include "buildManager.h"
+#include "alphaEffect.h"
 
 class player;
 
@@ -13,6 +14,15 @@ private:
 	
 	player* _player;
 	bulletManager* _bulletManager;
+
+	alphaEffect* _effect;
+
+	//ActoEnemy
+	float _slimeTimer;
+	float _boarTimer;
+	int _maxEnemy;
+
+	bool _isBoss;
 public:
 	enemyManager();
 	~enemyManager();
@@ -33,7 +43,9 @@ public:
 
 	bulletManager* getBulletManager() { return _bulletManager; }
 
-
+	void AutoEnemyCreate();
+	void AutoEnemySet(bool value) { _isBoss = value; }
+	bool AutoEnemyget() { return _isBoss; }
 	void BossAttack();
 };
 

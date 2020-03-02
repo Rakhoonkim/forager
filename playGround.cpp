@@ -50,7 +50,7 @@ void playGround::render()
 	
 	if (!CURSORMANAGER->getCursor()->getObjectPoint()) CURSORMANAGER->render();   //CURSOR
 	
-	TIMEMANAGER->render(getMemDC()); // 임시 
+	//TIMEMANAGER->render(getMemDC()); // 임시 
 	//===========================================================
 	_backBuffer->render(getHDC(), 0, 0);
 }

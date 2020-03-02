@@ -29,6 +29,7 @@ HRESULT image::init(int width, int height, BOOL blend)
 	_imageInfo->hOBit = (HBITMAP)SelectObject(_imageInfo->hMemDC, _imageInfo->hBit);
 	_imageInfo->width = width;
 	_imageInfo->height = height;
+	_imageInfo->isRotate = false;
 
 	//위에 셋팅이 실패해서 백버퍼가 생성되지 않았다면
 	if (_imageInfo == NULL)
@@ -95,7 +96,7 @@ HRESULT image::init(const DWORD resID, int width, int height, BOOL trans, COLORR
 	_imageInfo->hOBit = (HBITMAP)SelectObject(_imageInfo->hMemDC, _imageInfo->hBit);
 	_imageInfo->width = width;
 	_imageInfo->height = height;
-
+	_imageInfo->isRotate = false;
 
 	_trans = FALSE;
 	_transColor = RGB(0, 0, 0);
@@ -149,6 +150,7 @@ HRESULT image::init(const char* fileName, int width, int height, BOOL trans, COL
 	_imageInfo->hOBit = (HBITMAP)SelectObject(_imageInfo->hMemDC, _imageInfo->hBit);
 	_imageInfo->width = width;
 	_imageInfo->height = height;
+	_imageInfo->isRotate = false;
 
 	//파일이름의 길이를 알아온다
 	int len = strlen(fileName);
@@ -214,6 +216,7 @@ HRESULT image::init(const char* fileName, float x, float y, int width, int heigh
 	_imageInfo->frameHeight = height / frameY;
 	_imageInfo->maxFrameX = frameX - 1;
 	_imageInfo->maxFrameY = frameY - 1;
+	_imageInfo->isRotate = false;
 
 	//파일이름의 길이를 알아온다
 	int len = strlen(fileName);
@@ -277,6 +280,7 @@ HRESULT image::init(const char* fileName, int width, int height, int frameX, int
 	_imageInfo->frameHeight = height / frameY;
 	_imageInfo->maxFrameX = frameX - 1;
 	_imageInfo->maxFrameY = frameY - 1;
+	_imageInfo->isRotate = false;
 
 	//파일이름의 길이를 알아온다
 	int len = strlen(fileName);
@@ -364,6 +368,16 @@ void image::release()
 			DeleteDC(_blendImage->hMemDC);
 			SAFE_DELETE(_blendImage);
 		}
+
+
+		if (_imageInfo->isRotate)
+		{
+			SelectObject(_rotateImage->hMemDC, _rotateImage->hOBit);
+			DeleteObject(_rotateImage->hBit);
+			DeleteDC(_rotateImage->hMemDC);
+			SAFE_DELETE(_rotateImage);
+		}
+
 
 		SelectObject(_imageInfo->hMemDC, _imageInfo->hOBit);
 		DeleteObject(_imageInfo->hBit);
@@ -604,7 +618,7 @@ void image::alphaRender(HDC hdc, int value)
 		}
 		//알파블렌드가 적용되는 순서에 주의하면서 봅시다
 		else
-			_blendFunc.SourceConstantAlpha = _imageInfo->alphaValue;
+			_blendFunc.SourceConstantAlpha = _imageInfo->alpha;
 
 		if (_trans)
 		{
@@ -650,7 +664,7 @@ void image::alphaRender(HDC hdc, int destX, int destY, int sourX, int sourY, int
 		}
 		//알파블렌드가 적용되는 순서에 주의하면서 봅시다
 		else
-			_blendFunc.SourceConstantAlpha = _imageInfo->alphaValue;
+			_blendFunc.SourceConstantAlpha = _imageInfo->alpha;
 
 		if (_trans)
 		{
@@ -698,7 +712,7 @@ void image::alphaRender(HDC hdc, int destX, int destY, int value)
 		}
 		//알파블렌드가 적용되는 순서에 주의하면서 봅시다
 		else
-			_blendFunc.SourceConstantAlpha = _imageInfo->alphaValue;
+			_blendFunc.SourceConstantAlpha = _imageInfo->alpha;
 
 		if (_trans)
 		{
@@ -742,7 +756,7 @@ void image::alphaFrameRender(HDC hdc, int destX, int destY, int value)
 		}
 		//알파블렌드가 적용되는 순서에 주의하면서 봅시다
 		else
-			_blendFunc.SourceConstantAlpha = _imageInfo->alphaValue;
+			_blendFunc.SourceConstantAlpha = _imageInfo->alpha;
 
 		//트랜스 컬러 처리를 해야하냐
 		if (_trans)
@@ -796,7 +810,7 @@ void image::alphaFrameRender(HDC hdc, int destX, int destY, int currentFrameX, i
 		}
 		//알파블렌드가 적용되는 순서에 주의하면서 봅시다
 		else
-			_blendFunc.SourceConstantAlpha = _imageInfo->alphaValue;
+			_blendFunc.SourceConstantAlpha = _imageInfo->alpha;
 		//트랜스 컬러 처리를 해야하냐
 		if (_trans)
 		{
@@ -841,7 +855,7 @@ void image::setAlpha(int value)
 
 	if (value > 255) value = 255;
 	if (value < 0) value = 0;
-	_imageInfo->alphaValue = value;
+	_imageInfo->alpha = value;
 
 	if (!_imageInfo->isAlpha)
 	{
@@ -894,3 +908,446 @@ void image::aniAlphaRender(HDC hdc, int destX, int destY, animation* ani , int a
 {
 	alphaRender(hdc, destX, destY, ani->getFramePos().x, ani->getFramePos().y, ani->getFrameWidth(), ani->getFrameHeight(), alpha);
 }
+
+
+void image::rotateRender(HDC hdc, float centerX, float centerY, float angle)
+{
+	setRotationAngle(angle);
+
+	POINT rPoint[3];
+	int dist = sqrt((_imageInfo->width / 2) * (_imageInfo->width / 2) + (_imageInfo->height / 2) * (_imageInfo->height / 2));
+	float baseAngle[3];
+	baseAngle[0] = PI - atanf(((float)_imageInfo->height / 2) / ((float)_imageInfo->width / 2));
+	baseAngle[1] = atanf(((float)_imageInfo->height / 2) / ((float)_imageInfo->width / 2));
+	baseAngle[2] = PI + atanf(((float)_imageInfo->height / 2) / ((float)_imageInfo->width / 2));
+
+	for (int i = 0; i < 3; i++)
+	{
+		rPoint[i].x = (_rotateImage->width / 2 + cosf(baseAngle[i] + angle) * dist);
+		rPoint[i].y = (_rotateImage->height / 2 + -sinf(baseAngle[i] + angle) * dist);
+	}
+
+	if (_trans)
+	{
+		// 검은 색으로 채운다
+		BitBlt(_rotateImage->hMemDC, 0, 0,
+			_rotateImage->width, _rotateImage->height,
+			hdc,
+			0, 0, BLACKNESS);
+
+		// 검은색과 1,1 점이 같으면 현재 브러쉬색(transColor)으로 채운다
+		HBRUSH hBrush = CreateSolidBrush(_transColor);
+		HBRUSH oBrush = (HBRUSH)SelectObject(_rotateImage->hMemDC, hBrush);
+		ExtFloodFill(_rotateImage->hMemDC, 1, 1, RGB(0, 0, 0), FLOODFILLSURFACE);
+		DeleteObject(hBrush);
+
+
+		PlgBlt(_rotateImage->hMemDC, rPoint, _imageInfo->hMemDC,
+			0,
+			0,
+			_imageInfo->width,
+			_imageInfo->height,
+			NULL, 0, 0);
+		GdiTransparentBlt(hdc,
+			centerX - _rotateImage->width / 2,
+			centerY - _rotateImage->height / 2,
+			_rotateImage->width,
+			_rotateImage->height,
+			_rotateImage->hMemDC,
+			0,
+			0,
+			_rotateImage->width,
+			_rotateImage->height,
+			_transColor);
+
+	}
+	else
+	{
+		PlgBlt(hdc, rPoint, _imageInfo->hMemDC, 0, 0, _imageInfo->width, _imageInfo->height, NULL, 0, 0);
+	}
+}
+
+void image::alphaRotateRender(HDC hdc, float centerX, float centerY, float angle, BYTE alpha)
+{
+	//상수 값을 바로 넣은 거라면 SET불러줘서 필요한 세팅 완료해라 
+	setRotationAngle(angle);
+	setAlpha(alpha);
+
+
+	_blendFunc.SourceConstantAlpha = alpha;
+
+	POINT rPoint[3];
+	int dist = sqrt((_imageInfo->width / 2) * (_imageInfo->width / 2) + (_imageInfo->height / 2) * (_imageInfo->height / 2));
+	float baseAngle[3];
+	baseAngle[0] = PI - atanf(((float)_imageInfo->height / 2) / ((float)_imageInfo->width / 2));
+	baseAngle[1] = atanf(((float)_imageInfo->height / 2) / ((float)_imageInfo->width / 2));
+	baseAngle[2] = PI + atanf(((float)_imageInfo->height / 2) / ((float)_imageInfo->width / 2));
+
+	for (int i = 0; i < 3; i++)
+	{
+		rPoint[i].x = (_rotateImage->width / 2 + cosf(baseAngle[i] + angle) * dist);
+		rPoint[i].y = (_rotateImage->height / 2 + -sinf(baseAngle[i] + angle) * dist);
+	}
+
+	if (_trans)
+	{
+		// 검은 색으로 채운다
+		BitBlt(_rotateImage->hMemDC, 0, 0,
+			_rotateImage->width, _rotateImage->height,
+			hdc,
+			0, 0, BLACKNESS);
+		BitBlt(_blendImage->hMemDC, 0, 0,
+			_rotateImage->width, _rotateImage->height,
+			hdc,
+			centerX - _rotateImage->width / 2,
+			centerY - _rotateImage->height / 2, SRCCOPY);
+
+		// 검은색과 1,1 점이 같으면 현재 브러쉬색(transColor)으로 채운다
+		HBRUSH hBrush = CreateSolidBrush(_transColor);
+		HBRUSH oBrush = (HBRUSH)SelectObject(_rotateImage->hMemDC, hBrush);
+		ExtFloodFill(_rotateImage->hMemDC, 1, 1, RGB(0, 0, 0), FLOODFILLSURFACE);
+		DeleteObject(hBrush);
+
+
+		PlgBlt(_rotateImage->hMemDC, rPoint, _imageInfo->hMemDC,
+			0,
+			0,
+			_imageInfo->width,
+			_imageInfo->height,
+			NULL, 0, 0);
+		GdiTransparentBlt(_blendImage->hMemDC,
+			0,
+			0,
+			_rotateImage->width,
+			_rotateImage->height,
+			_rotateImage->hMemDC,
+			0,
+			0,
+			_rotateImage->width,
+			_rotateImage->height,
+			_transColor);
+
+		AlphaBlend(hdc,
+			centerX - _rotateImage->width / 2,
+			centerY - _rotateImage->height / 2,
+			_rotateImage->width,
+			_rotateImage->height,
+			_blendImage->hMemDC,
+			0,
+			0,
+			_rotateImage->width,
+			_rotateImage->height, _blendFunc);
+
+	}
+	else
+	{
+		PlgBlt(hdc, rPoint, _imageInfo->hMemDC, 0, 0, _imageInfo->width, _imageInfo->height, NULL, 0, 0);
+	}
+}
+
+void image::rotateFrameRender(HDC hdc, float centerX, float centerY, float angle)
+{
+	setRotationAngle(angle);
+
+	POINT rPoint[3];
+	int dist = sqrt((_imageInfo->frameWidth / 2) * (_imageInfo->frameWidth / 2) + (_imageInfo->frameHeight / 2) * (_imageInfo->frameHeight / 2));
+	float baseAngle[3];
+	baseAngle[0] = PI - atanf(((float)_imageInfo->frameHeight / 2) / ((float)_imageInfo->frameWidth / 2));
+	baseAngle[1] = atanf(((float)_imageInfo->frameHeight / 2) / ((float)_imageInfo->frameWidth / 2));
+	baseAngle[2] = PI + atanf(((float)_imageInfo->frameHeight / 2) / ((float)_imageInfo->frameWidth / 2));
+
+	for (int i = 0; i < 3; i++)
+	{
+		rPoint[i].x = (_rotateImage->width / 2 + cosf(baseAngle[i] + angle) * dist);
+		rPoint[i].y = (_rotateImage->height / 2 + -sinf(baseAngle[i] + angle) * dist);
+	}
+	if (_trans)
+	{
+
+		// 검은 색으로 채운다
+		BitBlt(_rotateImage->hMemDC, 0, 0,
+			_rotateImage->frameWidth, _rotateImage->frameHeight,
+			hdc,
+			0, 0, BLACKNESS);
+
+		// 검은색과 1,1 점이 같으면 현재 브러쉬색(transColor)으로 채운다
+		HBRUSH hBrush = CreateSolidBrush(_transColor);
+		HBRUSH oBrush = (HBRUSH)SelectObject(_rotateImage->hMemDC, hBrush);
+		ExtFloodFill(_rotateImage->hMemDC, 1, 1, RGB(0, 0, 0), FLOODFILLSURFACE);
+		DeleteObject(hBrush);
+
+
+		PlgBlt(_rotateImage->hMemDC, rPoint, _imageInfo->hMemDC,
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,
+			_imageInfo->currentFrameY * _imageInfo->frameHeight,
+			_imageInfo->frameWidth,
+			_imageInfo->frameHeight,
+			NULL, 0, 0);
+		GdiTransparentBlt(hdc,
+			centerX - _rotateImage->width / 2,
+			centerY - _rotateImage->height / 2,
+			_rotateImage->width,
+			_rotateImage->height,
+			_rotateImage->hMemDC,
+			0,
+			0,
+			_rotateImage->width,
+			_rotateImage->height,
+			_transColor);
+
+
+	}
+	else
+	{
+		PlgBlt(hdc, rPoint, _imageInfo->hMemDC,
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,
+			_imageInfo->currentFrameY * _imageInfo->frameHeight,
+			_imageInfo->frameWidth, _imageInfo->frameHeight, NULL, 0, 0);
+	}
+
+}
+
+void image::rotateFrameRender(HDC hdc, float centerX, float centerY, int currentFrameX, int currentFrameY, float angle)
+{
+	setRotationAngle(angle);
+
+	POINT rPoint[3];
+	int dist = sqrt((_imageInfo->frameWidth / 2) * (_imageInfo->frameWidth / 2) + (_imageInfo->frameHeight / 2) * (_imageInfo->frameHeight / 2));
+	float baseAngle[3];
+	baseAngle[0] = PI - atanf(((float)_imageInfo->frameHeight / 2) / ((float)_imageInfo->frameWidth / 2));
+	baseAngle[1] = atanf(((float)_imageInfo->frameHeight / 2) / ((float)_imageInfo->frameWidth / 2));
+	baseAngle[2] = PI + atanf(((float)_imageInfo->frameHeight / 2) / ((float)_imageInfo->frameWidth / 2));
+
+
+	for (int i = 0; i < 3; i++)
+	{
+		rPoint[i].x = (_rotateImage->width / 2 + cosf(baseAngle[i] + angle) * dist);
+		rPoint[i].y = (_rotateImage->height / 2 + -sinf(baseAngle[i] + angle) * dist);
+	}
+	if (_trans)
+	{
+		// 검은 색으로 채운다
+		BitBlt(_rotateImage->hMemDC, 0, 0,
+			_rotateImage->frameWidth, _rotateImage->frameHeight,
+			hdc,
+			0, 0, BLACKNESS);
+
+		// 검은색과 1,1 점이 같으면 현재 브러쉬색(transColor)으로 채운다
+		HBRUSH hBrush = CreateSolidBrush(_transColor);
+		HBRUSH oBrush = (HBRUSH)SelectObject(_rotateImage->hMemDC, hBrush);
+		ExtFloodFill(_rotateImage->hMemDC, 1, 1, RGB(0, 0, 0), FLOODFILLSURFACE);
+		DeleteObject(hBrush);
+
+
+		PlgBlt(_rotateImage->hMemDC, rPoint, _imageInfo->hMemDC,
+			currentFrameX * _imageInfo->frameWidth,
+			currentFrameY * _imageInfo->frameHeight,
+			_imageInfo->frameWidth,
+			_imageInfo->frameHeight,
+			NULL, 0, 0);
+		GdiTransparentBlt(hdc,
+			centerX - _rotateImage->width / 2,
+			centerY - _rotateImage->height / 2,
+			_rotateImage->width,
+			_rotateImage->height,
+			_rotateImage->hMemDC,
+			0,
+			0,
+			_rotateImage->width,
+			_rotateImage->height,
+			_transColor);
+
+	}
+	else
+	{
+		PlgBlt(hdc, rPoint, _imageInfo->hMemDC,
+			currentFrameX * _imageInfo->frameWidth,
+			currentFrameY * _imageInfo->frameHeight,
+			_imageInfo->frameWidth, _imageInfo->frameHeight, NULL, 0, 0);
+	}
+}
+
+void image::alphaRotateFrameRender(HDC hdc, float centerX, float centerY, float angle, BYTE alpha)
+{
+	setRotationAngle(angle);
+	setAlpha(alpha);
+
+	_blendFunc.SourceConstantAlpha = alpha;
+
+	POINT rPoint[3];
+	int dist = sqrt((_imageInfo->frameWidth / 2) * (_imageInfo->frameWidth / 2) + (_imageInfo->frameHeight / 2) * (_imageInfo->frameHeight / 2));
+	float baseAngle[3];
+	baseAngle[0] = PI - atanf(((float)_imageInfo->frameHeight / 2) / ((float)_imageInfo->frameWidth / 2));
+	baseAngle[1] = atanf(((float)_imageInfo->frameHeight / 2) / ((float)_imageInfo->frameWidth / 2));
+	baseAngle[2] = PI + atanf(((float)_imageInfo->frameHeight / 2) / ((float)_imageInfo->frameWidth / 2));
+
+
+	for (int i = 0; i < 3; i++)
+	{
+		rPoint[i].x = (_rotateImage->width / 2 + cosf(baseAngle[i] + angle) * dist);
+		rPoint[i].y = (_rotateImage->height / 2 + -sinf(baseAngle[i] + angle) * dist);
+	}
+	if (_trans)
+	{
+
+		// 검은 색으로 채운다
+		BitBlt(_rotateImage->hMemDC, 0, 0,
+			_rotateImage->width, _rotateImage->height,
+			hdc,
+			0, 0, BLACKNESS);
+		BitBlt(_blendImage->hMemDC, 0, 0,
+			_rotateImage->width, _rotateImage->height,
+			hdc,
+			centerX - _rotateImage->width / 2,
+			centerY - _rotateImage->height / 2, SRCCOPY);
+
+		// 검은색과 1,1 점이 같으면 현재 브러쉬색(transColor)으로 채운다
+		HBRUSH hBrush = CreateSolidBrush(_transColor);
+		HBRUSH oBrush = (HBRUSH)SelectObject(_rotateImage->hMemDC, hBrush);
+		ExtFloodFill(_rotateImage->hMemDC, 1, 1, RGB(0, 0, 0), FLOODFILLSURFACE);
+		DeleteObject(hBrush);
+
+
+		PlgBlt(_rotateImage->hMemDC, rPoint, _imageInfo->hMemDC,
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,
+			_imageInfo->currentFrameY * _imageInfo->frameHeight,
+			_imageInfo->frameWidth,
+			_imageInfo->frameHeight,
+			NULL, 0, 0);
+		GdiTransparentBlt(_blendImage->hMemDC,
+			0,
+			0,
+			_rotateImage->width,
+			_rotateImage->height,
+			_rotateImage->hMemDC,
+			0,
+			0,
+			_rotateImage->width,
+			_rotateImage->height,
+			_transColor);
+		AlphaBlend(hdc,
+			centerX - _rotateImage->width / 2,
+			centerY - _rotateImage->height / 2,
+			_rotateImage->width,
+			_rotateImage->height,
+			_blendImage->hMemDC,
+			0,
+			0,
+			_rotateImage->width,
+			_rotateImage->height, _blendFunc);
+
+	}
+	else
+	{
+		PlgBlt(hdc, rPoint, _imageInfo->hMemDC,
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,
+			_imageInfo->currentFrameY * _imageInfo->frameHeight,
+			_imageInfo->frameWidth, _imageInfo->frameHeight, NULL, 0, 0);
+	}
+}
+
+void image::alphaRotateFrameRender(HDC hdc, float centerX, float centerY, int currentFrameX, int currentFrameY, float angle, BYTE alpha)
+{
+	setRotationAngle(angle);
+	setAlpha(alpha);
+
+
+	_blendFunc.SourceConstantAlpha = alpha;
+
+	POINT rPoint[3];
+	int dist = sqrt((_imageInfo->frameWidth / 2) * (_imageInfo->frameWidth / 2) + (_imageInfo->frameHeight / 2) * (_imageInfo->frameHeight / 2));
+	float baseAngle[3];
+	baseAngle[0] = PI - atanf(((float)_imageInfo->frameHeight / 2) / ((float)_imageInfo->frameWidth / 2));
+	baseAngle[1] = atanf(((float)_imageInfo->frameHeight / 2) / ((float)_imageInfo->frameWidth / 2));
+	baseAngle[2] = PI + atanf(((float)_imageInfo->frameHeight / 2) / ((float)_imageInfo->frameWidth / 2));
+
+
+	for (int i = 0; i < 3; i++)
+	{
+		rPoint[i].x = (_rotateImage->width / 2 + cosf(baseAngle[i] + angle) * dist);
+		rPoint[i].y = (_rotateImage->height / 2 + -sinf(baseAngle[i] + angle) * dist);
+	}
+	if (_trans)
+	{
+		// 검은 색으로 채운다
+		BitBlt(_rotateImage->hMemDC, 0, 0,
+			_rotateImage->width, _rotateImage->height,
+			hdc,
+			0, 0, BLACKNESS);
+		BitBlt(_blendImage->hMemDC, 0, 0,
+			_rotateImage->width, _rotateImage->height,
+			hdc,
+			centerX - _rotateImage->width / 2,
+			centerY - _rotateImage->height / 2, SRCCOPY);
+
+		// 검은색과 1,1 점이 같으면 현재 브러쉬색(transColor)으로 채운다
+		HBRUSH hBrush = CreateSolidBrush(_transColor);
+		HBRUSH oBrush = (HBRUSH)SelectObject(_rotateImage->hMemDC, hBrush);
+		ExtFloodFill(_rotateImage->hMemDC, 1, 1, RGB(0, 0, 0), FLOODFILLSURFACE);
+		DeleteObject(hBrush);
+
+		PlgBlt(_rotateImage->hMemDC, rPoint, _imageInfo->hMemDC,
+			currentFrameX * _imageInfo->frameWidth,
+			currentFrameY * _imageInfo->frameHeight,
+			_imageInfo->frameWidth,
+			_imageInfo->frameHeight,
+			NULL, 0, 0);
+		GdiTransparentBlt(_blendImage->hMemDC,
+			0,
+			0,
+			_rotateImage->width,
+			_rotateImage->height,
+			_rotateImage->hMemDC,
+			0,
+			0,
+			_rotateImage->width,
+			_rotateImage->height,
+			_transColor);
+		AlphaBlend(hdc,
+			centerX - _rotateImage->width / 2,
+			centerY - _rotateImage->height / 2,
+			_rotateImage->width,
+			_rotateImage->height,
+			_blendImage->hMemDC,
+			0,
+			0,
+			_rotateImage->width,
+			_rotateImage->height, _blendFunc);
+
+
+	}
+	else
+	{
+		PlgBlt(hdc, rPoint, _imageInfo->hMemDC,
+			currentFrameX * _imageInfo->frameWidth,
+			currentFrameY * _imageInfo->frameHeight,
+			_imageInfo->frameWidth, _imageInfo->frameHeight, NULL, 0, 0);
+	}
+}
+
+
+
+
+void image::setRotationAngle(float angle)
+{
+	_imageInfo->rotationAngle = angle;
+	//회전이 필요해지면 생성한다 
+	if (!_imageInfo->isRotate)
+	{
+		HDC hdc = GetDC(_hWnd);
+
+		int size;
+		(_imageInfo->width > _imageInfo->height ? size = _imageInfo->width : size = _imageInfo->height);
+		_rotateImage = new IMAGE_INFO;
+		_rotateImage->loadType = LOAD_EMPTY;
+		_rotateImage->resID = 0;
+		_rotateImage->hMemDC = CreateCompatibleDC(hdc);
+		_rotateImage->hBit = (HBITMAP)CreateCompatibleBitmap(hdc, size, size);
+		_rotateImage->hOBit = (HBITMAP)SelectObject(_rotateImage->hMemDC, _rotateImage->hBit);
+		_rotateImage->width = size;
+		_rotateImage->height = size;
+		_imageInfo->isRotate = true;
+	}
+}
+
+

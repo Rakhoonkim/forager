@@ -137,6 +137,13 @@ void building::buttonInit()
 {
 }
 
+void building::setCenterXY(int idx, int idy)
+{
+	_building.centerX = 0;
+	_building.centerY = 0;
+}
+
+
 //¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á furnace ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á
 
 furnace::furnace()
@@ -189,17 +196,18 @@ void furnace::render()
 	}
 	if (_building.isClick) IMAGEMANAGER->findImage("Ebutton")->render(CAMERAMANAGER->getWorldDC(), _building.centerX - (IMAGEMANAGER->findImage("Ebutton")->getWidth() / 2), _building.centerY - (IMAGEMANAGER->findImage("Ebutton")->getHeight() / 2));
 	//Rectangle(CAMERAMANAGER->getWorldDC(), _building.rc);
+	if (_isWork)
+	{
+		float timeWorking = ((float)(TIMEMANAGER->getWorldTime() - _timer) / (float)(5)) * 70;
+		IMAGEMANAGER->findImage("workingBar")->alphaRender(CAMERAMANAGER->getWorldDC(), _building.centerX - 35, _building.centerY - (IMAGEMANAGER->findImage("workingBar")->getFrameHeight() / 2), 0, 0, 70, 20, 150);
+		IMAGEMANAGER->findImage("workingBar")->alphaRender(CAMERAMANAGER->getWorldDC(), _building.centerX - 35, _building.centerY - (IMAGEMANAGER->findImage("workingBar")->getFrameHeight() / 2), 0, 24, timeWorking, 20);
+		IMAGEMANAGER->findImage("craftItem")->frameRender(CAMERAMANAGER->getWorldDC(), _building.centerX - (IMAGEMANAGER->findImage("craftItem")->getFrameWidth() / 2), _building.centerY - (IMAGEMANAGER->findImage("craftItem")->getFrameHeight() / 2), _direction, 0);
+	}
 }
 
 void furnace::EffectRender()
 {
-	if (_isWork)
-	{
-		float timeWorking = ((float)(TIMEMANAGER->getWorldTime() - _timer) / (float)(5))  * 100;
-		IMAGEMANAGER->findImage("workingBar")->alphaRender(CAMERAMANAGER->getWorldDC(), _building.centerX - (IMAGEMANAGER->findImage("workingBar")->getFrameWidth() / 2), _building.centerY - (IMAGEMANAGER->findImage("workingBar")->getFrameHeight() / 2), 0, 0, 100, 20,150);
-		IMAGEMANAGER->findImage("workingBar")->alphaRender(CAMERAMANAGER->getWorldDC(), _building.centerX - (IMAGEMANAGER->findImage("workingBar")->getFrameWidth() / 2), _building.centerY - (IMAGEMANAGER->findImage("workingBar")->getFrameHeight() / 2), 0, 24, timeWorking, 20);
-		IMAGEMANAGER->findImage("craftItem")->frameRender(CAMERAMANAGER->getWorldDC(), _building.centerX - (IMAGEMANAGER->findImage("craftItem")->getFrameWidth() /2) , _building.centerY - (IMAGEMANAGER->findImage("craftItem")->getFrameHeight() / 2), _direction, 0);
-	}
+
 	if (_isUse)
 	{
 		IMAGEMANAGER->findImage("furnaceBackground")->render(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2 - IMAGEMANAGER->findImage("furnaceBackground")->getWidth() / 2, CAMERAMANAGER->getWorldCamera().cameraY + 75);
@@ -497,10 +505,19 @@ void forge::render()
 {
 	IMAGEMANAGER->findImage(_building.imageName)->render(CAMERAMANAGER->getWorldDC(), _building.x - (IMAGEMANAGER->findImage(_building.imageName)->getWidth() / 2), _building.y - (IMAGEMANAGER->findImage(_building.imageName)->getHeight() / 2));
 	if (_building.isClick) IMAGEMANAGER->findImage("Ebutton")->render(CAMERAMANAGER->getWorldDC(), _building.centerX - (IMAGEMANAGER->findImage("Ebutton")->getWidth() / 2), _building.centerY - (IMAGEMANAGER->findImage("Ebutton")->getHeight() / 2));
+
+	if (_isWork)
+	{
+		float timeWorking = ((float)(TIMEMANAGER->getWorldTime() - _timer) / (float)(5)) * 70;
+		IMAGEMANAGER->findImage("workingBar")->alphaRender(CAMERAMANAGER->getWorldDC(), _building.centerX - 35, _building.centerY - (IMAGEMANAGER->findImage("workingBar")->getFrameHeight() / 2), 0, 0, 70, 20, 150);
+		IMAGEMANAGER->findImage("workingBar")->alphaRender(CAMERAMANAGER->getWorldDC(), _building.centerX - 35, _building.centerY - (IMAGEMANAGER->findImage("workingBar")->getFrameHeight() / 2), 0, 24, timeWorking, 20);
+		IMAGEMANAGER->findImage("craftItem")->frameRender(CAMERAMANAGER->getWorldDC(), _building.centerX - (IMAGEMANAGER->findImage("craftItem")->getFrameWidth() / 2), _building.centerY - (IMAGEMANAGER->findImage("craftItem")->getFrameHeight() / 2), _direction, 1);
+	}
 }
 
 void forge::EffectRender()
 {
+
 	if (_isUse)
 	{
 		IMAGEMANAGER->findImage("forgeBackground")->render(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2 - IMAGEMANAGER->findImage("forgeBackground")->getWidth() / 2, CAMERAMANAGER->getWorldCamera().cameraY + 75);
@@ -737,10 +754,20 @@ void sewingStation::render()
 {
 	IMAGEMANAGER->findImage(_building.imageName)->render(CAMERAMANAGER->getWorldDC(), _building.x - (IMAGEMANAGER->findImage(_building.imageName)->getWidth() / 2), _building.y - (IMAGEMANAGER->findImage(_building.imageName)->getHeight() / 2) - 30);
 	if (_building.isClick) IMAGEMANAGER->findImage("Ebutton")->render(CAMERAMANAGER->getWorldDC(), _building.centerX - (IMAGEMANAGER->findImage("Ebutton")->getWidth() / 2), _building.centerY - (IMAGEMANAGER->findImage("Ebutton")->getHeight() / 2));
+
+	if (_isWork)
+	{
+		float timeWorking = ((float)(TIMEMANAGER->getWorldTime() - _timer) / (float)(5)) * 70;
+		IMAGEMANAGER->findImage("workingBar")->alphaRender(CAMERAMANAGER->getWorldDC(), _building.centerX - 35, _building.centerY - (IMAGEMANAGER->findImage("workingBar")->getFrameHeight() / 2), 0, 0, 70, 20, 150);
+		IMAGEMANAGER->findImage("workingBar")->alphaRender(CAMERAMANAGER->getWorldDC(), _building.centerX - 35, _building.centerY - (IMAGEMANAGER->findImage("workingBar")->getFrameHeight() / 2), 0, 24, timeWorking, 20);
+		IMAGEMANAGER->findImage("craftItem")->frameRender(CAMERAMANAGER->getWorldDC(), _building.centerX - (IMAGEMANAGER->findImage("craftItem")->getFrameWidth() / 2), _building.centerY - (IMAGEMANAGER->findImage("craftItem")->getFrameHeight() / 2), _direction, 2);
+	}
+
 }
 
 void sewingStation::EffectRender()
 {
+
 	if (_isUse)
 	{
 		IMAGEMANAGER->findImage("sewingBackground")->render(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX + WINSIZEX / 2 - IMAGEMANAGER->findImage("sewingBackground")->getWidth() / 2, CAMERAMANAGER->getWorldCamera().cameraY + 250);
@@ -1032,8 +1059,8 @@ void bridge::update()
 
 void bridge::render()
 {
-	IMAGEMANAGER->findImage(_building.imageName)->frameRender(CAMERAMANAGER->getWorldDC(), _building.x - (IMAGEMANAGER->findImage(_building.imageName)->getFrameWidth() / 2), _building.y - (IMAGEMANAGER->findImage(_building.imageName)->getFrameHeight() / 2) - 10);
-	if (_building.isClick) IMAGEMANAGER->findImage("EbuttonFarming")->render(CAMERAMANAGER->getWorldDC(), _building.x - (IMAGEMANAGER->findImage("EbuttonFarming")->getWidth() / 2), _building.y - (IMAGEMANAGER->findImage("EbuttonFarming")->getHeight() / 2) - 10);
+	IMAGEMANAGER->findImage(_building.imageName)->frameRender(CAMERAMANAGER->getWorldDC(), _building.x - (IMAGEMANAGER->findImage(_building.imageName)->getFrameWidth() / 2), _building.y - (IMAGEMANAGER->findImage(_building.imageName)->getFrameHeight() / 2) +17);
+	//if (_building.isClick) IMAGEMANAGER->findImage("EbuttonFarming")->render(CAMERAMANAGER->getWorldDC(), _building.x - (IMAGEMANAGER->findImage("EbuttonFarming")->getWidth() / 2), _building.y - (IMAGEMANAGER->findImage("EbuttonFarming")->getHeight() / 2) - 10);
 }
 
 void bridge::EffectRender()

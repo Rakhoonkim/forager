@@ -17,6 +17,15 @@ HRESULT enemyManager::init()
 	_bulletManager = new bulletManager;
 	_bulletManager->init();
 
+	_effect = new alphaEffect;
+	_effect->init();
+
+	//EnemyCreate
+	_slimeTimer = TIMEMANAGER->getWorldTime();
+	_boarTimer = TIMEMANAGER->getWorldTime();
+	_maxEnemy = 0;
+
+	_isBoss = false;
 	return S_OK;
 }
 
@@ -79,15 +88,15 @@ void enemyManager::update()
 
 	if (KEYMANAGER->isOnceKeyDown('U'))
 	{
-		CreateEnemy(ENEMY::SLIME, 24, 19);
-		CreateEnemy(ENEMY::BOAR, 24, 20);
-		CreateEnemy(ENEMY::DEMON, 24, 21);
-		CreateEnemy(ENEMY::SKULL, 24, 21);
-		CreateEnemy(ENEMY::DEMON_BOSS, 24, 21);
+		//CreateEnemy(ENEMY::SLIME, 24, 19);
+		//CreateEnemy(ENEMY::BOAR, 24, 20);
+		//CreateEnemy(ENEMY::DEMON, 24, 21);
+		//CreateEnemy(ENEMY::SKULL, 24, 21);
+		//CreateEnemy(ENEMY::DEMON_BOSS, 24, 18);
 	}
-	
-
 	_bulletManager->update();
+
+	if(!_isBoss) AutoEnemyCreate(); // enemyManager 
 	enemyRemove();
 }
 
@@ -98,6 +107,7 @@ void enemyManager::render()
 	//	(*_viEnemy)->render();
 	//}
 	_bulletManager->render();
+	_effect->render();
 }
 
 void enemyManager::imageSetting()
@@ -191,11 +201,16 @@ void enemyManager::enemyRemove()
 		if ((*_viEnemy)->getEnemy()->hp <= 0)
 		{
 			// Enemey 삭제  
+			_maxEnemy--;
 			ITEMMANAGER->DropEnemyItem((*_viEnemy)->getEnemy()->enemy, (*_viEnemy)->getEnemy()->centerX, (*_viEnemy)->getEnemy()->centerY);
+			_player->playerExp((*_viEnemy)->getEnemy()->exp);
+			_effect->play("expNum", (*_viEnemy)->getEnemy()->exp, _player->get_PlayerAddress()->x - 15, _player->get_PlayerAddress()->y - 15);
+
 			_vEnemy.erase(_viEnemy);
 			break;
 		}
 	}
+	_effect->update();
 }
 
 void enemyManager::CreateEnemy(ENEMY enemyType, int idx, int idy)
@@ -247,6 +262,45 @@ void enemyManager::CreateEnemy(ENEMY enemyType, int idx, int idy)
 
 	//제트오더 추가 
 	ZORDER->addZorder(STAGEOBJECT::ENEMY, NULL, NULL, NULL, temp, NULL);
+}
+
+void enemyManager::AutoEnemyCreate()
+{
+	if (_maxEnemy >= (2 * MAPMANAGER->getMapCount())) 
+	{
+		_slimeTimer = TIMEMANAGER->getWorldTime();
+		_boarTimer = TIMEMANAGER->getWorldTime();
+
+		return;
+	}
+
+	if (_slimeTimer + RND->getFromIntTo(40, 60) <= TIMEMANAGER->getWorldTime())
+	{
+		POINT rnd;
+		rnd = MAPMANAGER->randomObjectTile();
+
+		if (rnd.x != 0 && rnd.y != 0)
+		{
+			_maxEnemy++;
+			_slimeTimer = TIMEMANAGER->getWorldTime();
+			this->CreateEnemy(ENEMY::SLIME, rnd.x, rnd.y);
+			MAPMANAGER->setRemoveObject(rnd.x, rnd.y);
+		}
+	}
+
+	if (_boarTimer + RND->getFromIntTo(50, 60) <= TIMEMANAGER->getWorldTime())
+	{
+		POINT rnd2;
+		rnd2 = MAPMANAGER->randomObjectTile();
+
+		if (rnd2.x != 0 && rnd2.y != 0)
+		{
+			_maxEnemy++;
+			_boarTimer = TIMEMANAGER->getWorldTime();
+			this->CreateEnemy(ENEMY::BOAR, rnd2.x, rnd2.y);
+			MAPMANAGER->setRemoveObject(rnd2.x, rnd2.y);
+		}
+	}
 }
 
 void enemyManager::BossAttack()

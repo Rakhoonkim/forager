@@ -82,8 +82,8 @@ void templeManager::blindRoomSetting()
 
 	_room[0].width = 900;
 	_room[0].height = 720;
-	_room[1].width = 660;
-	_room[1].height = 540;
+	_room[1].width = 900;
+	_room[1].height = 660;
 	_room[2].width = 780;
 	_room[2].height = 540;
 	_room[3].width = 600;

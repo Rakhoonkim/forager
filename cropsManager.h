@@ -16,6 +16,7 @@ private:
 
 
 	float _cropsTimer;
+	float _cropsTimer2;
 	float _rockTimer;
 	float _treeTimer;
 	int _maxCrops;

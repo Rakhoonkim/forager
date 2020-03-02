@@ -14,8 +14,8 @@ HRESULT buildManager::init()
 	imageSetting();
 
 	//빌딩 셋팅
-	createImageBuilding(BUILDING::FURNACE, 17, 14);
-	createImageBuilding(BUILDING::FORGE, 20, 14);
+	//createImageBuilding(BUILDING::FURNACE, 17, 14);
+	//createImageBuilding(BUILDING::FORGE, 20, 14);
 	//createImageBuilding(BUILDING::SEWING_STATION, 23, 14);
 	//createImageBuilding(BUILDING::FISHTRAP, 28, 20);
 
@@ -38,11 +38,7 @@ void buildManager::update()
 
 void buildManager::render()
 {
-	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-	{
-		//cout << " 눌리냐?? " << endl;
-		KEYMANAGER->setKeyDown(VK_LBUTTON, false);
-	}
+
 	//for (_viBuilding = _vBuilding.begin(); _viBuilding != _vBuilding.end(); _viBuilding++)
 	//{
 	//	(*_viBuilding)->render();
@@ -130,6 +126,7 @@ void buildManager::createImageBuilding(BUILDING build, int idx, int idy)
 		construction = new bridge;
 		construction->init(build, "bridge", idx, idy, true);
 		construction->setHp(20, 20);
+		construction->setCenterXY(0, 0); // 일단 영으로 설정 
 		_vBuilding.push_back(construction);
 
 		MAPMANAGER->setRemoveWater(idx, idy); // 맵을 이동할 수 있게 정의 

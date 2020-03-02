@@ -50,6 +50,7 @@ public:
 	virtual void setAni() { _building.ani = KEYANIMANAGER->findAnimation("furnace"); }
 	virtual bool getUsed() { return _isUse; }
 	virtual void setUsed() { _isUse = false; }
+	virtual void setCenterXY(int idx,int idy);
 	virtual tagObject* getBuilding() { return &_building; }
 };
 

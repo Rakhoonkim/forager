@@ -40,7 +40,7 @@ public:
 	virtual void setHp(int MaxHp, int hp)			 { _enemy.maxHp = MaxHp; _enemy.hp = hp; }  // Ã¼·Â 
 	virtual void setAni(const char* imageName)		 { _enemy.ani = KEYANIMANAGER->findAnimation(imageName); _enemy.ani->start(); }
 	virtual void enemyHit(int damege)				 { _enemy.hp -= damege; }
-	
+	virtual int getEnemyExp()					{ return _enemy.exp; }
 	virtual bool getBossAttack()				{ return _enemy.isAttack; }
 	virtual void SetBossAttack(bool value)		{ _enemy.isAttack = value; }
 	bulletManager* getBulletManager()			{	return _bulletManager;	}
