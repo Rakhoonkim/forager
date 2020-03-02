@@ -8,17 +8,18 @@
 HRESULT playerManager::init()
 {
 	imageSetting();
+
 	_player = new player();
 	_player->init();
+
 	ZORDER->addZorder(STAGEOBJECT::PLAYER, _player, NULL, NULL, NULL, NULL);
-	//옵션
-	_isOption = false;
+	
+	_isOption = false;  // 옵션 키 초기화
 
-	//UI 셋팅
-	UIMANAGER->playerAdressLink(_player->get_PlayerAddress()); // 구조체 전달
-	UIMANAGER->getInven()->setPlayer(_player->get_PlayerAddress());
+	UIMANAGER->playerAdressLink(_player->get_PlayerAddress());		 // PLAYER->UI
+	UIMANAGER->getInven()->setPlayer(_player->get_PlayerAddress());  // PLAYER->INVEN
 
-	_alphaEffect = new alphaEffect;
+	_alphaEffect = new alphaEffect;  // 경험치 
 	_alphaEffect->init();
 
 	return S_OK;
@@ -27,31 +28,27 @@ HRESULT playerManager::init()
 void playerManager::release()
 {
 	_player->release();
-	_alphaEffect->release();			// 숫자 지우기
+	_alphaEffect->release();  // 숫자 지우기
 }
 
 void playerManager::update()
 {
-
 	_player->update();
+
 	if (!UIMANAGER->getOption()) objectCollisionMouse();   // 마우스 포인터를 보여주기 위한 
-	itemCollisionPlayer();    // 아이템을 먹기 위한.
-	itemCollisionMouse();	  // 아이템을 먹기 위한.
+
+	itemCollisionPlayer();    // 아이템을 먹기 위한
+	itemCollisionMouse();	  // 아이템을 먹기 위한
 	optionControl();		  // 옵션창 컨트롤 
-	_alphaEffect->update();	  // UI 경험치 
-	//if (KEYMANAGER->isOnceKeyDown('N'))
-	//{
-	//	cout << "눌렷나?" << endl;
-	//	_alphaEffect->play("expNum", 15, _player->get_PlayerAddress()->x - 15, _player->get_PlayerAddress()->y - 15);
-	//}
-	bulletColision();
+	bulletColision();		  // 총알 충돌
+	_alphaEffect->update();	  // 경험치 
 }
 
 void playerManager::render()
 {
 	// 건물사용중이면 렌드를 끈다
 	//if (!_buildManager->usedCheck()) _player->render();
-	_alphaEffect->render();
+	//_alphaEffect->render();
 }
 
 void playerManager::imageSetting()
@@ -76,10 +73,9 @@ void playerManager::imageSetting()
 	EFFECTMANAGER->addEffect("shadow", "shadow", 80, 16, 16, 16, 1, 0.3f, 20);
 
 	IMAGEMANAGER->addFrameImage("playerWeapon", "./image/player/playerWeapon.bmp",162, 108,3,2, true, RGB(255, 0, 255), true);
-
 }
 
-//아이템 충돌
+//아이템&플레이어
 void playerManager::itemCollisionPlayer()
 {
 	for (int i = 0; i < ITEMMANAGER->getVItem().size(); i++)
@@ -95,7 +91,7 @@ void playerManager::itemCollisionPlayer()
 		}
 	}
 }
-// 아이템 충돌 
+// 아이템&마우스 
 void playerManager::itemCollisionMouse()
 {
 	for (int i = 0; i < ITEMMANAGER->getVItem().size(); i++)
@@ -131,6 +127,7 @@ void playerManager::objectCollisionMouse()
 	//■■■■■■■■■■■■■■■■■■■■■■ buildAttackCollision ■■■■■■■■■■■■■■■■■■■■■■
 	for (int i = 0; i < _buildManager->getVBuild().size(); ++i)
 	{
+		//거리가 가까우면
 		if (180 >= getDistance(_buildManager->getVBuild()[i]->getBuilding()->centerX, _buildManager->getVBuild()[i]->getBuilding()->centerY, _player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y))
 		{
 			// 건물 USED 창 띄우지 않고 and 마우스가 충돌 나면 
@@ -170,6 +167,7 @@ void playerManager::objectCollisionMouse()
 		//플레이어 공격중일 떄 
 		if (!_enemyManager->getVEnemy()[i]->getEnemy()->isHit && PtInRect(&_enemyManager->getVEnemy()[i]->getEnemy()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
 		{
+			//몬스터 마다 
 			if (_enemyManager->getVEnemy()[i]->getEnemy()->enemy == ENEMY::SLIME)
 			{
 				CURSORMANAGER->setCropsPoint();
@@ -192,11 +190,11 @@ void playerManager::objectCollisionMouse()
 				CURSORMANAGER->getCursor()->setCursorXY(_enemyManager->getVEnemy()[i]->getEnemy()->centerX - CAMERAMANAGER->getWorldCamera().cameraX, _enemyManager->getVEnemy()[i]->getEnemy()->centerY - CAMERAMANAGER->getWorldCamera().cameraY + 25);
 
 			}
+
 			if (_player->get_PlayerAddress()->health > 0) enemyAttack(i);
 			return;
 		}
 	}
-
 
 	//■■■■■■■■■■■■■■■■■■■■■■ PuzzleCollision ■■■■■■■■■■■■■■■■■■■■■■
 	if (!_puzzleManager->getTreasureChest()->getIsOpen() && 180 >= getDistance(_puzzleManager->getTreasureChest()->getPuzzle()->centerX, _puzzleManager->getTreasureChest()->getPuzzle()->centerY, _player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y))
@@ -217,6 +215,7 @@ void playerManager::objectCollisionMouse()
 	CURSORMANAGER->getCursor()->setCursorChange();
 }
 
+//총알 충돌
 void playerManager::bulletColision()
 {
 	for (int i = 0;i < _enemyManager->getBulletManager()->getBullet()->getVBullet().size(); i++)
@@ -232,7 +231,7 @@ void playerManager::bulletColision()
 	}
 }
 
-//옵션창 컨드롤 
+//옵션창 컨트롤
 void playerManager::optionControl()
 {
 	//옵션창 컨트롤
@@ -250,7 +249,7 @@ void playerManager::objectAttack(int num)
 		//거리가 좁혀지면 데미지를 입힌다.
 		if (getDistance(_player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y, _cropsManager->getVCrops()[num]->getCrops()->centerX, _cropsManager->getVCrops()[num]->getCrops()->centerY) <= 120)
 		{
-			_player->playerHealth(3);
+			_player->setPlayerHealth(3);		// 체력소진
 			_cropsManager->getVCrops()[num]->setCropsEffect(true);
 			_cropsManager->getVCrops()[num]->setCropsIsHit(true);
 			_cropsManager->getVCrops()[num]->cropsHit(_player->get_PlayerAddress()->damage);
@@ -266,7 +265,7 @@ void playerManager::enemyAttack(int num)
 		//거리가 좁혀지면 데미지를 입힌다.
 		if (getDistance(_player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y, _enemyManager->getVEnemy()[num]->getEnemy()->centerX, _enemyManager->getVEnemy()[num]->getEnemy()->centerY) <= 80)
 		{
-			_player->playerHealth(3);
+			_player->setPlayerHealth(3);		 // 체력소진
 			_enemyManager->getVEnemy()[num]->enemyHit(_player->get_PlayerAddress()->damage);
 		}
 		//KEYMANAGER->setKeyDown(VK_LBUTTON, false);

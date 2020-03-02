@@ -23,16 +23,16 @@ void mapToolScene::release()
 
 void mapToolScene::update()
 {
-	SaveAndLoad();          // 세이브 로드
+	saveLoadClick();          // 세이브 로드
 
-	MapToolCollision();		// 클릭 
-	MapToolEraser();
+	MapToolCollision();		  // 타일 클릭 
+	MapToolEraser();		  // 타일 삭제
 }
 
 void mapToolScene::render()
 {
-	MapToolRender();		// 렌더
-	CAMERAMANAGER->MapToolCameraRectUpdate();
+	CAMERAMANAGER->MapToolCameraRectUpdate(); // 카메라 렉트 
+	MapToolRender();						  // 렌더
 }
 
 void mapToolScene::save()
@@ -55,17 +55,18 @@ void mapToolScene::load()
 
 	file = CreateFile(_saveName, GENERIC_READ, 0, NULL,
 		OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
 	//맵을 불로온 직후 타일의 속성을 매겨준다
 	ReadFile(file, _tiles, sizeof(tagTile) * TILEX * TILEY, &read, NULL);
 
 	CloseHandle(file);
 }
 
-void mapToolScene::SaveAndLoad()
+void mapToolScene::saveLoadClick()
 {
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
-		//버튼 
+		//세이브 버튼을 누르면
 		for (int i = 0; i < SAVESLOT; i++)
 		{
 			if (PtInRect(&_saveSlot[i].rc, _ptMouse))
@@ -74,52 +75,54 @@ void mapToolScene::SaveAndLoad()
 				break;
 			}
 		}
+		// 모든 버튼 비활성화
+		for (int i = 0; i < SAVESLOT; i++)
+		{
+			_saveSlot[i].isClick = false;
+		}
+		// 버튼 설정
+		switch (_saveSlotDirection)
+		{
+		case 0:
+			_saveName = "inGameNumber1.map";
+			_saveSlot[_saveSlotDirection].isClick = true;
+			break;
+		case 1:
+			_saveName = "inGameNumber2.map";
+			_saveSlot[_saveSlotDirection].isClick = true;
+			break;
+		case 2:
+			_saveName = "inGameNumber3.map";
+			_saveSlot[_saveSlotDirection].isClick = true;
+			break;
+		case 3:
+			_saveName = "inGameNumber4.map";
+			_saveSlot[_saveSlotDirection].isClick = true;
+			break;
+		}
 
+		//세이브 버튼을 누르면 
 		if (PtInRect(&_saveButton.rc, _ptMouse))
 		{
 			this->save();
 		}
+		//로드 버튼을 누르면
 		if (PtInRect(&_loadButton.rc, _ptMouse))
 		{
 			this->load();
 		}
+		//나가기 버튼을 누르면
 		if (PtInRect(&_exitButton.rc, _ptMouse))
 		{
+			//메인 메뉴로
 			SCENEMANAGER->changeScene("MAINMENU");
 		}
-
 	}
-
-	for (int i = 0; i < SAVESLOT; i++)
-	{
-		_saveSlot[i].isClick = false;
-	}
-
-	switch (_saveSlotDirection)
-	{
-	case 0:
-		_saveName = "inGameNumber1.map";
-		_saveSlot[_saveSlotDirection].isClick = true;
-		break;
-	case 1:
-		_saveName = "inGameNumber2.map";
-		_saveSlot[_saveSlotDirection].isClick = true;
-		break;
-	case 2:
-		_saveName = "inGameNumber3.map";
-		_saveSlot[_saveSlotDirection].isClick = true;
-		break;
-	case 3:
-		_saveName = "inGameNumber4.map";
-		_saveSlot[_saveSlotDirection].isClick = true;
-		break;
-	}
-
 }
 
 void mapToolScene::MapToolImage()
 {
-	//TILE STYLE
+	//타일
 	IMAGEMANAGER->addFrameImage("grassTileLand", "./image/mapTool/grassTileLand.bmp", 420, 420, 7, 7, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addFrameImage("grassTile", "./image/mapTool/grassTile.bmp", 420, 420, 7, 7, true, RGB(255, 0, 255));
@@ -193,22 +196,21 @@ void mapToolScene::MapToolImage()
 
 void mapToolScene::MapToolSetup()
 {
-	// 현재 셋팅 
-	_currentTile.type = TYPE::NONE;
-	_currentTile.terrain = TERRAIN::GRASS;
+	//선택한 타일 초기화
 	_currentTile.frameX = 0;
 	_currentTile.frameY = 0;
-	// 변수 세팅
-	_mapButtonSize = 45;		// 맵 버튼 
+	_currentTile.type = TYPE::NONE;
+	_currentTile.terrain = TERRAIN::GRASS;
 
+	_mapButtonSize = 45;		// 맵 버튼 사이즈 초기화 
 	_miniMapSizeWidth = 3;		// MINIMAP 가로 
 	_miniMapSizeHeight = 3.75;	// MINIMAP 세로 
 
-	_saveSlotSizeWidth = 280;	// SAVE 가로 
-	_saveSlotSizeHeight = 30;	// SAVE 세로 
-	_saveSlotDirection = 0;
-	// 이미지이름
-	_saveName = "inGameNumber1.map";
+	_saveSlotDirection = 0;  //SAVESLOT 선택
+	_saveSlotWidth = 280;	 //가로 
+	_saveSlotHeight = 30;	 //세로 
+
+	_saveName = "inGameNumber1.map";  //이미지 이름 초기화 
 
 	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 본 MAP ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 	for (int i = 0; i < TILEY; i++)
@@ -228,14 +230,16 @@ void mapToolScene::MapToolSetup()
 			_tiles[i * TILEX + j].building = BUILDING::NONE;
 			_tiles[i * TILEX + j].terrainFrameX = 0;
 			_tiles[i * TILEX + j].terrainFrameY = 0;
-			_tiles[i * TILEX + j].objectFrameX = 0;
-			_tiles[i * TILEX + j].objectFrameY = 0;
-			_tiles[i * TILEX + j].characterFrameX = 0;
-			_tiles[i * TILEX + j].characterFrameY = 0;
+			_tiles[i * TILEX + j].landFrameX = 0;
+			_tiles[i * TILEX + j].landFrameY = 0;
 			_tiles[i * TILEX + j].landObjectFrameX = 0;
 			_tiles[i * TILEX + j].landObjectFrameY = 0;
+			_tiles[i * TILEX + j].objectFrameX = 0;
+			_tiles[i * TILEX + j].objectFrameY = 0;
 			_tiles[i * TILEX + j].treeFrameX = 0;
 			_tiles[i * TILEX + j].treeFrameY = 0;
+			_tiles[i * TILEX + j].characterFrameX = 0;
+			_tiles[i * TILEX + j].characterFrameY = 0;
 			_tiles[i * TILEX + j].templeObjectFrameX = 0;
 			_tiles[i * TILEX + j].templeObjectFrameY = 0;
 			_tiles[i * TILEX + j].idx = j;
@@ -259,7 +263,7 @@ void mapToolScene::MapToolSetup()
 		}
 	}
 
-	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 땅 데코레이션 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 땅 위 오브젝트 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 	for (int i = 0; i < LANDOBJECTY; i++)
 	{
 		for (int j = 0;j < LANDOBJECTX; j++)
@@ -271,7 +275,7 @@ void mapToolScene::MapToolSetup()
 		}
 	}
 
-	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 오브  젝트  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 식물  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 	for (int i = 0;i < OBJECTY; i++)
 	{
 		for (int j = 0;j < OBJECTX; j++)
@@ -283,8 +287,7 @@ void mapToolScene::MapToolSetup()
 		}
 	}
 
-
-	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 나무  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 나무 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 	for (int i = 0;i < TREETILEY; i++)
 	{
 		for (int j = 0;j < TREETILEX; j++)
@@ -296,7 +299,7 @@ void mapToolScene::MapToolSetup()
 		}
 	}
 
-	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 케릭터 및 애너미  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 케릭터 및 몬스터 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 	for (int i = 0; i < CHARACTERX; i++)
 	{
 		SetRect(&_characterPalette[i].rc, WINSIZEX - IMAGEMANAGER->findImage("characterTilePalette")->getWidth() + (i * PALETTESIZE),
@@ -304,8 +307,8 @@ void mapToolScene::MapToolSetup()
 		_characterPalette[i].frameX = i;
 		_characterPalette[i].frameY = 0;
 	}
-	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ templeObject  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ templeObject  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 	for (int i = 0; i < PALETTEY; i++)
 	{
 		for (int j = 0;j < PALETTEX; j++)
@@ -316,32 +319,43 @@ void mapToolScene::MapToolSetup()
 			_templeObjectPalette[i * PALETTEX + j].frameY = i;
 		}
 	}
-	//스타일 (90X20)
+
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ Style버튼(90X20) ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 	for (int i = 0; i < 2; ++i)
 	{
 		for (int j = 0;j < 3; ++j)
 		{
 			SetRect(&_style[i * 3 + j].rc, 920 + j * 95, 280 + (30 * i), 920 + j * 95 + 90, 310 + (30 * i));
 			_style[i * 3 + j].isClick = false;
+			_style[i * 3 + j].x = 0;
+			_style[i * 3 + j].y = 0;
+			_style[i * 3 + j].centerX = 0;
+			_style[i * 3 + j].centerY = 0;
+			_style[i * 3 + j].frameX = 0;
+			_style[i * 3 + j].alpha = 0;
+			_style[i * 3 + j].isClick = false;
+			_style[i * 3 + j].isEffect = false;
 		}
 	}
-	_style[0].isClick = true;
-	/*for (int i = 0; i < 3; ++i)
-	{
-		SetRect(&_style[i].rc, 920 + i * 95, 285, 920 + i * 95 + 90, 305);
-		_style[i].isClick = false;
-	}
-	_style[0].isClick = true;*/
 
-	// 그림 TYPE     (40X40)
-	//  0 지형 1 랜드 2 오프젝트 
-	// 
+	_style[0].isClick = true;
+
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ Type버튼 ■■■■■■■■■■■■■■■■■■■■■■■■■
 	for (int i = 0;i < 7;i++)
 	{
 		SetRect(&_type[i].rc, 920 + i * 40, 340, 920 + i * 40 + 40, 380);
+		_type[i].isClick = false;
+		_type[i].x = 0;
+		_type[i].y = 0;
+		_type[i].centerX = 0;
+		_type[i].centerY = 0;
+		_type[i].frameX = 0;
+		_type[i].alpha = 0;
+		_type[i].isClick = false;
+		_type[i].isEffect = false;
 	}
 
-	// 위치를 나타내는 버튼 
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ MiniMAP 
 	for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 3; j++)
@@ -350,58 +364,62 @@ void mapToolScene::MapToolSetup()
 			_mapButton[i * 3 + j].isClick = false;
 		}
 	}
+
 	_mapButton[0].isClick = true;
-	// MINIMAP
+
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ MiniMAP 
 	for (int i = 0; i < TILEY; i++)
 	{
 		for (int j = 0; j < TILEX; j++)
 		{
 			SetRect(&_miniMap[i * (TILEX)+j].rc, WINSIZEX - 140 + j * _miniMapSizeWidth, 390 + (i * _miniMapSizeHeight), WINSIZEX - 140 + (j * _miniMapSizeWidth) + _miniMapSizeWidth, 390 + (i * _miniMapSizeHeight) + _miniMapSizeHeight);
+			_miniMap[i * (TILEX)+j].isClick = false;
 		}
 	}
 
-	// SAVESLOT
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ SaveSlot
 	for (int i = 0; i < SAVESLOT; i++)
 	{
-		SetRect(&_saveSlot[i].rc, 920, WINSIZEY - 180 + i * _saveSlotSizeHeight, 920 + _saveSlotSizeWidth, WINSIZEY - 180 + i * _saveSlotSizeHeight + _saveSlotSizeHeight);
+		SetRect(&_saveSlot[i].rc, 920, WINSIZEY - 180 + i * _saveSlotHeight, 920 + _saveSlotWidth, WINSIZEY - 180 + i * _saveSlotHeight + _saveSlotHeight);
 		_saveSlot[i].isClick = false;
 	}
 
-	SetRect(&_saveButton.rc, 920, 670, 1020, 710);    // 100 X 40
-	SetRect(&_loadButton.rc, 1020, 670, 1120, 710);
-	SetRect(&_exitButton.rc, 1130, 670, 1190, 710);     // 60 X 40 
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ SaveLoadExit
+	SetRect(&_saveButton.rc, 920, 670, 1020, 710);     // 100 X 40
+	SetRect(&_loadButton.rc, 1020, 670, 1120, 710);	   // 100 X 40
+	SetRect(&_exitButton.rc, 1130, 670, 1190, 710);    // 60 X 40 
 	_saveButton.isClick = false;
 	_loadButton.isClick = false;
 	_exitButton.isClick = false;
 }
 
+//팔레트 선택
 void mapToolScene::MapToolCollision()
 {
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 	{
-		//미니맵 정의 
+		//미니맵 클릭
 		for (int i = 0;i < 3;i++)
 		{
 			for (int j = 0;j < 3;j++)
 			{
 				if (PtInRect(&_mapButton[i * 3 + j].rc, _ptMouse))
 				{
-					for (int i = 0;i < 9;i++)
+					//미니맵버튼 위치 초기화 
+					for (int i = 0; i < 9; i++)
 					{
 						_mapButton[i].isClick = false;
 					}
-					if (!_mapButton[i * 3 + j].isClick)
-					{
-						_mapButton[i * 3 + j].isClick = true;
-					}
-					else _mapButton[i * 3 + j].isClick = false;
+					_mapButton[i * 3 + j].isClick = true;
+
+					//맵툴 카메라 위치 설정
 					CAMERAMANAGER->setMapToolCameraXY(900 * j, 720 * i);
 					break;
 				}
 			}
 		}
 
-		// 스타일 클릭 
+		//스타일 클릭 
 		for (int i = 0; i < MAXSTYLE; i++)
 		{
 			if (PtInRect(&_style[i].rc, _ptMouse))
@@ -415,8 +433,7 @@ void mapToolScene::MapToolCollision()
 			}
 		}
 
-
-		//TYPE 정의
+		//타입 버튼 클릭
 		for (int i = 0; i < 7; i++)
 		{
 			if (PtInRect(&_type[i].rc, _ptMouse))
@@ -430,7 +447,7 @@ void mapToolScene::MapToolCollision()
 					_currentTile.type = TYPE::LAND;				// 땅 
 					break;
 				case 2:
-					_currentTile.type = TYPE::LANDOBJECT;       // 땅 데코 
+					_currentTile.type = TYPE::LANDOBJECT;       // 땅 위 오브젝트 
 					break;
 				case 3:
 					_currentTile.type = TYPE::OBJECT;			// 오브젝트 
@@ -442,7 +459,7 @@ void mapToolScene::MapToolCollision()
 					_currentTile.type = TYPE::CHARACTER;		// 케릭터 및 애너미 
 					break;
 				case 6:
-					_currentTile.type = TYPE::TEMPLEOBJECT;
+					_currentTile.type = TYPE::TEMPLEOBJECT;     // 던전 오브젝트
 					break;
 				default:
 					break;
@@ -456,8 +473,10 @@ void mapToolScene::MapToolCollision()
 
 void mapToolScene::MapToolUpdate()
 {
-	cout << "X :" << _currentTile.frameX << "Y : " << _currentTile.frameY << endl;
-	//오른쪽 클릭할 때 
+	//디버깅 현재 클릭한 팔레트의 XY값
+	//cout << "X :" << _currentTile.frameX << "Y : " << _currentTile.frameY << endl;
+
+	//팔레트 클릭 
 	if (_currentTile.type == TYPE::TERRAIN || _currentTile.type == TYPE::LAND || _currentTile.type == TYPE::TEMPLEOBJECT)
 	{
 		for (int i = 0; i < PALETTEY; ++i)
@@ -540,9 +559,11 @@ void mapToolScene::MapToolUpdate()
 		{
 			if (PtInRect(&_tiles[i * TILEX + j].rc, PointMake(CAMERAMANAGER->getMapToolCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getMapToolCamera().cameraY + _ptMouse.y)))
 			{
-				if (_ptMouse.x >= 900) return;
-				_tiles[i * TILEX + j].isClick = true;
-				cout << "값" << _tiles[i * TILEX + j].isClick << endl;
+				if (_ptMouse.x >= 900) return;		// 예외처리
+
+				_tiles[i * TILEX + j].isClick = true; // 미니맵 활성화 
+
+				//cout << "값" << _tiles[i * TILEX + j].isClick << endl;
 				if (_currentTile.type == TYPE::TERRAIN)
 				{
 					_tiles[i * TILEX + j].type = TYPE::TERRAIN;
@@ -600,6 +621,7 @@ void mapToolScene::MapToolUpdate()
 
 void mapToolScene::MapToolEraser()
 {
+	//오른쪽 버튼을 누르면 타일 초기화
 	if (KEYMANAGER->isStayKeyDown(VK_RBUTTON))
 	{
 		for (int i = 0;i < TILEY; i++)
@@ -608,7 +630,6 @@ void mapToolScene::MapToolEraser()
 			{
 				if (PtInRect(&_tiles[i * TILEX + j].rc, PointMake(CAMERAMANAGER->getMapToolCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getMapToolCamera().cameraY + _ptMouse.y))) // PointMake(CAMERAMANAGER->getMapToolCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getMapToolCamera().cameraY + _ptMouse.y)))
 				{
-					_tiles[i * TILEX + j].isClick = false;
 					_tiles[i * TILEX + j].type = TYPE::NONE;
 					_tiles[i * TILEX + j].terrain = TERRAIN::NONE;
 					_tiles[i * TILEX + j].land = LAND::NONE;
@@ -616,28 +637,28 @@ void mapToolScene::MapToolEraser()
 					_tiles[i * TILEX + j].object = OBJECT::NONE;
 					_tiles[i * TILEX + j].tree = TREE::NONE;
 					_tiles[i * TILEX + j].character = CHARACTER::NONE;
-					_tiles[i * TILEX + j].building = BUILDING::NONE;	//빌딩 추가 
+					_tiles[i * TILEX + j].building = BUILDING::NONE;
 					_tiles[i * TILEX + j].templeObject = TEMPLEOBJECT::NONE;
 					_tiles[i * TILEX + j].terrainFrameX = 0;
 					_tiles[i * TILEX + j].terrainFrameY = 0;
-					_tiles[i * TILEX + j].objectFrameX = 0;
-					_tiles[i * TILEX + j].objectFrameY = 0;
-					_tiles[i * TILEX + j].characterFrameX = 0;
-					_tiles[i * TILEX + j].characterFrameY = 0;
-					_tiles[i * TILEX + j].landObjectFrameX = 0;
-					_tiles[i * TILEX + j].landObjectFrameY = 0;
-					_tiles[i * TILEX + j].treeFrameX = 0;
-					_tiles[i * TILEX + j].treeFrameY = 0;
 					_tiles[i * TILEX + j].landFrameX = 0;
 					_tiles[i * TILEX + j].landFrameY = 0;
+					_tiles[i * TILEX + j].landObjectFrameX = 0;
+					_tiles[i * TILEX + j].landObjectFrameY = 0;
+					_tiles[i * TILEX + j].objectFrameX = 0;
+					_tiles[i * TILEX + j].objectFrameY = 0;
+					_tiles[i * TILEX + j].treeFrameX = 0;
+					_tiles[i * TILEX + j].treeFrameY = 0;
+					_tiles[i * TILEX + j].characterFrameX = 0;
+					_tiles[i * TILEX + j].characterFrameY = 0;
 					_tiles[i * TILEX + j].templeObjectFrameX = 0;
 					_tiles[i * TILEX + j].templeObjectFrameY = 0;
-					_tiles[i * TILEX + j].isRender = false;
+					_tiles[i * TILEX + j].isClick = false;
 					_tiles[i * TILEX + j].isObject = false;
-					cout << "타입:" << (int)_tiles[i * TILEX + j].type << endl;
-					cout << "지형:" << (int)_tiles[i * TILEX + j].terrain << endl;
-
-
+					_tiles[i * TILEX + j].isRender = false;
+					//디버깅용
+					//cout << "타입:" << (int)_tiles[i * TILEX + j].type << endl;
+					//cout << "지형:" << (int)_tiles[i * TILEX + j].terrain << endl;
 					break;
 				}
 			}
@@ -650,29 +671,19 @@ void mapToolScene::MapToolRender()
 	PatBlt(CAMERAMANAGER->getMapToolDC(), CAMERAMANAGER->getMapToolCamera().cameraX, CAMERAMANAGER->getMapToolCamera().cameraY, CAMERAMANAGER->getMapToolCamera().cameraSizeX, CAMERAMANAGER->getMapToolCamera().cameraSizeY, BLACKNESS);
 
 	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■본 MAP  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		//배경 렉트 그리기 
 		IMAGEMANAGER->findImage("rect2")->render(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top);
 
 		//인덱스 디버깅용
-	/*	char str[100];
-		sprintf_s(str, "%d",i);
-		Rectangle(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc);
-		TextOut(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));*/
 
-
-
-
-
+		//클리핑 맵툴RECT와 충돌하지 않으면 다음으로
 		RECT temp;
 		if (!IntersectRect(&temp, &CAMERAMANAGER->getMapToolRect(), &_tiles[i].rc)) continue;
 
 		//타입이 NONE이면 다음으로
 		if (_tiles[i].type == TYPE::NONE) continue;
-
-		//만약 화면 렉트와 충돌되지 않으면 그리지 않는다.
 
 		//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ LAND ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 		if (_tiles[i].land != LAND::NONE)
@@ -716,14 +727,19 @@ void mapToolScene::MapToolRender()
 				IMAGEMANAGER->findImage("fireTempleTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
 			}
 
+			//디버깅용
 			if (KEYMANAGER->isToggleKey(VK_F3))
 			{
+				//충돌렉트 
 				if (_tiles[i].land == LAND::WATER)
 				{
 					IMAGEMANAGER->findImage("graveTileLand")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landFrameX, _tiles[i].landFrameY);
 				}
+				//인덱스 디버깅용
+				char str[100];
+				sprintf_s(str, "%d", i);
+				TextOut(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
 			}
-
 		}
 
 		//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ LAND OBJECT ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -749,7 +765,6 @@ void mapToolScene::MapToolRender()
 			{
 				IMAGEMANAGER->findImage("volcanoTileObject")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landObjectFrameX, _tiles[i].landObjectFrameY);
 			}
-
 		}
 
 		//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ OBJECT  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -757,86 +772,42 @@ void mapToolScene::MapToolRender()
 		{
 			IMAGEMANAGER->findImage("objectTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].objectFrameX, _tiles[i].objectFrameY);
 		}
-	}
-	for (int i = 0; i < TILEX * TILEY; i++)
-	{
-		//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ TREE ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-		if (_tiles[i].type == TYPE::NONE) continue;
-		if (_tiles[i].tree != TREE::NONE)
-		{
-			IMAGEMANAGER->findImage("treeTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].treeFrameX, _tiles[i].treeFrameY);
-		}
 
 		if (_tiles[i].templeObject != TEMPLEOBJECT::NONE)
 		{
 			IMAGEMANAGER->findImage("templeObject")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].templeObjectFrameX, _tiles[i].templeObjectFrameY);
 		}
+
 		if (_tiles[i].character != CHARACTER::NONE)
 		{
 			IMAGEMANAGER->findImage("characterTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].characterFrameX, _tiles[i].characterFrameY);
 		}
 	}
-	////■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ LAND ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-	//for (int i = 0; i < TILEX * TILEY; i++)
-	//{
-	//	//if (_tiles[i].type == TYPE::NONE) continue;
-	//	if (_tiles[i].land == LAND::NONE) continue;
-	//	//Rectangle(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc);
-	//	IMAGEMANAGER->findImage("grassTileLand")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landFrameX, _tiles[i].landFrameY);
-	//}
-	////■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ LAND OBJECT ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-	//for (int i = 0; i < TILEX * TILEY; i++)
-	//{
-		//if (_tiles[i].type == TYPE::NONE) continue;
-		////Rectangle(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc);
-		//if (_tiles[i].landObject == LANDOBJECT::GRASS)
-		//{
-		//	IMAGEMANAGER->findImage("grassTileObject")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landObjectFrameX, _tiles[i].landObjectFrameY);
-		//}
-		//else if (_tiles[i].landObject == LANDOBJECT::DESERT)
-		//{
-		//	IMAGEMANAGER->findImage("desertTileObject")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landObjectFrameX, _tiles[i].landObjectFrameY);
-		//}
-		//else if (_tiles[i].landObject == LANDOBJECT::SNOW)
-		//{
-		//	IMAGEMANAGER->findImage("snowTileObject")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].landObjectFrameX, _tiles[i].landObjectFrameY);
-		//}
-
-	//	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ OBJECT  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-
-	//	if (_tiles[i].object != OBJECT::NONE)
-	//	{
-	//		IMAGEMANAGER->findImage("objectTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].objectFrameX, _tiles[i].objectFrameY);
-	//	}
-
-	//	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ TREE ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-	//	if (_tiles[i].tree != TREE::NONE)
-	//	{
-	//		IMAGEMANAGER->findImage("treeTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].treeFrameX, _tiles[i].treeFrameY);
-	//	}
 
 
-	//}
+	//나무는 렉트 범위가 두개라서 새로 그려줘야 한다.
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ TREE ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+		if (_tiles[i].type == TYPE::NONE) continue;
+
+		if (_tiles[i].tree != TREE::NONE)
+		{
+			IMAGEMANAGER->findImage("treeTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top - 60, _tiles[i].treeFrameX, _tiles[i].treeFrameY);
+		}
+	}
+
+	//그리기
 	CAMERAMANAGER->getMapToolImage()->render(getMemDC(), 0, 0, CAMERAMANAGER->getMapToolCamera().cameraX, CAMERAMANAGER->getMapToolCamera().cameraY, CAMERAMANAGER->getMapToolCamera().cameraSizeX, CAMERAMANAGER->getMapToolCamera().cameraSizeY);
 
-	//팔레트 타일 
-	/*for (int i = 0;i < PALETTEX * PALETTEY; i++)
-	{
-		Rectangle(getMemDC(), _terrainPalette[i].rc);
-	}*/
-	//for (int i = 0; i < CHARACTERX; i++)
-	//{
-	//	Rectangle(getMemDC(), _characterPalette[i].rc);
-	//}
-
-
-	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■팔레트 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-
+	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 팔레트 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+	//팔레트 가로 사이즈 정의
 	int palletteWidth = IMAGEMANAGER->findImage("grassTilePalette")->getWidth();
 	int palletteObjectWidth = IMAGEMANAGER->findImage("grassTileObjectPalette")->getWidth();
+	
+	//버튼의 따라 오른쪽 타일 그리기
 	if (_style[0].isClick) // grass
 	{
-		//// 오른쪽 
 		if (_currentTile.type == TYPE::TERRAIN)
 		{
 			IMAGEMANAGER->findImage("grassTilePalette")->render(getMemDC(), WINSIZEX - palletteWidth, 0);
@@ -848,7 +819,6 @@ void mapToolScene::MapToolRender()
 	}
 	else if (_style[1].isClick) // desert
 	{
-		// 오른쪽 
 		if (_currentTile.type == TYPE::TERRAIN)
 		{
 			IMAGEMANAGER->findImage("desertTilePalette")->render(getMemDC(), WINSIZEX - palletteWidth, 0);
@@ -860,7 +830,6 @@ void mapToolScene::MapToolRender()
 	}
 	else if (_style[2].isClick) // winter
 	{
-		// 오른쪽 
 		if (_currentTile.type == TYPE::TERRAIN)
 		{
 			IMAGEMANAGER->findImage("snowTilePalette")->render(getMemDC(), WINSIZEX - palletteWidth, 0);
@@ -933,43 +902,7 @@ void mapToolScene::MapToolRender()
 		IMAGEMANAGER->findImage("templeObjectPalette")->render(getMemDC(), WINSIZEX - IMAGEMANAGER->findImage("templeObjectPalette")->getWidth(), 0);
 	}
 
-	char str[128];
-	sprintf_s(str, "클릭");
-	SetTextColor(getMemDC(), RGB(255, 0, 0));
-
-
-
-	// 임시 텍스트 
-	//char tempStr1[100];
-	//char tempStr2[100];
-	//char tempStr3[100];
-	//char tempStr4[100];
-	//char tempStr5[100];
-	//char tempStr6[100];
-	//char tempStr7[100];
-	//sprintf_s(tempStr1, "표면");
-	//sprintf_s(tempStr2, "땅");
-	//sprintf_s(tempStr3, "데코");
-	//sprintf_s(tempStr4, "오브");
-	//sprintf_s(tempStr5, "나무");
-	//sprintf_s(tempStr6, "예비1");
-	//sprintf_s(tempStr7, "예비2");
-	//TextOut(getMemDC(), _type[0].rc.left, _type[0].rc.top, tempStr1, strlen(tempStr1));
-	//TextOut(getMemDC(), _type[1].rc.left, _type[1].rc.top, tempStr2, strlen(tempStr2));
-	//TextOut(getMemDC(), _type[2].rc.left, _type[2].rc.top, tempStr3, strlen(tempStr3));
-	//TextOut(getMemDC(), _type[3].rc.left, _type[3].rc.top, tempStr4, strlen(tempStr4));
-	//TextOut(getMemDC(), _type[4].rc.left, _type[4].rc.top, tempStr5, strlen(tempStr5));
-	//TextOut(getMemDC(), _type[5].rc.left, _type[5].rc.top, tempStr6, strlen(tempStr6));
-	//TextOut(getMemDC(), _type[6].rc.left, _type[6].rc.top, tempStr7, strlen(tempStr7));
-
-	//char str2[128];
-	//sprintf_s(str2, "클릭");
-	//SetTextColor(getMemDC(), RGB(255, 0, 0));
-
-
-
-
-
+	//나머지 버튼의 최대 수 9
 	for (int i = 0; i < 9; i++)
 	{
 		//스타일 
@@ -998,14 +931,12 @@ void mapToolScene::MapToolRender()
 			}
 			//Rectangle(getMemDC(), _saveSlot[i].rc);
 		}
-
 		// TYPE
 		if (i < 7)
 		{
 			IMAGEMANAGER->findImage("typeButton")->frameRender(getMemDC(), _type[i].rc.left, _type[i].rc.top, i, 0);
 			//Rectangle(getMemDC(), _type[i].rc);
 		}
-
 		// 위치 타일 
 		if (i < 9)
 		{
@@ -1018,7 +949,6 @@ void mapToolScene::MapToolRender()
 		}
 	}
 
-
 	// 미니맵 
 	IMAGEMANAGER->findImage("minimapBackground")->render(getMemDC(), _miniMap[0].rc.left, _miniMap[0].rc.top);
 	for (int i = 0;i < TILEX * TILEY; i++)
@@ -1027,20 +957,20 @@ void mapToolScene::MapToolRender()
 		if (_tiles[i].isClick) IMAGEMANAGER->findImage("minimap")->render(getMemDC(), _miniMap[i].rc.left, _miniMap[i].rc.top);
 	}
 
-
+	//세이브로드나가기
 	IMAGEMANAGER->findImage("saveLoad")->frameRender(getMemDC(), _saveButton.rc.left, _saveButton.rc.top, 0, 0);
 	IMAGEMANAGER->findImage("saveLoad")->frameRender(getMemDC(), _loadButton.rc.left, _loadButton.rc.top, 0, 1);
 	IMAGEMANAGER->findImage("exit")->render(getMemDC(), _exitButton.rc.left, _exitButton.rc.top);
-	/*Rectangle(getMemDC(), _saveButton.rc);
-	Rectangle(getMemDC(), _loadButton.rc);*/
+	//Rectangle(getMemDC(), _saveButton.rc);
+	//Rectangle(getMemDC(), _loadButton.rc);
 	//Rectangle(getMemDC(), _exitButton.rc);
-
 }
 
 TERRAIN mapToolScene::MapToolTerrainSelect(int frameX, int frameY)
 {
 	if (frameX == 0 && frameY == 0) return TERRAIN::NONE;
 	if (frameX == 6 && frameY == 6) return TERRAIN::NONE;
+	//스타일에 따라 지형 타입을 반환
 	if (_style[0].isClick)
 	{
 		return TERRAIN::GRASS;
@@ -1072,6 +1002,8 @@ TERRAIN mapToolScene::MapToolTerrainSelect(int frameX, int frameY)
 LAND mapToolScene::MapToolLandSelect(int frameX, int frameY)
 {
 	if (frameY == 6) return LAND::WATER;
+
+	//스타일 버튼에 따라 지형 타입을 반환
 	if (_style[0].isClick)
 	{
 		if (frameY == 0 || frameY == 1) return LAND::GRASS;
@@ -1099,7 +1031,8 @@ LAND mapToolScene::MapToolLandSelect(int frameX, int frameY)
 LANDOBJECT mapToolScene::MapToolLandObjectSelect(int frameX, int frameY)
 {
 	if (frameX == 0 && frameY == 0) return LANDOBJECT::NONE;
-	for (int i = 1;i < 5; i++)	// 1,2,3,4
+
+	for (int i = 1; i < 5; i++)	// 1,2,3,4
 	{
 		if (frameX == i && frameY == 4) return LANDOBJECT::NONE;
 	}
@@ -1130,6 +1063,7 @@ LANDOBJECT mapToolScene::MapToolLandObjectSelect(int frameX, int frameY)
 OBJECT mapToolScene::MapToolObjectSelect(int frameX, int frameY)
 {
 	if (frameX == 6 && frameY == 2 || frameX == 5 && frameY == 2) return OBJECT::NONE;
+
 	for (int i = 0; i < OBJECTY; i++)
 	{
 		for (int j = 0;j < OBJECTX; j++)
@@ -1146,6 +1080,7 @@ TREE mapToolScene::MapToolTreeSelect(int frameX, int frameY)
 	if (frameX == 1 && frameY == 0) return TREE::RED;
 	if (frameX == 2 && frameY == 0) return TREE::SNOW;
 	if (frameX == 3 && frameY == 0) return TREE::CACTUS;
+
 	return TREE::NONE;
 }
 
@@ -1163,7 +1098,6 @@ CHARACTER mapToolScene::MapToolCharacterSelect(int frameX, int frameY)
 
 TEMPLEOBJECT mapToolScene::MapToolTempleObjectSelect(int frameX, int frameY)
 {
-	//0 building 
 	if (frameX == 0 && frameY == 0) return TEMPLEOBJECT::FURNACE;
 	if (frameX == 1 && frameY == 0) return TEMPLEOBJECT::FORGE;
 	if (frameX == 2 && frameY == 0) return TEMPLEOBJECT::FURNACE;
@@ -1178,7 +1112,7 @@ TEMPLEOBJECT mapToolScene::MapToolTempleObjectSelect(int frameX, int frameY)
 	if (frameX == 1 && frameY == 2) return TEMPLEOBJECT::TEMPLE_LANTERN;
 	if (frameX == 2 && frameY == 2) return TEMPLEOBJECT::TEMPLE_DOOR_BOSS;
 
-	for (int i = 3; i < 7;i++)  // y 
+	for (int i = 3; i < 7;i++)  // Y축
 	{
 		if (frameX == 0 && frameY == i) return TEMPLEOBJECT::TEMPLE_CANNON;
 		if (frameX == 1 && frameY == i) return TEMPLEOBJECT::TEMPLE_DOOR;
@@ -1186,8 +1120,6 @@ TEMPLEOBJECT mapToolScene::MapToolTempleObjectSelect(int frameX, int frameY)
 		if (frameX == 3 && frameY == i) return TEMPLEOBJECT::TEMPLE_DOOR_GREEN;
 		if (frameX == 4 && frameY == i) return TEMPLEOBJECT::TEMPLE_DOOR_RED;
 	}
-
-
 
 	return TEMPLEOBJECT::NONE;
 }

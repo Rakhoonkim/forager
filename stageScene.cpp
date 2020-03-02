@@ -3,25 +3,28 @@
 
 HRESULT stageScene::init()
 {
-	// 플레이어 
+	//플레이어 
 	_playerManager = new playerManager;
 	_playerManager->init();
-	// 오브젝트 
+	//오브젝트 
 	_objectManager = new objectManager;
 	_objectManager->init();
-	
+	//날씨
 	_weather = new weather;
 	_weather->init();
 
+	//주소값 전달
+
+	//플레이어->오브젝트
 	_playerManager->set_CropsManager(_objectManager->get_CropsManager());
 	_playerManager->set_BuildManager(_objectManager->get_buildManager());
 	_playerManager->set_EnemyManager(_objectManager->get_enemyManager());
 	_playerManager->set_puzzleManager(_objectManager->get_puzzleManager());
-	
-
-	_objectManager->get_enemyManager()->setPlayer(_playerManager->get_player());  // 플레이어 링크 
+	//오브젝트->플레이어
+	_objectManager->get_enemyManager()->setPlayer(_playerManager->get_player()); 
 	_objectManager->get_CropsManager()->setPlayer(_playerManager->get_player());
-	// 맵 
+
+	//맵 수정해야함 
 	MAPMANAGER->release();
 	MAPMANAGER->setObjectManager(_objectManager);
 	MAPMANAGER->MapLoad("inGameNumber2.map");
@@ -32,7 +35,6 @@ HRESULT stageScene::init()
 	GAMEDATA->setPlayerManager(_playerManager);
 	GAMEDATA->setObjectManager(_objectManager);
 	GAMEDATA->save();
-
 	return S_OK;
 }
 
@@ -46,46 +48,56 @@ void stageScene::update()
 {
 	_playerManager->update();
 	_objectManager->update();
-	//_weather->update(); // 날씨
-	ZORDER->update();
-	BossEntranceMouseCllision();  // 보스씬 마우스
-	AlphaImage();
+	//_weather->update();  // 날씨
+	ZORDER->update();				 //ZORDER
+	templeEntranceMouseCollision();  //던전입구 
+	setAlphaImage();				 //알파블렌더 처리
 }
 
 void stageScene::render()
 {
 	//PatBlt(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX, CAMERAMANAGER->getWorldCamera().cameraY, WINSIZEX, WINSIZEY,WHITENESS);
 	IMAGEMANAGER->findImage("background")->render(CAMERAMANAGER->getWorldDC(), CAMERAMANAGER->getWorldCamera().cameraX, CAMERAMANAGER->getWorldCamera().cameraY);
-	MAPMANAGER->stageRender();      //MAP
+	MAPMANAGER->stageRender();									  //MAP
 
-	EFFECTMANAGER->EffectRender(CAMERAMANAGER->getWorldDC());		 // 이펙트
-	if (CURSORMANAGER->getCursor()->getObjectPoint()) CURSORMANAGER->render(); // CURSOR
-	ZORDER->render();
-	_playerManager->render();  //PLAYER 
-	ITEMMANAGER->render();
-	EFFECTMANAGER->render(CAMERAMANAGER->getWorldDC());
-	_objectManager->render();  //OBJECT에서 빌딩만 
+	EFFECTMANAGER->EffectRender(CAMERAMANAGER->getWorldDC());	  //오브젝트 밑에 나오는 이펙트
+
+	//오브젝트 가리킬시 
+	if (CURSORMANAGER->getCursor()->getObjectPoint()) CURSORMANAGER->render(); 
+	
+	ZORDER->render();			 //ZORDER
+	//_playerManager->render();  //PLAYER 
+
+	ITEMMANAGER->render();		 //ITEM
+
+	EFFECTMANAGER->render(CAMERAMANAGER->getWorldDC());  // EFFECT
+
+	_objectManager->render();	 //OBJECT에서 빌딩을 그리기 위한 
+
 	if (!UIMANAGER->getLand()->getLand()) CAMERAMANAGER->getWorldImage()->render(getMemDC(), 0, 0, CAMERAMANAGER->getWorldCamera().cameraX, CAMERAMANAGER->getWorldCamera().cameraY, WINSIZEX, WINSIZEY);
+
 	//_weather->render(getMemDC());
-	UIMANAGER->render();	// UI
+
+	UIMANAGER->render();		// UI
 }
 
-void stageScene::BossEntranceMouseCllision()
+//던전 입구 
+void stageScene::templeEntranceMouseCollision()
 {
+	//던전 입구랑 거리가 가까우면
 	if (180 >= getDistance(_objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->x, _objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->y, _playerManager->get_player()->get_PlayerAddress()->x, _playerManager->get_player()->get_PlayerAddress()->y))
 	{
 		if (PtInRect(&_objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
 		{
-			//CURSORMANAGER->setBuildPoint();
-			//CURSORMANAGER->getCursor()->setCursorXY(_objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->x - CAMERAMANAGER->getWorldCamera().cameraX + 49, _objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->y - CAMERAMANAGER->getWorldCamera().cameraY + 75);
-			_objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->isClick = true;
+			 _objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->isClick = true;
 		}
 		else _objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->isClick = false;
 	}
 	else _objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->isClick = false;
 }
 
-void stageScene::nextScene()
+//스테이지 씬 입장시 (수정예정)
+void stageScene::enterStageScene()
 {
 	_playerManager = GAMEDATA->getPlayerManager();
 	_objectManager = GAMEDATA->getObjectManager();
@@ -102,8 +114,9 @@ void stageScene::nextScene()
 	_playerManager->get_player()->setPlayerXY(36, 29);
 }
 
-void stageScene::AlphaImage()
+void stageScene::setAlphaImage()
 {
+	//드루이드 트리 알파블렌더 처리
 	RECT temp;
 	if (_playerManager->get_player()->get_PlayerAddress()->y - 30 <= _objectManager->get_puzzleManager()->getDruidTree()->getPuzzle()->y  && IntersectRect(&temp, &_objectManager->get_puzzleManager()->getDruidTree()->getRect(), &_playerManager->get_player()->get_playerRect()))
 	{
@@ -111,6 +124,7 @@ void stageScene::AlphaImage()
 	}
 	else _objectManager->get_puzzleManager()->getDruidTree()->setAlpha(0);
 
+	//던전 입구 알파블렌더 처리
 	RECT temp2;
 	if (_playerManager->get_player()->get_PlayerAddress()->y - 30<= _objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->y  && IntersectRect(&temp2, &_objectManager->get_puzzleManager()->getFireTempleEntrance()->getRect(), &_playerManager->get_player()->get_playerRect()))
 	{

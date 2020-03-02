@@ -22,7 +22,7 @@ struct tagPlayer
 	DIRECTION direc;
 	float x, y;
 	float weaponX, weaponY;
-	float acel;
+	float accel;
 	int idx, idy;
 	int hp, maxHp;
 	int level;			// LEVEL

@@ -5,15 +5,7 @@
 class mainMenuScene : public gameNode
 {
 private:
-	tagButton _button[MAXBUTTON];	//버튼 7개 
-	//tagButton _mapToolButton;
-	//tagButton _play;
-	//tagButton _extra;
-	//tagButton _roadMap;
-	//tagButton _comunity;
-	//tagButton _credit;
-	//tagButton _option;
-	//tagButton _exit;
+	tagButton _button[MAXBUTTON];	//버튼 8개 
 
 	int _buttonX;	// 버튼 기준점 
 	int _buttonY;
@@ -31,8 +23,8 @@ public:
 	void render();
 
 	void imageSetting();	//이미지 세팅
-	void buttonSetting();	//버튼 세팅
 
+	void buttonSetting();	//버튼 세팅
 	void buttonClick();		//버튼 클릭
 	void buttonEffect();	//버튼 이펙트
 

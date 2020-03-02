@@ -10,13 +10,6 @@ BOOL _leftButtonDown;	//중복 클릭 방지용
 
 playGround _pg;
 
-//D2D관련
-//ID2D1Factory* _gp_D2DFactory = nullptr;
-//ID2D1HwndRenderTarget* _gp_RenderTarget = nullptr;
-//IWICImagingFactory* _gp_WICFactory;
-//IWICFormatConverter* _gp_ipConvertedSrcBmp;
-//ID2D1Bitmap* _gp_D2DBitMap;
-
 //함수의 프로토타입 선언
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
@@ -101,7 +94,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 			TIMEMANAGER->update(60.0f);
 			_pg.update();
 			_pg.render();
-			//_pg.D2Drender();
 		}
 	}
 	
@@ -110,43 +102,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 	_pg.release();
 	UnregisterClass(WINNAME, hInstance);
 
-	//D2D 관련 
-	//_gp_D2DFactory->Release();
-	//CoUninitialize();
-
 	return message.wParam;
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
-
-	//HCURSOR g_hNumCursor = NULL;
-	//g_hNumCursor = LoadCursorFromFile("mouseCursor.cur");
-	//::SetCursor(g_hNumCursor);
-
-
 	return _pg.MainProc(hWnd, iMessage, wParam, lParam);
-	//D2D관련
-	//if (iMessage == WM_CREATE)
-	//{
-	//	RECT r;
-	//	GetClientRect(hWnd, &r);
-
-	//	_gp_D2DFactory->CreateHwndRenderTarget(RenderTargetProperties(),
-	//		HwndRenderTargetProperties(hWnd,SizeU(r.right,r.bottom)),
-	//		&_gp_RenderTarget);
-	//	return 0;
-	//}
-	//else if (iMessage == WM_DESTROY)
-	//{
-	//	if (_gp_RenderTarget != NULL)
-	//	{
-	//		_gp_RenderTarget->Release();
-	//		_gp_RenderTarget = NULL;	
-	//	}
-	//	PostQuitMessage(0);
-	//}
-	//return DefWindowProc(hWnd, iMessage, wParam, lParam);
 }
 
 //클라이언트 영역 재조정

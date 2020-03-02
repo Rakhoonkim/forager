@@ -12,14 +12,15 @@ class playerManager: public gameNode
 {
 private:
 	player* _player;				// PLAYER
+	
 	cropsManager* _cropsManager;	// CROPS
 	buildManager* _buildManager;	// BUILD
 	enemyManager* _enemyManager;	// ENEMY
-	puzzleManager* _puzzleManager;
+	puzzleManager* _puzzleManager;  // PUZZLE
+
 	bool _isOption;					// 옵션창
 
-	//경험치 
-	alphaEffect* _alphaEffect;
+	alphaEffect* _alphaEffect;		//경험치 
 public:
 	playerManager() {}
 	~playerManager() {}
@@ -32,21 +33,23 @@ public:
 	void imageSetting();			  // 이미지 셋팅
 
 	//============== 충돌처리 ========================
-	void itemCollisionMouse();
-	void itemCollisionPlayer();
-	void objectCollisionMouse();	  // 마우스 커서 보이기 
-	void bulletColision();
+	void itemCollisionMouse();		  //아이템충돌
+	void itemCollisionPlayer();		  //아이템
+	void objectCollisionMouse();	  //오브젝트 
+	void bulletColision();			  //총알
+	//===============================================
 
-	void optionControl();			  // 옵션 컨트롤
+	void optionControl();			  //옵션 컨트롤
 
-	void objectAttack(int num);		  //작물 공격 
+	void objectAttack(int num);		  //식물 공격 
 	void enemyAttack(int num);		  //몬스터 공격 
 
-	void set_CropsManager(cropsManager* cropsManager) { _cropsManager = cropsManager; }
-	void set_BuildManager(buildManager* buildManager) { _buildManager = buildManager; }
-	void set_EnemyManager(enemyManager* enemyManager) { _enemyManager = enemyManager; }
-	void set_puzzleManager(puzzleManager* puzzleManager) { _puzzleManager = puzzleManager; }
+	//주소세팅
+	void set_CropsManager(cropsManager* cropsManager)	 { _cropsManager = cropsManager; }
+	void set_BuildManager(buildManager* buildManager)	 { _buildManager = buildManager; }
+	void set_EnemyManager(enemyManager* enemyManager)	 { _enemyManager = enemyManager; }
+	void set_puzzleManager(puzzleManager* puzzleManager) { _puzzleManager = puzzleManager;}
 
-	player* get_player() { return _player; }
+	player* get_player() { return _player; }  // 플레이어 클래스 반환
 };
 

@@ -13,46 +13,60 @@ HRESULT player::init()
 {
 	_player.playerImage = IMAGEMANAGER->findImage("playerIdle");
 	_player.playerAni = KEYANIMANAGER->findAnimation("playerIdle_R");
+
 	_player.weaponImage = IMAGEMANAGER->findImage("playerPick");
 	_player.weaponAni = KEYANIMANAGER->findAnimation("playerPick_R");
+
 	_player.playerAni->start();
-	_player.direc = DIRECTION::RIGHT;
+
+	_keyCount = 0;   // 입력 가능한 키
+
 	_tempDirection = DIRECTION::RIGHT;
+
+	_player.direc = DIRECTION::RIGHT;
 	_player.angle = 0;
+
 	_player.idx = 22;
 	_player.idy = 18;
+
 	_player.x = _player.idx * 60 + (_player.playerImage->getFrameWidth() / 2);
 	_player.y = _player.idy * 60 + (_player.playerImage->getFrameHeight() / 2);
+
 	_player.weaponX = _player.x -15;
 	_player.weaponY = _player.y -5;
-	_player.imageDirection = 0;     // 0 왼쪽 1 오른쪽 
-	_player.speed = 5;
-	_player.acel = 1.1;
-	_player.hp = 3;
-	_player.maxHp = 3;
-	_player.health = 100;
-	_player.damage = 1;
-	_player.level = 1;
-	_player.expMax = 30;
-	_player.exp = 0;
-	_player.skillPount = 0;
-	_player.isHit = false;
-	_player.hitCount = 0;
-	_player.alpha = 0;
+
+	_player.imageDirection = 0;				 //(0 : 왼쪽, 1: 오른쪽)
+
+	_player.speed = 5;		 // 속도
+	_player.accel = 1.1;	 // 가속도(1.1~4)(최소값~최대값)
+	_player.hp = 3;			 // 생명력 3
+	_player.maxHp = 3;		 // 최대생명력 3
+	_player.health = 100;    // 체력
+	_player.damage = 1;		 // 공격력
+	_player.level = 1;		 // 레벨
+	_player.expMax = 30;	 // 경험치 최대값
+	_player.exp = 0;		 // 현재 경험치
+	_player.skillPount = 0;  // 스킬포인트
+	_player.alpha = 0;		 // 알파값
+	_player.hitCount = 0;	 // 맞을 때 카운터 
+	_player.isHit = false;	 // 맞을 떄
+	_player.isAttack = false;// 공격
+
+	//상태
 	_state = new playerState();
 	_state->init(&_player);
+	_playerMove = new playerMove(&_player);		// 이동
+	_playerIdle = new playerIdle(&_player);     // 대기
 
-	_playerMove = new playerMove(&_player);
-	_playerIdle = new playerIdle(&_player);
-	_player.isAttack = false;
-	_state = _playerIdle;
+	_state = _playerIdle;		// 현재 상태는 대기
 	_stateChange = false;
-	_keyCount = 0;
+
 	_player.rc = RectMake(_player.x, _player.y, _player.playerImage->getFrameWidth(), _player.playerImage->getFrameHeight());
 
-	CAMERAMANAGER->setCameraInit(_player.x, _player.y);
-	_healthTime = TIMEMANAGER->getWorldTime();
-	MAPMANAGER->setPlayerAddress(&_player);
+	_healthTime = TIMEMANAGER->getWorldTime();	// 체력 재생 시간 
+
+	CAMERAMANAGER->setCameraInit(_player.x, _player.y);  // 카메라 세팅
+	MAPMANAGER->setPlayerAddress(&_player);				 // MAP 충돌 플레이어 셋팅
 	return S_OK;
 }
 
@@ -62,14 +76,16 @@ void player::release()
 
 void player::update()
 {
-	_state->update();
-	KeyControl();
-	IndexUpdate();
+	_state->update();  // 상태 
+	KeyControl();	   // KEY
+	IndexUpdate();	   // INDEX
 	//setDirection();
-	playerHitCount();
+	playerHitCount();  // 맞을 때 
+	playerHealth();    // 체력 재생
+
 	MAPMANAGER->setPlayerAddress(&_player);
 	MAPMANAGER->setPlayerStageTileColision(_player.idx, _player.idy);  // 충돌처리 
-	playerHealth();
+	
 	_player.rc = RectMake(_player.x, _player.y, _player.playerImage->getFrameWidth(), _player.playerImage->getFrameHeight());
 }
 
@@ -86,11 +102,7 @@ void player::render()
 		_player.weaponImage->aniAlphaRender(CAMERAMANAGER->getWorldDC(), _player.weaponX, _player.weaponY, _player.weaponAni, 100);
 	}
 	
-	//_player.playerImage->aniRender(CAMERAMANAGER->getWorldDC(), _player.x, _player.y, _player.playerAni);
-	//_player.weaponImage->aniRender(CAMERAMANAGER->getWorldDC(), _player.weaponX, _player.weaponY, _player.weaponAni);
-
-
-
+	//디비깅용
 	//Rectangle(CAMERAMANAGER->getWorldDC(), _player.rc);
 	//각도 인덱스
 	//char str[100];
@@ -104,6 +116,7 @@ void player::render()
 	//TextOut(CAMERAMANAGER->getWorldDC(), _player.x+ 100, _player.y, strIdy, strlen(strIdy));
 }
 
+//현재 사용안함
 void player::setDirection()
 {
 	if (WINSIZEX / 2 < _ptMouse.x)
@@ -122,7 +135,6 @@ void player::setDirection()
 			_player.imageDirection = 0;
 			_player.direc = _tempDirection;
 			_state->changeImage(_player.imageDirection);
-			
 		}
 		else
 		{
@@ -133,27 +145,29 @@ void player::setDirection()
 	}
 }
 
+//방향키 
 void player::KeyControl()
 {
+	//공격 모션이 끝나면
 	if (_player.weaponAni->getNowPlayNum() == _player.weaponAni->getFrameMaxFrame() - 1)
 	{
 		_player.isAttack = false;
 	}
+
 	//공격키
 	if (!_player.isAttack)
 	{
+		//옵션 창이 아니면
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON) && !UIMANAGER->getOption())
 		{
+			_player.weaponAni->start();  // 공격 모션 	
+
 			_player.isAttack = true;
-			_player.weaponAni->start();
-			//ITEMMANAGER->Dropitem(OBJECT::COAL, _player.x, _player.y);
-			//ITEMMANAGER->DropForgeItem(FORGERECIPE::KEY, _player.x, _player.y,1);
-	
 			KEYMANAGER->setKeyDown(VK_LBUTTON, false);
-			//cout << "player health: " << _player.health << endl;
 		}
 	}
 
+	//아이템 키 
 	if (KEYMANAGER->isOnceKeyDown('I'))
 	{
 		/*ITEMMANAGER->Dropitem(OBJECT::GOLD, _player.x, _player.y);
@@ -189,10 +203,10 @@ void player::KeyControl()
 	}
 
 
+	//키가 두개 눌리면 
 	if (_keyCount > 2) return;
-	// UP
 
-
+	//위 
 	if (KEYMANAGER->isStayKeyDown('W'))
 	{
 		if (!_stateChange)
@@ -204,9 +218,9 @@ void player::KeyControl()
 			_state->setAngle(1.57f);
 			_state->setSpeed(5);
 			_player.direc = DIRECTION::UP;
-			_player.acel = 1;
+			_player.accel = 1;
 		}
-		acelPlus();
+		accelControl();
 	}
 	if (KEYMANAGER->isOnceKeyUp('W'))
 	{
@@ -227,9 +241,9 @@ void player::KeyControl()
 			_state->setAngle(4.71f);
 			_state->setSpeed(5);
 			_player.direc = DIRECTION::DOWN;
-			_player.acel = 1;
+			_player.accel = 1;
 		}
-		acelPlus();
+		accelControl();
 	}
 	if (KEYMANAGER->isOnceKeyUp('S'))
 	{
@@ -249,9 +263,9 @@ void player::KeyControl()
 			_state->changeImage(_player.imageDirection);
 			_stateChange = true;
 			_player.direc = DIRECTION::LEFT;
-			_player.acel = 1;
+			_player.accel = 1;
 		}
-		acelPlus();
+		accelControl();
 	}
 	if (KEYMANAGER->isOnceKeyUp('A'))
 	{
@@ -271,9 +285,9 @@ void player::KeyControl()
 			_state->changeImage(_player.imageDirection);
 			_stateChange = true;
 			_player.direc = DIRECTION::RIGHT;
-			_player.acel = 1;
+			_player.accel = 1;
 		}
-		acelPlus();
+		accelControl();
 	}
 	if (KEYMANAGER->isOnceKeyUp('D'))
 	{
@@ -296,11 +310,11 @@ void player::IndexUpdate()
 	_player.idy = (int)(_player.y + 30) / 60;	
 }
 
-void player::acelPlus()
+void player::accelControl()
 {
 	//가속도
-	if (_player.acel >= 2) return;
-	_player.acel += 0.05;
+	if (_player.accel >= 2) return;
+	_player.accel += 0.05;
 }
 
 void player::setPlayerXY(int idx, int idy)
@@ -322,7 +336,7 @@ void player::setPlayerExpMax(int level)
 	_player.expMax = _player.level * 30;
 }
 
-void player::playerExp(int exp)
+void player::setPlayerExp(int exp)
 {
 	_player.exp += exp;
 
@@ -335,7 +349,7 @@ void player::playerExp(int exp)
 	}
 }
 
-void player::playerHealth(int health)
+void player::setPlayerHealth(int health)
 {
 	//체력을 감소시킨다.
 	_player.health -= health;  // 임시

@@ -89,8 +89,8 @@ playerMove::playerMove(tagPlayer* player)
 void playerMove::update()
 {
 	//cout << "나 이동상태야 " << endl;
-	_player->x += cosf(_angle) * _speed * TIMEMANAGER->getElapsedTime() * 50 * _player->acel;
-	_player->y += -sinf(_angle) * _speed * TIMEMANAGER->getElapsedTime() * 50 * _player->acel;
+	_player->x += cosf(_angle) * _speed * TIMEMANAGER->getElapsedTime() * 50 * _player->accel;
+	_player->y += -sinf(_angle) * _speed * TIMEMANAGER->getElapsedTime() * 50 * _player->accel;
 
 
 	setWeaponXY();

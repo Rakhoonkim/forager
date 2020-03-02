@@ -1,17 +1,18 @@
 #pragma once
 #include "gameNode.h"
+#include "mainMenuScene.h"
 #include "mapToolScene.h"
 #include "stageScene.h"
-#include "mainMenuScene.h"
 #include "bossScene.h"
 
 class playGround : public gameNode
 {
 private:
-	stageScene*		_stageScene;		// STAGE
-	mapToolScene* _mapToolScene;		// MAP
-	mainMenuScene* _mainMenuScene;		// MAINMENU
-	bossScene* _bossScene;
+	mainMenuScene*	_mainMenuScene;		// MAINMENU
+	mapToolScene*	 _mapToolScene;		// MAPTOOL
+	stageScene*	       _stageScene;		// STAGE
+	bossScene*			_bossScene;		// BOSS
+
 public:
 	playGround();
 	~playGround();

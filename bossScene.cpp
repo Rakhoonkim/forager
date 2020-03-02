@@ -90,6 +90,6 @@ void bossScene::exitTemple()
 		ZORDER->setZorder(GAMEDATA->getZorder());
 		GAMEDATA->setPlayerManager(_playerManager);
 		GAMEDATA->setObjectManager(_objectManager);
-		SCENEMANAGER->getCurrentScene()->nextScene();
+		SCENEMANAGER->getCurrentScene()->enterStageScene();
 	}
 }

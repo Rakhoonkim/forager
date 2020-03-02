@@ -11,8 +11,9 @@ mainMenuScene::~mainMenuScene()
 
 HRESULT mainMenuScene::init()
 {
-	CURSORMANAGER->setCursor();	//커서 
-
+	CURSORMANAGER->setCursor();		//커서 
+	
+	//버튼 셋팅 들어가기 전 기준점 
 	_buttonX = 60;
 	_buttonY = 40;
 	_distance = 20;
@@ -31,14 +32,14 @@ void mainMenuScene::release()
 
 void mainMenuScene::update()
 {
-	if (_offsetX > 1200) _offsetX = 0;
+	if (_offsetX > 1200) _offsetX = 0;	//루프 렌더 예외처리
 	buttonEffect();		//버튼 이펙트
 	buttonClick();;		//버튼 클릭 판정
 }
 
 void mainMenuScene::render()
 {
-	_offsetX++;
+	_offsetX++;	//루프렌더 X축 증가 값
 	IMAGEMANAGER->findImage("mainMenuBackground")->loopRender(getMemDC(), &RectMake(0, 0, WINSIZEX, WINSIZEY), _offsetX, _offsetY);
 
 	//버튼 렌더
@@ -57,11 +58,10 @@ void mainMenuScene::render()
 	//중앙 로고
 	IMAGEMANAGER->findImage("foragerLogo")->render(getMemDC(), WINSIZEX / 2 - (IMAGEMANAGER->findImage("foragerLogo")->getWidth() / 2), 30);
 
-	//세이브 관련 이미지 추후 예정 
+	//세이브 관련 이미지 추후 예정? 
 	//IMAGEMANAGER->findImage("startBackground")->alphaRender(getMemDC(), 0, 0,100);
 	//IMAGEMANAGER->findImage("saveSlot")->render(getMemDC(), (WINSIZEX / 2) - 450, WINSIZEY /5);
 	//IMAGEMANAGER->findImage("saveSlotBackground")->render(getMemDC(), (WINSIZEX / 2) - 465, WINSIZEY / 5 - 15);
-
 }
 
 void mainMenuScene::imageSetting()
@@ -79,16 +79,14 @@ void mainMenuScene::imageSetting()
 	//중앙 로고
 	IMAGEMANAGER->addImage("foragerLogo", "./image/ui/mainMenu/foragerLogo.bmp", 250, 133, true, RGB(255, 0, 255), true);
 	
+	//MAPTOOL 버튼 2가지 
+	IMAGEMANAGER->addImage("maptoolButton", "./image/ui/mainMenu/maptoolButton.bmp", 302, 80, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("maptoolButton2", "./image/ui/mainMenu/maptoolButton2.bmp", 302, 80, true, RGB(255, 0, 255), true);
 
-	//SAVE DATA 읽어 들어오기
-	//추후 예정
-	//검은 배경은 다른곳에서 세팅 
+	//사용하지 않는 이미지지만 예비(세이브&로드 이미지)
 	IMAGEMANAGER->addImage("startBackground", "./image/ui/startBackground.bmp", 1200, 720, false, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addImage("saveSlot", "./image/ui/saveSlot.bmp", 900, 64, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("saveSlotBackground", "./image/ui/saveSlotBackground.bmp", 930, 400, true, RGB(255, 0, 255));
-
-	IMAGEMANAGER->addImage("maptoolButton", "./image/ui/mainMenu/maptoolButton.bmp", 302, 80, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("maptoolButton2", "./image/ui/mainMenu/maptoolButton2.bmp", 302, 80, true, RGB(255, 0, 255),true);
 }
 // 위치잡기 ! 
 void mainMenuScene::buttonSetting()
@@ -101,6 +99,7 @@ void mainMenuScene::buttonSetting()
 	_button[5].rc = RectMake(_buttonX - 40, 585 + _distance, IMAGEMANAGER->findImage("optionsButton")->getWidth() - 30, IMAGEMANAGER->findImage("optionsButton")->getHeight());;
 	_button[6].rc = RectMake(_buttonX + 230, 585 + _distance, IMAGEMANAGER->findImage("exitButton")->getWidth(), IMAGEMANAGER->findImage("exitButton")->getHeight());;
 	_button[7].rc = RectMake(WINSIZEX / 2 + 220, WINSIZEY - 220, 302, 80);
+	
 	_button[0].imageName = "playButton";
 	_button[1].imageName = "extraButton";
 	_button[2].imageName = "roadButton";
@@ -109,19 +108,19 @@ void mainMenuScene::buttonSetting()
 	_button[5].imageName = "optionsButton";
 	_button[6].imageName = "exitButton";
 	_button[7].imageName = "maptoolButton2";
-	//버튼 7개 초기화 
+
+	//버튼 초기화 
 	for (int i = 0; i < MAXBUTTON; i++)
 	{
 		_button[i].isClick = false;
 		_button[i].isEffect = false;
 		_button[i].alpha = 0;
 	}
-
-	//_mapToolButton.rc = RectMake(WINSIZEX/2 +220, WINSIZEY - 220,  267, 78);
 }
 
 void mainMenuScene::buttonClick()
 {
+	//버튼을 클릭하는 함수
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
 		for (int i = 0; i < MAXBUTTON; i++)
@@ -131,7 +130,6 @@ void mainMenuScene::buttonClick()
 				_button[i].isClick = true;
 				break;
 			}
-			
 		}
 	}
 
@@ -147,11 +145,11 @@ void mainMenuScene::buttonClick()
 		SCENEMANAGER->changeScene("MAPTOOL");
 	}
 
+	//나가기 버튼을 누르면 종료
 	if (_button[6].isClick)
 	{
 		PostQuitMessage(0);
 	}
-
 }
 
 void mainMenuScene::buttonEffect()
@@ -159,6 +157,7 @@ void mainMenuScene::buttonEffect()
 	//버튼 이펙트 판정
 	for (int i = 0; i < MAXBUTTON; i++)
 	{
+		//이펙트 중이면 통과
 		if (_button[i].isEffect) continue;
 
 		if (PtInRect(&_button[i].rc, _ptMouse))
@@ -166,23 +165,24 @@ void mainMenuScene::buttonEffect()
 			_button[i].isEffect = true;
 			break;
 		}
-
 	}
 
-	//버튼 이펙트이면 
+	//마우스와 버튼이 충돌하면 
 	for (int i = 0; i < MAXBUTTON; i++)
 	{
 		if (!_button[i].isEffect) continue;
+
 		//알파값 증가
 		_button[i].alpha += 5;
+
 		//알파값이 기준점 이상이면
 		if (_button[i].alpha >= 150)
 		{
+			//원래대로
 			if (!PtInRect(&_button[i].rc, _ptMouse))
 			{
 				_button[i].alpha = 0;
 				_button[i].isEffect = false;
-				continue;
 			}
 		}
 	}

@@ -81,13 +81,13 @@ void gameNode::release()
 
 void gameNode::update()
 {
-	SOUNDMANAGER->update();
-	KEYANIMANAGER->update();
-	CURSORMANAGER->update();
-	ITEMMANAGER->update();
-	UIMANAGER->update();     // UI MANAGER
-	EFFECTMANAGER->update();
-	CAMERAMANAGER->update();
+	SOUNDMANAGER->update();		 // SOUND
+	KEYANIMANAGER->update();	 // KEY ANI
+	CURSORMANAGER->update();	 // CURSOR
+	ITEMMANAGER->update();		 // ITEM
+	UIMANAGER->update();		 // UI MANAGER
+	EFFECTMANAGER->update();	 // EFFECT
+	CAMERAMANAGER->update();	 // CAMERA
 }
 
 void gameNode::render()
@@ -116,20 +116,7 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		case WM_MOUSEMOVE:
 			_ptMouse.x = static_cast<float>(LOWORD(lParam));
 			_ptMouse.y = static_cast<float>(HIWORD(lParam));
-
-		
-		break;
-
-		case WM_KEYDOWN:
-		{
-			switch (wParam)
-			{
-				/*case VK_ESCAPE:
-					PostQuitMessage(0);
-				break;*/
-
-			}
-		}
+	
 		break;
 
 
@@ -140,10 +127,6 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 	}
 
 	return (DefWindowProc(hWnd, iMessage, wParam, lParam));
-}
-
-void gameNode::nextScene()
-{
 }
 
 

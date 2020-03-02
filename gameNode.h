@@ -4,14 +4,11 @@
 
 static image* _backBuffer = IMAGEMANAGER->addImage("backBuffer", WINSIZEX, WINSIZEY);
 
-
-
 class gameNode
 {
 private:
 	HDC _hdc;
 	bool _managerInit;
-
 
 public:
 	gameNode();
@@ -23,13 +20,14 @@ public:
 	virtual void update();			//연산 전용 함수
 	virtual void render();			//그리기 전용 함수
 
-
 	//백버퍼의 DC메모리 영역 접근자
 	HDC getMemDC() { return _backBuffer->getMemDC(); }
 	HDC getHDC() { return _hdc; }
 
 	LRESULT MainProc(HWND, UINT, WPARAM, LPARAM);
-	virtual void nextScene();
 
+	//추후 수정 예정 
+	virtual void enterStageScene()  {}		// 스테이지 씬 들어갈 때
+	virtual void enterBossScene()	{}		// 보스 씬 들어갈 때
 };
 

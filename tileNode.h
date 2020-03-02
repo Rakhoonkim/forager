@@ -1,7 +1,6 @@
 #pragma once
 #include "stdafx.h"
 
-//왼쪽 보여질 타일 
 //한 타일의 사이즈는 60 (60 X 60)
 #define TILESIZE 60
 
@@ -158,34 +157,34 @@ enum class TYPE
 // 왼쪽 그려지는 타일 
 struct tagTile
 {
-	TYPE type;
-	TERRAIN terrain;		//지형
-	LAND land;				//땅 
-	LANDOBJECT landObject;  //땅위 데코레이션 
-	TREE tree;				//나무 
-	OBJECT object;			//배경 
-	CHARACTER character;	//PLAYER
-	TEMPLEOBJECT templeObject;
-	BUILDING building;
-	RECT rc;				//렉트
+	TYPE	    		 type;			//타입 
+	TERRAIN			  terrain;			//지형
+	LAND				 land;			//땅 
+	LANDOBJECT	   landObject;			//땅 위 오브젝트 
+	OBJECT			   object;			//식물 
+	TREE				 tree;			//나무 
+	CHARACTER		character;			//케릭터 및 몬스터
+	TEMPLEOBJECT templeObject;			//던전 오브젝트
+	BUILDING		 building;			//건축물
+	RECT				   rc;		    //RECT
 	int terrainFrameX;		//지형 번호
 	int terrainFrameY;		//지형 번호
-	int landFrameX;			//흙 번호
-	int landFrameY;			//흙 번호 
-	int landObjectFrameX;	//땅위 데코 번호  
-	int landObjectFrameY;	//땅위 데코 번호 
+	int landFrameX;			//땅 번호
+	int landFrameY;			//땅 번호 
+	int landObjectFrameX;	//땅 위 오브젝트 번호  
+	int landObjectFrameY;	//땅 위 오브젝트 번호 
+	int objectFrameX;		//식물 
+	int objectFrameY;		//식물 
 	int treeFrameX;			//나무 번호 
 	int treeFrameY;			//나무 번호 
-	int objectFrameX;		//바닥 데코 
-	int objectFrameY;		//바닥 데코 
 	int characterFrameX;	//케릭터 번호 
 	int characterFrameY;	//케릭터 번호 
 	int templeObjectFrameX; // 건물 오브젝트
 	int templeObjectFrameY; // 건물 오브젝트
-	int idx, idy;
-	bool isClick;
-	bool isObject;			// 식물이 있는지 없는지 
-	bool isRender;
+	int idx, idy;			//(idx,idy)
+	bool isClick;			// 미니맵에 타일을 보이기 위한 값
+	bool isObject;			// 타일 위에 오브젝트가 있는지 없는지
+	bool isRender;			// 랜더링 Bool값
 };
 
 // 오른쪽 팔레트 타일셋 

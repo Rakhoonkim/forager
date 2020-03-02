@@ -527,7 +527,7 @@ void cropsManager::removeCrops()
 				ITEMMANAGER->Dropitem((*_viCrops)->getCrops()->tree, (*_viCrops)->getCrops()->centerX, (*_viCrops)->getCrops()->centerY);
 			}
 			//경험치 증가
-			_player->playerExp((*_viCrops)->getCrops()->exp);
+			_player->setPlayerExp((*_viCrops)->getCrops()->exp);
 			//이펙트
 			_effect->play("expNum", (*_viCrops)->getCrops()->exp, _player->get_PlayerAddress()->x - 15, _player->get_PlayerAddress()->y - 15);
 			//작물 제거 

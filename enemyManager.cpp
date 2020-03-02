@@ -203,7 +203,7 @@ void enemyManager::enemyRemove()
 			// Enemey »èÁ¦  
 			_maxEnemy--;
 			ITEMMANAGER->DropEnemyItem((*_viEnemy)->getEnemy()->enemy, (*_viEnemy)->getEnemy()->centerX, (*_viEnemy)->getEnemy()->centerY);
-			_player->playerExp((*_viEnemy)->getEnemy()->exp);
+			_player->setPlayerExp((*_viEnemy)->getEnemy()->exp);
 			_effect->play("expNum", (*_viEnemy)->getEnemy()->exp, _player->get_PlayerAddress()->x - 15, _player->get_PlayerAddress()->y - 15);
 
 			_vEnemy.erase(_viEnemy);
