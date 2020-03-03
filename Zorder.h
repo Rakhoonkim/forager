@@ -25,11 +25,11 @@ enum class STAGEOBJECT
 
 struct ZorderStageClass
 {
-	player* player;
-	crops* crops;
-	building* build;
-	enemy* enemy;
-	puzzle* puzzle;
+	player*		player;
+	crops*		 crops;
+	building*	 build;
+	enemy*		 enemy;
+	puzzle*	    puzzle;
 };
 
 
@@ -63,11 +63,11 @@ public:
 	void addZorder(STAGEOBJECT obj, ZorderStageClass* object);
 	void addZorder(STAGEOBJECT obj, player* player, crops* crop,building* build,enemy* enemy,puzzle* puzzle);
 
-	vector<ZorderObject*> ZOrderUpdate(vector<ZorderObject*> num);
-
 	void removeObject();
 
-	vector<ZorderObject*> getZorder() { return _vZOrder; }
-	void setZorder(vector<ZorderObject*> zorder) { _vZOrder = zorder; }
+	void setZorder(vector<ZorderObject*> zorder)					{ _vZOrder = zorder; }
+
+	vector<ZorderObject*> ZOrderUpdate(vector<ZorderObject*> num);
+	vector<ZorderObject*> getZorder()								{ return _vZOrder; }
 };
 

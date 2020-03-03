@@ -13,16 +13,15 @@ struct tagBlind
 class templeManager
 {
 private:
-	vector<temple*>			  _vTemple;
+	vector<temple*>			   _vTemple;
 	vector<temple*>::iterator _viTemple;
 
-	temple* _temple;
+	temple*				  _temple;  // 던전 오브젝트
 
-	bulletManager* _bulletManager;
+	bulletManager* _bulletManager;	// 총알 매니저
 
-
-	tagBlind _room[8];
-	tagPlayer* _player;
+	tagBlind		_room[8];  // 8개의 칸막이
+	tagPlayer*		 _player;
 
 public:
 	templeManager();
@@ -42,9 +41,9 @@ public:
 	void CreateLantern(int idx, int idy);
 	void CreateDoor(int idx, int idy, int frameX);
 
-	void setBulletManager(bulletManager* bullet)		{ _bulletManager = bullet; }
+	void setBulletManager(bulletManager* bullet)		 { _bulletManager = bullet; }
 	void setPlayer(tagPlayer* player)					 { _player = player; }
 
-	bool getBossAttack() { return _room[0].isOpen; }
+	bool getBossAttack()								 { return _room[0].isOpen; }
 };
 

@@ -13,23 +13,23 @@ class gameNode;
 class uiManager : public singletonBase<uiManager>
 {
 private:
-	tagButton _optionList[MAXOPTION];
-	equipment* _equipment;
-	inventory* _inven;
-	build* _build;
-	land* _land;
+	tagButton		_optionList[MAXOPTION];	 //옵션 리스트
+	equipment*					_equipment;  //장비&스킬창
+	inventory*						_inven;  //인벤토리
+	build*							_build;  //건설창
+	land*					     	 _land;  //토지 구매창
 
-	int _currentOption;
-	bool _isOption;
+	int						_currentOption;
+	bool						 _isOption;
 
-	// === player Setting;
-	tagPlayer* _player;
-	float _healthBar;   // 체력바 가로 
-	float _expBar;		// 경험치바 가로 
-	float _slushX;
+	// ■■■■■■■■■■■■■■■■■■■■■■■■ PLAYER UI ■■■■■■■■■■■■■■■■■■■■■■■■
 
-	// exit
-	RECT _exit;
+	tagPlayer*  _player;
+	float	 _healthBar;   // 체력바 가로 
+	float		_expBar;   // 경험치바 가로 
+	float		_slushX;
+
+	RECT		  _exit;  // 나가는 RECT
 public:
 	uiManager();
 	~uiManager();

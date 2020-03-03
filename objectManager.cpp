@@ -25,7 +25,6 @@ HRESULT objectManager::init()
 	_puzzleManager->init();
 
 	UIMANAGER->buildAdressLink(_buildManager);
-
 	return S_OK;
 }
 
@@ -50,7 +49,7 @@ void objectManager::render()
 	_cropsManager->render();
 	_enemyManager->render();
 	_buildManager->render();
-	//_puzzleManager->render();
+	//_puzzleManager->render(); ZORDER에서 렌더링을 해주고 있음
 }
 
 

@@ -177,7 +177,6 @@ vector<ZorderObject*> Zorder::ZOrderUpdate(vector<ZorderObject*> num)
 		num[j + 1] = instance;
 	}
 
-
 	return num;
 }
 

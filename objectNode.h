@@ -14,29 +14,29 @@ enum class DIRECTION
 
 struct tagPlayer
 {
-	animation* playerAni;
-	animation* weaponAni;
-	image* playerImage;
-	image* weaponImage;
-	RECT rc;
-	DIRECTION direc;
-	float x, y;
-	float weaponX, weaponY;
-	float accel;
-	int idx, idy;
-	int hp, maxHp;
-	int level;			// LEVEL
-	int expMax, exp;	// 경험치최대치, 경험치 
-	int speed;
-	int damage;
-	int health;
-	int imageDirection;
-	int skillPount;
-	int hitCount;
-	int alpha;
-	float angle;
-	bool isAttack;
-	bool isHit;
+	animation* playerAni;		//PLAYER ANI
+	animation* weaponAni;		//WEAPON ANI
+	image* playerImage;			//PLAYER IMAGE
+	image* weaponImage;			//WEAPON IMAGE
+	RECT rc;					//RECT
+	DIRECTION direc;			//방향
+	float x, y;					//(X,Y)	PLAYER
+	float weaponX, weaponY;	    //(X,Y)	WEAPON
+	float accel;				//가속도
+	float angle;				//이동 각도
+	int idx, idy;				//(idx,idy)
+	int hp, maxHp;				//MAXHP / HP
+	int level;					//LEVEL
+	int expMax, exp;			//MAX경험치 / 경험치 
+	int speed;					//스피드
+	int damage;					//데미지
+	int health;					//체력
+	int imageDirection;			//이미지 방향
+	int skillPount;				//스킬 포인트
+	int hitCount;				//피격카운트
+	int alpha;					//Alpha값
+	bool isAttack;				//공격하는지 판단하는 BOOL값
+	bool isHit;					//피격
 };
 
 
@@ -81,7 +81,6 @@ struct tagObject
 
 
 // item
-
 struct tagItem
 {
 	const char* imageName;

@@ -446,8 +446,8 @@ bool inventory::foranceRecipes(FURNACERECIPE recipe, int count)
 	}
 	else if (recipe == FURNACERECIPE::BREAD) // 밀가루 추가할 예정 
 	{
-		if (_mInven.count("coalDrop") == 0) return false;  // 없으면 
-		if (_mInven["coalDrop"].count >= 2)
+		if (_mInven.count("coalDrop") == 0 ) return false;  // 없으면 
+		if (_mInven["coalDrop"].count >= 2 )
 		{
 			return true;
 		}

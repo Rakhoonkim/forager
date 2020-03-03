@@ -2,19 +2,19 @@
 #include "gameNode.h"
 #include "crops.h"
 #include "alphaEffect.h"
-// 상속받은 클래스 
 
 class player;
+
 class cropsManager:public gameNode
 {
 private:
 	vector<crops*>			 _vCrops;
 	vector<crops*>::iterator _viCrops;
 
-	alphaEffect* _effect;
 	player* _player;
+	alphaEffect* _effect;
 
-
+	//랜덤 출현하기 위한 시간 값
 	float _cropsTimer;
 	float _cropsTimer2;
 	float _rockTimer;
@@ -31,14 +31,13 @@ public:
 
 	void imageSetting();
 	
+	//농작물 생성 함수
 	void createImageCrops(OBJECT object,int idx,int idy);
 	void createFrameCrops(OBJECT object,int idx, int idy);
 	void createimageFrameCrops(OBJECT object, int idx, int idy);
 	void craateTreeCrops(TREE tree, int idx, int idy);
 	
-
 	void CropsMakeUpdate();   // 작물을 만드는 
-
 
 	vector<crops*>				getVCrops()	 { return _vCrops; }
 	vector<crops*>::iterator	getViCrops() { return _viCrops; }

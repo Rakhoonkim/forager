@@ -24,22 +24,22 @@ HRESULT land::init()
 
 	MapLoad("inGameNumber1.map");		// 맵을 가져와서 
 	landSetting();						// 세팅을 다시한다
+
 	//this->mapBuy(0, 0);
 	//this->mapBuy(0, 1);
 	//this->mapBuy(0, 2);
-
 	//this->mapBuy(1, 0);
 	this->mapBuy(1, 1);
 	//this->mapBuy(1, 2);
-
 	//this->mapBuy(2, 0);
 	//this->mapBuy(2, 1);
 	//this->mapBuy(2, 2);
+
 	_direction = 4;
 	_playerCoin = 0;
 
-
 	_cameraRect = RectMake(_landX, _landY, WINSIZEX, WINSIZEY);
+
 	KEYANIMANAGER->findAnimation("landCursor")->start();
 	return S_OK;
 }
@@ -145,6 +145,8 @@ void land::render(HDC hdc)
 	for (int i = 0; i < MAXLAND;i++)
 	{
 		if (_land[i].isClick) continue;
+
+		// ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 구매 가능한지 아닌지 
 		if (_playerCoin >= _land[i].alpha)
 		{
 			//구매가능
@@ -161,7 +163,7 @@ void land::render(HDC hdc)
 		}
 		//Rectangle(_landImage->getMemDC(), _land[i].rc);
 
-		//가격 출력
+		// ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 가격 출력
 		float imageX = _land[i].centerX + 80;
 		float imageY = _land[i].centerY + 40;
 		if (_land[i].alpha < 10)
@@ -190,7 +192,7 @@ void land::render(HDC hdc)
 	//이미지 출력 
 	_landImage->render(hdc, 0, 0, _landX, _landY, WINSIZEX, WINSIZEY);
 
-	// 코인 출력
+	// ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 코인 출력
 	// 코인수 출력하기 
 	IMAGEMANAGER->findImage("invenItem")->frameRender(hdc, 20, WINSIZEY - 100, 0, 3);
 
@@ -324,7 +326,6 @@ void land::landSetting()
 			_landTiles[i * TILEX + j].isRender = false;
 		}
 	}
-
 
 	for (int i = 0;i < LANDY; i++)
 	{

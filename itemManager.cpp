@@ -17,7 +17,7 @@ HRESULT itemManager::init()
 	_inven->init();
 
 	UIMANAGER->setInven(_inven);
-	
+
 	return S_OK;
 }
 
@@ -27,7 +27,6 @@ void itemManager::release()
 
 void itemManager::update()
 {
-
 	for (_viItem = _vItem.begin(); _viItem != _vItem.end(); ++_viItem)
 	{
 		(*_viItem)->update();
@@ -48,7 +47,6 @@ void itemManager::imageSetting()
 	IMAGEMANAGER->addFrameImage("ironOreDrop", "./image/item/ironOreDrop.bmp", 600, 24, 20, 1, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("coalDrop", "./image/item/coalDrop.bmp", 520, 24, 20, 1, true, RGB(255, 0, 255), true);
 	
-	
 	IMAGEMANAGER->addFrameImage("woodDrop", "./image/item/woodDrop.bmp", 720, 36, 20, 1, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("beetDrop", "./image/item/beetDrop.bmp", 600, 30, 20, 1, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("berryDrop", "./image/item/berryDrop.bmp", 720, 32, 20, 1, true, RGB(255, 0, 255), true);
@@ -64,7 +62,6 @@ void itemManager::imageSetting()
 	IMAGEMANAGER->addFrameImage("pumpkinDrop", "./image/item/pumpkinDrop.bmp", 680, 34, 20, 1, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("stoneDrop", "./image/item/stoneDrop.bmp", 600, 24, 20, 1, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("wheatDrop", "./image/item/wheatDrop.bmp", 720, 36, 20, 1, true, RGB(255, 0, 255), true);
-
 
 	KEYANIMANAGER->addDefaultFrameAnimation("flowerDrop", "flowerDrop", 30, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("beetDrop", "beetDrop", 30, false, true);
@@ -106,7 +103,6 @@ void itemManager::imageSetting()
 	IMAGEMANAGER->addFrameImage("swordDrop", "./image/item/buildItem/forge/swordDrop.bmp", 640, 32, 20, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("keyDrop", "./image/item/buildItem/forge/keyDrop.bmp", 440, 36, 20, 1, true, RGB(255, 0, 255));
 
-
 	//sewing
 	IMAGEMANAGER->addFrameImage("mediumBackpackDrop", "./image/item/buildItem/sweing/mediumBackpackDrop.bmp", 640, 34, 20, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("slimeWalletDrop", "./image/item/buildItem/sweing/slimeWalletDrop.bmp", 640, 32, 20, 1, true, RGB(255, 0, 255));
@@ -137,7 +133,6 @@ void itemManager::imageSetting()
 	KEYANIMANAGER->addDefaultFrameAnimation("smallWalletDrop", "smallWalletDrop", 30, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("threadDrop", "threadDrop", 30, false, true);
 
-
 	//fishtrap
 	IMAGEMANAGER->addFrameImage("fishDrop", "./image/item/buildItem/fishtrap/fishDrop.bmp", 600, 30, 20, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("seaweedDrop", "./image/item/buildItem/fishtrap/seaweedDrop.bmp", 680, 32, 20, 1, true, RGB(255, 0, 255));
@@ -147,7 +142,6 @@ void itemManager::imageSetting()
 	KEYANIMANAGER->addDefaultFrameAnimation("seaweedDrop", "seaweedDrop", 30, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("fishDrop", "fishDrop", 30, false, true);
 
-
 	//enemyItem
 	IMAGEMANAGER->addFrameImage("jellyDrop", "./image/item/enemyItem/jellyDrop.bmp", 640, 32, 20, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("meatDrop", "./image/item/enemyItem/meatDrop.bmp", 600, 30, 20, 1, true, RGB(255, 0, 255));
@@ -155,12 +149,6 @@ void itemManager::imageSetting()
 	KEYANIMANAGER->addDefaultFrameAnimation("jellyDrop", "jellyDrop", 30, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("meatDrop", "meatDrop", 30, false, true);
 	KEYANIMANAGER->addDefaultFrameAnimation("demonHornDrop", "demonHornDrop", 30, false, true);
-
-	//enemyInven
-	//jelly 7, 1 
-
-
-	
 
 }
 
@@ -463,7 +451,7 @@ void itemManager::DropFurnaceItem(FURNACERECIPE recipe, float x, float y, int nu
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("brickDrop", x, y);
-			tempItem->setIvenFrame(0, 2);   // 수정 
+			tempItem->setIvenFrame(0, 2); 
 			_vItem.push_back(tempItem);
 		}
 	}
@@ -474,7 +462,7 @@ void itemManager::DropFurnaceItem(FURNACERECIPE recipe, float x, float y, int nu
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("ironingotDrop", x, y);
-			tempItem->setIvenFrame(1, 2);   // 수정 
+			tempItem->setIvenFrame(1, 2); 
 			_vItem.push_back(tempItem);
 		}
 	}
@@ -485,7 +473,7 @@ void itemManager::DropFurnaceItem(FURNACERECIPE recipe, float x, float y, int nu
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("goldingotDrop", x, y);
-			tempItem->setIvenFrame(2, 2);   // 수정 
+			tempItem->setIvenFrame(2, 2); 
 			_vItem.push_back(tempItem);
 		}
 	}
@@ -496,7 +484,7 @@ void itemManager::DropFurnaceItem(FURNACERECIPE recipe, float x, float y, int nu
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("steelDrop", x, y);
-			tempItem->setIvenFrame(3, 2);   // 수정 
+			tempItem->setIvenFrame(3, 2);  
 			_vItem.push_back(tempItem);
 		}
 	}
@@ -507,7 +495,7 @@ void itemManager::DropFurnaceItem(FURNACERECIPE recipe, float x, float y, int nu
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("grassDrop", x, y);
-			tempItem->setIvenFrame(4, 2);   // 수정 
+			tempItem->setIvenFrame(4, 2);   
 			_vItem.push_back(tempItem);
 		}
 	}
@@ -518,7 +506,7 @@ void itemManager::DropFurnaceItem(FURNACERECIPE recipe, float x, float y, int nu
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("breadDrop", x, y);
-			tempItem->setIvenFrame(5, 2);   // 수정 
+			tempItem->setIvenFrame(5, 2); 
 			tempItem->setSteminaHeart(20, 1);
 			tempItem->setItemUse();
 			_vItem.push_back(tempItem);
@@ -531,7 +519,7 @@ void itemManager::DropFurnaceItem(FURNACERECIPE recipe, float x, float y, int nu
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("cookedFishDrop", x, y);
-			tempItem->setIvenFrame(6, 2);   // 수정 
+			tempItem->setIvenFrame(6, 2);  
 			tempItem->setSteminaHeart(20, 1);
 			tempItem->setItemUse();
 			_vItem.push_back(tempItem);
@@ -544,7 +532,7 @@ void itemManager::DropFurnaceItem(FURNACERECIPE recipe, float x, float y, int nu
 			item* tempItem;
 			tempItem = new item;
 			tempItem->init("cookedMeatDrop", x, y);
-			tempItem->setIvenFrame(7, 2);   // 수정
+			tempItem->setIvenFrame(7, 2);   
 			tempItem->setSteminaHeart(20,1);
 			tempItem->setItemUse();
 			_vItem.push_back(tempItem);
@@ -774,18 +762,12 @@ void itemManager::DropEnemyItem(ENEMY enemy, float x, float y)
 	}
 }
 
-void itemManager::findItem()
-{
-}
-
 void itemManager::removeItem()
 {
 	for (_viItem = _vItem.begin(); _viItem != _vItem.end(); ++_viItem)
 	{
 		if ((*_viItem)->getItem()->isClick)
 		{
-			//인벤토리 증가 예정 
-			//아이템의 프레임 x y 만들 예정 
 			//_inven->addInven((*_viItem)->getItem()->imageName, (*_viItem)->getItem()->frameX, (*_viItem)->getItem()->frameY);
 			UIMANAGER->getInven()->addInven((*_viItem)->getItem()->imageName, (*_viItem)->getItem()->frameX, (*_viItem)->getItem()->frameY, (*_viItem)->getItem()->stemina, (*_viItem)->getItem()->heart, (*_viItem)->getItem()->isUse);
 			_vItem.erase(_viItem);

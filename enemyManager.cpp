@@ -51,7 +51,6 @@ void enemyManager::update()
 				}
 			}
 
-
 			//깜박거리는 효과 
 			if (!_vEnemy[i]->getEnemy()->isHit)
 			{
@@ -77,15 +76,15 @@ void enemyManager::update()
 				}
 			}
 		}
-
-
-
 	}
-	//for (_viEnemy = _vEnemy.begin(); _viEnemy != _vEnemy.end(); _viEnemy++)
-	//{
-	//	(*_viEnemy)->update();
-	//}
 
+	_bulletManager->update();
+
+	if(!_isBoss) AutoEnemyCreate(); // enemyManager 
+
+	enemyRemove();  // 애너미 삭제
+
+	//ENEMY 디버깅용
 	if (KEYMANAGER->isOnceKeyDown('U'))
 	{
 		//CreateEnemy(ENEMY::SLIME, 24, 19);
@@ -94,10 +93,6 @@ void enemyManager::update()
 		//CreateEnemy(ENEMY::SKULL, 24, 21);
 		//CreateEnemy(ENEMY::DEMON_BOSS, 24, 18);
 	}
-	_bulletManager->update();
-
-	if(!_isBoss) AutoEnemyCreate(); // enemyManager 
-	enemyRemove();
 }
 
 void enemyManager::render()
@@ -205,7 +200,6 @@ void enemyManager::enemyRemove()
 			ITEMMANAGER->DropEnemyItem((*_viEnemy)->getEnemy()->enemy, (*_viEnemy)->getEnemy()->centerX, (*_viEnemy)->getEnemy()->centerY);
 			_player->setPlayerExp((*_viEnemy)->getEnemy()->exp);
 			_effect->play("expNum", (*_viEnemy)->getEnemy()->exp, _player->get_PlayerAddress()->x - 15, _player->get_PlayerAddress()->y - 15);
-
 			_vEnemy.erase(_viEnemy);
 			break;
 		}
@@ -246,7 +240,7 @@ void enemyManager::CreateEnemy(ENEMY enemyType, int idx, int idy)
 		temp = new skull;
 		temp->init(enemyType, "skull", idx, idy);
 		temp->setAni("skullLeft");
-		temp->set_skullEnemyXY();
+		temp->Set_skullEnemyXY();
 		temp->Set_PlayerLink(_player->get_PlayerAddress());
 		temp->setEnemyBullet(_bulletManager);
 		_vEnemy.push_back(temp);

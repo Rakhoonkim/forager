@@ -9,12 +9,12 @@ class skill
 private:
 	tagSkill _skill[SKILLX * SKILLY];
 
-	float _startX, _startY;
-	float _tileSize;
+	float _startX, _startY;	          // 버튼 시작 X, Y
+	float		 _tileSize;
 
-	int* _skillPoint;
-	int _offsetX;	// 루프렌더 X값
-	int _offsetY;	// 루프렌더 Y값
+	int* _skillPoint;	// 케릭터 스킬포인트
+	int		_offsetX;	// 루프렌더 X값
+	int		_offsetY;	// 루프렌더 Y값
 
 public:
 	skill();
@@ -27,7 +27,7 @@ public:
 
 	void skillSetting();
 	void buttonClick();
-	void setSkillPoint(int* num) { _skillPoint = num; }
+	void setSkillPoint(int* num)	{ _skillPoint = num; }
 
 };
 

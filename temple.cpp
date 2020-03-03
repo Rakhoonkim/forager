@@ -11,22 +11,20 @@ temple::~temple()
 
 HRESULT temple::init(const char* imageName, int idx, int idy)
 {
-	_temp.imageName = imageName;
+	_temple.imageName = imageName;
 	
-	_temp.idx = idx;
-	_temp.idy = idy;
+	_temple.idx = idx;
+	_temple.idy = idy;
 
+	_temple.x = idx * 60;
+	_temple.y = idy * 60;
 
-	_temp.x = idx * 60;
-	_temp.y = idy * 60;
+	_temple.frameX = 0; // 초기화 
+	_temple.anlge = 0;
 
-	_temp.frameX = 0; // 초기화 
-	_temp.anlge = 0;
+	_temple.time = TIMEMANAGER->getWorldTime();
 
-	_temp.time = TIMEMANAGER->getWorldTime();
-
-	_temp.rc = RectMake(_temp.x, _temp.y, IMAGEMANAGER->findImage(imageName)->getFrameWidth(), IMAGEMANAGER->findImage(imageName)->getFrameHeight());
-
+	_temple.rc = RectMake(_temple.x, _temple.y, IMAGEMANAGER->findImage(imageName)->getFrameWidth(), IMAGEMANAGER->findImage(imageName)->getFrameHeight());
 
 	return S_OK;
 }
@@ -41,35 +39,35 @@ void temple::update()
 
 void temple::render()
 {
-	IMAGEMANAGER->findImage(_temp.imageName)->render(CAMERAMANAGER->getWorldDC(), _temp.x, _temp.y);
+	IMAGEMANAGER->findImage(_temple.imageName)->render(CAMERAMANAGER->getWorldDC(), _temple.x, _temple.y);
 }
 
 // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ lantern ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 
 HRESULT lantern::init(const char* imageName, int idx, int idy)
 {
-	_temp.imageName = imageName;
-	_temp.ani = KEYANIMANAGER->findAnimation(imageName);
+	_temple.imageName = imageName;
+	_temple.ani = KEYANIMANAGER->findAnimation(imageName);
 
-	_temp.idx = idx;
-	_temp.idy = idy;
+	_temple.idx = idx;
+	_temple.idy = idy;
 
-	_temp.x = idx * 60;
-	_temp.y = idy * 60 - 42;
-	_temp.ani->start();
-	_temp.frameX = 0; // 초기화 
-	_temp.anlge = 0;
+	_temple.x = idx * 60;
+	_temple.y = idy * 60 - 42;
+	_temple.ani->start();
+	_temple.frameX = 0; // 초기화 
+	_temple.anlge = 0;
 
-	_temp.time = TIMEMANAGER->getWorldTime();
+	_temple.time = TIMEMANAGER->getWorldTime();
 
-	_temp.rc = RectMake(_temp.x, _temp.y, IMAGEMANAGER->findImage(imageName)->getFrameWidth(), IMAGEMANAGER->findImage(imageName)->getFrameHeight());
+	_temple.rc = RectMake(_temple.x, _temple.y, IMAGEMANAGER->findImage(imageName)->getFrameWidth(), IMAGEMANAGER->findImage(imageName)->getFrameHeight());
 
 	return S_OK;
 }
 
 void lantern::render()
 {
-	IMAGEMANAGER->findImage(_temp.imageName)->aniRender(CAMERAMANAGER->getWorldDC(), _temp.x, _temp.y, _temp.ani);
+	IMAGEMANAGER->findImage(_temple.imageName)->aniRender(CAMERAMANAGER->getWorldDC(), _temple.x, _temple.y, _temple.ani);
 }
 
 // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ lantern ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -78,24 +76,24 @@ void cannon::update()
 {
 
 
-	if (_temp.time + 3 < TIMEMANAGER->getWorldTime())
+	if (_temple.time + 3 < TIMEMANAGER->getWorldTime())
 	{
-		_temp.time = TIMEMANAGER->getWorldTime();
-		if (_temp.frameX == 0)
+		_temple.time = TIMEMANAGER->getWorldTime();
+		if (_temple.frameX == 0)
 		{
-			_bulletManager->getBullet()->fire(_temp.x, _temp.y, _temp.anlge, 10, 350);
+			_bulletManager->getBullet()->fire(_temple.x, _temple.y, _temple.anlge, 10, 350);
 		}
-		else if (_temp.frameX == 1)
+		else if (_temple.frameX == 1)
 		{
-			_bulletManager->getBullet()->fire(_temp.x + 15, _temp.y + IMAGEMANAGER->findImage(_temp.imageName)->getFrameHeight() / 2, _temp.anlge, 10, 350);
+			_bulletManager->getBullet()->fire(_temple.x + 15, _temple.y + IMAGEMANAGER->findImage(_temple.imageName)->getFrameHeight() / 2, _temple.anlge, 10, 350);
 		}
-		else if (_temp.frameX == 2)
+		else if (_temple.frameX == 2)
 		{
-			_bulletManager->getBullet()->fire(_temp.x, _temp.y + 15, _temp.anlge, 10, 350);
+			_bulletManager->getBullet()->fire(_temple.x, _temple.y + 15, _temple.anlge, 10, 350);
 		}
-		else if (_temp.frameX == 3)
+		else if (_temple.frameX == 3)
 		{
-			_bulletManager->getBullet()->fire(_temp.x + 20, _temp.y + 10, _temp.anlge, 10, 350);
+			_bulletManager->getBullet()->fire(_temple.x + 20, _temple.y + 10, _temple.anlge, 10, 350);
 		}
 	}
 
@@ -105,35 +103,34 @@ void cannon::setFrameX(int frameX)
 {
 	if (frameX == 0)
 	{
-		_temp.frameX = frameX;
-		_temp.anlge = 1.08;
-		_temp.y -= 10;
+		_temple.frameX = frameX;
+		_temple.anlge = 1.08;
+		_temple.y -= 10;
 	}
 	else if (frameX == 1)
 	{
-		_temp.frameX = frameX;
-		_temp.anlge = -1.95;
+		_temple.frameX = frameX;
+		_temple.anlge = -1.95;
 	}
 	else if (frameX == 2)
 	{
-		_temp.frameX = frameX;
-		_temp.x -= 12;
-		_temp.anlge = 2.69;
+		_temple.frameX = frameX;
+		_temple.x -= 12;
+		_temple.anlge = 2.69;
 	}
 	else if (frameX == 3)
 	{
-		_temp.frameX = frameX;
-		_temp.x += 15;
-		_temp.anlge = -0.4;
+		_temple.frameX = frameX;
+		_temple.x += 15;
+		_temple.anlge = -0.4;
 	}
 
-	_temp.rc = RectMake(_temp.x, _temp.y, IMAGEMANAGER->findImage(_temp.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_temp.imageName)->getFrameHeight());
-
+	_temple.rc = RectMake(_temple.x, _temple.y, IMAGEMANAGER->findImage(_temple.imageName)->getFrameWidth(), IMAGEMANAGER->findImage(_temple.imageName)->getFrameHeight());
 }
 
 void cannon::render()
 {
-	IMAGEMANAGER->findImage(_temp.imageName)->frameRender(CAMERAMANAGER->getWorldDC(), _temp.x, _temp.y, _temp.frameX, 0);
+	IMAGEMANAGER->findImage(_temple.imageName)->frameRender(CAMERAMANAGER->getWorldDC(), _temple.x, _temple.y, _temple.frameX, 0);
 }
 
 
@@ -142,28 +139,26 @@ void cannon::render()
 
 HRESULT door::init(const char* imageName, int idx, int idy)
 {
-	_temp.imageName = imageName;
+	_temple.imageName = imageName;
 
-	_temp.idx = idx;
-	_temp.idy = idy;
+	_temple.idx = idx;
+	_temple.idy = idy;
 
+	_temple.x = idx * 60;
+	_temple.y = idy * 60;
 
-	_temp.x = idx * 60;
-	_temp.y = idy * 60;
+	_temple.frameX = 0; // 초기화 
+	_temple.anlge = 0;
 
-	_temp.frameX = 0; // 초기화 
-	_temp.anlge = 0;
+	_temple.time = TIMEMANAGER->getWorldTime();
 
-	_temp.time = TIMEMANAGER->getWorldTime();
-
-	_temp.rc = RectMake(_temp.x, _temp.y, IMAGEMANAGER->findImage(imageName)->getFrameWidth(), IMAGEMANAGER->findImage(imageName)->getFrameHeight());
-
+	_temple.rc = RectMake(_temple.x, _temple.y, IMAGEMANAGER->findImage(imageName)->getFrameWidth(), IMAGEMANAGER->findImage(imageName)->getFrameHeight());
 
 	return S_OK;
 }
 
 void door::render()
 {
-	IMAGEMANAGER->findImage(_temp.imageName)->frameRender(CAMERAMANAGER->getWorldDC(), _temp.x, _temp.y, _temp.frameX, 0);
+	IMAGEMANAGER->findImage(_temple.imageName)->frameRender(CAMERAMANAGER->getWorldDC(), _temple.x, _temple.y, _temple.frameX, 0);
 	//Rectangle(CAMERAMANAGER->getWorldDC(), _temp.rc);
 }

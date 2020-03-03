@@ -12,10 +12,6 @@ puzzleManager::~puzzleManager()
 HRESULT puzzleManager::init()
 {
 	imageSetting();
-	//puzzle* _druidTree;			// 드루이드의 집
-	//puzzle* _rainbow;
-	//framePuzzle* _treasureChest;
-	//templeEntrance* _fireTempleEntrance;
 
 	_rainbow = new puzzle;
 	_rainbow->init("rainBow", 0, 0);
@@ -34,8 +30,7 @@ HRESULT puzzleManager::init()
 	_fireTempleEntrance->init("fireTempleEntrance", 0, 0);
 	_fireTempleEntrance->setTemple(TEMPLEOBJECT::TEMPLE_ENTRANCE);
 
-
-
+	//제트오더에 넣는다.
 	ZORDER->addZorder(STAGEOBJECT::PUZZLE, NULL, NULL, NULL, NULL, _rainbow);
 	ZORDER->addZorder(STAGEOBJECT::PUZZLE, NULL, NULL, NULL, NULL, _druidTree);
 	ZORDER->addZorder(STAGEOBJECT::PUZZLE, NULL, NULL, NULL, NULL, _treasureChest);
@@ -62,23 +57,17 @@ void puzzleManager::update()
 		if (!(*iter)->getPuzzle()->isRender) continue;
 		(*iter)->update();
 	}
-	puzzleRemove();
 }
 
 void puzzleManager::render()
 {
-	vector<puzzle*>::iterator iter;
-	iter = _vPuzzle.begin();
+	//vector<puzzle*>::iterator iter;
+	//iter = _vPuzzle.begin();
 	//for (; iter != _vPuzzle.end(); iter++)
 	//{
 	//	if (!(*iter)->getPuzzle()->isRender) continue;
 	//	(*iter)->render();
 	//}
-
-	/*IMAGEMANAGER->findImage("rainBow")->render(CAMERAMANAGER->getWorldDC(), _rainBow.x, _rainBow.y);
-	IMAGEMANAGER->findImage("druidTree")->render(CAMERAMANAGER->getWorldDC(), _druidTree.rc.left, _druidTree.rc.top);
-	*///IMAGEMANAGER->findImage("druidTree")->render(CAMERAMANAGER->getWorldDC(),)
-	//Rectangle(CAMERAMANAGER->getWorldDC(), _druidTree.rc);
 }
 
 void puzzleManager::imageSetting()
@@ -91,11 +80,6 @@ void puzzleManager::imageSetting()
 	IMAGEMANAGER->addImage("treasureChestKey", "./image/puzzle/treasureChestKey.bmp",54, 54,true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addImage("fireTempleEntrance", "./image/puzzle/fireTempleEntrance.bmp", 288, 336, true, RGB(255, 0, 255),true);
-}
-
-void puzzleManager::puzzleRemove()
-{
-
 }
 
 void puzzleManager::setPuzzleIndex(PUZZLE puz, int idx, int idy)
@@ -112,7 +96,6 @@ void puzzleManager::setPuzzleIndex(PUZZLE puz, int idx, int idy)
 	{
 		_treasureChest->setPuzzleIdex(idx, idy);
 	}
-
 }
 
 void puzzleManager::setPuzzleRender(PUZZLE puz)

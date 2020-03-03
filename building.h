@@ -8,30 +8,32 @@
 class building 
 {
 protected:
-	tagObject _building;
-	tagButton _furnaceButton[MAXFURNACELIST];
-	tagButton _forgeButton[MAXFORGELIST];
-	tagButton _sewingButton[MAXSEWINGLIST];
+	tagObject					   _building;  //건물 구조체
 
-	tagButton _craftButton;
-	tagButton _addButton[2];
-	FURNACERECIPE _furnace;
-	FORGERECIPE _forge;
-	SEWINGRECIPE _sewing;
+	tagButton _furnaceButton[MAXFURNACELIST];  //버튼리스트
+	tagButton	  _forgeButton[MAXFORGELIST];  //모루리스트
+	tagButton	_sewingButton[MAXSEWINGLIST];  //재봉소리스트
 
-	int _direction; // 현재 버튼을 어딜 가리키는지 
-	float _timer;
-	bool _craftPage;
+	tagButton		 _craftButton;   //생산버튼
+	tagButton		_addButton[2];   //추가버튼
 
-	bool _isWork;
-	int _itemCount;
+	FURNACERECIPE		 _furnace;   //임시 저장하는 변수
+	FORGERECIPE			   _forge;
+	SEWINGRECIPE		  _sewing;
 
-	int _backPack;
-	int _wallet;
+	float		_timer;   // 타이머 
+	
+	int     _itemCount;   // 아이템 개수
+	int   _effectCount;   // 효과 인터벌 카운터
+	 
+	int      _backPack;   // 가방 
+	int		   _wallet;   // 지갑 
+	int		_direction;   // 현재 버튼을 어딜 가리키는지 
+	
+	bool	_craftPage;   // 제작페이지
+	bool	   _isWork;   // 작동중인지 
+	bool	    _isUse;   // 사용중인지
 
-
-	int _effectCount;
-	bool _isUse;
 public:
 	building();
 	~building();
@@ -40,18 +42,22 @@ public:
 	virtual void release();
 	virtual void update();
 	virtual void render();
-	virtual void EffectRender();
-	virtual void buttonEffect();
-	virtual void buttonClick();
-	virtual void craftButton();
-	virtual void isWorking();
-	virtual void setHp(int maxHp, int hp);
-	virtual void buttonInit();
-	virtual void setAni() { _building.ani = KEYANIMANAGER->findAnimation("furnace"); }
-	virtual bool getUsed() { return _isUse; }
-	virtual void setUsed() { _isUse = false; }
-	virtual void setCenterXY(int idx,int idy);
-	virtual tagObject* getBuilding() { return &_building; }
+
+	virtual void EffectRender();           // 이펙트 렌더
+
+	virtual void buttonInit();			   // 버튼 초기화
+	virtual void buttonClick();			   // 버튼 클릭
+	virtual void craftButton();			   // 버튼을 누르면 레시피 설정 
+	virtual void isWorking();			   // 작동중 : 시간 후 아이템 드랍
+	//설정자
+	virtual void buttonEffect();//(사용안함) // 초기 구현 
+	virtual void setHp(int maxHp, int hp);	   // 체력 설정
+	virtual void setCenterXY(int idx,int idy); // 중간 위치 설정
+	virtual void setUsed()					     { _isUse = false; }
+	virtual void setAni()						 { _building.ani = KEYANIMANAGER->findAnimation("furnace"); }
+
+	virtual bool getUsed()						 { return _isUse; }
+	virtual tagObject* getBuilding()			 { return &_building; }
 };
 
 // furnace

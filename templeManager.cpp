@@ -13,7 +13,7 @@ HRESULT templeManager::init()
 {
 	imageSetting();
 
-	blindRoomSetting();
+	blindRoomSetting(); // 검정색 가림막 세팅
 	return S_OK;
 }
 
@@ -28,7 +28,7 @@ void templeManager::update()
 	{
 		(*iter)->update();
 	}
-	blindRoomCollision();
+	blindRoomCollision();  // 검정색 가림막 충돌
 }
 
 void templeManager::render()

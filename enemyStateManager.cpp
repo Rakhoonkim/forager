@@ -31,7 +31,6 @@ void enemyStateManager::release()
 		}
 		else ++miState;
 	}
-
 	_mState.clear();
 }
 
@@ -58,16 +57,14 @@ HRESULT enemyStateManager::chanageState(string stateName)
 {
 	mapStateIter find = _mState.find(stateName);
 
-	if (find == _mState.end()) return E_FAIL;
+	if (find == _mState.end())		   return E_FAIL;
 	if (find->second == _currentState) return S_OK;
 
 	if (SUCCEEDED(find->second->init()))
 	{
-		//if (_currentState) _currentState->release();
-	
-		_currentState = find->second;	// 교체 
-		_currentState->ChangeImage();   
-		_currentState->Enter();			// 들어가면서 
+		_currentState = find->second;	// 
+		_currentState->ChangeImage();   //
+		_currentState->Enter();			// 
 		return S_OK;
 	}
 

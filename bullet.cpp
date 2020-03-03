@@ -12,8 +12,9 @@ bullet::~bullet()
 HRESULT bullet::init(const char* imageName)
 {
 	_imageName = imageName;
-	OBJECTPOOL->Init(10000);
-	//방향 판단 
+
+	OBJECTPOOL->Init(10000); // 오브젝트 POOL 초기 사이즈 정의
+	 
 	return S_OK;
 }
 
@@ -76,7 +77,6 @@ void bullet::move()
 		(*iter)->idx = (*iter)->x / 60;		 // idx 
 		(*iter)->idy = (*iter)->y / 60;		 // idy
 
-		
 		//총알이 사라지는 구간 
 		if ((MAPMANAGER->setBulletBossTileCollision((*iter)->idx, (*iter)->idy) && (getDistance((*iter)->startX, (*iter)->startY, (*iter)->x, (*iter)->y) >= 50)) || (getDistance((*iter)->startX, (*iter)->startY, (*iter)->x, (*iter)->y) >= (*iter)->distance))
 		{
@@ -106,9 +106,9 @@ void bullet::remove()
 void bullet::fire(float x, float y, float angle, float speed)
 {
 	tagBullet* tempBullet = OBJECTPOOL->getObject();
-	//tempBullet = new tagBullet;
+	//tempBullet = new tagBullet; ?? 하면 오류났던..
 	tempBullet->ani = KEYANIMANAGER->findAnimation(_imageName);
-	tempBullet->ani->start();
+	tempBullet->ani->start(); 
 	tempBullet->x = tempBullet->startX = x;
 	tempBullet->y = tempBullet->startY = y;
 	tempBullet->idx = tempBullet->x / 60;
@@ -125,7 +125,7 @@ void bullet::fire(float x, float y, float angle, float speed)
 void bullet::fire(float x, float y, float angle, float speed, float distance)
 {
 	tagBullet* tempBullet = OBJECTPOOL->getObject();
-	//tempBullet = new tagBullet;
+	//tempBullet = new tagBullet; ?? 하면 오류났던..
 	tempBullet->ani = KEYANIMANAGER->findAnimation(_imageName);
 	tempBullet->ani->start();
 	tempBullet->x = tempBullet->startX = x;

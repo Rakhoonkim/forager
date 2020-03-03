@@ -252,7 +252,7 @@ void playerManager::objectAttack(int num)
 			_player->setPlayerHealth(3);		// 체력소진
 			_cropsManager->getVCrops()[num]->setCropsEffect(true);
 			_cropsManager->getVCrops()[num]->setCropsIsHit(true);
-			_cropsManager->getVCrops()[num]->cropsHit(_player->get_PlayerAddress()->damage);
+			_cropsManager->getVCrops()[num]->setCropsHit(_player->get_PlayerAddress()->damage);
 		}
 		//KEYMANAGER->setKeyDown(VK_LBUTTON, false);
 	}
@@ -266,7 +266,7 @@ void playerManager::enemyAttack(int num)
 		if (getDistance(_player->get_PlayerAddress()->x, _player->get_PlayerAddress()->y, _enemyManager->getVEnemy()[num]->getEnemy()->centerX, _enemyManager->getVEnemy()[num]->getEnemy()->centerY) <= 80)
 		{
 			_player->setPlayerHealth(3);		 // 체력소진
-			_enemyManager->getVEnemy()[num]->enemyHit(_player->get_PlayerAddress()->damage);
+			_enemyManager->getVEnemy()[num]->setEnemyHit(_player->get_PlayerAddress()->damage);
 		}
 		//KEYMANAGER->setKeyDown(VK_LBUTTON, false);
 	}

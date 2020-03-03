@@ -23,14 +23,15 @@ public:
 	void release();
 	void update();
 	void render();
+
 	void imageSetting();
 
-	void setCropsPoint();
-	void setBuildPoint();
-	void setBridgePoint();
-	void setBossPoint();
-	void setCursor();
-	void setInvenCursor();
+	void setCursor();		// 기본
+	void setBossPoint();    // 보스
+	void setCropsPoint();	// 오브젝트
+	void setBuildPoint();   // 건물
+	void setBridgePoint();  // 다리
+	void setInvenCursor();  // 인벤토리
 
 	cursor* getCursor(){ return _cursor; }
 };

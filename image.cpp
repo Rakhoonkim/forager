@@ -74,7 +74,6 @@ HRESULT image::init(int width, int height, BOOL blend)
 	else
 		_imageInfo->isAlpha = false;
 
-
 	ReleaseDC(_hWnd, hdc);
 
 	return S_OK;
@@ -413,7 +412,6 @@ void image::render(HDC hdc)
 			_imageInfo->width,		//복사해올 크기
 			_imageInfo->height,
 			_transColor);			//복사해올때 제외할 칼라
-
 	}
 	//아니냐
 	else
@@ -973,7 +971,6 @@ void image::alphaRotateRender(HDC hdc, float centerX, float centerY, float angle
 	setRotationAngle(angle);
 	setAlpha(alpha);
 
-
 	_blendFunc.SourceConstantAlpha = alpha;
 
 	POINT rPoint[3];
@@ -1008,7 +1005,6 @@ void image::alphaRotateRender(HDC hdc, float centerX, float centerY, float angle
 		ExtFloodFill(_rotateImage->hMemDC, 1, 1, RGB(0, 0, 0), FLOODFILLSURFACE);
 		DeleteObject(hBrush);
 
-
 		PlgBlt(_rotateImage->hMemDC, rPoint, _imageInfo->hMemDC,
 			0,
 			0,
@@ -1037,7 +1033,6 @@ void image::alphaRotateRender(HDC hdc, float centerX, float centerY, float angle
 			0,
 			_rotateImage->width,
 			_rotateImage->height, _blendFunc);
-
 	}
 	else
 	{
@@ -1094,8 +1089,6 @@ void image::rotateFrameRender(HDC hdc, float centerX, float centerY, float angle
 			_rotateImage->width,
 			_rotateImage->height,
 			_transColor);
-
-
 	}
 	else
 	{
@@ -1104,7 +1097,6 @@ void image::rotateFrameRender(HDC hdc, float centerX, float centerY, float angle
 			_imageInfo->currentFrameY * _imageInfo->frameHeight,
 			_imageInfo->frameWidth, _imageInfo->frameHeight, NULL, 0, 0);
 	}
-
 }
 
 void image::rotateFrameRender(HDC hdc, float centerX, float centerY, int currentFrameX, int currentFrameY, float angle)
@@ -1313,8 +1305,6 @@ void image::alphaRotateFrameRender(HDC hdc, float centerX, float centerY, int cu
 			0,
 			_rotateImage->width,
 			_rotateImage->height, _blendFunc);
-
-
 	}
 	else
 	{

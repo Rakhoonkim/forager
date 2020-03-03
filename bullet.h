@@ -8,8 +8,6 @@ private:
 	vector<tagBullet*>::iterator  _viBullet;
 
 	const char* _imageName;
-
-
 public:
 	bullet();
 	~bullet();
@@ -18,8 +16,10 @@ public:
 	void release();
 	void update();
 	void render();
-	void move();
-	void remove();
+
+	void move();    //이동
+	void remove();  //삭제
+
 	void fire(float x, float y, float angle, float speed);
 	void fire(float x, float y, float angle, float speed ,float distance);
 

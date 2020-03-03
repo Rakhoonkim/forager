@@ -83,11 +83,13 @@ void skill::skillSetting()
 			_skill[i * SKILLX + j].skillPoint = 1;
 		}
 	}
+
 	// 0 1 2 3
 	// 4 5 6 7
 	// 8 9 10 11
 	// 12 13 14 15
 
+	//스킬 포인트 정의
 	_skill[1].skillPoint = 2;
 	_skill[2].skillPoint = 2;
 	_skill[4].skillPoint = 2;
@@ -101,11 +103,11 @@ void skill::skillSetting()
 	_skill[3].skillPoint = 3;
 	_skill[12].skillPoint = 3;
 	_skill[15].skillPoint = 3;
-
 }
 
 void skill::buttonClick()
 {
+	//클릭하면 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
 		for (int i = 0; i < SKILLX * SKILLY; i++)

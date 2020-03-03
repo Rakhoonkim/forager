@@ -9,11 +9,10 @@ public:
 	typedef map<string, enemyState*>::iterator	mapStateIter;
 
 private:
-	//static enemyState* _currentState;
-	enemyState* _currentState;
+	enemyState*		  _currentState;  //애너미가 보여지는 현재상태
 
-	mapStateList			_mState;
-	mapStateIter		   _miState;
+	mapStateList			_mState; //MAP
+	mapStateIter		   _miState; //MAP iter
 
 public:
 	enemyStateManager();
@@ -25,7 +24,9 @@ public:
 	void render();
 
 	enemyState* addState(string stateName, enemyState* state);
-	enemyState* getState() { return	_currentState;}
+
 	HRESULT chanageState(string stateName);
+
+	enemyState* getState()										 { return	_currentState;}
 };
 

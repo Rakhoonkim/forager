@@ -49,7 +49,6 @@ HRESULT cropsManager::init()
 	_effect = new alphaEffect;
 	_effect->init();
 
-
 	//작물을 만들기 위한 
 	_cropsTimer = TIMEMANAGER->getWorldTime();
 	_cropsTimer2 = TIMEMANAGER->getWorldTime();
@@ -110,14 +109,16 @@ void cropsManager::update()
 		//cout << rnd.x << rnd.y << endl;
 	}
 
-	CropsMakeUpdate();
-	removeCrops();			// 작물 HP < 0시 제거 
+	CropsMakeUpdate();		// 랜덤 농작물 생성
+	removeCrops();			// 제거( HP < 0시 )  
 	_effect->update();
-	cout << "최대 작물 개수 : " << _maxCrops << endl;
+	//디버깅
+	//cout << "최대 작물 개수 : " << _maxCrops << endl;
 }
 
 void cropsManager::render()
 {
+	//ZORDER에서 렌더링 하고 있음
 	//for (_viCrops = _vCrops.begin(); _viCrops != _vCrops.end(); ++_viCrops)
 	//{
 	//	(*_viCrops)->render();
@@ -131,6 +132,7 @@ void cropsManager::imageSetting()
 	IMAGEMANAGER->addImage("cinderBloom", "./image/object/cinderBloomObject.bmp", 54, 54, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addImage("nightShade", "./image/object/nightShadeObject.bmp", 48, 48, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addImage("lavender", "./image/object/lavenderObject.bmp", 54, 54, true, RGB(255, 0, 255));
+	
 	// 0 1 2 이미지 
 	IMAGEMANAGER->addFrameImage("beet", "./image/object/beetObject.bmp", 90, 36, 3, 1, true, RGB(255, 0, 255), true);
 	IMAGEMANAGER->addFrameImage("hotPepper", "./image/object/hotPepperObject.bmp", 135, 42, 3, 1, true, RGB(255, 0, 255), true);
@@ -413,7 +415,7 @@ void cropsManager::CropsMakeUpdate()
 		return;
 	}
 
-
+	//농작물
 	if (_cropsTimer + RND->getFromIntTo(10, 15) <= TIMEMANAGER->getWorldTime())
 	{
 		_cropsTimer = TIMEMANAGER->getWorldTime();
@@ -443,7 +445,7 @@ void cropsManager::CropsMakeUpdate()
 		}
 	}
 
-
+	//농작물
 	if (_cropsTimer2 + RND->getFromIntTo(10, 20) <= TIMEMANAGER->getWorldTime())
 	{
 		_cropsTimer2 = TIMEMANAGER->getWorldTime();
@@ -468,7 +470,7 @@ void cropsManager::CropsMakeUpdate()
 
 	}
 
-
+	//바위
 	if (_rockTimer + RND->getFromIntTo(7, 15) <= TIMEMANAGER->getWorldTime())
 	{
 		_rockTimer = TIMEMANAGER->getWorldTime();
@@ -491,7 +493,7 @@ void cropsManager::CropsMakeUpdate()
 	
 	}
 
-
+	//나무
 	if (_treeTimer + RND->getFromIntTo(7, 15) <= TIMEMANAGER->getWorldTime())
 	{
 		_treeTimer = TIMEMANAGER->getWorldTime();

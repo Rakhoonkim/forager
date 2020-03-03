@@ -11,7 +11,10 @@ item::~item()
 
 HRESULT item::init(const char* imageName, float x, float y)
 {
-	_item.imageName = imageName;
+	_item.object = OBJECT::NONE;
+	_item.tree = TREE::NONE;
+
+	_item.imageName = imageName;  // 아이템 이미지
 	_item.ani = KEYANIMANAGER->findAnimation(imageName);
 	_item.ani->start();
 
@@ -25,20 +28,16 @@ HRESULT item::init(const char* imageName, float x, float y)
 	_item.alpha = 0;
 	_item.frameX = 0;
 	_item.frameY = 0;
+	_item.stemina = 0;
+	_item.heart = 0;
 
 	_item.move = true;
 	_item.isClick = false;
 	_item.drop = false;
-
-	_item.stemina = 0;
-	_item.heart = 0;
 	_item.isUse = false;
+
 	_item.rc = RectMake(x, y, IMAGEMANAGER->findImage(imageName)->getFrameWidth(), IMAGEMANAGER->findImage(imageName)->getFrameHeight());
 
-	_item.object = OBJECT::NONE;
-	_item.tree = TREE::NONE;
-
-	//jump
 	_item.jumpPower = 10;
 	_item.jumpGravity = 1.2;
 

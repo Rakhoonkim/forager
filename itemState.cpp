@@ -61,13 +61,10 @@ void itemDrop::move()
 {
 	if (!_item->move) return;
 
-
 	_item->x += cosf(_item->angle) * _item->speed;
 	_item->y += -sinf(_item->angle) * _item->speed;
-	//if (_item->speed <= 4)
-	//{
-	//	_item->speed += 0.25;
-	//}
+	
+	//0.25초가 지나면 드랍 가능한 상태가 된다
 	if (_item->time + 0.25 <= TIMEMANAGER->getWorldTime())
 	{
 		_item->move = false;
@@ -90,9 +87,10 @@ void itemGain::render()
 void itemGain::move()
 {
 	if (!_item->move)return;
-	_item->alpha += 15;
+
 	_item->x += cosf(_item->angle) * _item->speed;
 	_item->y += -sinf(_item->angle) * _item->speed;
+	_item->alpha += 15;
 
 	if (_item->time + 0.25 <= TIMEMANAGER->getWorldTime())
 	{

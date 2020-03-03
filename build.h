@@ -9,18 +9,16 @@ class buildManager;
 class build
 {
 private:
-	tagButton _buildList[MAXLIST];
-
+	tagButton		 _buildList[MAXLIST];
 	tagButton _industryList[MAXINDUSTRY];
-	tagButton _farmingList[MAXFARMING];
-
+	tagButton   _farmingList[MAXFARMING];
 
 	int _listHeight; // 리스트의 세로 
 	int _listWidth;  // 리스트의 가로 
 
 	int _direction;  // 리스트 가리키고 있는 버튼 
-	int _buildingDirection;  // 지을 건물을 가리키고 있는 버튼 
-	int _farmingDirection;
+	int _buildingDirection;  // 건물을 가리키고 있는 버튼 
+	int _farmingDirection;   // 파밍 건물을 가리키고 있는 버튼
 
 	buildManager* _buildManager;  // 건축하기 위한 
 
@@ -42,13 +40,13 @@ public:
 	void farmingCheck();
 	void buildingCheck();
 
-	bool getisBuilding() { return _isBuilding; }
-	void setisBuilding() { _isBuilding = false; }
 	void setClickInit();  //산업 농경 클릭을 초기화 
-
-	void setDirection() { _direction = 5; } //임의의 NULL값 
+	void setisBuilding() { _isBuilding = false; }	 //빌딩 버튼을 해제
+	void setDirection()  { _direction = 5; }		 //임의의 NULL값 
+	void setBuildManager(buildManager* buildManager) { _buildManager = buildManager; }
 
 	void isClickBuild();
-	void setBuildManager(buildManager* buildManager) { _buildManager = buildManager; }
+
+	bool getisBuilding() { return _isBuilding; }
 };
 

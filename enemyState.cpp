@@ -46,11 +46,12 @@ void enemyState::Jump()
 {
 }
 
-//RENDER
 void enemyState::render()
 {
 	IMAGEMANAGER->findImage(_enemy->imageName)->aniRender(CAMERAMANAGER->getWorldDC(), _enemy->x, _enemy->y, _enemy->ani);
 	//Rectangle(CAMERAMANAGER->getWorldDC(), _enemy->rc);
+
+	//체력게이지를 출력
 	if (_enemy->enemy == ENEMY::SKULL)
 	{
 		if (_enemy->maxHp > _enemy->hp)
@@ -85,14 +86,15 @@ void enemyState::render()
 
 void enemyIdle::Enter()
 {
-	_enemy->isPlayerAttack = false;
 	_enemy->time = TIMEMANAGER->getWorldTime();
 	_enemy->angle = RND->getFromFloatTo(0, 6.28f);
+	_enemy->isPlayerAttack = false;
 	_enemy->AttackTerm = true;
 }
 
 void enemyIdle::update()
 {
+	//시간 값 이후에 상태를 전환
 	if (_enemy->enemy == ENEMY::SLIME)
 	{
 		if (_enemy->isJump)
@@ -144,6 +146,7 @@ void enemyIdle::update()
 	}
 }
 
+//이미지 전환
 void enemyIdle::ChangeImage()
 {
 	if (_enemy->enemy == ENEMY::SLIME)
@@ -217,7 +220,6 @@ void enemyIdle::ChangeImage()
 			_enemy->ani->start();
 		}
 	}
-
 }
 
 //■■■■■■■■■■■■■■■■■■■■■■■■■■ enemyMove ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -226,16 +228,18 @@ enemyMove::enemyMove(enemyStateManager* enemyStateManager, tagObject* enemy)
 {
 	//값 초기화
 	this->Set_enemyStateManager(enemyStateManager); 
-	_enemy = enemy; 
-	_move =0;		 // 스컬
-	_movePattern =0;    // 스컬
-	_isAttackTime =0;      // Boss
+	_enemy = enemy;			 // ENEMY 주소값
+	_move = 0;				 // 스컬
+	_movePattern = 0;		 // 스컬
+	_isAttackTime = 0;       // Boss
 }
 
 void enemyMove::Enter()
 {
 	_enemy->isPlayerAttack = false;
-	//보어일때
+	_enemy->time = TIMEMANAGER->getWorldTime();
+	_enemy->AttackTerm = true;
+	//보어이면
 	if (_enemy->enemy == ENEMY::BOAR)
 	{
 		if (_enemy->imageDirection == DIRECTION::LEFT)
@@ -247,9 +251,7 @@ void enemyMove::Enter()
 			_enemy->angle = RND->getFromFloatTo(-1.57, 1.57f);
 		}
 	}
-	_enemy->time = TIMEMANAGER->getWorldTime();
-	_enemy->AttackTerm = true;
-	//스컬
+	//스컬이면
 	if (_enemy->enemy == ENEMY::SKULL)
 	{
 		if (RND->getInt(2) == 0)
@@ -262,6 +264,7 @@ void enemyMove::Enter()
 		}
 		_movePattern = RND->getInt(2);
 	}
+	//보스이면
 	if (_enemy->enemy == ENEMY::DEMON_BOSS)
 	{
 		_isAttackTime = TIMEMANAGER->getWorldTime();
@@ -270,6 +273,7 @@ void enemyMove::Enter()
 
 void enemyMove::update()
 {
+	// 충돌처리 + 특정 시간이 지나면 상태 전환 
 	if (_enemy->enemy == ENEMY::SLIME)
 	{
 		MAPMANAGER->setEnemyAddress(_enemy, _enemy->idx, _enemy->idy);
@@ -424,6 +428,7 @@ void enemyAttack::Enter()
 	_enemy->time = TIMEMANAGER->getWorldTime();
 	_enemy->AttackTerm = false;
 	_enemy->acel = 1.0f;
+	// 보스가 아니면 공격 활성화
 	if (_enemy->enemy != ENEMY::DEMON_BOSS)
 	{
 		_enemy->isAttack = true;
@@ -542,7 +547,6 @@ void enemyAttack::ChangeImage()
 			_enemy->imageName = "bossAttack";
 			_enemy->ani = KEYANIMANAGER->findAnimation("bossAttackRight");
 			_enemy->ani->start();
-
 		}
 	}
 }
@@ -609,19 +613,23 @@ void enemyJump::update()
 	if (_enemy->enemy == ENEMY::SLIME)
 	{
 		if (!_isMove) return;
-		direction(); // 방향 정의 
-		Jump();
+
+		direction();	 // 방향 정의 
+		Jumping();		 // 점프중
 
 		float elapsedTime = TIMEMANAGER->getElapsedTime();
 
 		//200정도의 거리를 2초에 걸쳐서 도달해야한다면 속도값을 구해줌
 		float moveSpeed = (elapsedTime / 1.0f) * getDistance(_enemy->sourX, _enemy->sourY, _enemy->dstX, _enemy->dstY);
+
+		//점프중이면
 		if (_isJump)
 		{
 			_enemy->x += cosf(_enemy->angle) * moveSpeed;
 			_enemy->y += -sinf(_enemy->angle) * moveSpeed;
 		}
-		if (_enemy->time + 0.8 <= TIMEMANAGER->getWorldTime())
+
+		if (_enemy->time + 0.8 <= TIMEMANAGER->getWorldTime()) 
 		{
 			_enemy->centerX = _enemy->x;
 			_enemy->centerY = _enemy->y;
@@ -640,7 +648,7 @@ void enemyJump::ChangeImage()
 			_enemy->ani = KEYANIMANAGER->findAnimation("slimeJumpLeft");
 			_enemy->ani->start();
 		}
-		else
+		else // 오른쪽
 		{
 			_enemy->ani = KEYANIMANAGER->findAnimation("slimeJumpRight");
 			_enemy->ani->start();
@@ -651,11 +659,11 @@ void enemyJump::ChangeImage()
 void enemyJump::direction()
 {
 	//공격 방향을 정의 
-	if (_enemy->angle > 0.758f && _enemy->angle <= 2.382)
+	if (_enemy->angle > 0.758f && _enemy->angle <= 2.382) // 위
 	{
 		_direction = DIRECTION::UP;
 	}
-	else if (_enemy->angle <= 3.952f && _enemy->angle > 2.382)
+	else if (_enemy->angle <= 3.952f && _enemy->angle > 2.382) // 왼쪽
 	{
 		_direction = DIRECTION::LEFT;
 	}
@@ -664,13 +672,13 @@ void enemyJump::direction()
 		_direction = DIRECTION::DOWN;
 		_jumpPower = 12;
 	}
-	else if ((_enemy->angle <= 6.28 && _enemy->angle > 5.522) || (_enemy->angle < 0.758 && _enemy->angle >= 0))
+	else if ((_enemy->angle <= 6.28 && _enemy->angle > 5.522) || (_enemy->angle < 0.758 && _enemy->angle >= 0)) // 오른쪽
 	{
 		_direction = DIRECTION::RIGHT;
 	}
 }
 
-void enemyJump::Jump()
+void enemyJump::Jumping()
 {
 	if (!_isJump)  return;
 

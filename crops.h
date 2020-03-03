@@ -16,18 +16,20 @@ public:
 	virtual void release();
 	virtual void update();
 	virtual void render();
-	//오브젝트 셋팅
-	virtual void setHp(int maxHp, int hp);
-	virtual void setSpeed(int speed)		{ _crops.speed = speed; }
-	virtual void setFrameX(int frameX)		{ _crops.frameX = frameX; }
-	virtual void setTime(float time)		{ _crops.time = time; }
-	virtual void setIsClick()				{ _crops.isClick = true; }
-	virtual void setTime()					{ _crops.time = TIMEMANAGER->getWorldTime(); }
-	virtual void cropsHit(int damege)		{ _crops.hp -= damege; }
-	virtual void setExpCrops(int exp)		{ _crops.exp = exp; }
-	virtual void setCropsEffect(bool value)		{ _crops.isEffect = value; }
-	virtual void setCropsIsHit(bool value) { _crops.isHit = value; }
-	virtual bool getCropsIsHit() { return _crops.isHit; }
+
+	//설정자
+	virtual void setHp(int maxHp, int hp);	// 체력 설정
+	virtual void setTime()					{ _crops.time = TIMEMANAGER->getWorldTime(); } //시간설정
+	virtual void setSpeed(int speed)		{ _crops.speed = speed; }					   //성장속도 
+	virtual void setFrameX(int frameX)		{ _crops.frameX = frameX; }					   //그림 
+	virtual void setTime(float time)		{ _crops.time = time; }						   //시간
+	virtual void setIsClick()				{ _crops.isClick = true; }					   //수확가능
+	virtual void setExpCrops(int exp)		{ _crops.exp = exp; }						   //경험치 설정
+	virtual void setCropsEffect(bool value)	{ _crops.isEffect = value; }				   //효과
+	virtual void setCropsHit(int damege)	{ _crops.hp -= damege; }					   //데미지
+	virtual void setCropsIsHit(bool value)  { _crops.isHit = value; }					   //피격모션
+	//접근자
+	virtual bool getCropsIsHit()		{ return _crops.isHit; }
 	virtual float getCropsY()			{ return _crops.y; }
 	virtual tagObject* getCrops()		{ return &_crops; }
 };
@@ -39,6 +41,7 @@ class imageCrops : public crops
 public:
 	imageCrops();
 	~imageCrops();
+
 	virtual void update();
 	virtual void render();
 };
@@ -49,6 +52,7 @@ class frameCrops : public crops
 public:
 	frameCrops() {} 
 	~frameCrops() {}
+
 	virtual void update();
 	virtual void render();
 };
@@ -59,6 +63,7 @@ class imageFrameCrops : public crops
 public:
 	imageFrameCrops() {}
 	~imageFrameCrops() {}
+
 	virtual void update();
 	virtual void render();
 };
@@ -73,6 +78,7 @@ public:
 	virtual void update();
 	virtual void render();
 };
+
 // 나무 
 class treeCrops : public crops
 {

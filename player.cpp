@@ -38,7 +38,7 @@ HRESULT player::init()
 	_player.imageDirection = 0;				 //(0 : 왼쪽, 1: 오른쪽)
 
 	_player.speed = 5;		 // 속도
-	_player.accel = 1.1;	 // 가속도(1.1~4)(최소값~최대값)
+	_player.accel = 1.1;	 // 가속도(1.1~2)(최소값~최대값)
 	_player.hp = 3;			 // 생명력 3
 	_player.maxHp = 3;		 // 최대생명력 3
 	_player.health = 100;    // 체력
@@ -116,7 +116,8 @@ void player::render()
 	//TextOut(CAMERAMANAGER->getWorldDC(), _player.x+ 100, _player.y, strIdy, strlen(strIdy));
 }
 
-//현재 사용안함
+//(현재 사용안함)
+//마우스의 위치에 따라 케릭터의 방향을 바꾸기 위한 함수 
 void player::setDirection()
 {
 	if (WINSIZEX / 2 < _ptMouse.x)
@@ -202,8 +203,7 @@ void player::KeyControl()
 		ITEMMANAGER->DropFurnaceItem(FURNACERECIPE::IRON, _player.x, _player.y, 1);*/
 	}
 
-
-	//키가 두개 눌리면 
+	//키가 두개 눌리면 리턴
 	if (_keyCount > 2) return;
 
 	//위 
@@ -303,6 +303,7 @@ void player::KeyControl()
 	}
 }
 
+//인덱스 업데이트
 void player::IndexUpdate()
 {
 	CAMERAMANAGER->setCameraXY(_player.x, _player.y);
@@ -317,16 +318,19 @@ void player::accelControl()
 	_player.accel += 0.05;
 }
 
+//플레이어의 위치를 갱신
 void player::setPlayerXY(int idx, int idy)
 {
+	//플레이어
 	_player.x = idx * 60 + _player.playerImage->getFrameWidth() / 2;
 	_player.y = idy * 60 + _player.playerImage->getFrameHeight() / 2;
+	//무기
 	_player.weaponX = _player.x - 15;
 	_player.weaponY = _player.y - 5;
-	CAMERAMANAGER->setCameraInit(_player.x, _player.y);
+	//RECT
 	_player.rc = RectMake(_player.x, _player.y, _player.playerImage->getFrameWidth(), _player.playerImage->getFrameHeight());
-
-
+	//카메라
+	CAMERAMANAGER->setCameraInit(_player.x, _player.y);
 }
 
 void player::setPlayerExpMax(int level)
@@ -352,7 +356,7 @@ void player::setPlayerExp(int exp)
 void player::setPlayerHealth(int health)
 {
 	//체력을 감소시킨다.
-	_player.health -= health;  // 임시
+	_player.health -= health;  
 	// 체력은 0보다 작으면 0으로 고정 
 	if (_player.health <= 0)
 	{
@@ -360,23 +364,23 @@ void player::setPlayerHealth(int health)
 	}
 }
 
+//맞을 때 시간 
 void player::playerHitCount()
 {
 	if (!_player.isHit) return;
 
 	_player.hitCount++;
+
 	if (_player.hitCount % 5 == 0 )
 	{
 		if (_player.alpha > 0)
 		{
 			_player.alpha = 0;
 		}
-		else
-		{
-			_player.alpha = 100;
-		}
+		else _player.alpha = 100;
 	}
 
+	//count가 50이 넘으면 false
 	if (_player.hitCount >=50)
 	{
 		_player.isHit = false;
@@ -389,21 +393,20 @@ void player::playerHit()
 	if (_player.isHit)	return;
 		
 	_player.isHit = true;		
-	_player.hp--;
-
+	_player.hp--;			// 맞으면 체력을 감소
 }
 
+//체력 재생
 void player::playerHealth()
 {
 	if (_healthTime + 10 <= TIMEMANAGER->getWorldTime())
 	{
+		//시간 갱신
 		_healthTime = TIMEMANAGER->getWorldTime();
+		//체력이 낮으면 회복
 		if (_player.health <= 50)
 		{
 			_player.health += 10;
 		}
 	}
 }
-
-
-
