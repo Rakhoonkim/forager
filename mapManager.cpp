@@ -288,7 +288,7 @@ void mapManager::MapLoad(const char* fileName)
 
 	//this->setLandTile(2, 0);
 	//this->setLandTile(2, 1);
-	//this->setLandTile(2, 2);
+	this->setLandTile(2, 2);
 
 	//this->setLandTile(1, 0);
 	this->setLandTile(1, 1);

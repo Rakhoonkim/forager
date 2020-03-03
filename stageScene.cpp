@@ -27,7 +27,7 @@ HRESULT stageScene::init()
 	//맵 수정해야함 
 	MAPMANAGER->release();
 	MAPMANAGER->setObjectManager(_objectManager);
-	MAPMANAGER->MapLoad("inGameNumber2.map");
+	MAPMANAGER->MapLoad("inGameNumber1.map");
 
 	UIMANAGER->getEquipment()->setSkillPount(&_playerManager->get_player()->get_PlayerAddress()->skillPount);
 	
@@ -90,6 +90,10 @@ void stageScene::templeEntranceMouseCollision()
 		if (PtInRect(&_objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->rc, PointMake(CAMERAMANAGER->getWorldCamera().cameraX + _ptMouse.x, CAMERAMANAGER->getWorldCamera().cameraY + _ptMouse.y)))
 		{
 			 _objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->isClick = true;
+			 if (KEYMANAGER->isOnceKeyDown('E'))
+			 {
+				 SCENEMANAGER->changeScene("BOSS");
+			 }
 		}
 		else _objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->isClick = false;
 	}

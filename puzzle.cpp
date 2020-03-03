@@ -164,16 +164,7 @@ void templeEntrance::update()
 	_puzzle.centerY = _puzzle.y + 30;
 	_puzzle.rc = RectMakeCenter(_puzzle.x, _puzzle.y, _puzzle.width, _puzzle.height);
 
-	//던전으로 입장하기
-	if (_puzzle.isClick)
-	{
-		if (KEYMANAGER->isOnceKeyDown('E'))
-		{
-			GAMEDATA->setZorder(ZORDER->getZorder());
-			ZORDER->release();
-			SCENEMANAGER->changeScene("BOSS");
-		}
-	}
+	
 }
 
 void templeEntrance::render()

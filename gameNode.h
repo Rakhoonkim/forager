@@ -22,7 +22,7 @@ public:
 
 	//백버퍼의 DC메모리 영역 접근자
 	HDC getMemDC() { return _backBuffer->getMemDC(); }
-	HDC getHDC() { return _hdc; }
+	HDC getHDC()   { return _hdc; }
 
 	LRESULT MainProc(HWND, UINT, WPARAM, LPARAM);
 

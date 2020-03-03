@@ -35,11 +35,7 @@ HRESULT bossScene::init()
 	MAPMANAGER->removeTiles();  // 맵 초기화 
 	MAPMANAGER->BossMapLoad("inGameNumber3.map");
 
-
-
 	_exitScene = RectMake(1340, 2100, 100, 60);
-
-
 
 	return S_OK;
 }
@@ -77,6 +73,7 @@ void bossScene::render()
 
 }
 
+//나갈 때 설정사항 
 void bossScene::exitTemple()
 {
 	RECT temp;
@@ -85,11 +82,16 @@ void bossScene::exitTemple()
 		_objectManager = GAMEDATA->getObjectManager();
 		_playerManager->set_EnemyManager(GAMEDATA->getObjectManager()->get_enemyManager());
 		GAMEDATA->setPlayerManager(_playerManager);
-		//_playerManager = GAMEDATA->getPlayerManager();
+		_playerManager = GAMEDATA->getPlayerManager();
 		SCENEMANAGER->changeScene("STAGE");
 		ZORDER->setZorder(GAMEDATA->getZorder());
 		GAMEDATA->setPlayerManager(_playerManager);
 		GAMEDATA->setObjectManager(_objectManager);
 		SCENEMANAGER->getCurrentScene()->enterStageScene();
 	}
+}
+
+void bossScene::enterBossScene()
+{
+
 }

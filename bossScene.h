@@ -10,13 +10,15 @@ class bossScene : public gameNode
 {
 private:
 	playerManager* _playerManager;
-	enemyManager* _enemyManager;
+	enemyManager*   _enemyManager;
 	templeManager* _templeManager;
 	objectManager* _objectManager;
-	tagBlind _room1;
-	bool _bossAttack;
 
-	RECT _exitScene;
+	tagBlind		_room1;
+
+	bool	   _bossAttack;
+
+	RECT	   _exitScene; // ¾À ³ª°¡±â
 public:
 	bossScene();
 	~bossScene();
@@ -27,5 +29,6 @@ public:
 	void render();
 
 	void exitTemple();
+	void enterBossScene();
 };
 

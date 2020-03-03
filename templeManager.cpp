@@ -42,7 +42,7 @@ void templeManager::render()
 		(*iter)->render();
 	}
 
-
+	//검은색 화면을 띄운다
 	for (int i = 0; i < 8; i++)
 	{
 		if (i == 3) continue;
@@ -53,7 +53,7 @@ void templeManager::render()
 		IMAGEMANAGER->findImage("startBackground")->render(CAMERAMANAGER->getWorldDC(), _room[i].rc.left, _room[i].rc.top, 0, 0, _room[i].width, _room[i].height);
 		//Rectangle(CAMERAMANAGER->getWorldDC(), _room[i].rc);
 	}
-
+	//검은색 화면을 띄운다 - 2
 	if (!_room[3].isOpen)
 	{
 		IMAGEMANAGER->findImage("longBlind")->render(CAMERAMANAGER->getWorldDC(), _room[3].rc.left, _room[3].rc.top);
