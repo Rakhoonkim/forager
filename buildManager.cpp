@@ -17,8 +17,9 @@ HRESULT buildManager::init()
 	//createImageBuilding(BUILDING::FURNACE, 17, 14);
 	//createImageBuilding(BUILDING::FORGE, 20, 14);
 	//createImageBuilding(BUILDING::SEWING_STATION, 23, 14);
-	//createImageBuilding(BUILDING::FISHTRAP, 28, 20);
-
+	//createImageBuilding(BUILDING::FISHTRAP, 28, 21);
+	//createImageBuilding(BUILDING::FISHTRAP, 28, 22);
+	//createImageBuilding(BUILDING::FISHTRAP, 28, 23);
 	_isUsed = false;
 	return S_OK;
 }

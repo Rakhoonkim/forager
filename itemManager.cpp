@@ -23,6 +23,7 @@ HRESULT itemManager::init()
 
 void itemManager::release()
 {
+	_vItem.clear();
 }
 
 void itemManager::update()
@@ -762,6 +763,7 @@ void itemManager::DropEnemyItem(ENEMY enemy, float x, float y)
 	}
 }
 
+//아이템 삭제
 void itemManager::removeItem()
 {
 	for (_viItem = _vItem.begin(); _viItem != _vItem.end(); ++_viItem)

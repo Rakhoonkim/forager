@@ -7,15 +7,16 @@ class mapManager : public singletonBase<mapManager>
 {
 
 private:
-	tagTile _tiles[TILEX * TILEY];
-
-	objectManager* _objectManager;			// stageScene일때 
+	tagTile		  _tiles[TILEX * TILEY];  //타일 정보
 
 	//전체 맵 타일 
 	vector<tagTile*>			_vTiles;
 	vector<tagTile*>::iterator _viTiles;
 
-	tagPlayer* _player;		// 플레이어의 주소값을 담는 
+	objectManager*		 _objectManager;  // OBJECT MANAGER
+	tagPlayer*					_player;  // PLAYER 
+
+	vector<POINT>				  _vBuyLand;  // 구매한 토지
 
 	int _MapCount;
 public:
@@ -36,12 +37,12 @@ public:
 
 	void setObjectManager(objectManager* objectManager) { _objectManager = objectManager; }
 	
-	// == 백터일 때
+	//백터일 때 사용
 	void TerrainRender();
 	void LandRender();
 	void LandObjectRender();
 
-	int getMapCount() { return _MapCount; } // 전체 맵을 몇개 갖고 있는지 확인하기 위한 
+	int getMapCount()					{ return _MapCount; } // 전체 맵을 몇개 갖고 있는지 확인하기 위한 
 
 	void setPlayerAddress(tagPlayer* player);
 	void setEnemyAddress(tagObject* enemy, int idx, int idy);			// 몬스터 섬 충돌을 막기 위한 
@@ -55,19 +56,20 @@ public:
 
 	vector<tagTile*> getVTiles()			{ return _vTiles; }
 	vector<tagTile*>::iterator getViTiles() { return _viTiles; }
+	tagTile* getTiles(int idx, int idy)	    { return &_tiles[idy * TILEX + idx]; }
 	
-	tagTile* getTiles(int idx, int idy) { return &_tiles[idy * TILEX + idx]; }
-
 	//건물 지을때 땅에 지정하기 위한 값
 	bool getBuildTiles(int idx, int idy);	// 4칸 건물 
 	void setBuildTiles(int idx, int idy);
 	bool getBuildTilesFarming(int idx, int idy);  // 1칸 건물 
 	void setBuildTilesFarming(int idx, int idy);
 
-	void setRemoveWater(int idx,int idy);
+	void setRemoveWater(int idx,int idy);		//충돌 타일 지우기
 	
 	POINT randomObjectTile();
 
 	void removeTiles();
+	void addBuyLand(int x,int y) { _vBuyLand.push_back(PointMake(x,y)); }
+	void setBuyLand();
 };
 

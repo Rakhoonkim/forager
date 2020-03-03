@@ -55,6 +55,7 @@ private:
 public:
 	Zorder();
 	~Zorder();
+
 	HRESULT init();
 	void release();
 	void update();

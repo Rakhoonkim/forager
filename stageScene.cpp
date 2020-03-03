@@ -6,6 +6,7 @@ HRESULT stageScene::init()
 	//플레이어 
 	_playerManager = new playerManager;
 	_playerManager->init();
+	
 	//오브젝트 
 	_objectManager = new objectManager;
 	_objectManager->init();
@@ -25,16 +26,12 @@ HRESULT stageScene::init()
 	_objectManager->get_CropsManager()->setPlayer(_playerManager->get_player());
 
 	//맵 수정해야함 
-	MAPMANAGER->release();
+
 	MAPMANAGER->setObjectManager(_objectManager);
-	MAPMANAGER->MapLoad("inGameNumber1.map");
+	MAPMANAGER->MapLoad("inGameNumber2.map");
 
 	UIMANAGER->getEquipment()->setSkillPount(&_playerManager->get_player()->get_PlayerAddress()->skillPount);
 	
-	//게임 데이터 저장
-	GAMEDATA->setPlayerManager(_playerManager);
-	GAMEDATA->setObjectManager(_objectManager);
-	GAMEDATA->save();
 	return S_OK;
 }
 
@@ -92,7 +89,10 @@ void stageScene::templeEntranceMouseCollision()
 			 _objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->isClick = true;
 			 if (KEYMANAGER->isOnceKeyDown('E'))
 			 {
+				 this->exitStageScene();
 				 SCENEMANAGER->changeScene("BOSS");
+				 SCENEMANAGER->getCurrentScene()->enterBossScene();
+				 ITEMMANAGER->release();
 			 }
 		}
 		else _objectManager->get_puzzleManager()->getFireTempleEntrance()->getPuzzle()->isClick = false;
@@ -103,19 +103,18 @@ void stageScene::templeEntranceMouseCollision()
 //스테이지 씬 입장시 (수정예정)
 void stageScene::enterStageScene()
 {
+	ZORDER->setZorder(GAMEDATA->getZorder());
 	_playerManager = GAMEDATA->getPlayerManager();
 	_objectManager = GAMEDATA->getObjectManager();
-	_objectManager->get_enemyManager()->AutoEnemySet(true);
-	//_playerManager->set_CropsManager(_objectManager->get_CropsManager());
-	//_playerManager->set_BuildManager(_objectManager->get_buildManager());
-	//_playerManager->set_EnemyManager(_objectManager->get_enemyManager());
-	//_playerManager->set_puzzleManager(_objectManager->get_puzzleManager());
-	//_objectManager->get_enemyManager()->setPlayer(_playerManager->get_player());  // 플레이어 링크 
-	//_objectManager->get_CropsManager()->setPlayer(_playerManager->get_player());
-	MAPMANAGER->setObjectManager(_objectManager);
-	UIMANAGER->getEquipment()->setSkillPount(&_playerManager->get_player()->get_PlayerAddress()->skillPount);
-	UIMANAGER->playerAdressLink(_playerManager->get_player()->get_PlayerAddress());
 	_playerManager->get_player()->setPlayerXY(36, 29);
+}
+
+void stageScene::exitStageScene()
+{
+	GAMEDATA->setPlayerManager(_playerManager);
+	GAMEDATA->setObjectManager(_objectManager);
+	GAMEDATA->setZorder(ZORDER->getZorder());
+	ZORDER->release();
 }
 
 void stageScene::setAlphaImage()

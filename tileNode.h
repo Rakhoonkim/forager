@@ -190,23 +190,23 @@ struct tagTile
 // 오른쪽 팔레트 타일셋 
 struct tagPalette
 {
-	TYPE type;
-	TERRAIN  terrain;
-	RECT rc;
-	int frameX;
-	int frameY;
+	TYPE type;				//타입
+	TERRAIN  terrain;		//지형
+	RECT rc;				//RECT
+	int frameX;				//FRAME X
+	int frameY;				//FRAME Y
 };
 
 struct tagButton
 {
-	const char* imageName;
 	RECT rc;
-	float x, y;
-	float centerX, centerY;
-	int frameX; 
-	int alpha;
-	bool isClick;
-	bool isEffect;
+	const char* imageName;
+	float x, y;				//(x,y)
+	float centerX, centerY; //(centerX,centerY)
+	int frameX;				//frameX
+	int alpha;				//alpha값
+	bool isClick;			//선택중인지
+	bool isEffect;			//흐림효과중인지
 };
 
 

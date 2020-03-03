@@ -14,7 +14,10 @@ mapManager::~mapManager()
 HRESULT mapManager::init()
 {
 	MapImage();
+	
 	_MapCount = 0;
+
+	_vBuyLand.push_back(PointMake(1,1)); // 4´Â Áß°£
 	return S_OK;
 }
 
@@ -285,13 +288,13 @@ void mapManager::MapLoad(const char* fileName)
 		_vTiles.push_back(&_tiles[i]);
 
 	}
-
+	setBuyLand();
 	//this->setLandTile(2, 0);
 	//this->setLandTile(2, 1);
-	this->setLandTile(2, 2);
+	//this->setLandTile(2, 2);
 
 	//this->setLandTile(1, 0);
-	this->setLandTile(1, 1);
+	//this->setLandTile(1, 1);
 	//this->setLandTile(1, 2);
 
 	//this->setLandTile(0, 0);
@@ -688,5 +691,13 @@ void mapManager::removeTiles()
 			_tiles[i * TILEX + j].isObject = false;
 			_tiles[i * TILEX + j].isRender = false;
 		}
+	}
+}
+
+void mapManager::setBuyLand()
+{
+	for (int i = 0; i < _vBuyLand.size(); i++)
+	{
+		this->setLandTile(_vBuyLand[i].x, _vBuyLand[i].y);
 	}
 }

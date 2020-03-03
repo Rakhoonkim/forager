@@ -22,6 +22,7 @@ public:
 	void render();
 
 	void enterStageScene();  // 스테이지 들어올 때
+	void exitStageScene();	 // 스테이지 나갈 때
 
 	void setAlphaImage();	 // 드루이드트리, 던전입구 알파블렌더 처리
 	void templeEntranceMouseCollision();	// 던전 입구 마우스 충돌 

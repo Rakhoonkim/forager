@@ -171,7 +171,7 @@ void player::KeyControl()
 	//아이템 키 
 	if (KEYMANAGER->isOnceKeyDown('I'))
 	{
-		/*ITEMMANAGER->Dropitem(OBJECT::GOLD, _player.x, _player.y);
+		ITEMMANAGER->Dropitem(OBJECT::GOLD, _player.x, _player.y);
 		ITEMMANAGER->Dropitem(OBJECT::COAL, _player.x, _player.y);
 		ITEMMANAGER->Dropitem(OBJECT::IRON, _player.x, _player.y);
 		ITEMMANAGER->Dropitem(OBJECT::ROCK, _player.x, _player.y);
@@ -188,7 +188,7 @@ void player::KeyControl()
 		ITEMMANAGER->Dropitem(TREE::BASIC, _player.x, _player.y);
 		ITEMMANAGER->Dropitem(TREE::BASIC, _player.x, _player.y);
 		ITEMMANAGER->Dropitem(TREE::BASIC, _player.x, _player.y);
-		ITEMMANAGER->Dropitem(OBJECT::BUSH, _player.x, _player.y);*/
+		ITEMMANAGER->Dropitem(OBJECT::BUSH, _player.x, _player.y);
 		ITEMMANAGER->DropForgeItem(FORGERECIPE::COIN, _player.x, _player.y,1);
 		ITEMMANAGER->DropForgeItem(FORGERECIPE::COIN, _player.x, _player.y, 1);
 		ITEMMANAGER->DropForgeItem(FORGERECIPE::COIN, _player.x, _player.y, 1);

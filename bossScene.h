@@ -16,9 +16,9 @@ private:
 
 	tagBlind		_room1;
 
-	bool	   _bossAttack;
+	bool	   _bossAttack; //보스가 공격
 
-	RECT	   _exitScene; // 씬 나가기
+	RECT	   _exitScene;  //씬 나가기
 public:
 	bossScene();
 	~bossScene();
@@ -28,7 +28,7 @@ public:
 	void update();
 	void render();
 
-	void exitTemple();
 	void enterBossScene();
+	void exitTemple();
 };
 

@@ -245,6 +245,7 @@ void land::mapMove() // 카메라 셋팅 예정
 						_playerCoin -= _land[i * 3 + j].alpha;				
 						this->mapBuy(j, i);
 						MAPMANAGER->setLandTile(j, i);
+						MAPMANAGER->addBuyLand(j, i);
 						UIMANAGER->getInven()->removeInven("coinDrop", _land[i * 3 + j].alpha);
 						_land[i * 3 + j].isClick = true;
 					}
