@@ -37,6 +37,7 @@ public:
 
 	void imageSetting();
 
+	//던전 오브젝트 생성
 	void CreateCannon(int idx, int idy, int frameX);
 	void CreateLantern(int idx, int idy);
 	void CreateDoor(int idx, int idy, int frameX);

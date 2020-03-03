@@ -25,11 +25,11 @@ private:
 	// ■■■■■■■■■■■■■■■■■■■■■■■■ PLAYER UI ■■■■■■■■■■■■■■■■■■■■■■■■
 
 	tagPlayer*  _player;
-	float	 _healthBar;   // 체력바 가로 
-	float		_expBar;   // 경험치바 가로 
-	float		_slushX;
+	float	 _healthBar;   // 가로 체력바
+	float		_expBar;   // 가로 경험치바
+	float		_slushX; 
 
-	RECT		  _exit;  // 나가는 RECT
+	RECT		  _exit;   // 나가는 RECT
 public:
 	uiManager();
 	~uiManager();
@@ -43,11 +43,12 @@ public:
 
 	// 플레이어 옵션 창
 	void PlayerUIRender();
+
 	// 이외의 옵션 
 	void optionsSetting();
 	void setButtonAlpha();
-	bool getOption() { return _isOption; }
-	void setOption() 
+	bool getOption()		{ return _isOption; }
+	void setOption()		// 옵션 세팅 함수
 	{
 		if (!_isOption)
 		{
@@ -67,10 +68,11 @@ public:
 	void playerAdressLink(tagPlayer* player)	     { _player = player;}
 	void buildAdressLink(buildManager* buildManager) { _build->setBuildManager(buildManager);}
 	
-	build* getBuild()			 { return _build; }
+	//클래스 접근자
+	land*	   getLand()		 { return _land; }
+	build*	   getBuild()		 { return _build; }
 	inventory* getInven()		 { return _inven; }
 	equipment* getEquipment()	 { return _equipment; }
-	land* getLand()				 { return _land; }
 
 	void setOptionDirection(int num) { _currentOption = num; }
 };

@@ -11,11 +11,11 @@ class Zoder;
 class gameData : public singletonBase<gameData>
 {
 private:
-	playerManager* _playerManager;
-	objectManager* _objectManager;
-	templeManager* _templeManager;
-	enemyManager* _enemyManager; //  보스 씬에 있는 
-	vector<ZorderObject*> _vZOrder;
+	playerManager*		 _playerManager;
+	objectManager*		 _objectManager;
+	templeManager*		 _templeManager;
+	enemyManager*         _enemyManager; //  보스 씬에 있는 
+	vector<ZorderObject*>      _vZOrder;
 public:
 	gameData();
 	~gameData();

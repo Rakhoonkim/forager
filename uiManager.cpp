@@ -95,7 +95,6 @@ void uiManager::update()
 					SCENEMANAGER->changeScene("MAINMENU");
 					_isOption = false;
 				}
-
 			}
 		}
 	}

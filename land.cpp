@@ -63,6 +63,7 @@ void land::MapLoad(const char* fileName)
 
 	file = CreateFile(fileName, GENERIC_READ, 0, NULL,
 		OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
 	//맵을 불로온 직후 타일의 속성을 매겨준다
 	ReadFile(file, _landTiles, sizeof(tagTile) * TILEX * TILEY, &read, NULL);
 	
@@ -224,7 +225,6 @@ void land::mapMove() // 카메라 셋팅 예정
 		if (PtInRect(&_land[i].rc, PointMake(_landX + _ptMouse.x, _landY + _ptMouse.y)))
 		{
 			_direction = i;
-
 			//if (!_land[i].isClick) _land[i].isClick = true;
 			break;
 		}
@@ -280,13 +280,10 @@ void land::mapMove() // 카메라 셋팅 예정
 	if (_landX + WINSIZEX > 1800) _landX = 1800 - WINSIZEX;
 	if (_landY + WINSIZEY > 1440) _landY = 1440 - WINSIZEY;
 
-
 	//cout << "x : " << _ptMouse.x << "y : " << _ptMouse.y << endl;
 	//cout << "_landX : " << _landX << "_landY : " << _landY << endl;
 
 	//_landY = _ptMouse.y - WINSIZEY / 2;
-
-
 }
 
 void land::mapBuy(int x, int y)
