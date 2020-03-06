@@ -91,7 +91,7 @@ void enemyManager::update()
 		//CreateEnemy(ENEMY::BOAR, 24, 20);
 		//CreateEnemy(ENEMY::DEMON, 24, 21);
 		//CreateEnemy(ENEMY::SKULL, 24, 21);
-		//CreateEnemy(ENEMY::DEMON_BOSS, 24, 18);
+		CreateEnemy(ENEMY::DEMON_BOSS, 24, 18);
 	}
 }
 

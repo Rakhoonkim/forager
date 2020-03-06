@@ -181,10 +181,10 @@ void mapManager::playerXYrender()
 				TextOut(CAMERAMANAGER->getWorldDC(), _tiles[i * TILEX + j].rc.left, _tiles[i * TILEX + j].rc.top - 30, strObj, strlen(strObj));
 			}*/
 			// ÀÎµ¦½º µð¹ö±ë
-			//char str[100];
-			//sprintf_s(str, "%d:%d", _tiles[i * TILEX + j].idx, _tiles[i * TILEX + j].idy);
-			//TextOut(CAMERAMANAGER->getWorldDC(), _tiles[i * TILEX + j].rc.left, _tiles[i * TILEX + j].rc.top, str, strlen(str));
-		}
+			/*char str[100];
+			sprintf_s(str, "%d:%d", _tiles[i * TILEX + j].idx, _tiles[i * TILEX + j].idy);
+			TextOut(CAMERAMANAGER->getWorldDC(), _tiles[i * TILEX + j].rc.left, _tiles[i * TILEX + j].rc.top, str, strlen(str));
+	*/	}
 	}
 }
 

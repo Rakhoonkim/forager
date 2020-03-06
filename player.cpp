@@ -11,6 +11,8 @@ player::~player()
 
 HRESULT player::init()
 {
+	_stateChange = false;
+
 	_player.playerImage = IMAGEMANAGER->findImage("playerIdle");
 	_player.playerAni = KEYANIMANAGER->findAnimation("playerIdle_R");
 
@@ -51,17 +53,14 @@ HRESULT player::init()
 	_player.hitCount = 0;	 // 맞을 때 카운터 
 	_player.isHit = false;	 // 맞을 떄
 	_player.isAttack = false;// 공격
+	_player.rc = RectMake(_player.x, _player.y, _player.playerImage->getFrameWidth(), _player.playerImage->getFrameHeight());  // RECT 초기화
 
 	//상태
 	_state = new playerState();
 	_state->init(&_player);
 	_playerMove = new playerMove(&_player);		// 이동
 	_playerIdle = new playerIdle(&_player);     // 대기
-
-	_state = _playerIdle;		// 현재 상태는 대기
-	_stateChange = false;
-
-	_player.rc = RectMake(_player.x, _player.y, _player.playerImage->getFrameWidth(), _player.playerImage->getFrameHeight());
+	_state = _playerIdle;			 // 현재 상태는 대기
 
 	_healthTime = TIMEMANAGER->getWorldTime();	// 체력 재생 시간 
 
@@ -311,6 +310,7 @@ void player::IndexUpdate()
 	_player.idy = (int)(_player.y + 30) / 60;	
 }
 
+//가속도
 void player::accelControl()
 {
 	//가속도
@@ -333,13 +333,14 @@ void player::setPlayerXY(int idx, int idy)
 	CAMERAMANAGER->setCameraInit(_player.x, _player.y);
 }
 
+//레벨 갱신
 void player::setPlayerExpMax(int level)
 {
 	_player.level++;
 	_player.exp = _player.exp - _player.expMax;
 	_player.expMax = _player.level * 30;
 }
-
+//경험치 증가
 void player::setPlayerExp(int exp)
 {
 	_player.exp += exp;
@@ -352,7 +353,7 @@ void player::setPlayerExp(int exp)
 		this->setPlayerExpMax(_player.level);
 	}
 }
-
+//체력 재생
 void player::setPlayerHealth(int health)
 {
 	//체력을 감소시킨다.

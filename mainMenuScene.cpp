@@ -157,7 +157,7 @@ void mainMenuScene::buttonEffect()
 	//버튼 이펙트 판정
 	for (int i = 0; i < MAXBUTTON; i++)
 	{
-		//이펙트 중이면 통과
+		//이펙트 중이면 다음으로
 		if (_button[i].isEffect) continue;
 
 		if (PtInRect(&_button[i].rc, _ptMouse))
@@ -170,6 +170,7 @@ void mainMenuScene::buttonEffect()
 	//마우스와 버튼이 충돌하면 
 	for (int i = 0; i < MAXBUTTON; i++)
 	{
+		//이펙트 중이지 않으면 다음으로
 		if (!_button[i].isEffect) continue;
 
 		//알파값 증가

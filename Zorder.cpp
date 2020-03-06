@@ -164,6 +164,7 @@ vector<ZorderObject*> Zorder::ZOrderUpdate(vector<ZorderObject*> num)
 	float i, j;
 	float key;
 
+	//삽입정렬 알고리즘
 	for (i = 1; i < num.size(); i++)
 	{
 		instance = num[i];

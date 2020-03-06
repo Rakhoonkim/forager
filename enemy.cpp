@@ -64,6 +64,7 @@ HRESULT enemy::init(ENEMY enemy,const char* imageName,int idx,int idy)
 	_enemy.hpBar = 0;
 	_enemy.isPlayerAttack = false;
 	_enemy.exp = 10;
+
 	//상태정의
 	_enemyState = new enemyStateManager;
 	_enemyState->init();

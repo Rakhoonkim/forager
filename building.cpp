@@ -990,22 +990,23 @@ void sewingStation::craftButton() // 수정
 // 입력하는것 수정할 것 
 void fishTrap::update()
 {
-	if (!_upDown)
-	{
-		_building.y += TIMEMANAGER->getElapsedTime() * 3;
-		if ((_building.idy + 1) * 60 - 20  <= _building.y)
-		{
-			_upDown = true;
-		}
-	}
-	else
-	{
-		_building.y -= TIMEMANAGER->getElapsedTime() * 3;
-		if (_building.idy  * 60 + 35 >= _building.y)
-		{
-			_upDown = false;
-		}
-	}
+	//상하로 움직이는 코드
+	//if (!_upDown)
+	//{
+	//	_building.y += TIMEMANAGER->getElapsedTime() * 3;
+	//	if ((_building.idy + 1) * 60 - 20  <= _building.y)
+	//	{
+	//		_upDown = true;
+	//	}
+	//}
+	//else
+	//{
+	//	_building.y -= TIMEMANAGER->getElapsedTime() * 3;
+	//	if (_building.idy  * 60 + 35 >= _building.y)
+	//	{
+	//		_upDown = false;
+	//	}
+	//}
 
 	if (_building.isClick)
 	{

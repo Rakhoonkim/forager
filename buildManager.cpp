@@ -17,9 +17,9 @@ HRESULT buildManager::init()
 	//createImageBuilding(BUILDING::FURNACE, 17, 14);
 	//createImageBuilding(BUILDING::FORGE, 20, 14);
 	//createImageBuilding(BUILDING::SEWING_STATION, 23, 14);
-	//createImageBuilding(BUILDING::FISHTRAP, 28, 21);
-	//createImageBuilding(BUILDING::FISHTRAP, 28, 22);
-	//createImageBuilding(BUILDING::FISHTRAP, 28, 23);
+	//createImageBuilding(BUILDING::FISHTRAP, 29, 16);
+	//createImageBuilding(BUILDING::BRIDGE, 29, 17);
+	//createImageBuilding(BUILDING::FISHTRAP, 29, 16);
 	_isUsed = false;
 	return S_OK;
 }
@@ -89,6 +89,7 @@ void buildManager::imageSetting()
 
 }
 
+//건물을 생성하는 함수
 void buildManager::createImageBuilding(BUILDING build, int idx, int idy)
 {
 	//인덱스 워터 속성 바꾸기 

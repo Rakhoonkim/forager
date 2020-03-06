@@ -28,7 +28,7 @@ HRESULT stageScene::init()
 	//맵 수정해야함 
 
 	MAPMANAGER->setObjectManager(_objectManager);
-	MAPMANAGER->MapLoad("inGameNumber2.map");
+	MAPMANAGER->MapLoad("inGameNumber1.map");
 
 	UIMANAGER->getEquipment()->setSkillPount(&_playerManager->get_player()->get_PlayerAddress()->skillPount);
 	
@@ -49,6 +49,7 @@ void stageScene::update()
 	ZORDER->update();				 //ZORDER
 	templeEntranceMouseCollision();  //던전입구 
 	setAlphaImage();				 //알파블렌더 처리
+	//_objectManager->get_enemyManager()->BossAttack();
 }
 
 void stageScene::render()

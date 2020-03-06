@@ -61,6 +61,20 @@ void templeManager::render()
 	
 }
 
+//플레이어가 방에 들어가면 
+void templeManager::blindRoomCollision()
+{
+	for (int i = 0;i < 8;i++)
+	{
+		RECT temp;
+		if (IntersectRect(&temp, &_player->rc, &_room[i].rc))
+		{
+			_room[i].isOpen = true;
+		}
+	}
+
+}
+
 void templeManager::blindRoomSetting()
 {
 	for (int i = 0; i < 8; i++)
@@ -99,18 +113,7 @@ void templeManager::blindRoomSetting()
 
 }
 
-void templeManager::blindRoomCollision()
-{
-	for (int i = 0;i < 8;i++)
-	{
-		RECT temp;
-		if (IntersectRect(&temp, &_player->rc, &_room[i].rc))
-		{
-			_room[i].isOpen = true;
-		}
-	}
 
-}
 
 void templeManager::imageSetting()
 {

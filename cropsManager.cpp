@@ -15,36 +15,36 @@ HRESULT cropsManager::init()
 	imageSetting();
 
 	//====================== TEST ¿ÀÇÁÁ§Æ®==================================
-	/*createImageCrops(OBJECT::CINDERBLOOM, 17, 14);
-	createImageCrops(OBJECT::NIGHTSHADE, 18, 14);
-	createImageCrops(OBJECT::LAVENDER, 19, 14);
+	//createImageCrops(OBJECT::CINDERBLOOM, 17, 14);
+	//createImageCrops(OBJECT::NIGHTSHADE, 18, 14);
+	//createImageCrops(OBJECT::LAVENDER, 19, 14);
 
-	createFrameCrops(OBJECT::BEET, 17, 15);
-	createFrameCrops(OBJECT::HOT_PEPPER, 18, 15);
-	createFrameCrops(OBJECT::COTTON, 19, 15);
-	createFrameCrops(OBJECT::WHEAT, 20, 15);
-	createFrameCrops(OBJECT::PUMPKIN, 21, 15);
+	//createFrameCrops(OBJECT::BEET, 17, 15);
+	//createFrameCrops(OBJECT::HOT_PEPPER, 18, 15);
+	//createFrameCrops(OBJECT::COTTON, 19, 15);
+	//createFrameCrops(OBJECT::WHEAT, 20, 15);
+	//createFrameCrops(OBJECT::PUMPKIN, 21, 15);
 
-	createimageFrameCrops(OBJECT::ROCK, 17, 16);
-	createimageFrameCrops(OBJECT::COAL, 18, 16);
-	createimageFrameCrops(OBJECT::GOLD, 19, 16);
-	createimageFrameCrops(OBJECT::IRON, 20, 16);
-	createimageFrameCrops(OBJECT::VOLCANIC_COAL, 21, 16);
-	createimageFrameCrops(OBJECT::VOLCANIC_GOLD, 22, 16);
-	createimageFrameCrops(OBJECT::VOLCANIC_IRON, 23, 16);
+	//createimageFrameCrops(OBJECT::ROCK, 17, 16);
+	//createimageFrameCrops(OBJECT::COAL, 18, 16);
+	//createimageFrameCrops(OBJECT::GOLD, 19, 16);
+	//createimageFrameCrops(OBJECT::IRON, 20, 16);
+	//createimageFrameCrops(OBJECT::VOLCANIC_COAL, 21, 16);
+	//createimageFrameCrops(OBJECT::VOLCANIC_GOLD, 22, 16);
+	//createimageFrameCrops(OBJECT::VOLCANIC_IRON, 23, 16);
 
-	createFrameCrops(OBJECT::FLOWER_1, 17, 17);
-	createFrameCrops(OBJECT::FLOWER_1, 18, 17);
-	createFrameCrops(OBJECT::FLOWER_1, 19, 17);
-	createFrameCrops(OBJECT::BUSH, 20, 17);
-	createFrameCrops(OBJECT::BUSH, 21, 17);
-	createFrameCrops(OBJECT::BUSH, 22, 17);
+	//createFrameCrops(OBJECT::FLOWER_1, 17, 17);
+	//createFrameCrops(OBJECT::FLOWER_1, 18, 17);
+	//createFrameCrops(OBJECT::FLOWER_1, 19, 17);
+	//createFrameCrops(OBJECT::BUSH, 20, 17);
+	//createFrameCrops(OBJECT::BUSH, 21, 17);
+	//createFrameCrops(OBJECT::BUSH, 22, 17);
 
 
-	craateTreeCrops(TREE::BASIC, 17, 19);
-	craateTreeCrops(TREE::RED, 18, 19);
-	craateTreeCrops(TREE::CACTUS, 19, 19);
-	craateTreeCrops(TREE::SNOW, 20, 19);*/
+	//craateTreeCrops(TREE::BASIC, 17, 19);
+	//craateTreeCrops(TREE::RED, 18, 19);
+	//craateTreeCrops(TREE::CACTUS, 19, 19);
+	//craateTreeCrops(TREE::SNOW, 20, 19);
 
 	_effect = new alphaEffect;
 	_effect->init();
@@ -109,7 +109,7 @@ void cropsManager::update()
 		//cout << rnd.x << rnd.y << endl;
 	}
 
-	CropsMakeUpdate();		// ·£´ý ³óÀÛ¹° »ý¼º
+	//CropsMakeUpdate();		// ·£´ý ³óÀÛ¹° »ý¼º
 	removeCrops();			// Á¦°Å( HP < 0½Ã )  
 	_effect->update();
 	//µð¹ö±ë

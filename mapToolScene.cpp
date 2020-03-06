@@ -35,6 +35,7 @@ void mapToolScene::render()
 	MapToolRender();						  // 렌더
 }
 
+//파일을 저장한다
 void mapToolScene::save()
 {
 	HANDLE file;
@@ -43,11 +44,13 @@ void mapToolScene::save()
 	file = CreateFile(_saveName, GENERIC_WRITE, 0, NULL,
 		CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
+	//파일 쓰기
 	WriteFile(file, _tiles, sizeof(tagTile) * TILEX * TILEY, &write, NULL);
 
 	CloseHandle(file);
 }
 
+//파일을 불러온다
 void mapToolScene::load()
 {
 	HANDLE file;
@@ -56,7 +59,7 @@ void mapToolScene::load()
 	file = CreateFile(_saveName, GENERIC_READ, 0, NULL,
 		OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
-	//맵을 불로온 직후 타일의 속성을 매겨준다
+	//파일 읽기
 	ReadFile(file, _tiles, sizeof(tagTile) * TILEX * TILEY, &read, NULL);
 
 	CloseHandle(file);
@@ -80,6 +83,7 @@ void mapToolScene::saveLoadClick()
 		{
 			_saveSlot[i].isClick = false;
 		}
+		
 		// 버튼 설정
 		switch (_saveSlotDirection)
 		{
@@ -360,7 +364,8 @@ void mapToolScene::MapToolSetup()
 	{
 		for (int j = 0; j < 3; j++)
 		{
-			SetRect(&_mapButton[i * 3 + j].rc, 920 + j * _mapButtonSize, 390 + i * _mapButtonSize, 920 + j * _mapButtonSize + _mapButtonSize, 390 + i * _mapButtonSize + _mapButtonSize);
+			SetRect(&_mapButton[i * 3 + j].rc, 920 + j * _mapButtonSize, 390 + i * _mapButtonSize, 
+				920 + j * _mapButtonSize + _mapButtonSize, 390 + i * _mapButtonSize + _mapButtonSize);
 			_mapButton[i * 3 + j].isClick = false;
 		}
 	}
@@ -372,7 +377,8 @@ void mapToolScene::MapToolSetup()
 	{
 		for (int j = 0; j < TILEX; j++)
 		{
-			SetRect(&_miniMap[i * (TILEX)+j].rc, WINSIZEX - 140 + j * _miniMapSizeWidth, 390 + (i * _miniMapSizeHeight), WINSIZEX - 140 + (j * _miniMapSizeWidth) + _miniMapSizeWidth, 390 + (i * _miniMapSizeHeight) + _miniMapSizeHeight);
+			SetRect(&_miniMap[i * (TILEX)+j].rc, WINSIZEX - 140 + j * _miniMapSizeWidth, 390 + (i * _miniMapSizeHeight), 
+				WINSIZEX - 140 + (j * _miniMapSizeWidth) + _miniMapSizeWidth, 390 + (i * _miniMapSizeHeight) + _miniMapSizeHeight);
 			_miniMap[i * (TILEX)+j].isClick = false;
 		}
 	}
@@ -563,7 +569,7 @@ void mapToolScene::MapToolUpdate()
 
 				_tiles[i * TILEX + j].isClick = true; // 미니맵 활성화 
 
-				//cout << "값" << _tiles[i * TILEX + j].isClick << endl;
+				//선택한 버튼이라면
 				if (_currentTile.type == TYPE::TERRAIN)
 				{
 					_tiles[i * TILEX + j].type = TYPE::TERRAIN;
