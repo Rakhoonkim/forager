@@ -28,7 +28,7 @@ HRESULT stageScene::init()
 	//맵 수정해야함 
 
 	MAPMANAGER->setObjectManager(_objectManager);
-	MAPMANAGER->MapLoad("inGameNumber1.map");
+	MAPMANAGER->MapLoad("inGameNumber2.map");
 
 	UIMANAGER->getEquipment()->setSkillPount(&_playerManager->get_player()->get_PlayerAddress()->skillPount);
 	

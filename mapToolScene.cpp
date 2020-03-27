@@ -776,7 +776,7 @@ void mapToolScene::MapToolRender()
 		//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ OBJECT  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 		if (_tiles[i].object != OBJECT::NONE)
 		{
-			IMAGEMANAGER->findImage("objectTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].objectFrameX, _tiles[i].objectFrameY);
+			//IMAGEMANAGER->findImage("objectTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].objectFrameX, _tiles[i].objectFrameY);
 		}
 
 		if (_tiles[i].templeObject != TEMPLEOBJECT::NONE)
@@ -791,17 +791,17 @@ void mapToolScene::MapToolRender()
 	}
 
 
-	//나무는 렉트 범위가 두개라서 새로 그려줘야 한다.
-	for (int i = 0; i < TILEX * TILEY; i++)
-	{
-		//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ TREE ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-		if (_tiles[i].type == TYPE::NONE) continue;
+	////나무는 렉트 범위가 두개라서 새로 그려줘야 한다.
+	//for (int i = 0; i < TILEX * TILEY; i++)
+	//{
+	//	//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ TREE ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+	//	if (_tiles[i].type == TYPE::NONE) continue;
 
-		if (_tiles[i].tree != TREE::NONE)
-		{
-			IMAGEMANAGER->findImage("treeTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top - 60, _tiles[i].treeFrameX, _tiles[i].treeFrameY);
-		}
-	}
+	//	if (_tiles[i].tree != TREE::NONE)
+	//	{
+	//		IMAGEMANAGER->findImage("treeTile")->frameRender(CAMERAMANAGER->getMapToolDC(), _tiles[i].rc.left, _tiles[i].rc.top - 60, _tiles[i].treeFrameX, _tiles[i].treeFrameY);
+	//	}
+	//}
 
 	//그리기
 	CAMERAMANAGER->getMapToolImage()->render(getMemDC(), 0, 0, CAMERAMANAGER->getMapToolCamera().cameraX, CAMERAMANAGER->getMapToolCamera().cameraY, CAMERAMANAGER->getMapToolCamera().cameraSizeX, CAMERAMANAGER->getMapToolCamera().cameraSizeY);

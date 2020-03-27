@@ -109,7 +109,7 @@ void cropsManager::update()
 		//cout << rnd.x << rnd.y << endl;
 	}
 
-	//CropsMakeUpdate();		// ·£´ý ³óÀÛ¹° »ý¼º
+	CropsMakeUpdate();		// ·£´ý ³óÀÛ¹° »ý¼º
 	removeCrops();			// Á¦°Å( HP < 0½Ã )  
 	_effect->update();
 	//µð¹ö±ë
